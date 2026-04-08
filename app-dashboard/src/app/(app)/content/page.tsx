@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { PageHeader } from '@/components/page-header';
@@ -218,6 +218,35 @@ function PostDetailDialog({
 }
 
 export default function ContentFeedPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i}>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    }>
+      <ContentFeedPageInner />
+    </Suspense>
+  );
+}
+
+function ContentFeedPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { StatCard } from '@/components/stat-card';
@@ -184,6 +184,45 @@ const STATUS_TABS = [
 ];
 
 export default function PayoutsPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-4">
+        <PageHeader title="Payout Manager" description="Process, track, and manage creator payouts." />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i}>
+              <CardContent className="pt-6">
+                <Skeleton className="h-4 w-24 mb-2" />
+                <Skeleton className="h-8 w-32 mb-2" />
+                <Skeleton className="h-3 w-40" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Card className="mt-6">
+          <CardContent className="p-6">
+            <div className="space-y-3">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-48" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                  <Skeleton className="h-5 w-20" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <PayoutsPageInner />
+    </Suspense>
+  );
+}
+
+function PayoutsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
@@ -225,6 +225,34 @@ const STATUS_TABS = [
 ];
 
 export default function MembersPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-4">
+        <PageHeader title="Members" description="View and manage all platform members." />
+        <Card>
+          <CardContent className="p-6">
+            <div className="space-y-3">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-48" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                  <Skeleton className="h-5 w-20" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <MembersPageInner />
+    </Suspense>
+  );
+}
+
+function MembersPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();

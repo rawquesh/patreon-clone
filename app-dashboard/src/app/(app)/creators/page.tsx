@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -43,7 +44,6 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import {
   getCreators,
@@ -253,7 +253,45 @@ const STATUS_TABS = [
   { value: 'ARCHIVED', label: 'Archived' },
 ];
 
+function CreatorsPageSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Skeleton className="h-10 w-64" />
+      </div>
+      <div className="flex gap-1 mb-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="h-9 w-20" />
+        ))}
+      </div>
+      <Card>
+        <CardContent className="p-6 space-y-3">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div className="space-y-2 flex-1">
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+              <Skeleton className="h-5 w-16" />
+              <Skeleton className="h-5 w-20" />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function CreatorsPage() {
+  return (
+    <Suspense fallback={<CreatorsPageSkeleton />}>
+      <CreatorsPageInner />
+    </Suspense>
+  );
+}
+
+function CreatorsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
