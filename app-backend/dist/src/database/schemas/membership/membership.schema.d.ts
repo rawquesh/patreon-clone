@@ -15,11 +15,11 @@ export declare class Membership extends Document {
     isFeatured: boolean;
 }
 export declare const MembershipSchema: MongooseSchema<Membership, import("mongoose").Model<Membership, any, any, any, Document<unknown, any, Membership, any, {}> & Membership & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Membership, Document<unknown, {}, import("mongoose").FlatRecord<Membership>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Membership> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Membership, Document<unknown, {}, import("mongoose").FlatRecord<Membership>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Membership> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

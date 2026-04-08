@@ -13,11 +13,11 @@ export declare class Collection extends Document {
     posts: Post[];
 }
 export declare const CollectionSchema: MongooseSchema<Collection, import("mongoose").Model<Collection, any, any, any, Document<unknown, any, Collection, any, {}> & Collection & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Collection, Document<unknown, {}, import("mongoose").FlatRecord<Collection>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Collection> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Collection, Document<unknown, {}, import("mongoose").FlatRecord<Collection>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Collection> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

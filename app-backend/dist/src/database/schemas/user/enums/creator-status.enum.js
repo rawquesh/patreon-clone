@@ -6,5 +6,6 @@ var CreatorStatus;
     CreatorStatus["DRAFT"] = "draft";
     CreatorStatus["ONBOARDING"] = "onboarding";
     CreatorStatus["PUBLISHED"] = "published";
+    CreatorStatus["ARCHIVED"] = "archived";
 })(CreatorStatus || (exports.CreatorStatus = CreatorStatus = {}));
 //# sourceMappingURL=creator-status.enum.js.map

@@ -15,10 +15,7 @@ import { UserReportReason, ReportStatus } from './enums';
   },
 })
 export class UserReport extends Document {
-  _id: string;
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   reportedUser: MongooseSchema.Types.ObjectId;

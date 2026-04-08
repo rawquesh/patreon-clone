@@ -30,11 +30,11 @@ export declare class CreatorVisit extends Document {
     membership?: MongooseSchema.Types.ObjectId;
 }
 export declare const CreatorVisitSchema: MongooseSchema<CreatorVisit, import("mongoose").Model<CreatorVisit, any, any, any, Document<unknown, any, CreatorVisit, any, {}> & CreatorVisit & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, CreatorVisit, Document<unknown, {}, import("mongoose").FlatRecord<CreatorVisit>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<CreatorVisit> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, CreatorVisit, Document<unknown, {}, import("mongoose").FlatRecord<CreatorVisit>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<CreatorVisit> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

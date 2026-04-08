@@ -10,7 +10,7 @@ export declare const PostCommentLikeSchema: MongooseSchema<PostCommentLike, impo
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostCommentLike, Document<unknown, {}, import("mongoose").FlatRecord<PostCommentLike>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<PostCommentLike> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostCommentLike, Document<unknown, {}, import("mongoose").FlatRecord<PostCommentLike>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<PostCommentLike> & Required<{
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
@@ -27,7 +27,7 @@ export declare const AttachmentSchema: MongooseSchema<Attachment, import("mongoo
     _id: string;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Attachment, Document<unknown, {}, import("mongoose").FlatRecord<Attachment>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Attachment> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Attachment, Document<unknown, {}, import("mongoose").FlatRecord<Attachment>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Attachment> & Required<{
     _id: string;
 }> & {
     __v: number;
@@ -41,7 +41,7 @@ export declare const PostLikeSchema: MongooseSchema<PostLike, import("mongoose")
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostLike, Document<unknown, {}, import("mongoose").FlatRecord<PostLike>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<PostLike> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostLike, Document<unknown, {}, import("mongoose").FlatRecord<PostLike>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<PostLike> & Required<{
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
@@ -59,13 +59,12 @@ export declare const PostCommentSchema: MongooseSchema<PostComment, import("mong
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostComment, Document<unknown, {}, import("mongoose").FlatRecord<PostComment>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<PostComment> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, PostComment, Document<unknown, {}, import("mongoose").FlatRecord<PostComment>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<PostComment> & Required<{
     _id: MongooseSchema.Types.ObjectId;
 }> & {
     __v: number;
 }>;
 export declare class Post extends Document {
-    _id: string;
     id: string;
     createdAt: Date;
     updatedAt: Date;
@@ -95,11 +94,11 @@ export declare class Post extends Document {
     comments: PostComment[];
 }
 export declare const PostSchema: MongooseSchema<Post, import("mongoose").Model<Post, any, any, any, Document<unknown, any, Post, any, {}> & Post & Required<{
-    _id: string;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Post, Document<unknown, {}, import("mongoose").FlatRecord<Post>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Post> & Required<{
-    _id: string;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Post, Document<unknown, {}, import("mongoose").FlatRecord<Post>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Post> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

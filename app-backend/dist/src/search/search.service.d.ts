@@ -13,12 +13,12 @@ export declare class SearchService {
     private addGenderFilters;
     search(query: string, category?: string, requestingUser?: RequestingUser, fullSearch?: boolean): Promise<{
         creators: (import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
-            _id: unknown;
+            _id: import("mongoose").Types.ObjectId;
         }> & {
             __v: number;
         })[];
         posts: {
-            _id: string;
+            _id: import("mongoose").Types.ObjectId;
             title: string;
             content: string;
             coverImage: string;
@@ -29,12 +29,12 @@ export declare class SearchService {
         }[];
     }>;
     searchCreators(query: string, category?: string, requestingUser?: RequestingUser): Promise<(import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
-        _id: unknown;
+        _id: import("mongoose").Types.ObjectId;
     }> & {
         __v: number;
     })[]>;
     searchPosts(query: string, category?: string): Promise<{
-        _id: string;
+        _id: import("mongoose").Types.ObjectId;
         title: string;
         content: string;
         coverImage: string;

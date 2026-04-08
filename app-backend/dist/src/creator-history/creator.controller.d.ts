@@ -12,7 +12,7 @@ export declare class CreatorController {
     private readonly collectionsService;
     constructor(userModel: Model<User>, creatorHistoryService: CreatorHistoryService, postsService: PostsService, membershipsService: MembershipsService, collectionsService: CollectionsService);
     getCreatorByUsername(username: string, req: any): Promise<import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
-        _id: unknown;
+        _id: import("mongoose").Types.ObjectId;
     }> & {
         __v: number;
     }>;

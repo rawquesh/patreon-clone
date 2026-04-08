@@ -1,5 +1,6 @@
 export declare enum CreatorStatus {
     DRAFT = "draft",
     ONBOARDING = "onboarding",
-    PUBLISHED = "published"
+    PUBLISHED = "published",
+    ARCHIVED = "archived"
 }

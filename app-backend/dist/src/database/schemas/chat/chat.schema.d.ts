@@ -13,7 +13,7 @@ export declare const ChatAttachmentSchema: MongooseSchema<ChatAttachment, import
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ChatAttachment, Document<unknown, {}, import("mongoose").FlatRecord<ChatAttachment>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<ChatAttachment> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ChatAttachment, Document<unknown, {}, import("mongoose").FlatRecord<ChatAttachment>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<ChatAttachment> & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
@@ -30,11 +30,11 @@ export declare class Message extends Document {
     updatedAt: Date;
 }
 export declare const MessageSchema: MongooseSchema<Message, import("mongoose").Model<Message, any, any, any, Document<unknown, any, Message, any, {}> & Message & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Message, Document<unknown, {}, import("mongoose").FlatRecord<Message>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Message> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Message, Document<unknown, {}, import("mongoose").FlatRecord<Message>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Message> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;
@@ -53,11 +53,11 @@ export declare class Chat extends Document {
     updatedAt: Date;
 }
 export declare const ChatSchema: MongooseSchema<Chat, import("mongoose").Model<Chat, any, any, any, Document<unknown, any, Chat, any, {}> & Chat & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Chat, Document<unknown, {}, import("mongoose").FlatRecord<Chat>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Chat> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Chat, Document<unknown, {}, import("mongoose").FlatRecord<Chat>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Chat> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;
@@ -73,11 +73,11 @@ export declare class ChatParticipant extends Document {
     updatedAt: Date;
 }
 export declare const ChatParticipantSchema: MongooseSchema<ChatParticipant, import("mongoose").Model<ChatParticipant, any, any, any, Document<unknown, any, ChatParticipant, any, {}> & ChatParticipant & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ChatParticipant, Document<unknown, {}, import("mongoose").FlatRecord<ChatParticipant>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<ChatParticipant> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ChatParticipant, Document<unknown, {}, import("mongoose").FlatRecord<ChatParticipant>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<ChatParticipant> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

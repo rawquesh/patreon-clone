@@ -97,7 +97,6 @@ export const PostCommentSchema = SchemaFactory.createForClass(PostComment);
   },
 })
 export class Post extends Document {
-  _id: string;
   id: string;
   createdAt: Date;
   updatedAt: Date;

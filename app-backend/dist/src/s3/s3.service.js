@@ -17,12 +17,17 @@ const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 let S3Service = class S3Service {
     constructor(configService) {
         this.configService = configService;
+        const endpoint = this.configService.get('AWS_ENDPOINT_URL');
         this.s3Client = new client_s3_1.S3Client({
-            region: this.configService.get('AWS_REGION'),
+            region: this.configService.get('AWS_DEFAULT_REGION') || 'auto',
             credentials: {
                 accessKeyId: this.configService.get('AWS_ACCESS_KEY'),
                 secretAccessKey: this.configService.get('AWS_SECRET_KEY'),
             },
+            ...(endpoint && {
+                endpoint,
+                forcePathStyle: true,
+            }),
         });
     }
     async uploadFile(file, folder = 'profile-photos', bucket) {
@@ -48,7 +53,7 @@ let S3Service = class S3Service {
                 errorMessage,
                 errorCode,
                 requestId,
-                region: this.configService.get('AWS_REGION'),
+                region: this.configService.get('AWS_DEFAULT_REGION'),
                 hasAccessKey: !!this.configService.get('AWS_ACCESS_KEY'),
                 hasSecretKey: !!this.configService.get('AWS_SECRET_KEY'),
             });
@@ -62,7 +67,14 @@ let S3Service = class S3Service {
             key = urlPart.split('?')[0];
         }
         else {
-            key = fileUrl;
+            try {
+                const url = new URL(fileUrl.split('?')[0]);
+                const pathParts = url.pathname.split('/').filter(Boolean);
+                key = pathParts[0] === bucket ? pathParts.slice(1).join('/') : pathParts.join('/');
+            }
+            catch {
+                key = fileUrl.split('?')[0];
+            }
         }
         const command = new client_s3_1.DeleteObjectCommand({
             Bucket: bucket,

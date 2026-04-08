@@ -41,7 +41,8 @@ export declare class AuthController {
             platform: string;
             url: string;
         }>;
-        _id: unknown;
+        isDeactivated?: boolean;
+        _id: import("mongoose").Types.ObjectId;
         $locals: Record<string, unknown>;
         $op: "save" | "validate" | "remove" | null;
         $where: Record<string, unknown>;
@@ -60,7 +61,7 @@ export declare class AuthController {
     googleAuthCallback(req: any, res: any): Promise<void>;
     googleMobileLogin(googleTokenDto: GoogleTokenDto): Promise<{
         user: {
-            id: unknown;
+            id: import("mongoose").Types.ObjectId;
             email: string;
             firstName: string;
             lastName: string;

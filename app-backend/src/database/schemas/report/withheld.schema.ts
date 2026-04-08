@@ -14,10 +14,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
   },
 })
 export class WithheldPost extends Document {
-  _id: string;
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
 
   @Prop({ type: MongooseSchema.Types.Mixed, required: true })
   postData: any;
@@ -60,10 +57,7 @@ WithheldPostSchema.index({ withheldAt: -1 });
   },
 })
 export class WithheldUser extends Document {
-  _id: string;
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
 
   @Prop({ type: MongooseSchema.Types.Mixed, required: true })
   userData: any;

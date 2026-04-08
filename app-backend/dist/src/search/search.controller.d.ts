@@ -7,12 +7,12 @@ export declare class SearchController {
     private getRequestingUser;
     search(query: string, req: any, category?: string): Promise<{
         creators: (import("mongoose").Document<unknown, {}, import("@/database/schemas/user").User, {}, {}> & import("@/database/schemas/user").User & Required<{
-            _id: unknown;
+            _id: import("mongoose").Types.ObjectId;
         }> & {
             __v: number;
         })[];
         posts: {
-            _id: string;
+            _id: import("mongoose").Types.ObjectId;
             title: string;
             content: string;
             coverImage: string;
@@ -24,14 +24,14 @@ export declare class SearchController {
     }>;
     searchCreator(query: string, req: any, category?: string): Promise<{
         creators: (import("mongoose").Document<unknown, {}, import("@/database/schemas/user").User, {}, {}> & import("@/database/schemas/user").User & Required<{
-            _id: unknown;
+            _id: import("mongoose").Types.ObjectId;
         }> & {
             __v: number;
         })[];
     }>;
     searchPosts(query: string, category?: string): Promise<{
         posts: {
-            _id: string;
+            _id: import("mongoose").Types.ObjectId;
             title: string;
             content: string;
             coverImage: string;

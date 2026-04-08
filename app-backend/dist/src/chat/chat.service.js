@@ -152,7 +152,7 @@ let ChatService = ChatService_1 = class ChatService {
         }));
         await this.chatParticipantModel.insertMany(participantEntries);
         await this.notificationGenerator.generateGroupChatCreatedNotification({
-            chatId: savedChat._id,
+            chatId: savedChat._id.toString(),
             chatTitle: savedChat.title,
             creatorId: userId,
             participantIds: participants,

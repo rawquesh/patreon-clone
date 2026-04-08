@@ -15,7 +15,7 @@ export declare class AuthService {
     constructor(userModel: Model<User>, jwtService: JwtService, paymentsService: PaymentsService);
     verifyGoogleAccessToken(accessToken: string): Promise<{
         user: {
-            id: unknown;
+            id: import("mongoose").Types.ObjectId;
             email: string;
             firstName: string;
             lastName: string;
@@ -27,7 +27,7 @@ export declare class AuthService {
     validateUser(email: string, password: string): Promise<any>;
     googleLogin(profile: any): Promise<{
         user: {
-            id: unknown;
+            id: import("mongoose").Types.ObjectId;
             email: string;
             firstName: string;
             lastName: string;
@@ -73,7 +73,8 @@ export declare class AuthService {
             platform: string;
             url: string;
         }>;
-        _id: unknown;
+        isDeactivated?: boolean;
+        _id: import("mongoose").Types.ObjectId;
         $locals: Record<string, unknown>;
         $op: "save" | "validate" | "remove" | null;
         $where: Record<string, unknown>;

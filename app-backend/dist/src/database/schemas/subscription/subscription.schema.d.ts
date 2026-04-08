@@ -11,7 +11,7 @@ export declare const DiscountDataSchema: MongooseSchema<DiscountData, import("mo
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, DiscountData, Document<unknown, {}, import("mongoose").FlatRecord<DiscountData>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<DiscountData> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, DiscountData, Document<unknown, {}, import("mongoose").FlatRecord<DiscountData>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<DiscountData> & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
@@ -26,7 +26,7 @@ export declare const GiftDataSchema: MongooseSchema<GiftData, import("mongoose")
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, GiftData, Document<unknown, {}, import("mongoose").FlatRecord<GiftData>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<GiftData> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, GiftData, Document<unknown, {}, import("mongoose").FlatRecord<GiftData>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<GiftData> & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
@@ -50,11 +50,11 @@ export declare class Subscription extends Document {
     giftData?: GiftData;
 }
 export declare const SubscriptionSchema: MongooseSchema<Subscription, import("mongoose").Model<Subscription, any, any, any, Document<unknown, any, Subscription, any, {}> & Subscription & Required<{
-    _id: unknown;
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Subscription, Document<unknown, {}, import("mongoose").FlatRecord<Subscription>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Subscription> & Required<{
-    _id: unknown;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Subscription, Document<unknown, {}, import("mongoose").FlatRecord<Subscription>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Subscription> & Required<{
+    _id: import("mongoose").Types.ObjectId;
 }> & {
     __v: number;
 }>;

@@ -15,10 +15,7 @@ import { ReportReason, ReportStatus } from './enums';
   },
 })
 export class PostReport extends Document {
-  _id: string;
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Post', required: true })
   post: MongooseSchema.Types.ObjectId;

@@ -213,7 +213,7 @@ export class ChatService {
 
     await this.chatParticipantModel.insertMany(participantEntries);
     await this.notificationGenerator.generateGroupChatCreatedNotification({
-      chatId: savedChat._id as string,
+      chatId: savedChat._id.toString(),
       chatTitle: savedChat.title,
       creatorId: userId,
       participantIds: participants,
@@ -824,7 +824,7 @@ export class ChatService {
 
     const messageDto = this.transformMessageToDto({
       ...savedMessage.toObject(),
-      sender: sender as User & Document,
+      sender: sender as unknown as User & Document,
     } as unknown as Message);
 
     return messageDto;

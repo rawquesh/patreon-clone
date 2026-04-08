@@ -21,7 +21,7 @@ export declare class PostsController {
     }>;
     findAllPublishedPosts(fetchPostsDto: FetchPostsDto, req: any): Promise<{
         posts: {
-            id: string;
+            id: import("mongoose").Types.ObjectId;
             title: string;
             publishDate: string;
             tierAccess: {
@@ -32,7 +32,7 @@ export declare class PostsController {
             thumbnail: string;
             description: string;
             creator: {
-                id: unknown;
+                id: import("mongoose").Types.ObjectId;
                 name: string;
                 profilePicture: string;
             };
@@ -47,7 +47,7 @@ export declare class PostsController {
     }>;
     findMyDrafts(req: any): Promise<{
         drafts: {
-            id: string;
+            id: import("mongoose").Types.ObjectId;
             title: string;
             createdAt: Date;
             updatedAt: Date;
@@ -116,7 +116,7 @@ export declare class PostsController {
     private getThumbnailForPost;
     deletePost(req: any, id: string): Promise<{
         message: string;
-        id: string;
+        id: import("mongoose").Types.ObjectId;
     }>;
     permanentDeletePost(req: any, id: string): Promise<{
         message: string;
@@ -125,7 +125,7 @@ export declare class PostsController {
     private getBucketNameForPostType;
     publishPost(req: any, id: string): Promise<{
         message: string;
-        id: string;
+        id: import("mongoose").Types.ObjectId;
         post?: undefined;
     } | {
         message: string;
@@ -134,7 +134,7 @@ export declare class PostsController {
     }>;
     unpublishPost(req: any, id: string): Promise<{
         message: string;
-        id: string;
+        id: import("mongoose").Types.ObjectId;
         post?: undefined;
     } | {
         message: string;

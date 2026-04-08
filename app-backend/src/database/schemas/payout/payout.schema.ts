@@ -3,6 +3,9 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class PayoutRequest extends Document {
+  createdAt: Date;
+  updatedAt: Date;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   creator: MongooseSchema.Types.ObjectId;
 

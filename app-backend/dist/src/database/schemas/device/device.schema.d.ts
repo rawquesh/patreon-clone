@@ -8,7 +8,7 @@ export declare const DeviceSchema: import("mongoose").Schema<Device, import("mon
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Device, Document<unknown, {}, import("mongoose").FlatRecord<Device>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Device> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Device, Document<unknown, {}, import("mongoose").FlatRecord<Device>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Device> & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;

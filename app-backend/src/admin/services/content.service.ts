@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Post } from '@/database/schemas/post';
+import { Post, PostStatus } from '@/database/schemas/post';
 import { User } from '@/database/schemas/user';
 import {
   GetContentQueryDto,
@@ -121,7 +121,7 @@ export class ContentService {
     if (!post) throw new NotFoundException('Post not found');
 
     post.isActive = true;
-    post.status = 'published';
+    post.status = PostStatus.PUBLISHED;
     await post.save();
 
     return {
