@@ -36,8 +36,11 @@ export function ContentFeed({ posts, creators }: Props) {
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  const creatorName = (post: Post) =>
+    post.creator?.displayName || post.creator?.creatorUsername || 'Unknown';
+
   const filtered = posts.filter((post) => {
-    if (creatorFilter !== 'all' && post.creator.name !== creatorFilter) return false;
+    if (creatorFilter !== 'all' && creatorName(post) !== creatorFilter) return false;
     if (typeFilter !== 'all' && post.type !== typeFilter) return false;
     if (statusFilter !== 'all' && post.status !== statusFilter) return false;
     return true;
@@ -87,7 +90,7 @@ export function ContentFeed({ posts, creators }: Props) {
           <Card key={post.id} className="flex flex-col">
             <CardHeader className="flex flex-row items-center gap-3">
               <div className="flex-1">
-                <p className="font-semibold">{post.creator.name}</p>
+                <p className="font-semibold">{creatorName(post)}</p>
                 <p className="text-sm text-muted-foreground">{post.createdAt}</p>
               </div>
               <DropdownMenu>
@@ -103,10 +106,10 @@ export function ContentFeed({ posts, creators }: Props) {
               </DropdownMenu>
             </CardHeader>
             <CardContent className="flex-1">
-              {post.image && (
+              {(post.image || post.mediaUrls?.[0]) && (
                 <div className="relative mb-4 aspect-video w-full">
                   <Image
-                    src={post.image}
+                    src={post.image || post.mediaUrls?.[0] || ''}
                     alt="Post content"
                     fill
                     className="rounded-md object-cover"
@@ -114,7 +117,9 @@ export function ContentFeed({ posts, creators }: Props) {
                   />
                 </div>
               )}
-              <p className="text-muted-foreground">{post.content}</p>
+              <p className="text-muted-foreground">
+                {post.content || post.textContent || post.description || post.title || ''}
+              </p>
             </CardContent>
             <CardFooter>
               <PostStatusBadge status={post.status} />

@@ -1,0 +1,146 @@
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Post } from '@/database/schemas/post';
+import { User } from '@/database/schemas/user';
+import {
+  GetContentQueryDto,
+  WithholdContentDto,
+} from '../dto/content.dto';
+
+@Injectable()
+export class ContentService {
+  constructor(
+    @InjectModel(Post.name) private postModel: Model<Post>,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {}
+
+  async getPosts(query: GetContentQueryDto): Promise<{ posts: any[]; total: number }> {
+    const {
+      page = 1,
+      limit = 20,
+      search,
+      creatorId,
+      type,
+      status,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = query;
+
+    const filter: any = { isDeleted: { $ne: true } };
+    if (creatorId) filter.creator = creatorId;
+    if (type) filter.type = type;
+    if (status) filter.status = status;
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { textContent: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const sortObj: any = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
+    const skip = (page - 1) * limit;
+
+    const [posts, total] = await Promise.all([
+      this.postModel
+        .find(filter)
+        .populate('creator', 'displayName creatorUsername profilePicture')
+        .sort(sortObj)
+        .skip(skip)
+        .limit(limit)
+        .lean()
+        .exec(),
+      this.postModel.countDocuments(filter),
+    ]);
+
+    return {
+      posts: posts.map((p: any) => ({
+        ...p,
+        id: p._id.toString(),
+        creator: p.creator
+          ? {
+              ...p.creator,
+              id: p.creator._id?.toString(),
+            }
+          : null,
+      })),
+      total,
+    };
+  }
+
+  async getPostById(id: string): Promise<any> {
+    const post = await this.postModel
+      .findById(id)
+      .populate('creator', 'displayName creatorUsername profilePicture email bio')
+      .populate('comments.user', 'displayName profilePicture')
+      .populate('likes.user', 'displayName profilePicture')
+      .lean()
+      .exec();
+
+    if (!post) throw new NotFoundException('Post not found');
+
+    return {
+      ...post,
+      id: post._id.toString(),
+      creator: post.creator
+        ? {
+            ...post.creator,
+            id: (post.creator as any)._id?.toString(),
+          }
+        : null,
+    };
+  }
+
+  async withholdPost(
+    postId: string,
+    adminId: string,
+    dto: WithholdContentDto,
+  ): Promise<any> {
+    const post = await this.postModel.findById(postId).lean();
+    if (!post) throw new NotFoundException('Post not found');
+
+    // Mark post as hidden instead of moving to withheld collection
+    await this.postModel.findByIdAndUpdate(postId, {
+      isActive: false,
+      status: 'archived',
+    });
+
+    return {
+      message: 'Post withheld successfully',
+      postId,
+    };
+  }
+
+  async restorePost(postId: string): Promise<any> {
+    const post = await this.postModel.findById(postId);
+    if (!post) throw new NotFoundException('Post not found');
+
+    post.isActive = true;
+    post.status = 'published';
+    await post.save();
+
+    return {
+      message: 'Post restored successfully',
+      postId,
+    };
+  }
+
+  async deletePost(postId: string): Promise<any> {
+    const post = await this.postModel.findById(postId);
+    if (!post) throw new NotFoundException('Post not found');
+
+    post.isDeleted = true;
+    post.isActive = false;
+    await post.save();
+
+    return {
+      message: 'Post deleted successfully',
+      postId,
+    };
+  }
+}

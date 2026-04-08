@@ -125,13 +125,13 @@ export function SubscriptionsTable({ subscriptions, creators, members }: Props) 
                 </div>
               </TableCell>
               <TableCell>{sub.creator.name}</TableCell>
-              <TableCell>{sub.plan}</TableCell>
+              <TableCell>{sub.plan || sub.membership?.name || '-'}</TableCell>
               <TableCell>
-                <SubscriptionStatusBadge status={sub.status} />
+                <SubscriptionStatusBadge status={sub.status as any} />
               </TableCell>
-              <TableCell>{sub.nextBilling}</TableCell>
+              <TableCell>{sub.nextBilling || sub.currentPeriodEnd ? new Date(sub.nextBilling || sub.currentPeriodEnd).toLocaleDateString() : '-'}</TableCell>
               <TableCell className="text-right">
-                ${sub.amount.toFixed(2)}
+                ${(sub.amount || sub.monthlyRate || 0).toFixed(2)}
               </TableCell>
             </TableRow>
           ))}

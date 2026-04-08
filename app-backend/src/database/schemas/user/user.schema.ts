@@ -128,6 +128,9 @@ export class User extends Document {
     platform: string;
     url: string;
   }>;
+
+  @Prop({ default: false })
+  isDeactivated?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

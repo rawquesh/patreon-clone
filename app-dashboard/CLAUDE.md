@@ -4,99 +4,53 @@
 
 Admin dashboard for the Patreon Clone creator platform. Built on Next.js 15 App Router with shadcn/ui, Tailwind CSS, and Recharts.
 
-## Folder Structure
+**API Base URL:** `http://localhost:8080` (configure via `NEXT_PUBLIC_API_URL` in `.env.local`)
 
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx          # Root layout — fonts, metadata
-│   ├── globals.css         # CSS variables (light/dark theming)
-│   └── (app)/              # Route group: authenticated app shell
-│       ├── layout.tsx      # Sidebar + header shell
-│       ├── page.tsx        # Dashboard
-│       ├── content/
-│       ├── creators/
-│       ├── members/
-│       ├── payouts/
-│       └── subscriptions/
-│
-├── config/                 # Centralized configuration
-│   ├── branding.ts         # App name, tagline, support, social links
-│   ├── navigation.ts       # Sidebar nav items (labels + icons)
-│   └── seo.ts             # Metadata defaults
-│
-├── components/
-│   ├── status-badge.tsx    # Unified status badge (all domains)
-│   ├── page-header.tsx     # Page title + action buttons
-│   ├── stat-card.tsx       # KPI card
-│   ├── side-nav.tsx        # Navigation sidebar
-│   └── ui/                 # shadcn/ui primitives
-│
-├── features/               # Feature-scoped code
-│   ├── creators/
-│   ├── members/
-│   ├── content/
-│   ├── subscriptions/
-│   ├── payouts/
-│   └── dashboard/
-│       └── components/
-│
-├── lib/
-│   ├── utils.ts            # cn() utility
-│   ├── data.ts             # Mock data arrays (types re-exported here)
-│   └── services/           # Data service layer (async, swappable)
-│
-├── hooks/                  # Shared custom hooks
-│   ├── use-mobile.ts
-│   └── use-toast.ts
-│
-├── types/                  # Shared domain types
-│   ├── creator.ts
-│   ├── member.ts
-│   ├── post.ts
-│   ├── subscription.ts
-│   └── payout.ts
-```
+## Authentication
+
+The dashboard requires admin JWT authentication. Unauthenticated requests redirect to `/login`.
+
+- **Login**: `POST /auth/login` with `{ email, password }` — returns `{ token, user }`
+- **Token**: Stored in `auth_token` cookie (7-day expiry)
+- **User info**: Stored in `sessionStorage` as `admin_user`
+- **Logout**: Clears cookie and sessionStorage, redirects to `/login`
+
+## API Client
+
+All API calls go through `src/lib/api-client.ts` which:
+- Attaches `Authorization: Bearer {token}` from cookie automatically
+- Throws `ApiError` on failure (with `statusCode`, `message`, `isAuthError`, `isNotFound`, `isServerError`)
+- Returns typed responses from the backend
 
 ## Key Conventions
 
 ### Rebranding
-Change `src/config/branding.ts` to rebrand the entire app. Every layout and page imports from this file.
-
-### Adding a New Page
-1. Create a route under `src/app/(app)/[feature]/page.tsx`
-2. Create a feature folder under `src/features/[feature]/`
-3. Add nav item to `src/config/navigation.ts`
-4. Add service functions under `src/lib/services/[feature].service.ts`
-5. Add types under `src/types/[feature].ts`
+Change `src/config/branding.ts` to rebrand the entire app.
 
 ### Data Flow
-Pages are **server components** by default. They call service functions from `src/lib/services/`. Services return mock data now but are designed to be swapped for real API calls — the interface is async.
+All pages are `'use client'` components that:
+1. Fetch data on mount via service functions
+2. Update URL params (`useSearchParams` + `router.push`) for filters/search/pagination
+3. Call service mutation functions for actions
+4. Show toast notifications on success/error via `useToast`
 
-When a page needs client-side interactivity (filters, charts, forms):
-1. Keep the page as a server component
-2. Create a client component in `src/features/[feature]/components/`
-3. Pass data from the server component as props
+### Page Structure
+Each page (`src/app/(app)/[feature]/page.tsx`) follows this pattern:
+- Loading skeletons while fetching
+- Error state with retry button
+- Search + filter controls (update URL params)
+- Paginated data table
+- Action buttons (approve/reject/etc.) with loading states
+- Detail dialogs (lazy-load on open)
 
-### Status Badges
-All status badges use `src/components/status-badge.tsx`. When adding a new domain, add a `StatusEntry[]` config and a typed export function. Never copy-paste variant maps into page files.
+### Services
+Service functions in `src/lib/services/` are the single data access layer. They call `apiClient.get/post/put/delete` and map backend responses to typed frontend models.
 
-### Server Actions
-Server actions use the `'use server'` directive. Use `useFormState` from `react-dom` for form state.
+## Environment Variables
 
-## What's Working
-
-- All 6 dashboard pages render with mock data
-- Select filters on Content and Subscriptions pages work (client-side)
-- Dark mode toggle
-- Mobile sidebar collapse/expand
-
-## What's Stubbed
-
-- No authentication or route protection
-- All "action" buttons (Approve, Reject, Add Creator, etc.) are placeholders
-- No real database — all data from `src/lib/data.ts`
-- No Stripe integration — buttons exist but are non-functional
+| Variable | Default | Description |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8080` | Backend API base URL |
 
 ## Common Tasks
 
@@ -106,4 +60,16 @@ npm run typecheck
 
 # Build
 npm run build
+
+# Dev server (port 9002)
+npm run dev
 ```
+
+## Status
+
+- All 6 pages wired to real backend API
+- All action buttons functional (approve/reject/suspend, deactivate, withhold, cancel, etc.)
+- All pages support search, filters, and pagination via URL params
+- All pages have detail dialogs
+- Loading skeletons and error states on every page
+- Toast notifications on all actions

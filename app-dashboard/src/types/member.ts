@@ -1,16 +1,47 @@
 export type MemberStatus = 'active' | 'inactive';
 
-export type MemberSubscriptionStatus = 'active' | 'canceled' | 'past_due';
+export type MemberSubscriptionStatus = 'active' | 'canceled' | 'expired';
 
 export type Member = {
+  _id: string;
   id: string;
-  name: string;
   email: string;
-  avatar: string;
-  status: MemberStatus;
-  joinedDate: string;
-  subscription: {
+  displayName?: string;
+  firstName?: string;
+  lastName?: string;
+  name: string;
+  profilePicture?: string;
+  countryOfResidence?: string;
+  createdAt: string;
+  isDeactivated?: boolean;
+  stripeCustomerId?: string;
+  subscription?: {
     plan: string;
-    status: MemberSubscriptionStatus;
+    status: string;
+    amount: number;
+    creator?: string;
   };
+};
+
+export type MemberDetail = Member & {
+  subscriptions?: Array<{
+    id: string;
+    status: string;
+    monthlyRate: number;
+    currentPeriodStart: string;
+    currentPeriodEnd: string;
+    createdAt: string;
+    creator?: {
+      id: string;
+      displayName?: string;
+      creatorUsername?: string;
+      profilePicture?: string;
+    };
+    membership?: {
+      id: string;
+      name: string;
+      monthlyRate: number;
+      description?: string;
+    };
+  }>;
 };
