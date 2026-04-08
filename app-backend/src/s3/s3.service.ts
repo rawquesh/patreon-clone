@@ -17,12 +17,18 @@ export class S3Service {
   private s3Client: S3Client;
 
   constructor(private configService: ConfigService) {
+    const endpoint = this.configService.get<string>('AWS_ENDPOINT_URL');
     this.s3Client = new S3Client({
-      region: this.configService.get<string>('AWS_REGION'),
+      region: this.configService.get<string>('AWS_DEFAULT_REGION') || 'auto',
       credentials: {
         accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
         secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY'),
       },
+      ...(endpoint && {
+        endpoint,
+        // For S3-compatible services (MinIO, Railway, etc.)
+        forcePathStyle: true,
+      }),
     });
   }
 
@@ -63,7 +69,7 @@ export class S3Service {
         errorMessage,
         errorCode,
         requestId,
-        region: this.configService.get<string>('AWS_REGION'),
+        region: this.configService.get<string>('AWS_DEFAULT_REGION'),
         hasAccessKey: !!this.configService.get<string>('AWS_ACCESS_KEY'),
         hasSecretKey: !!this.configService.get<string>('AWS_SECRET_KEY'),
       });
@@ -78,12 +84,21 @@ export class S3Service {
     // Extract key from URL (handles both direct URLs and presigned URLs)
     let key: string;
     if (fileUrl.includes('.amazonaws.com/')) {
+      // Standard AWS S3 URLs
       const urlPart = fileUrl.split('.amazonaws.com/')[1];
-      // Remove query parameters if it's a presigned URL
       key = urlPart.split('?')[0];
     } else {
-      // If it's already just a key, use it directly
-      key = fileUrl;
+      // S3-compatible endpoints (MinIO, Railway, etc.) — find the last path segment
+      // Try to extract key after the bucket name or the last "/"
+      try {
+        const url = new URL(fileUrl.split('?')[0]);
+        const pathParts = url.pathname.split('/').filter(Boolean);
+        // If the first path part matches the bucket name, skip it
+        key = pathParts[0] === bucket ? pathParts.slice(1).join('/') : pathParts.join('/');
+      } catch {
+        // If URL parsing fails, assume it's already a key
+        key = fileUrl.split('?')[0];
+      }
     }
 
     const command = new DeleteObjectCommand({

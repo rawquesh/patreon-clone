@@ -433,7 +433,7 @@ The application uses `@nestjs/config` and reads from `.env`. Key variables:
 | `STRIPE_SECRET_KEY` | Stripe API key |
 | `STRIPE_WEBHOOK_SECRET` | Standard Stripe webhook secret |
 | `STRIPE_WEBHOOK_CONNECT_SECRET` | Connect account webhook secret |
-| `AWS_REGION`, `AWS_ACCESS_KEY`, `AWS_SECRET_KEY` | AWS S3 credentials |
+| `AWS_DEFAULT_REGION`, `AWS_ACCESS_KEY`, `AWS_SECRET_KEY` | AWS S3 credentials |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth |
 | `FRONTEND_URL` | For Stripe redirect URLs |
 | `SERVER_URL` | For OAuth callback URLs |
