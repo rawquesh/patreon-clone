@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "C:\\Users\\acer\\fvm\\versions\\stable\\packages\\flutter_tools\\gradle\\src\\main\\groovy\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\acer\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "D:\\Patreon Clone - Flutter App\\patreon-clone_user\\android\\app\\.cxx\\RelWithDebInfo\\5f351u1z\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\acer\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "D:\\Patreon Clone - Flutter App\\patreon-clone_user\\android\\app\\.cxx\\RelWithDebInfo\\5f351u1z\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
