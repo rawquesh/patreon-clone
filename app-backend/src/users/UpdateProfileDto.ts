@@ -1,4 +1,4 @@
-import { GenderPreference } from '@/schemas/users.schema';
+import { GenderPreference } from '@/database/schemas/user';
 import { IsOptional, IsString, IsEmail, IsEnum } from 'class-validator';
 
 export class UpdateProfileDto {

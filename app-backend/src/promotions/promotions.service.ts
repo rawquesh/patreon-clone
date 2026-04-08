@@ -18,9 +18,9 @@ import {
   Gift,
   GiftType,
   PromotionRedemption,
-} from '@/schemas/promotions.schema';
-import { User } from '@/schemas/users.schema';
-import { Membership } from '@/schemas/membersip.schema';
+} from '@/database/schemas/promotion';
+import { User } from '@/database/schemas/user';
+import { Membership } from '@/database/schemas/membership';
 import {
   CreateDiscountDto,
   CreateGiftDto,

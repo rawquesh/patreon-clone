@@ -6,10 +6,13 @@ import { NotificationGeneratorService } from './notification-generator.service';
 import {
   Notification,
   NotificationSchema,
-} from '@/schemas/notifications.schema';
-import { Post, PostSchema } from '@/schemas/posts.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/notification';
+import { Post, PostSchema } from '@/database/schemas/post';
+import { User, UserSchema } from '@/database/schemas/user';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 import { PushNotificationsModule } from '@/push-notifications/push-notifications.module';
 import { UsersModule } from '@/users/users.module';
 

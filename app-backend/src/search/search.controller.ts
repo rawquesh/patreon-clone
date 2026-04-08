@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { UsersService } from '@/users/users.service';
-import { GenderPreference } from '@/schemas/users.schema';
+import { GenderPreference } from '@/database/schemas/user';
 
 interface RequestingUser {
   userId: string;

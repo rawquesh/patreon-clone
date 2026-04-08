@@ -6,10 +6,11 @@ import {
   MembershipInsight,
   EarningsInsight,
   PostInsight,
-} from '@/schemas/analytics.schema';
-import { Post, PostStatus } from '@/schemas/posts.schema';
-import { User } from '@/schemas/users.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/analytics';
+import { Membership } from '@/database/schemas/membership';
+import { Post, PostStatus } from '@/database/schemas/post';
+import { User } from '@/database/schemas/user';
+import { Subscription } from '@/database/schemas/subscription';
 
 @Injectable()
 export class AnalyticsTrackerService {
@@ -72,7 +73,7 @@ export class AnalyticsTrackerService {
           const membership = sub.membership;
           if (!membership) return;
 
-          const tierName = membership.name;
+          const tierName = (membership as Membership).name;
           if (!tierBreakdown[tierName]) {
             tierBreakdown[tierName] = {
               count: 0,

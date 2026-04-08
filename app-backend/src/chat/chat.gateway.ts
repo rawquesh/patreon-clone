@@ -16,7 +16,7 @@ import { SendMessageDto, MarkMessagesReadDto, MessageDto } from './chat.dto';
 import { WsJwtGuard } from './ws-jwt.guard';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { ChatParticipant } from '@/schemas/chat.schema';
+import { ChatParticipant } from '@/database/schemas/chat';
 import { ModuleRef } from '@nestjs/core';
 // import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
 

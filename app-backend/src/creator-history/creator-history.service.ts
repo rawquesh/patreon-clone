@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { User } from '@/schemas/users.schema';
+import { User } from '@/database/schemas/user';
 import {
   CreatorVisit,
   DeviceInfo,
   GeoLocation,
   VisitReferrer,
-} from '@/schemas/visit-history.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/engagement';
+import { Subscription } from '@/database/schemas/subscription';
 
 @Injectable()
 export class CreatorHistoryService {

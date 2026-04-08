@@ -10,7 +10,7 @@ import {
   Min,
   Max,
 } from 'class-validator';
-import { PostType } from '@/schemas/posts.schema';
+import { PostType } from '@/database/schemas/post';
 
 export class CreateTextPostDto {
   @IsString()

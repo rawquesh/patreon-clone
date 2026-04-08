@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PostReport } from '@/schemas/post-reports.schema';
-import { UserReport } from '@/schemas/user-reports.schema';
-import { Post } from '@/schemas/posts.schema';
-import { User } from '@/schemas/users.schema';
-import { WithheldPost } from '@/schemas/withheld-posts.schema';
-import { WithheldUser } from '@/schemas/withheld-users.schema';
+import { PostReport } from '@/database/schemas/report/post-report.schema';
+import { UserReport } from '@/database/schemas/report/user-report.schema';
+import { Post } from '@/database/schemas/post';
+import { User } from '@/database/schemas/user';
+import { WithheldPost } from '@/database/schemas/report/withheld.schema';
+import { WithheldUser } from '@/database/schemas/report/withheld.schema';
 import {
   CreatePostReportDto,
   CreateUserReportDto,

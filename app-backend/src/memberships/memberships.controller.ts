@@ -32,7 +32,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from '@/s3/s3.service';
 import { PromotionsService } from '@/promotions/promotions.service';
 import { InjectModel } from '@nestjs/mongoose';
-import { Membership } from '@/schemas/membersip.schema';
+import { Membership } from '@/database/schemas/membership';
+import { User } from '@/database/schemas/user';
 import { Model } from 'mongoose';
 
 @Controller('memberships')
@@ -127,10 +128,12 @@ export class MembershipsController {
         req.user.userId,
       );
       console.log(
-        subscriptions.activeSubscriptions.map((s) => s.creator._id.toString()),
+        subscriptions.activeSubscriptions.map((s) =>
+          (s.creator as User)._id.toString(),
+        ),
       );
       const isSubscribed = subscriptions.activeSubscriptions.some(
-        (sub) => sub.creator._id.toString() === creatorId,
+        (sub) => (sub.creator as User)._id.toString() === creatorId,
       );
 
       return { isSubscribed };
@@ -231,7 +234,7 @@ export class MembershipsController {
     try {
       const membership = await this.membershipsService.getMembershipById(id);
 
-      if (membership.creator._id.toString() !== req.user.userId) {
+      if ((membership.creator as User)._id.toString() !== req.user.userId) {
         throw new ForbiddenException(
           'Not authorized to update this membership',
         );

@@ -7,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { PaymentsService } from '@/payments/payments.service';
-import { User } from '@/schemas/users.schema';
+import { User } from '@/database/schemas/user';
 
 import {
   UpdateMembershipDto,
@@ -15,9 +15,9 @@ import {
   GetMembershipsQueryDto,
   CreateMembershipWithFileDto,
 } from './memberships.dto';
-import { Membership } from '@/schemas/membersip.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
-import { PayoutRequest } from '@/schemas/payouts.schema';
+import { Membership } from '@/database/schemas/membership';
+import { Subscription } from '@/database/schemas/subscription';
+import { PayoutRequest } from '@/database/schemas/payout';
 import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -462,14 +462,17 @@ export class MembershipsService {
     subscription.cancelledAt = new Date();
     await subscription.save();
 
-    await this.membershipModel.findByIdAndUpdate(subscription.membership._id, {
-      $inc: { subscriberCount: -1 },
-    });
+    await this.membershipModel.findByIdAndUpdate(
+      (subscription.membership as Membership)._id,
+      {
+        $inc: { subscriberCount: -1 },
+      },
+    );
 
     await this.notificationGenerator.generateCancellationNotification(
       userId,
       subscription.creator.toString(),
-      (subscription.membership as any).name,
+      (subscription.membership as Membership).name,
     );
 
     return subscription;
@@ -515,7 +518,7 @@ export class MembershipsService {
       await subscription.save();
 
       await this.membershipModel.findByIdAndUpdate(
-        subscription.membership._id,
+        (subscription.membership as Membership)._id,
         {
           $inc: { subscriberCount: -1 },
         },
@@ -524,7 +527,7 @@ export class MembershipsService {
       await this.notificationGenerator.generateCancellationNotification(
         userId,
         subscription.creator.toString(),
-        (subscription.membership as any).name,
+        (subscription.membership as Membership).name,
       );
     }
 
@@ -775,7 +778,7 @@ export class MembershipsService {
           {
             $match: {
               creator: new Types.ObjectId(userId),
-              subscriber: sub.subscriber._id,
+              subscriber: (sub.subscriber as User)._id,
             },
           },
           {
@@ -801,7 +804,7 @@ export class MembershipsService {
         return {
           subscription: sub,
           totalPaid: totalPaid[0]?.total || 0,
-          subscriber: sub.subscriber,
+          subscriber: sub.subscriber as User,
         };
       }),
     );

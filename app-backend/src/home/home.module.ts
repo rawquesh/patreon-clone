@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HomeController } from './home.controller';
 import { HomeService } from './home.service';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Post, PostSchema } from '@/schemas/posts.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Post, PostSchema } from '@/database/schemas/post';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 import { CreatorsController } from './creators.controller';
 import { UsersModule } from '@/users/users.module';
 import { CategoriesController } from './categories.controller';

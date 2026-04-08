@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
 
 @Module({
   imports: [

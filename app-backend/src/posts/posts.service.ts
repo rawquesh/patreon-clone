@@ -14,7 +14,7 @@ import {
   PostStatus,
   PostType,
   Attachment,
-} from '@/schemas/posts.schema';
+} from '@/database/schemas/post';
 import {
   CreateAudioPostDto,
   CreateImagePostDto,
@@ -24,12 +24,12 @@ import {
   SortBy,
   SortOrder,
 } from './posts.dto';
-import { Subscription } from '@/schemas/subscribers.schema';
+import { Subscription } from '@/database/schemas/subscription';
 import { S3Service } from '@/s3/s3.service';
 import * as cheerio from 'cheerio'; // Import cheerio
-import { PostInsight } from '@/schemas/analytics.schema';
+import { PostInsight } from '@/database/schemas/analytics';
 import { MembershipsService } from '@/memberships/memberships.service';
-import { User } from '@/schemas/users.schema';
+import { User } from '@/database/schemas/user';
 
 export interface PostLike {
   _id?: string;
@@ -179,8 +179,8 @@ export class PostsService {
         throw new NotFoundException('Post not found for update');
       // Ensure creator is loaded if needed, though findById should populate it
       const creatorId =
-        existingPost.creator?._id?.toString() ||
-        existingPost.creator?.toString();
+        (existingPost.creator as User)?._id?.toString() ||
+        (existingPost.creator as User)?.toString();
       if (!creatorId) {
         // console.error(
         //   'Creator ID missing on post object during update processing.',
@@ -961,12 +961,12 @@ export class PostsService {
     return likes.map((like) => ({
       id: like._id.toString(),
       user: {
-        id: like.user._id.toString(),
+        id: (like.user as User)._id.toString(),
         displayName:
-          like.user.displayName ||
-          `${like.user.firstName || ''} ${like.user.lastName || ''}`.trim() ||
+          (like.user as User).displayName ||
+          `${(like.user as User).firstName || ''} ${(like.user as User).lastName || ''}`.trim() ||
           'User',
-        profilePicture: like.user.profilePicture,
+        profilePicture: (like.user as User).profilePicture,
       },
       createdAt: like.createdAt,
     }));
@@ -993,19 +993,21 @@ export class PostsService {
 
     return comments.map((comment) => {
       const isLiked = userId
-        ? comment.likes?.some((like) => like.user._id.toString() === userId)
+        ? comment.likes?.some(
+            (like) => (like.user as User)._id.toString() === userId,
+          )
         : false;
       const likesCount = comment.likes?.length || 0;
       return {
         id: comment._id.toString(),
         text: comment.text,
         user: {
-          id: comment.user._id.toString(),
+          id: (comment.user as User)._id.toString(),
           displayName:
-            comment.user.displayName ||
-            `${comment.user.firstName || ''} ${comment.user.lastName || ''}`.trim() ||
+            (comment.user as User).displayName ||
+            `${(comment.user as User).firstName || ''} ${(comment.user as User).lastName || ''}`.trim() ||
             'User',
-          profilePicture: comment.user.profilePicture,
+          profilePicture: (comment.user as User).profilePicture,
         },
         createdAt: comment.createdAt,
         updatedAt: comment.updatedAt || comment.createdAt,
@@ -1038,7 +1040,8 @@ export class PostsService {
       }
       let creatorId: string;
       if (typeof post.creator === 'object' && post.creator !== null) {
-        creatorId = post.creator._id?.toString() || post.creator.id;
+        creatorId =
+          (post.creator as User)._id?.toString() || (post.creator as User).id;
       } else {
         creatorId = post.creator?.toString();
       }
@@ -1110,7 +1113,8 @@ export class PostsService {
       }
       let creatorId: string;
       if (typeof post.creator === 'object' && post.creator !== null) {
-        creatorId = post.creator._id?.toString() || post.creator.id;
+        creatorId =
+          (post.creator as User)._id?.toString() || (post.creator as User).id;
       } else {
         creatorId = post.creator?.toString();
       }
@@ -1335,12 +1339,12 @@ export class PostsService {
     return likes.map((like) => ({
       id: like._id.toString(),
       user: {
-        id: like.user._id.toString(),
+        id: (like.user as User)._id.toString(),
         displayName:
-          like.user.displayName ||
-          `${like.user.firstName || ''} ${like.user.lastName || ''}`.trim() ||
+          (like.user as User).displayName ||
+          `${(like.user as User).firstName || ''} ${(like.user as User).lastName || ''}`.trim() ||
           'User',
-        profilePicture: like.user.profilePicture,
+        profilePicture: (like.user as User).profilePicture,
       },
       createdAt: like.createdAt,
     }));
@@ -1413,12 +1417,12 @@ export class PostsService {
       text: updatedComment.text,
       user: {
         // Return populated user details
-        id: updatedComment.user._id.toString(),
+        id: (updatedComment.user as User)._id.toString(),
         displayName:
-          updatedComment.user.displayName ||
-          `${updatedComment.user.firstName || ''} ${updatedComment.user.lastName || ''}`.trim() ||
+          (updatedComment.user as User).displayName ||
+          `${(updatedComment.user as User).firstName || ''} ${(updatedComment.user as User).lastName || ''}`.trim() ||
           'User',
-        profilePicture: updatedComment.user.profilePicture,
+        profilePicture: (updatedComment.user as User).profilePicture,
       },
       createdAt: updatedComment.createdAt,
       updatedAt: updatedComment.updatedAt,
@@ -1442,7 +1446,7 @@ export class PostsService {
 
     const isCommentAuthor = comment.user.toString() === userId;
     const isPostCreator =
-      post.creator && post.creator._id.toString() === userId;
+      post.creator && (post.creator as User)._id.toString() === userId;
 
     if (!isCommentAuthor && !isPostCreator) {
       throw new UnauthorizedException(
@@ -1618,7 +1622,7 @@ export class PostsService {
     //   }),
     // );
     const memberTiers = await this.membershipsService.getCreatorMemberships(
-      post.creator._id.toString(),
+      (post.creator as User)._id.toString(),
       {},
     );
 
@@ -1635,7 +1639,7 @@ export class PostsService {
     if (userId) {
       hasLiked = Boolean(
         postWithMemberships.likes.find(
-          (like) => like.user._id.toString() === userId,
+          (like) => (like.user as User)._id.toString() === userId,
         ),
       );
     }

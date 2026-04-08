@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ChatAccessType, ChatType } from '@/schemas/chat.schema';
+import { ChatAccessType, ChatType } from '@/database/schemas/chat';
 
 export class CreateGroupChatDto {
   @IsString()

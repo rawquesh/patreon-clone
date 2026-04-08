@@ -7,15 +7,18 @@ import {
   ChatParticipantSchema,
   Message,
   MessageSchema,
-} from '@/schemas/chat.schema';
+} from '@/database/schemas/chat';
 import { ChatController } from './chat.controller';
 import { ChatService } from './chat.service';
 import { ChatGateway } from './chat.gateway';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 import { S3Module } from '@/s3/s3.module';
 import { ChatUploadsController } from './chat-uploads.controller';
 import { NotificationsModule } from '@/notifications/notifications.module';

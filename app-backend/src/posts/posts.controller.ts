@@ -39,7 +39,8 @@ import {
   UpdateTextPostDto,
   UpdateVideoPostDto,
 } from './posts.dto';
-import { Post, PostStatus, PostType } from '@/schemas/posts.schema';
+import { Post, PostStatus, PostType } from '@/database/schemas/post';
+import { User } from '@/database/schemas/user';
 import { MembershipsService } from '@/memberships/memberships.service';
 import { NotificationGeneratorService } from '../notifications/notification-generator.service';
 import * as cheerio from 'cheerio';
@@ -249,9 +250,11 @@ export class PostsController {
             post.previewText ||
             post.textContent?.substring(0, 150),
           creator: {
-            id: post.creator._id,
-            name: post.creator.displayName || post.creator.creatorUsername,
-            profilePicture: post.creator.profilePicture,
+            id: (post.creator as User)._id,
+            name:
+              (post.creator as User).displayName ||
+              (post.creator as User).creatorUsername,
+            profilePicture: (post.creator as User).profilePicture,
           },
           isRestrictedView: post.isRestrictedView,
         };
@@ -438,7 +441,7 @@ export class PostsController {
     @UploadedFiles() files: Express.Multer.File[] = [],
   ) {
     const post = await this.postsService.findById(id);
-    if (!post || post.creator._id.toString() !== req.user.userId) {
+    if (!post || (post.creator as User)._id.toString() !== req.user.userId) {
       throw new NotFoundException('Post not found or unauthorized');
     }
     const newAttachments = [];
@@ -702,7 +705,7 @@ export class PostsController {
   ) {
     ////console.log(updateVideoPostDto);
     const post = await this.postsService.findById(id);
-    if (!post || post.creator._id.toString() !== req.user.userId) {
+    if (!post || (post.creator as User)._id.toString() !== req.user.userId) {
       throw new NotFoundException('Post not found or unauthorized');
     }
     const newAttachments = [];
@@ -853,7 +856,7 @@ export class PostsController {
     },
   ) {
     const post = await this.postsService.findById(id);
-    if (!post || post.creator._id.toString() !== req.user.userId) {
+    if (!post || (post.creator as User)._id.toString() !== req.user.userId) {
       throw new NotFoundException('Post not found or unauthorized');
     }
     let audioFileUrl: string | undefined = undefined;
@@ -1079,7 +1082,7 @@ export class PostsController {
     },
   ) {
     const post = await this.postsService.findById(id);
-    if (!post || post.creator._id.toString() !== req.user.userId) {
+    if (!post || (post.creator as User)._id.toString() !== req.user.userId) {
       throw new NotFoundException('Post not found or unauthorized');
     }
     const newImageUrls = [];
@@ -1231,7 +1234,7 @@ export class PostsController {
     @UploadedFiles() attachmentFiles: Express.Multer.File[] = [],
   ) {
     const post = await this.postsService.findById(id);
-    if (!post || post.creator._id.toString() !== req.user.userId) {
+    if (!post || (post.creator as User)._id.toString() !== req.user.userId) {
       throw new NotFoundException('Post not found or unauthorized');
     }
     const newAttachments = [];
@@ -1333,7 +1336,7 @@ export class PostsController {
     if (!post) {
       throw new NotFoundException('Post not found');
     }
-    if (post.creator._id.toString() !== req.user.userId) {
+    if ((post.creator as User)._id.toString() !== req.user.userId) {
       throw new UnauthorizedException('You can only delete your own posts');
     }
     const deletedPost = await this.postsService.softDelete(id);
@@ -1347,7 +1350,7 @@ export class PostsController {
     if (!post) {
       throw new NotFoundException('Post not found');
     }
-    if (post.creator._id.toString() !== req.user.userId) {
+    if ((post.creator as User)._id.toString() !== req.user.userId) {
       throw new UnauthorizedException('You can only delete your own posts');
     }
     if (post.attachments && post.attachments.length > 0) {
@@ -1400,7 +1403,7 @@ export class PostsController {
       throw new NotFoundException('Post not found');
     }
 
-    if (post.creator._id.toString() !== req.user.userId) {
+    if ((post.creator as User)._id.toString() !== req.user.userId) {
       throw new UnauthorizedException('You can only publish your own posts');
     }
 
@@ -1458,7 +1461,7 @@ export class PostsController {
       throw new NotFoundException('Post not found');
     }
 
-    if (post.creator._id.toString() !== req.user.userId) {
+    if ((post.creator as User)._id.toString() !== req.user.userId) {
       throw new UnauthorizedException('You can only unpublish your own posts');
     }
 
@@ -1520,11 +1523,11 @@ export class PostsController {
 
       await this.postsService.likePost(userId, postId);
 
-      if (userId !== post.creator._id.toString()) {
+      if (userId !== (post.creator as User)._id.toString()) {
         await this.notificationGenerator.generateLikeNotification(
           postId,
           userId,
-          post.creator._id.toString(),
+          (post.creator as User)._id.toString(),
         );
       }
 
@@ -1618,13 +1621,19 @@ export class PostsController {
           const post = await this.postsService.findById(postId);
           console.log('GENERATING COMMENT NOTIFICATION');
           console.log(
-            post && post.creator && post.creator._id.toString() !== userId,
+            post &&
+              post.creator &&
+              (post.creator as User)._id.toString() !== userId,
           );
-          if (post && post.creator && post.creator._id.toString() !== userId) {
+          if (
+            post &&
+            post.creator &&
+            (post.creator as User)._id.toString() !== userId
+          ) {
             await this.notificationGenerator.generateCommentNotification(
               postId,
               userId,
-              post.creator._id.toString(),
+              (post.creator as User)._id.toString(),
               commentData.text,
             );
           }

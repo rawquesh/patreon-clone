@@ -7,7 +7,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Collection } from './collections.schema';
-import { Post, PostStatus } from '@/schemas/posts.schema';
+import { Post, PostStatus } from '@/database/schemas/post';
+import { User } from '@/database/schemas/user';
 import { CreateCollectionDto, GetCollectionPostsDto } from './collections.dto';
 import { MembershipsService } from '@/memberships/memberships.service';
 
@@ -89,7 +90,7 @@ export class CollectionsService {
 
       const tierAccessForCreator =
         await this.membershipsService.getCreatorMemberships(
-          posts[0].creator._id.toString(),
+          (posts[0].creator as User)._id.toString(),
           {},
         );
 
@@ -359,7 +360,7 @@ export class CollectionsService {
     // Post creator always has access
     const creatorId =
       typeof post.creator === 'object'
-        ? post.creator._id.toString()
+        ? (post.creator as User)._id.toString()
         : post.creator;
 
     if (creatorId === userId) {

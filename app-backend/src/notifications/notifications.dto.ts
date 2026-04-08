@@ -9,7 +9,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { NotificationType } from '@/schemas/notifications.schema';
+import { NotificationType } from '@/database/schemas/notification';
 
 export class CreateNotificationDto {
   @IsMongoId()

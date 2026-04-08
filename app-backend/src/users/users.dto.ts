@@ -12,7 +12,7 @@ import {
   IsArray,
   ValidateNested,
 } from 'class-validator';
-import { ContentVisibility, CreatorCategory } from '@/schemas/users.schema';
+import { ContentVisibility, CreatorCategory } from '@/database/schemas/user';
 import { Transform, Type } from 'class-transformer';
 
 export class CreatorOnboardingDto {

@@ -2,18 +2,24 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ReportsController } from './reports.controller';
 import { ReportsService } from './reports.service';
-import { PostReport, PostReportSchema } from '@/schemas/post-reports.schema';
-import { UserReport, UserReportSchema } from '@/schemas/user-reports.schema';
-import { Post, PostSchema } from '@/schemas/posts.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
+import {
+  PostReport,
+  PostReportSchema,
+} from '@/database/schemas/report/post-report.schema';
+import {
+  UserReport,
+  UserReportSchema,
+} from '@/database/schemas/report/user-report.schema';
+import { Post, PostSchema } from '@/database/schemas/post';
+import { User, UserSchema } from '@/database/schemas/user';
 import {
   WithheldPost,
   WithheldPostSchema,
-} from '@/schemas/withheld-posts.schema';
+} from '@/database/schemas/report/withheld.schema';
 import {
   WithheldUser,
   WithheldUserSchema,
-} from '@/schemas/withheld-users.schema';
+} from '@/database/schemas/report/withheld.schema';
 
 @Module({
   imports: [

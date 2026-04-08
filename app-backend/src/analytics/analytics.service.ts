@@ -6,12 +6,12 @@ import {
   MembershipInsight,
   EarningsInsight,
   PostInsight,
-} from '@/schemas/analytics.schema';
-import { User } from '@/schemas/users.schema';
-import { Post } from '@/schemas/posts.schema';
-import { Membership } from '@/schemas/membersip.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
-import { PayoutRequest } from '@/schemas/payouts.schema';
+} from '@/database/schemas/analytics';
+import { Membership } from '@/database/schemas/membership';
+import { User } from '@/database/schemas/user';
+import { Post } from '@/database/schemas/post';
+import { Subscription } from '@/database/schemas/subscription';
+import { PayoutRequest } from '@/database/schemas/payout';
 import { PaymentsService } from '@/payments/payments.service';
 import Stripe from 'stripe';
 import { PostsInsightsResponse, PostStats } from './analytics.dto';
@@ -359,8 +359,8 @@ export class AnalyticsService {
       .populate('membership');
 
     const tierBreakdown = activeSubscriptions.reduce((acc, sub) => {
-      const tierName = sub.membership?.name || 'Unknown Tier';
-      const tierAmount = sub.membership?.monthlyRate || 0;
+      const tierName = (sub.membership as Membership)?.name || 'Unknown Tier';
+      const tierAmount = (sub.membership as Membership)?.monthlyRate || 0;
       const existingTier = acc.find((t) => t.name === tierName);
       if (existingTier) {
         existingTier.amount += tierAmount;

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Device, DeviceSchema } from '@/schemas/device.schema';
+import { Device, DeviceSchema } from '@/database/schemas/device';
 import { PushNotificationsController } from './push-notifications.controller';
 import { PushNotificationsService } from './push-notifications.service';
 import { ConfigModule } from '@nestjs/config';

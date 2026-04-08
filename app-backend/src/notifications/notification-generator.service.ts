@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
-import { NotificationType } from '@/schemas/notifications.schema';
+import { NotificationType } from '@/database/schemas/notification';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Subscription } from '@/schemas/subscribers.schema';
-import { User } from '@/schemas/users.schema';
+import { Subscription } from '@/database/schemas/subscription';
+import { User } from '@/database/schemas/user';
 
 @Injectable()
 export class NotificationGeneratorService {

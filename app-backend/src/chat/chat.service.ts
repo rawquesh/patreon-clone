@@ -17,10 +17,10 @@ import {
   ChatParticipant,
   ChatType,
   Message,
-} from '@/schemas/chat.schema';
-import { User } from '@/schemas/users.schema';
-import { Membership } from '@/schemas/membersip.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/chat';
+import { User } from '@/database/schemas/user';
+import { Membership } from '@/database/schemas/membership';
+import { Subscription } from '@/database/schemas/subscription';
 import {
   ChatDto,
   ChatListItemDto,
@@ -554,11 +554,11 @@ export class ChatService {
       );
       try {
         const currentParticipantIds = new Set(
-          updatedChatDoc.participants.map((p) => p._id.toString()),
+          updatedChatDoc.participants.map((p) => (p as User)._id.toString()),
         );
 
         const newRequiredParticipantIds = new Set<string>([
-          updatedChatDoc.creator._id.toString(),
+          (updatedChatDoc.creator as User)._id.toString(),
         ]);
 
         if (
@@ -567,8 +567,12 @@ export class ChatService {
         ) {
           const subscribers = await this.subscriptionModel
             .find({
-              creator: updatedChatDoc.creator._id,
-              membership: { $in: updatedChatDoc.accessTiers.map((t) => t._id) },
+              creator: (updatedChatDoc.creator as User)._id,
+              membership: {
+                $in: updatedChatDoc.accessTiers.map(
+                  (t) => (t as Membership)._id,
+                ),
+              },
               status: 'active',
             })
             .select('subscriber');
@@ -578,7 +582,7 @@ export class ChatService {
         } else if (updatedChatDoc.accessType === ChatAccessType.PAID) {
           const subscribers = await this.subscriptionModel
             .find({
-              creator: updatedChatDoc.creator._id,
+              creator: (updatedChatDoc.creator as User)._id,
               status: 'active',
             })
             .select('subscriber');
@@ -588,7 +592,7 @@ export class ChatService {
         } else if (updatedChatDoc.accessType === ChatAccessType.ALL) {
           const allSubscribers = await this.subscriptionModel
             .find({
-              creator: updatedChatDoc.creator._id,
+              creator: (updatedChatDoc.creator as User)._id,
               status: 'active',
             })
             .select('subscriber');
@@ -603,7 +607,7 @@ export class ChatService {
         const participantsToRemove = [...currentParticipantIds].filter(
           (id) =>
             !newRequiredParticipantIds.has(id) &&
-            id !== updatedChatDoc.creator._id.toString(),
+            id !== (updatedChatDoc.creator as User)._id.toString(),
         );
 
         console.log('Participants to add:', participantsToAdd);
@@ -773,7 +777,7 @@ export class ChatService {
       throw new NotFoundException('Sender not found.');
     }
 
-    const chat = participant.chat as PopulatedChat;
+    const chat = participant.chat as unknown as PopulatedChat;
 
     // Step 3: Handle attachment upload (blocking, as it's part of the message)
     let attachment: any = null;
@@ -1175,30 +1179,26 @@ export class ChatService {
     const populatedChat = chatDoc as PopulatedChat;
 
     const participants: ChatParticipantDto[] = Array.isArray(chat.participants)
-      ? (chat.participants as User[] | Types.ObjectId[])
-          .map((p) =>
-            this.transformUserToChatParticipant(p as User | Types.ObjectId),
-          )
+      ? (chat.participants as any)
+          .map((p: any) => this.transformUserToChatParticipant(p as any))
           .filter((p): p is ChatParticipantDto => p !== null)
       : [];
 
     const creatorDto = chat.creator
-      ? this.transformUserToChatParticipant(
-          chat.creator as User | Types.ObjectId,
-        )
+      ? this.transformUserToChatParticipant(chat.creator as any)
       : null;
 
     if (creatorDto && !participants.some((p) => p.id === creatorDto.id)) {
       const creatorExists =
         Array.isArray(chat.participants) &&
-        chat.participants.some((p) => {
+        chat.participants.some((p: any) => {
           const pId =
             p instanceof Types.ObjectId
               ? p.toString()
               : (p as User)?._id?.toString();
           const creatorId =
             chat.creator instanceof Types.ObjectId
-              ? chat.creator.toString()
+              ? (chat.creator as Types.ObjectId).toString()
               : (chat.creator as User)?._id?.toString();
           return pId === creatorId;
         });
@@ -1208,8 +1208,8 @@ export class ChatService {
     }
 
     const accessTierIds = Array.isArray(chat.accessTiers)
-      ? (chat.accessTiers as Membership[] | Types.ObjectId[])
-          .map((tier) =>
+      ? (chat.accessTiers as any)
+          .map((tier: any) =>
             tier instanceof Types.ObjectId
               ? tier.toString()
               : tier?._id?.toString(),
@@ -1326,7 +1326,7 @@ export class ChatService {
     const membership = await this.membershipModel.findById(membershipObjectId);
     if (!membership?.creator) return;
 
-    const creatorObjectId = getObjectId(membership.creator);
+    const creatorObjectId = getObjectId(membership.creator as any);
     if (!creatorObjectId) {
       console.error(
         `Could not resolve creator ObjectId for membership ${membershipId}`,
@@ -1383,7 +1383,7 @@ export class ChatService {
     const membership = await this.membershipModel.findById(membershipObjectId);
     if (!membership?.creator) return;
 
-    const creatorObjectId = getObjectId(membership.creator);
+    const creatorObjectId = getObjectId(membership.creator as any);
     if (!creatorObjectId) {
       console.error(
         `Could not resolve creator ObjectId for membership ${membershipId}`,
@@ -1407,7 +1407,7 @@ export class ChatService {
       membership: { $ne: membershipObjectId },
     });
     const otherActiveMembershipObjectIds = otherActiveSubscriptions
-      .map((sub) => getObjectId(sub.membership))
+      .map((sub) => getObjectId(sub.membership as any))
       .filter((id): id is Types.ObjectId => !!id);
 
     for (const chat of potentiallyAffectedChats) {
@@ -1417,8 +1417,8 @@ export class ChatService {
         userRemainsEligible = otherActiveSubscriptions.length > 0;
       } else if (chat.accessType === ChatAccessType.SELECTED) {
         const chatAccessTierIds =
-          (chat.accessTiers as Membership[] | Types.ObjectId[])
-            ?.map((tier) => getObjectIdString(tier))
+          (chat.accessTiers as any)
+            ?.map((tier: any) => getObjectIdString(tier))
             .filter((id): id is string => !!id) ?? [];
 
         userRemainsEligible = otherActiveMembershipObjectIds.some((activeId) =>

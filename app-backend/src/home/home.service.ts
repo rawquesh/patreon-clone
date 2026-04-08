@@ -6,9 +6,9 @@ import {
   CreatorStatus,
   ContentVisibility,
   GenderPreference,
-} from '@/schemas/users.schema';
-import { Post, PostStatus } from '@/schemas/posts.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/user';
+import { Post, PostStatus } from '@/database/schemas/post';
+import { Subscription } from '@/database/schemas/subscription';
 import { PostsService } from '@/posts/posts.service';
 import { MembershipsService } from '@/memberships/memberships.service';
 
@@ -316,7 +316,7 @@ export class HomeService {
         })
         .select('_id');
 
-      filteredCreatorIds = creators.map((creator) => creator._id) as User[];
+      filteredCreatorIds = creators.map((creator) => creator._id) as any;
     }
 
     const skip = (page - 1) * limit;
@@ -351,8 +351,9 @@ export class HomeService {
     const uniqueCreators: string[] = [];
 
     posts.forEach((post) => {
-      if (!uniqueCreators.includes(post.creator.id)) {
-        uniqueCreators.push(post.creator.id);
+      const creatorId = (post.creator as User).id;
+      if (!uniqueCreators.includes(creatorId)) {
+        uniqueCreators.push(creatorId);
       }
     });
 
@@ -380,7 +381,7 @@ export class HomeService {
       }
 
       const creatorTier = membershipTiers.find(
-        (mt) => mt.creatorId === post.creator.id,
+        (mt) => mt.creatorId === (post.creator as User).id,
       )!;
 
       const tierAccess = post.tierAccess
@@ -405,12 +406,13 @@ export class HomeService {
           : (post.description || previewText).slice(0, 100) + '...',
         thumbnail,
         creator: {
-          id: postObj.creator._id,
+          id: (postObj.creator as User)._id,
           displayName:
-            postObj.creator.displayName || postObj.creator.creatorUsername,
-          profilePicture: postObj.creator.profilePicture,
-          username: postObj.creator.creatorUsername,
-          category: postObj.creator.creatorCategory,
+            (postObj.creator as User).displayName ||
+            (postObj.creator as User).creatorUsername,
+          profilePicture: (postObj.creator as User).profilePicture,
+          username: (postObj.creator as User).creatorUsername,
+          category: (postObj.creator as User).creatorCategory,
         },
         likesCount: postObj.likeCount || 0,
         commentsCount: postObj.commentCount || 0,

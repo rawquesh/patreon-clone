@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import Stripe from 'stripe';
-import { User } from '@/schemas/users.schema';
+import { User } from '@/database/schemas/user';
 
 @Injectable()
 export class PaymentsService {

@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Subscription } from '@/schemas/subscribers.schema';
-import { PromotionRedemption } from '@/schemas/promotions.schema';
+import { Subscription } from '@/database/schemas/subscription';
+import { PromotionRedemption } from '@/database/schemas/promotion';
 
 @Injectable()
 export class PromotionsSchedulerService {

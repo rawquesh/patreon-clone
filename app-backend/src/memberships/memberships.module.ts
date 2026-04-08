@@ -2,11 +2,14 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MembershipsService } from './memberships.service';
 import { MembershipsController } from './memberships.controller';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
 import { PaymentsModule } from '@/payments/payments.module';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
-import { PayoutRequest, PayoutRequestSchema } from '@/schemas/payouts.schema';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
+import { PayoutRequest, PayoutRequestSchema } from '@/database/schemas/payout';
 import { S3Module } from '@/s3/s3.module';
 import { NotificationsModule } from '@/notifications/notifications.module';
 import { PromotionsModule } from '@/promotions/promotions.module';

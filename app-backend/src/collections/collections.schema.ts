@@ -1,5 +1,5 @@
-import { User } from '@/schemas/users.schema';
-import { Post } from '@/schemas/posts.schema';
+import { User } from '@/database/schemas/user';
+import { Post } from '@/database/schemas/post';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 

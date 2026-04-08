@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreatorHistoryService } from './creator-history.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '@/schemas/users.schema';
+import { User } from '@/database/schemas/user';
 import { PostsService } from '@/posts/posts.service';
 import { MembershipsService } from '@/memberships/memberships.service';
 import { CollectionsService } from '@/collections/collections.service';

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Subscription } from '@/schemas/subscribers.schema';
-import { User } from '@/schemas/users.schema';
-import { Membership } from '@/schemas/membersip.schema';
+import { Subscription } from '@/database/schemas/subscription';
+import { User } from '@/database/schemas/user';
+import { Membership } from '@/database/schemas/membership';
 import { GetMembersDto, MembersResponseDto } from './members.dto';
 
 @Injectable()

@@ -2,14 +2,17 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
-import { Post, PostSchema } from '@/schemas/posts.schema';
+import { Post, PostSchema } from '@/database/schemas/post';
 import { S3Module } from '@/s3/s3.module';
 import { MembershipsModule } from '@/memberships/memberships.module';
 import { NotificationsModule } from '@/notifications/notifications.module';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
-import { PostInsight, PostInsightSchema } from '@/schemas/analytics.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
+import { PostInsight, PostInsightSchema } from '@/database/schemas/analytics';
+import { User, UserSchema } from '@/database/schemas/user';
 
 @Module({
   imports: [

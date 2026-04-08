@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Notification, NotificationType } from '@/schemas/notifications.schema';
-import { User } from '@/schemas/users.schema';
-import { Post } from '@/schemas/posts.schema';
+import {
+  Notification,
+  NotificationType,
+} from '@/database/schemas/notification';
+import { User } from '@/database/schemas/user';
+import { Post } from '@/database/schemas/post';
 import {
   CreateNotificationDto,
   NotificationFilterDto,

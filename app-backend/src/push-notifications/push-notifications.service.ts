@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as admin from 'firebase-admin';
 import { getMessaging } from 'firebase-admin/messaging';
-import { Device, DeviceDocument } from '@/schemas/device.schema';
+import { Device, DeviceDocument } from '@/database/schemas/device';
 
 @Injectable()
 export class PushNotificationsService {

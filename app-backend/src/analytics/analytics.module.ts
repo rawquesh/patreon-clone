@@ -10,12 +10,15 @@ import {
   EarningsInsightSchema,
   PostInsight,
   PostInsightSchema,
-} from '@/schemas/analytics.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Post, PostSchema } from '@/schemas/posts.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
-import { PayoutRequest, PayoutRequestSchema } from '@/schemas/payouts.schema';
+} from '@/database/schemas/analytics';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Post, PostSchema } from '@/database/schemas/post';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
+import { PayoutRequest, PayoutRequestSchema } from '@/database/schemas/payout';
 import { PaymentsModule } from '@/payments/payments.module';
 
 @Module({

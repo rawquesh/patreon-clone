@@ -12,9 +12,9 @@ import {
   CreatorStatus,
   ContentVisibility,
   GenderPreference,
-} from '@/schemas/users.schema';
-import { Membership } from '@/schemas/membersip.schema';
-import { Subscription } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/user';
+import { Membership } from '@/database/schemas/membership';
+import { Subscription } from '@/database/schemas/subscription';
 import { UpdateProfileDto } from './UpdateProfileDto';
 import {
   CreatorOnboardingDto,

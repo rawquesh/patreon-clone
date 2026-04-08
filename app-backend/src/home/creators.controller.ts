@@ -10,7 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { HomeService } from './home.service';
 import { UsersService } from '@/users/users.service';
-import { GenderPreference } from '@/schemas/users.schema';
+import { GenderPreference } from '@/database/schemas/user';
 import { OptionalJwtAuthGuard } from '@/auth/optional-auth-guard';
 
 interface RequestingUser {

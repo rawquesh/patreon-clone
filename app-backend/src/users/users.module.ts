@@ -3,12 +3,15 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { User, UserSchema } from '@/schemas/users.schema';
+import { User, UserSchema } from '@/database/schemas/user';
 import { S3Module } from '@/s3/s3.module';
 import { PaymentsModule } from '@/payments/payments.module';
 import { MembershipsModule } from '@/memberships/memberships.module';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 
 @Module({
   imports: [

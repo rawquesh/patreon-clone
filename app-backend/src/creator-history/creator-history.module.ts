@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreatorHistoryService } from './creator-history.service';
 import { CreatorController } from './creator.controller';
-import { User, UserSchema } from '@/schemas/users.schema';
+import { User, UserSchema } from '@/database/schemas/user';
 import {
   CreatorVisit,
   CreatorVisitSchema,
-} from '@/schemas/visit-history.schema';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+} from '@/database/schemas/engagement';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 import { PostsModule } from '@/posts/posts.module';
 import { MembershipsModule } from '@/memberships/memberships.module';
 import { CollectionsModule } from '@/collections/collections.module';

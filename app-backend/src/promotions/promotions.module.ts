@@ -7,15 +7,18 @@ import {
   GiftSchema,
   PromotionRedemption,
   PromotionRedemptionSchema,
-} from '@/schemas/promotions.schema';
-import { User, UserSchema } from '@/schemas/users.schema';
-import { Membership, MembershipSchema } from '@/schemas/membersip.schema';
+} from '@/database/schemas/promotion';
+import { User, UserSchema } from '@/database/schemas/user';
+import { Membership, MembershipSchema } from '@/database/schemas/membership';
 import { DiscountsController } from './discounts.controller';
 import { GiftsController } from './gifts.controller';
 import { PromotionsService } from './promotions.service';
 import { MembershipsModule } from '@/memberships/memberships.module';
 import { PromotionsSchedulerService } from './promotions-scheduler.service';
-import { Subscription, SubscriptionSchema } from '@/schemas/subscribers.schema';
+import {
+  Subscription,
+  SubscriptionSchema,
+} from '@/database/schemas/subscription';
 import { PaymentsModule } from '@/payments/payments.module';
 
 @Module({

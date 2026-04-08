@@ -6,8 +6,8 @@ import {
   CreatorStatus,
   ContentVisibility,
   GenderPreference,
-} from '@/schemas/users.schema';
-import { Post, PostStatus } from '@/schemas/posts.schema';
+} from '@/database/schemas/user';
+import { Post, PostStatus } from '@/database/schemas/post';
 
 // Add the interface (can be moved to a shared types file later)
 interface RequestingUser {

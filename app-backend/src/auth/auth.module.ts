@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/auth.local';
 import { JwtStrategy } from './strategies/auth.jwt';
 import { GoogleStrategy } from './strategies/auth.google';
-import { User, UserSchema } from '@/schemas/users.schema';
+import { User, UserSchema } from '@/database/schemas/user';
 import { PaymentsModule } from '@/payments/payments.module';
 
 @Module({

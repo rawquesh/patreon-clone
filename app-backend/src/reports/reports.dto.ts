@@ -10,11 +10,11 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ReportReason, ReportStatus } from '@/schemas/post-reports.schema';
 import {
+  ReportReason,
+  ReportStatus,
   UserReportReason,
-  UserReportStatus,
-} from '@/schemas/user-reports.schema';
+} from '@/database/schemas/report/enums';
 
 export class CreatePostReportDto {
   @IsMongoId({ message: 'Invalid post ID' })
@@ -83,10 +83,10 @@ export class UpdateReportStatusDto {
 }
 
 export class UpdateUserReportStatusDto {
-  @IsEnum(UserReportStatus, {
+  @IsEnum(ReportStatus, {
     message: 'Invalid report status',
   })
-  status: UserReportStatus;
+  status: ReportStatus;
 
   @IsOptional()
   @IsString()
@@ -165,8 +165,8 @@ export class GetUserReportsQueryDto {
   sortOrder?: SortOrder = SortOrder.DESC;
 
   @IsOptional()
-  @IsEnum(UserReportStatus)
-  status?: UserReportStatus;
+  @IsEnum(ReportStatus)
+  status?: ReportStatus;
 
   @IsOptional()
   @IsMongoId()

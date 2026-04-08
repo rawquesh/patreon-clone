@@ -17,7 +17,7 @@ import {
   DiscountStatus,
   DiscountType,
   GiftType,
-} from '@/schemas/promotions.schema';
+} from '@/database/schemas/promotion';
 
 export class CreateDiscountDto {
   @IsString()
