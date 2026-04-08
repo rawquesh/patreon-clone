@@ -2,6 +2,7 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { Avatar } from "../ui/avatar";
+import { branding } from "@/config/branding";
 
 const MembershipItem: React.FC<{
   link: string;
@@ -47,7 +48,7 @@ const MembershipItem: React.FC<{
           shape={"rounded"}
           src={
             imageUrl ||
-            "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+            `https://${branding.assets.assetBucketBase}/profile-pictures/placeholder-male.jpg`
           }
         />
 

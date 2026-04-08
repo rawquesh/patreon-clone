@@ -1,20 +1,18 @@
-export enum CreatorCategory {
-  MUSIC_ART = "Music & Art",
-  ENTERTAINMENT_COMEDY = "Entertainment & Comedy",
-  HISTORY_LITERACY = "History & Literacy",
-  GENERAL_EDUCATION = "General Education",
-  FOOD_COOKING = "Food & Cooking",
-  LIFESTYLE_WELLNESS = "Lifestyle & Wellness",
-  TRAVEL_ISRAEL = "Travel & Israel",
-  BUSINESS_FINANCE = "Business & Finance",
-  RELATIONSHIPS_PARENTING = "Relationships & Parenting",
-  TORAH_STUDY = "Torah Study",
-  FITNESS_HEALTH = "Fitness & Health",
-}
+// Re-export from centralized types (single source of truth)
+export { CreatorCategory } from "@/typings/IUser";
+export type { CreatorCategory as CreatorCategoryType } from "@/typings/IUser";
 
-export const HARDCODED_CATEGORIES = Object.entries(CreatorCategory).map(
-  ([key, value]) => ({
-    id: key, // Or potentially generate a unique ID if needed elsewhere
-    name: value,
-  })
-);
+// Build the categories list from the enum values
+export const HARDCODED_CATEGORIES = [
+  { id: "MUSIC_ART", name: "Music & Art" },
+  { id: "ENTERTAINMENT_COMEDY", name: "Entertainment & Comedy" },
+  { id: "HISTORY_LITERACY", name: "History & Literacy" },
+  { id: "GENERAL_EDUCATION", name: "General Education" },
+  { id: "FOOD_COOKING", name: "Food & Cooking" },
+  { id: "LIFESTYLE_WELLNESS", name: "Lifestyle & Wellness" },
+  { id: "TRAVEL_ISRAEL", name: "Travel & Israel" },
+  { id: "BUSINESS_FINANCE", name: "Business & Finance" },
+  { id: "RELATIONSHIPS_PARENTING", name: "Relationships & Parenting" },
+  { id: "TORAH_STUDY", name: "Torah Study" },
+  { id: "FITNESS_HEALTH", name: "Fitness & Health" },
+];

@@ -1,4 +1,5 @@
-import api from "./api";
+import axios from "axios";
+import { branding } from "@/config/branding";
 
 interface User {
   _id: string;
@@ -9,16 +10,20 @@ interface User {
 }
 
 /**
- * Get the current user from the API
+ * Get the current user from the API using a temporary axios instance.
+ * Does not mutate any shared state -- each call gets its own instance.
  */
 export const getUser = async (token: string): Promise<User | null> => {
   try {
-    // Set the token in the API headers
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-    // Fetch the user data
-    const { data } = await api.get<User>("/auth/me");
-    return data;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL
+      || `https://${branding.urls.apiServer}`;
+    const response = await axios.get<User>(`${baseUrl}/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+    return response.data;
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;

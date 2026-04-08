@@ -19,7 +19,7 @@ export default function Connect() {
 			</Text>
 			<Text fontSize={"sm"}>
 				Connect your socials so your page appears in search, and help your fans
-				to find you faster on Patreon.
+				to find you faster on the platform.
 			</Text>
 			<Stack mt={8}>
 				{connectListItems.map((item) => (

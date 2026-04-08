@@ -65,12 +65,12 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
     }
   };
 
-  const handleSliderChange = ({ value }: any) => {
+  const handleSliderChange = ({ value }: { value: number[] }) => {
     setCurrentTime(value[0]);
     setIsDragging(true);
   };
 
-  const handleSliderChangeEnd = ({ value }: any) => {
+  const handleSliderChangeEnd = ({ value }: { value: number[] }) => {
     if (audioRef.current) {
       audioRef.current.currentTime = value[0];
       if (isPlaying) {

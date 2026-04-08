@@ -7,11 +7,11 @@ import ImagePostPageComponent from "@/page-components/post/image-post-page";
 import VideoPostPageComponent from "@/page-components/post/video-post-page";
 import AudioPostPageComponent from "@/page-components/post/audio-post-page";
 import LinkPostPageComponent from "@/page-components/post/link-post-page";
-// import ClientAuthCheck from "./client-auth-check";
 import { PostData } from "@/typings/IPost";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { PostPageHeader } from "@/page-components/post/post-page-header";
+import { branding } from "@/config/branding";
 
 type tParams = Promise<{ id: string }>;
 
@@ -63,7 +63,7 @@ export async function generateMetadata(
 
 async function getPost(postId: string): Promise<PostData> {
   try {
-    const baseUrl = "https://your-backend-server.example.com.com";
+    const baseUrl = `https://${branding.urls.apiServer}`;
 
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;

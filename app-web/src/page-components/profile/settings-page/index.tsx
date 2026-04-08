@@ -27,28 +27,7 @@ import { toaster } from "@/components/ui/toaster";
 import { Field } from "@/components/ui/field";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
-
-// Define ContentVisibility enum locally if not exported from types
-enum ContentVisibility {
-  BOTH = "both",
-  MALE = "male",
-  FEMALE = "female",
-}
-
-// Define CreatorCategory enum locally (or import if available globally)
-enum CreatorCategory {
-  MUSIC_ART = "Music & Art",
-  ENTERTAINMENT_COMEDY = "Entertainment & Comedy",
-  HISTORY_LITERACY = "History & Literacy",
-  GENERAL_EDUCATION = "General Education",
-  FOOD_COOKING = "Food & Cooking",
-  LIFESTYLE_WELLNESS = "Lifestyle & Wellness",
-  TRAVEL_ISRAEL = "Travel & Israel",
-  BUSINESS_FINANCE = "Business & Finance",
-  RELATIONSHIPS_PARENTING = "Relationships & Parenting",
-  TORAH_STUDY = "Torah Study",
-  FITNESS_HEALTH = "Fitness & Health",
-}
+import { CreatorCategory, ContentVisibility } from "@/typings/IUser";
 
 const SettingsPage: React.FC = () => {
   // Get user from context

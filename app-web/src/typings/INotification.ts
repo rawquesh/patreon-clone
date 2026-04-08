@@ -36,6 +36,7 @@ export interface INotification {
 }
 
 export interface NotificationResponseDto {
+  [key: string]: unknown;
   id: string;
   type: NotificationType;
   isRead: boolean;

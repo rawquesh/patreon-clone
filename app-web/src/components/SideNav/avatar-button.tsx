@@ -2,6 +2,7 @@ import React, { ComponentProps } from "react";
 import { Button } from "../ui/button";
 import { Avatar } from "../ui/avatar";
 import { Box, Text } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
 
 interface Props extends ComponentProps<typeof Button> {
   username?: string;
@@ -33,7 +34,7 @@ const AvatarButton: React.FC<Props> = ({
         shape={"rounded"}
         src={
           avatarUrl ||
-          "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+          `https://${branding.assets.assetBucketBase}/profile-pictures/placeholder-male.jpg`
         }
         // borderRadius={"8px"}
         h={"40px"}

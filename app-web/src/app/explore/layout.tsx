@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import SideNav from "@/components/SideNav";
 import { Box } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
 
 export const metadata: Metadata = {
-  title: "Patreon Clone",
-  description: "Patreon Clone explore",
+  title: branding.name,
+  description: `Explore creators on ${branding.name}`,
 };
 
 export default function RootLayout({

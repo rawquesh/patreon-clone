@@ -1,4 +1,7 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
+
+const c = branding.colors;
 
 const customConfig = defineConfig({
 	theme: {
@@ -18,11 +21,11 @@ const customConfig = defineConfig({
 					300: { value: "#C4C1B5" },
 					400: { value: "#A6A59C" },
 					500: { value: "#8C8B84" },
-					600: { value: "#5A5954" },
+					600: { value: c.star },
 					700: { value: "#474641" },
 					800: { value: "#24231F" },
-					900: { value: "#141413" },
-					950: { value: "#141413" },
+					900: { value: c.textHeader },
+					950: { value: c.textHeader },
 				},
 				blue: {
 					50: { value: "#EBF5FF" },
@@ -31,8 +34,8 @@ const customConfig = defineConfig({
 					300: { value: "#59AEFE" },
 					400: { value: "#3FA0FB" },
 					500: { value: "#2B85D9" },
-					600: { value: "#1D70BF" },
-					700: { value: "#1962A5" },
+					600: { value: c.primary },
+					700: { value: c.primaryDark },
 					800: { value: "#134B80" },
 					900: { value: "#0D3459" },
 					950: { value: "#0D3459" },
@@ -42,9 +45,9 @@ const customConfig = defineConfig({
 					100: { value: "#FADBD1" },
 					200: { value: "#FABCA7" },
 					300: { value: "#E3967D" },
-					400: { value: "#CB785C" },
+					400: { value: c.accent },
 					500: { value: "#BD6547" },
-					600: { value: "#AB5437" },
+					600: { value: c.accentDark },
 					700: { value: "#994B31" },
 					800: { value: "#8C4932" },
 					900: { value: "#7C412D" },
@@ -56,8 +59,8 @@ const customConfig = defineConfig({
 					200: { value: "#FACAA7" },
 					300: { value: "#F0B890" },
 					400: { value: "#D4A27F" },
-					500: { value: "#BF9373" },
-					600: { value: "#AD805F" },
+					500: { value: c.desert },
+					600: { value: c.desertDark },
 					700: { value: "#997154" },
 					800: { value: "#8C6346" },
 					900: { value: "#7C583E" },
@@ -65,11 +68,11 @@ const customConfig = defineConfig({
 				},
 				dune: {
 					50: { value: "#FFF9ED" },
-					100: { value: "#F1E6D0" },
+					100: { value: c.duneLight },
 					200: { value: "#EBDBBC" },
 					300: { value: "#E0D1B4" },
 					400: { value: "#D4C29F" },
-					500: { value: "#BFAF8F" },
+					500: { value: c.dune },
 					600: { value: "#AD9F82" },
 					700: { value: "#998C73" },
 					800: { value: "#8C8169" },
@@ -82,9 +85,9 @@ const customConfig = defineConfig({
 					200: { value: "#B8E5BE" },
 					300: { value: "#A6DEAE" },
 					400: { value: "#94D49E" },
-					500: { value: "#86BF8E" },
+					500: { value: c.green },
 					600: { value: "#72A57A" },
-					700: { value: "#618967" },
+					700: { value: c.greenDark },
 					800: { value: "#4A7C52" },
 					900: { value: "#426E49" },
 					950: { value: "#426E49" },

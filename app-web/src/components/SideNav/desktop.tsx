@@ -20,58 +20,16 @@ import { useAuth } from "@/context/auth.provider";
 import CreateModal from "@/page-components/profile/profile-page/create-modal";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { branding } from "@/config/branding";
+import { ISubscription as Subscription } from "@/typings/ISubscription";
 
-interface Props {
-  mode: "creator" | "user";
-}
-
-export interface UserSubscriptionsResponse {
+interface UserSubscriptionsResponse {
   subscriptions: Subscription[];
   total: number;
 }
 
-export interface Subscription {
-  _id: string;
-  subscriber: string;
-  creator: Creator;
-  membership: Membership;
-  monthlyRate: number;
-  status: string;
-  currentPeriodStart: string;
-  currentPeriodEnd: string;
-  isTrial: boolean;
-  hasDiscount: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  daysUntilRenewal: number;
-  nextBillingAmount: number;
-  stripeSubscriptionId?: string;
-}
-
-export interface Creator {
-  _id: string;
-  profilePicture: string;
-  creatorUsername: string;
-  displayName?: string;
-}
-
-export interface Membership {
-  _id: string;
-  creator: string;
-  name: string;
-  description: string;
-  monthlyRate: number;
-  coverImage: string;
-  isActive: boolean;
-  benefits: string[];
-  subscriberCount: number;
-  totalEarnings: number;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  stripePriceId?: string;
-  stripeProductId?: string;
+interface Props {
+  mode: "creator" | "user";
 }
 
 const getUniqueSubscriptionsByCreator = (
@@ -123,7 +81,7 @@ const DesktopSidenav: React.FC<Props> = ({ mode }) => {
         <Image src="/icons/logo.png" h={"32px"} alt="logo" />
         <VStack align="start" gap={0}>
           <Heading size="2xl" color="#141413">
-            Patreon Clone
+            {branding.name}
           </Heading>
           {/* <Text fontSize="12px" color="#5A5954">
             Jewish Community Hub

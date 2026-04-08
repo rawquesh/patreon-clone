@@ -1,24 +1,30 @@
 import type { NextConfig } from "next";
+import { branding } from "./src/config/branding";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "patreon-clone-test-cover.s3.eu-north-1.amazonaws.com",
+        hostname: `${process.env.NEXT_PUBLIC_API_IMAGE_BUCKET || "patreon-clone-assets"}.s3.eu-north-1.amazonaws.com`,
+        port: "",
+        pathname: "/*/**",
+      },
+      {
+        protocol: "https",
+        hostname: `${process.env.NEXT_PUBLIC_API_IMAGE_BUCKET || "patreon-clone-test-cover"}.s3.eu-north-1.amazonaws.com`,
         port: "",
         search: "",
       },
       {
         protocol: "https",
-        hostname: "patreon-clone-collections.s3.eu-north-1.amazonaws.com",
+        hostname: `${process.env.NEXT_PUBLIC_API_COLLECTIONS_BUCKET || "patreon-clone-collections"}.s3.eu-north-1.amazonaws.com`,
         port: "",
         search: "",
       },
       {
         protocol: "https",
-        hostname: "patreon-clone-test-dps.s3.eu-north-1.amazonaws.com",
+        hostname: `${process.env.NEXT_PUBLIC_API_POSTS_BUCKET || "patreon-clone-test-dps"}.s3.eu-north-1.amazonaws.com`,
         port: "",
         search: "",
       },
@@ -43,12 +49,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "img.youtube.com",
-        port: "",
-        pathname: "/*/**",
-      },
-      {
-        protocol: "https",
-        hostname: "patreon-clone-assets.s3.eu-north-1.amazonaws.com",
         port: "",
         pathname: "/*/**",
       },

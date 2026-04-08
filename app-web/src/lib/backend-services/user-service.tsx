@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api";
-import { toaster } from "@/components/ui/toaster";
+import { toastHandlers, getErrorMessage } from "@/lib/toasts";
 import { useAuth } from "@/context/auth.provider";
 import { User } from "@/typings/IUser";
 
@@ -83,18 +83,13 @@ export const useUpdatePreferences = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userPreferences"] });
-      toaster.create({
-        title: "Preferences updated",
-        description: "Your preferences have been successfully updated",
-      });
+      toastHandlers.preferencesUpdated();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Update failed",
-        description:
-          error.response?.data?.message || "Failed to update preferences",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.genericError(
+        "Update failed",
+        getErrorMessage(error, "Failed to update preferences")
+      );
     },
   });
 };

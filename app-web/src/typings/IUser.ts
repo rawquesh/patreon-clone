@@ -1,6 +1,12 @@
-import { GenderPreference } from "@/app/settings/page"; // Assuming path
+// GenderPreference is defined in auth.provider.tsx and app/settings/page.tsx
 
 export type CreatorStatus = "DRAFT" | "ONBOARDING" | "PUBLISHED";
+
+export enum GenderPreference {
+  BOTH = "both",
+  MALE = "male",
+  FEMALE = "female",
+}
 
 export interface User {
   _id: string;
@@ -10,7 +16,6 @@ export interface User {
   provider: string;
   profilePicture?: string;
   countryOfResidence?: string;
-  p;
   isCreator?: boolean;
   profileCover?: string;
   creatorUsername?: string;

@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-export const sortByRelativeDate = <T>(list: T[], keyToSortBy: string) => {
+export const sortByRelativeDate = <T extends Record<string, unknown>>(
+  list: T[],
+  keyToSortBy: keyof T
+) => {
   const today = new Date().toISOString().split("T")[0];
   const todayItems: T[] = [];
-
   const earlierItems: T[] = [];
-  //@ts-ignore
+
   list.forEach((item) => {
-    //@ts-ignore
-    if ((item[keyToSortBy] as string).split("T")[0] === today) {
+    const dateValue = String(item[keyToSortBy]).split("T")[0];
+    if (dateValue === today) {
       todayItems.push(item);
     } else {
       earlierItems.push(item);
@@ -15,12 +16,9 @@ export const sortByRelativeDate = <T>(list: T[], keyToSortBy: string) => {
   });
 
   earlierItems.sort((a, b) => {
-    //@ts-ignore
-    if ((a[keyToSortBy] as string) > (b[keyToSortBy] as string)) {
-      return -1;
-    } else {
-      return 1;
-    }
+    const dateA = String(a[keyToSortBy]);
+    const dateB = String(b[keyToSortBy]);
+    return dateA > dateB ? -1 : 1;
   });
 
   return {

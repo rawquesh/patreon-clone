@@ -18,32 +18,11 @@ import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-enum ContentVisibility {
-  BOTH = "both",
-  MALE = "male",
-  FEMALE = "female",
-}
-
-enum CreatorCategory {
-  MUSIC_ART = "Music & Art",
-  ENTERTAINMENT_COMEDY = "Entertainment & Comedy",
-  HISTORY_LITERACY = "History & Literacy",
-  GENERAL_EDUCATION = "General Education",
-  FOOD_COOKING = "Food & Cooking",
-  LIFESTYLE_WELLNESS = "Lifestyle & Wellness",
-  TRAVEL_ISRAEL = "Travel & Israel",
-  BUSINESS_FINANCE = "Business & Finance",
-  RELATIONSHIPS_PARENTING = "Relationships & Parenting",
-  TORAH_STUDY = "Torah Study",
-  FITNESS_HEALTH = "Fitness & Health",
-}
-
-enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-  OTHER = "other",
-}
+import {
+  CreatorCategory,
+  ContentVisibility,
+} from "@/typings/IUser";
+import { Gender } from "@/types/auth";
 
 // Simple debounce hook implementation
 const useDebounce = <T,>(value: T, delay: number): T => {

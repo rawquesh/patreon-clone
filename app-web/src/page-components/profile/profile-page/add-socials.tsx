@@ -22,7 +22,16 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState, useEffect } from "react";
 import api from "@/lib/api";
-import { SocialLinkDto, UpdateSocialLinksDto } from "@/types/user.types";
+
+interface SocialLinkDto {
+  platform: string;
+  url: string;
+  icon: string;
+}
+
+interface UpdateSocialLinksDto {
+  socialLinks: SocialLinkDto[];
+}
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/context/auth.provider";
 

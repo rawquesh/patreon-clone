@@ -21,7 +21,7 @@ const MotionImage = motion(Image);
 export function InteractiveHero() {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;

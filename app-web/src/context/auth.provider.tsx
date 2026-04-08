@@ -13,6 +13,7 @@ import { setCookie, deleteCookie } from "cookies-next";
 import { CreatorCategory, User } from "@/typings/IUser";
 import { getUserMode } from "@/components/SideNav/user-avatar";
 import { Gender } from "@/types/auth";
+import { branding } from "@/config/branding";
 
 enum GenderPreference {
   MALE = "male",
@@ -230,8 +231,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleGoogleLogin = () => {
     window.localStorage.removeItem("userMode");
-    const apiUrl = "https://your-backend-server.example.com.com";
-    window.location.href = `${apiUrl}/auth/google`;
+    window.location.href = `https://${branding.urls.apiServer}/auth/google`;
   };
 
   const logout = () => {

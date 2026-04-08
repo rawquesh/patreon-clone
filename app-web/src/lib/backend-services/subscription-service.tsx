@@ -9,7 +9,7 @@ import {
   IPromotionValidationResponse,
   IPromotionRedemptionResponse,
 } from "@/typings/ISubscription";
-import { toaster } from "@/components/ui/toaster";
+import { toastHandlers, getErrorMessage } from "@/lib/toasts";
 import { useSubscription } from "@/context/subscription.provider";
 
 export const useCreatorMemberships = (creatorId: string) => {
@@ -161,19 +161,11 @@ export const useSubscribeToPaidMembership = () => {
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
       } else {
-        toaster.create({
-          title: "Subscription successful",
-          description: "You are now subscribed to this membership",
-        });
+        toastHandlers.subscriptionSuccess();
       }
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Subscription failed",
-        description:
-          error.response?.data?.message || "Failed to subscribe to membership",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.subscriptionError(getErrorMessage(error, "Failed to subscribe to membership"));
     },
   });
 };
@@ -212,19 +204,10 @@ export const useSubscribeToFreeMembership = () => {
       queryClient.invalidateQueries({
         queryKey: ["subscriptionStatus", data.subscription.creator._id],
       });
-
-      toaster.create({
-        title: "Joined successfully",
-        description: "You are now a free member",
-      });
+      toastHandlers.joinedSuccess();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Subscription failed",
-        description:
-          error.response?.data?.message || "Failed to join as a free member",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.subscriptionError(getErrorMessage(error, "Failed to join as a free member"));
     },
   });
 };
@@ -244,19 +227,10 @@ export const useCancelSubscription = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userSubscriptions"] });
-
-      toaster.create({
-        title: "Subscription cancelled",
-        description: "Your subscription has been cancelled",
-      });
+      toastHandlers.subscriptionCancelled();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Cancellation failed",
-        description:
-          error.response?.data?.message || "Failed to cancel subscription",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.cancellationError(getErrorMessage(error, "Failed to cancel subscription"));
     },
   });
 };
@@ -289,25 +263,14 @@ export const useRedeemPromotion = () => {
         if (data.checkoutUrl) {
           window.location.href = data.checkoutUrl;
         } else {
-          toaster.create({
-            title: "Promotion redeemed",
-            description: data.message || "Promotion code redeemed successfully",
-          });
+          toastHandlers.promotionRedeemed(data.message);
         }
       } else {
-        toaster.create({
-          title: "Promotion redeemed",
-          description: data.message || "Promotion code redeemed successfully",
-        });
+        toastHandlers.promotionRedeemed(data.message);
       }
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Redemption failed",
-        description:
-          error.response?.data?.message || "Failed to redeem promotion code",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.redemptionError(getErrorMessage(error, "Failed to redeem promotion code"));
     },
   });
 };

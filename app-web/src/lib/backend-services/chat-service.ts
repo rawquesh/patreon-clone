@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
-import { toaster } from "@/components/ui/toaster";
 import { io, Socket } from "socket.io-client";
 import api from "../api";
+import { branding } from "@/config/branding";
+import { toastHandlers } from "@/lib/toasts";
 
 export interface ChatMessage {
   id: string;
@@ -122,10 +123,6 @@ class ChatService {
   public isConnecting = () => this.connecting;
 
   public async connect(): Promise<void> {
-    console.log("[ChatService] connect() called. State:", {
-      connected: this.connected,
-      connecting: this.connecting,
-    });
     if (this.connected || this.connecting) return;
 
     this.connecting = true;
@@ -136,9 +133,8 @@ class ChatService {
         console.error("[ChatService] connect() failed: No token found.");
         throw new Error("Not authenticated");
       }
-      console.log("[ChatService] Attempting to connect to socket...");
-      const apiUrl = "https://your-backend-server.example.com.com";
-      this.socket = io(`${apiUrl}/chat`, {
+      const apiUrl = `${branding.urls.apiServer}`;
+      this.socket = io(`https://${apiUrl}/chat`, {
         auth: { token },
         transports: ["websocket"],
         reconnection: true,
@@ -152,10 +148,6 @@ class ChatService {
         if (!this.socket) return reject(new Error("Socket not initialized"));
 
         this.socket.on("connected", (data: any) => {
-          console.log(
-            "[ChatService] Socket event: 'connected' received.",
-            data
-          );
           this.connecting = false;
           this.connected = true;
           this.emit("connected", data);
@@ -191,7 +183,6 @@ class ChatService {
   }
 
   public disconnect(): void {
-    console.log("[ChatService] disconnect() called.");
     if (this.socket) {
       this.socket.disconnect();
       this.socket = null;
@@ -202,7 +193,6 @@ class ChatService {
 
   private setupEventListeners(): void {
     if (!this.socket) return;
-    console.log("[ChatService] setupEventListeners() called.");
 
     const eventTypes: Array<keyof ChatEventMap> = [
       "new_message",
@@ -215,13 +205,8 @@ class ChatService {
       this.socket?.off(eventType);
 
       this.socket?.on(eventType, (data: any) => {
-        console.log(
-          `[ChatService] Socket received event: '${eventType}'. Data:`,
-          data
-        );
         this.emit(eventType as any, data);
       });
-      console.log(`[ChatService] Attached socket listener for: '${eventType}'`);
     });
   }
 
@@ -234,14 +219,8 @@ class ChatService {
     }
     const listeners = this.eventListeners.get(event);
     listeners?.add(listener as Function);
-    console.log(
-      `[ChatService] Added listener for event: '${event}'. Total listeners for this event: ${listeners?.size}`
-    );
     return () => {
       listeners?.delete(listener as Function);
-      console.log(
-        `[ChatService] Removed listener for event: '${event}'. Total listeners for this event: ${listeners?.size}`
-      );
     };
   }
 
@@ -250,12 +229,6 @@ class ChatService {
     ...args: Parameters<ChatEventMap[T]>
   ): void {
     const listeners = this.eventListeners.get(event);
-    console.log(
-      `[ChatService] Emitting event: '${event}'. Number of listeners: ${
-        listeners?.size || 0
-      }. Args:`,
-      args
-    );
     if (listeners) {
       listeners.forEach((listener) => {
         try {
@@ -280,12 +253,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error("Error fetching chats:", error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to fetch chats",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("fetch chats");
       return { directChats: [], groupChats: [] };
     }
   }
@@ -296,12 +264,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error(`Error fetching chat ${chatId}:`, error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to fetch chat details",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("fetch chat details");
       throw error;
     }
   }
@@ -340,12 +303,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error(`Error fetching messages for chat ${chatId}:`, error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to load messages",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("load messages");
       return {
         messages: [],
         hasMore: false,
@@ -372,12 +330,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error(`Error fetching message dates for chat ${chatId}:`, error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to load message dates",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("load message dates");
       return {
         dates: [],
         oldestDate: "",
@@ -403,12 +356,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error("Error creating group chat:", error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to create group chat",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("create group chat");
       throw error;
     }
   }
@@ -425,12 +373,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error("Error creating direct chat:", error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to create direct chat",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("create direct chat");
       throw error;
     }
   }
@@ -455,12 +398,7 @@ class ChatService {
       return response.data;
     } catch (error) {
       console.error(`Error sending message to chat ${chatId}:`, error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to send message",
-        type: "error",
-        duration: 3000,
-      });
+      toastHandlers.chatFetchError("send message");
       throw error;
     }
   }

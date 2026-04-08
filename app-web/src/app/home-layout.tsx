@@ -12,6 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { branding } from "@/config/branding";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,50 +20,13 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  // const fontStyles = `
-  //   @font-face {
-  //     font-family: 'Tiempos Headline';
-  //     src: url('https://use.typekit.net/af/c0843b/00000000000000007735e13b/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff2');
-  //     font-display: swap;
-  //     font-style: normal;
-  //     font-weight: 700;
-  //   }
-
-  //   h1, h2, h3 {
-  //     font-family: 'Tiempos Headline', serif;
-  //   }
-  // `;
-
-  // Define colors
-  const primaryColor = "#1962A5";
-  const primaryHoverColor = "#1D70BF";
-  // const secondaryColor = "#CB785C";
-  // const secondaryHoverColor = "#D4A27F";
-  const textHeaderColor = "#141413";
-  const textSubheaderColor = "#C4C3BB";
-  // const textBodyColor = "#5A5954";
-  // const accentGreenColor = "#618967";
-  // const accentGreenLightColor = "#7EB286";
-  const borderColor = "#E6E5DD";
-  const bgColor = "#EBEAE4";
-
-  // Navigation link style function
-  // const getLinkStyle = (pageName: string) => {
-  //   return {
-  //     display: "inline-flex",
-  //     alignItems: "center",
-  //     px: 1,
-  //     pt: 1,
-  //     fontSize: "sm",
-  //     fontWeight: "medium",
-  //     color: currentPageName === pageName ? primaryColor : textBodyColor,
-  //     borderBottom:
-  //       currentPageName === pageName ? `2px solid ${primaryColor}` : "none",
-  //     _hover: {
-  //       color: currentPageName === pageName ? primaryColor : textHeaderColor,
-  //     },
-  //   };
-  // };
+  // Define colors (from branding config)
+  const primaryColor = branding.colors.primaryDark;
+  const primaryHoverColor = branding.colors.primary;
+  const textHeaderColor = branding.colors.textHeader;
+  const textSubheaderColor = branding.colors.star;
+  const borderColor = branding.colors.border;
+  const bgColor = branding.colors.bgLight;
 
   return (
     <Box
@@ -89,7 +53,7 @@ export default function Layout({ children }: LayoutProps) {
               }}
               align="center"
             >
-              <Link href={"/"}>Patreon Clone</Link>
+              <Link href={"/"}>{branding.name}</Link>
               <Flex
                 fontFamily={"sans-serif"}
                 display={{ base: "none", sm: "flex" }}
@@ -148,7 +112,7 @@ export default function Layout({ children }: LayoutProps) {
           >
             <GridItem>
               <Heading as="h3" fontSize="xl" fontWeight="bold" mb={4}>
-                Patreon Clone
+                {branding.name}
               </Heading>
               <Text color={textSubheaderColor}>
                 Empowering Jewish creators to share their voices and build
@@ -189,7 +153,7 @@ export default function Layout({ children }: LayoutProps) {
                 Contact
               </Heading>
               <Text color={textSubheaderColor}>
-                Questions? Reach out to us at support@patreon-clone.example.com
+                Questions? Reach out to us at {branding.contact.supportEmail}
               </Text>
             </GridItem>
           </Grid>

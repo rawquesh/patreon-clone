@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import { MarketingHeader } from "@/components/marketing-header";
 import { MarketingPageFooter } from "../marketing-page-footer";
+import { branding } from "@/config/branding";
 
 const features = [
   {
@@ -89,7 +90,7 @@ export default function PricingPage() {
             <VStack gap={4}>
               <Text
                 bg="#F7F5ED"
-                color="#1D70BF"
+                color={branding.colors.primary}
                 fontWeight="600"
                 px={4}
                 py={2}
@@ -105,13 +106,13 @@ export default function PricingPage() {
                 textDecorationColor="rgba(29, 112, 191, 0.2)"
               >
                 <Box
-                  color="#1D70BF"
+                  color={branding.colors.primary}
                   as={"span"}
                   textDecorationColor="rgba(29, 112, 191, 0.2) !important"
                   textDecoration={"underline"}
                   textUnderlineOffset="8px"
                 >
-                  Starting a Patreon Clone{" "}
+                  Starting a {branding.name}{" "}
                 </Box>
                 <Box textDecoration={"none"} as="span" color="#333">
                   is Free
@@ -190,7 +191,7 @@ export default function PricingPage() {
                       },
                     }}
                   >
-                    {/* <Icon as={feature.icon} color="#1D70BF" boxSize="24px" /> */}
+                    {/* <Icon as={feature.icon} color={branding.colors.primary} boxSize="24px" /> */}
                     {feature.icon}
                   </Flex>
                   <Heading
@@ -224,14 +225,14 @@ export default function PricingPage() {
         <Box
           as="section"
           py="5rem"
-          bg="#1D70BF"
+          bg={branding.colors.primary}
           color="white"
           textAlign="center"
         >
           <Container maxW="800px">
             <VStack gap={6}>
               <Heading as="h2" size="xl" color="white">
-                Ready to build your Patreon Clone?
+                Ready to build your {branding.name}?
               </Heading>
               <Text fontSize="lg" color="whiteAlpha.900">
                 Join hundreds of Jewish creators building meaningful connections
@@ -242,14 +243,14 @@ export default function PricingPage() {
                   <Button
                     size="lg"
                     bg="white"
-                    color="#1D70BF"
+                    color={branding.colors.primary}
                     _hover={{ bg: "gray.200" }}
                   >
                     Get Started
                   </Button>
                 </Link>
                 <Link
-                  href={"https://app.simplymeet.me/patreon-clone/patreon-clone-intro"}
+                  href={branding.urls.meeting}
                   target="_blank"
                 >
                   <Button

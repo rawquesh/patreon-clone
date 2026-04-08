@@ -47,7 +47,6 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
   submitButtonText = "Create Tier",
   onCancel,
 }) => {
-  console.log("initialData", initialData);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
     initialData.coverImage ?? null
@@ -60,21 +59,6 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
     isActive: initialData.isActive ?? true,
   });
 
-  // useEffect(() => {
-  //   console.log("initialData", initialData);
-  //   console.log("initialCoverImageUrl", initialCoverImageUrl);
-  //   console.log("coverImage", coverImage);
-  //   setFormData({
-  //     name: initialData.name ?? "",
-  //     description: initialData.description ?? "",
-  //     monthlyRate: initialData.monthlyRate ?? 0,
-  //     benefits: initialData.benefits ?? [],
-  //     isActive: initialData.isActive ?? true,
-  //   });
-  //   if (!coverImage) {
-  //     setImagePreview(initialCoverImageUrl);
-  //   }
-  // }, [initialData, initialCoverImageUrl, coverImage]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -112,7 +96,6 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     let value: string | number = e.target.value;
-    console.log(e.target.name);
     if (e.target.name === "monthlyRate") {
       value = parseFloat(value) || 0;
     }

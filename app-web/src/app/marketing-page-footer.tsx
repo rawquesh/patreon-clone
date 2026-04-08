@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { QrDownload } from "@/components/QrDownload";
+import { branding } from "@/config/branding";
 
 export const MarketingPageFooter = () => {
   return (
@@ -18,7 +19,7 @@ export const MarketingPageFooter = () => {
         <Flex alignItems={"start"} justify="space-between">
           <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
             <VStack align="start" gap={4}>
-              <Heading size="sm">Patreon Clone</Heading>
+              <Heading size="sm">{branding.name}</Heading>
               <Text fontSize="sm">
                 Empowering Jewish creators to share their voices, build thriving
                 communities, and generate meaningful connections.
@@ -56,9 +57,9 @@ export const MarketingPageFooter = () => {
           mt={10}
           borderTopWidth="1px"
           fontSize="sm"
-          color="#5A5954"
+          color={branding.colors.star}
         >
-          &copy; {new Date().getFullYear()} Patreon Clone. All rights reserved.
+          {branding.copyright}
         </Text>
       </Container>
     </Box>

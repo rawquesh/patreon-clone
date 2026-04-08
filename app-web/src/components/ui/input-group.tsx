@@ -2,12 +2,17 @@ import type { BoxProps, InputElementProps } from "@chakra-ui/react";
 import { Group, InputElement } from "@chakra-ui/react";
 import * as React from "react";
 
+type InputElementChildProps = Omit<
+  React.ComponentProps<typeof InputElement>,
+  keyof BoxProps
+>;
+
 export interface InputGroupProps extends BoxProps {
   startElementProps?: InputElementProps;
   endElementProps?: InputElementProps;
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
-  children: React.ReactElement;
+  children: React.ReactElement<InputElementChildProps>;
   startOffset?: InputElementProps["paddingStart"];
   endOffset?: InputElementProps["paddingEnd"];
 }
@@ -25,9 +30,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
       ...rest
     } = props;
 
-    const child = React.Children.only<React.ReactElement<InputElementProps>>(
-      children as any
-    );
+    const child = React.Children.only(children);
 
     return (
       <Group ref={ref} {...rest}>
@@ -41,8 +44,8 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             ps: `calc(var(--input-height) - ${startOffset})`,
           }),
           ...(endElement && { pe: `calc(var(--input-height) - ${endOffset})` }),
-          ...(children.props as any),
-        })}
+          ...child.props,
+        } as Partial<InputElementChildProps>)}
         {endElement && (
           <InputElement placement="end" {...endElementProps}>
             {endElement}

@@ -2,7 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api";
-import { toaster } from "@/components/ui/toaster";
+import {
+  toastHandlers,
+  getErrorMessage,
+} from "@/lib/toasts";
 import { CommentResponse, LikeResponse } from "@/typings/IPost";
 import { ICommentResponse } from "@/typings/IComment";
 
@@ -72,19 +75,10 @@ export const useAddComment = () => {
       queryClient.invalidateQueries({
         queryKey: ["postComments", variables.postId],
       });
-
-      toaster.create({
-        title: "Comment added",
-        description: "Your comment has been posted",
-      });
+      toastHandlers.commentAdded();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to add comment",
-        description:
-          error.response?.data?.message || "Could not post your comment",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.commentError(getErrorMessage(error, "Could not post your comment"));
     },
   });
 };
@@ -113,19 +107,10 @@ export const useEditComment = () => {
       queryClient.invalidateQueries({
         queryKey: ["postComments", variables.postId],
       });
-
-      toaster.create({
-        title: "Comment updated",
-        description: "Your comment has been updated",
-      });
+      toastHandlers.commentUpdated();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to update comment",
-        description:
-          error.response?.data?.message || "Could not update your comment",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.commentUpdateError(getErrorMessage(error, "Could not update your comment"));
     },
   });
 };
@@ -151,19 +136,10 @@ export const useDeleteComment = () => {
       queryClient.invalidateQueries({
         queryKey: ["postComments", variables.postId],
       });
-
-      toaster.create({
-        title: "Comment deleted",
-        description: "Your comment has been removed",
-      });
+      toastHandlers.commentDeleted();
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to delete comment",
-        description:
-          error.response?.data?.message || "Could not delete your comment",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.commentDeleteError(getErrorMessage(error, "Could not delete your comment"));
     },
   });
 };
@@ -191,12 +167,8 @@ export const useLikePost = () => {
         queryKey: ["postLiked", variables.postId],
       });
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to like post",
-        description: error.response?.data?.message || "Could not like the post",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.likeError(getErrorMessage(error, "Could not like the post"));
     },
   });
 };
@@ -224,13 +196,8 @@ export const useUnlikePost = () => {
         queryKey: ["postLiked", variables.postId],
       });
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to unlike post",
-        description:
-          error.response?.data?.message || "Could not unlike the post",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.unlikeError(getErrorMessage(error, "Could not unlike the post"));
     },
   });
 };
@@ -257,13 +224,8 @@ export const useLikeComment = () => {
         queryKey: ["postComments", variables.postId],
       });
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to like comment",
-        description:
-          error.response?.data?.message || "Could not like the comment",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.commentLikeError(getErrorMessage(error, "Could not like the comment"));
     },
   });
 };
@@ -290,13 +252,8 @@ export const useUnlikeComment = () => {
         queryKey: ["postComments", variables.postId],
       });
     },
-    onError: (error: any) => {
-      toaster.create({
-        title: "Failed to unlike comment",
-        description:
-          error.response?.data?.message || "Could not unlike the comment",
-        type: "destructive",
-      });
+    onError: (error: unknown) => {
+      toastHandlers.commentUnlikeError(getErrorMessage(error, "Could not unlike the comment"));
     },
   });
 };

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
+import { isPublicRoute } from "@/config/routes";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
@@ -8,22 +9,8 @@ export function middleware(request: NextRequest) {
 
   const userMode = request.cookies.get("userMode")?.value || "user";
 
-  // All routes are protected except for the root page and auth pages
-  const isPublicRoute =
-    request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname === "/about" ||
-    request.nextUrl.pathname === "/pricing" ||
-    request.nextUrl.pathname === "/support" ||
-    request.nextUrl.pathname.startsWith("/auth") ||
-    request.nextUrl.pathname.startsWith("/creator") ||
-    request.nextUrl.pathname.startsWith("/tos") ||
-    request.nextUrl.pathname.startsWith("/privacy-policy") ||
-    request.nextUrl.pathname.startsWith("/community") ||
-    request.nextUrl.pathname.startsWith("/download") ||
-    request.nextUrl.pathname.startsWith("/post");
-
   // Redirect unauthenticated users to the root page if trying to access protected routes
-  if (!isPublicRoute && !isAuthenticated) {
+  if (!isPublicRoute(request.nextUrl.pathname) && !isAuthenticated) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

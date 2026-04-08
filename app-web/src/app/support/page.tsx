@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { MarketingHeader } from "@/components/marketing-header";
 import { MarketingPageFooter } from "../marketing-page-footer";
+import { branding } from "@/config/branding";
 
 interface FormData {
   firstName: string;
@@ -74,7 +75,7 @@ const SupportPage: React.FC = () => {
         },
         body: JSON.stringify({
           access_key: accessKey,
-          subject: "Support Request from Patreon Clone",
+          subject: `Support Request from ${branding.name}`,
           from_name: `${formData.firstName} ${formData.lastName}`,
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
@@ -105,7 +106,7 @@ const SupportPage: React.FC = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error("Support form submission error:", error);
       setSubmitStatus({
         type: "error",
         message: "Failed to send message. Please try again later.",
@@ -116,7 +117,7 @@ const SupportPage: React.FC = () => {
   };
 
   return (
-    <Box color="#5A5954" bg="white">
+    <Box color={branding.colors.star} bg="white">
       <MarketingHeader />
 
       <Box as="section" bg="white" pt={{ base: "5rem", md: "8rem" }} pb={20}>
@@ -126,14 +127,14 @@ const SupportPage: React.FC = () => {
               as="h1"
               fontSize="4xl"
               fontWeight="bold"
-              color="#141413"
+              color={branding.colors.textHeader}
               mb="4"
               textAlign="center"
             >
               Contact Support
             </Heading>
             <Text
-              color="#5A5954"
+              color={branding.colors.star}
               fontSize="lg"
               mb="8"
               textAlign="center"
@@ -164,7 +165,7 @@ const SupportPage: React.FC = () => {
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
-                        color="#141413"
+                        color={branding.colors.textHeader}
                       >
                         First Name
                       </Field.Label>
@@ -177,7 +178,7 @@ const SupportPage: React.FC = () => {
                         required
                         _focus={{
                           bg: "white",
-                          borderColor: "#1D70BF",
+                          borderColor: branding.colors.primary,
                         }}
                       />
                     </Field.Root>
@@ -186,7 +187,7 @@ const SupportPage: React.FC = () => {
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
-                        color="#141413"
+                        color={branding.colors.textHeader}
                       >
                         Last Name
                       </Field.Label>
@@ -199,7 +200,7 @@ const SupportPage: React.FC = () => {
                         required
                         _focus={{
                           bg: "white",
-                          borderColor: "#1D70BF",
+                          borderColor: branding.colors.primary,
                         }}
                       />
                     </Field.Root>
@@ -207,7 +208,7 @@ const SupportPage: React.FC = () => {
 
                   {/* Email */}
                   <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color="#141413">
+                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
                       Email Address
                     </Field.Label>
                     <Input
@@ -220,14 +221,14 @@ const SupportPage: React.FC = () => {
                       required
                       _focus={{
                         bg: "white",
-                        borderColor: "#1D70BF",
+                        borderColor: branding.colors.primary,
                       }}
                     />
                   </Field.Root>
 
                   {/* Phone Number */}
                   <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color="#141413">
+                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
                       Phone Number
                     </Field.Label>
                     <Input
@@ -240,14 +241,14 @@ const SupportPage: React.FC = () => {
                       required
                       _focus={{
                         bg: "white",
-                        borderColor: "#1D70BF",
+                        borderColor: branding.colors.primary,
                       }}
                     />
                   </Field.Root>
 
                   {/* Message */}
                   <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color="#141413">
+                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
                       Message
                     </Field.Label>
                     <Textarea
@@ -261,7 +262,7 @@ const SupportPage: React.FC = () => {
                       resize="vertical"
                       _focus={{
                         bg: "white",
-                        borderColor: "#1D70BF",
+                        borderColor: branding.colors.primary,
                       }}
                     />
                   </Field.Root>
@@ -272,10 +273,14 @@ const SupportPage: React.FC = () => {
                       p={4}
                       borderRadius="md"
                       bg={
-                        submitStatus.type === "success" ? "#B8E5BE" : "#FED7D7"
+                        submitStatus.type === "success"
+                          ? branding.colors.green
+                          : "#FED7D7"
                       }
                       color={
-                        submitStatus.type === "success" ? "#618967" : "#C53030"
+                        submitStatus.type === "success"
+                          ? branding.colors.greenDark
+                          : "#C53030"
                       }
                     >
                       <Text fontSize="sm" fontWeight="500">
@@ -289,9 +294,9 @@ const SupportPage: React.FC = () => {
                     type="submit"
                     w="full"
                     size="lg"
-                    bg="#1D70BF"
+                    bg={branding.colors.primary}
                     color="white"
-                    _hover={{ bg: "#3283d1" }}
+                    _hover={{ bg: branding.colors.primaryHover }}
                     loading={isSubmitting}
                     loadingText="Sending..."
                     disabled={isSubmitting}
@@ -304,10 +309,10 @@ const SupportPage: React.FC = () => {
 
             {/* Additional Contact Info */}
             <Box mt={8} textAlign="center">
-              <Text color="#5A5954" fontSize="sm">
+              <Text color={branding.colors.star} fontSize="sm">
                 You can also reach us directly at{" "}
-                <Text as="span" fontWeight="600" color="#1D70BF">
-                  support@patreon-clone.example.com
+                <Text as="span" fontWeight="600" color={branding.colors.primary}>
+                  {branding.contact.supportEmail}
                 </Text>
               </Text>
             </Box>

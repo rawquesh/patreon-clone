@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Avatar } from "../ui/avatar";
 import { useAuth } from "@/context/auth.provider";
 import { useRouter } from "next/navigation";
+import { branding } from "@/config/branding";
 
 interface Props {
   currentMode: "creator" | "user";
@@ -47,7 +48,7 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
           shape={"rounded"}
           src={
             user?.profilePicture ||
-            "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+            `https://${branding.assets.assetBucketBase}/profile-pictures/placeholder-male.jpg`
           }
           h={"40px"}
           w={"40px"}

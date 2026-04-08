@@ -1,16 +1,21 @@
+"use client";
+
 import React, { useState } from "react";
 import { Box, Flex, Input, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import {
   useValidatePromotion,
   useRedeemPromotion,
 } from "@/lib/backend-services/subscription-service";
-import { IPromotionValidationResponse } from "@/typings/ISubscription";
+import {
+  IPromotionValidationResponse,
+  IPromotionRedemptionResponse,
+} from "@/typings/ISubscription";
 import { Button } from "./ui/button";
 
 interface PromotionCodeFormProps {
   membershipId: string;
   originalPrice: number;
-  onSuccess?: (response: any) => void;
+  onSuccess?: (response: IPromotionRedemptionResponse) => void;
 }
 
 const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
