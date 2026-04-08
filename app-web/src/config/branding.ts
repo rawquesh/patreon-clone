@@ -31,7 +31,7 @@ export const branding = {
     /** Primary frontend domain */
     frontend: "patreon-clone.example.com",
     /** Backend API server */
-    apiServer: "your-backend-server.example.com.com",
+    apiServer: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
     /** Meeting/scheduling URL used in marketing CTAs */
     meeting: "app.simplymeet.me/patreon-clone/patreon-clone-intro",
   },
