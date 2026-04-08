@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const reports_service_1 = require("./reports.service");
 const reports_dto_1 = require("./reports.dto");
-const admin_guard_1 = require("../modules/admin/admin.guard");
+const admin_guard_1 = require("../admin/admin.guard");
 let ReportsController = class ReportsController {
     constructor(reportsService) {
         this.reportsService = reportsService;

@@ -31,6 +31,7 @@ const creator_history_module_1 = require("./creator-history/creator-history.modu
 const webhooks_module_1 = require("./webhooks/webhooks.module");
 const push_notifications_module_1 = require("./push-notifications/push-notifications.module");
 const reports_module_1 = require("./reports/reports.module");
+const admin_module_1 = require("./admin/admin.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -62,6 +63,7 @@ exports.AppModule = AppModule = __decorate([
             webhooks_module_1.WebhooksModule,
             push_notifications_module_1.PushNotificationsModule,
             reports_module_1.ReportsModule,
+            admin_module_1.AdminModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -98,21 +98,3 @@ export class GetUserReportsQueryDto {
   @IsOptional() @IsMongoId() reportedBy?: string;
   @IsOptional() @IsMongoId() userId?: string;
 }
-
-// ==================== WITHHELD CONTENT DTOs ====================
-
-export class WithholdPostDto {
-  @IsString() @IsNotEmpty() reason: string;
-  @IsString() @IsOptional() adminNotes?: string;
-  @IsMongoId() @IsOptional() relatedReportId?: string;
-}
-
-export class RestorePostDto {}
-
-export class WithholdUserDto {
-  @IsString() @IsNotEmpty() reason: string;
-  @IsString() @IsOptional() adminNotes?: string;
-  @IsMongoId() @IsOptional() relatedReportId?: string;
-}
-
-export class RestoreUserDto {}

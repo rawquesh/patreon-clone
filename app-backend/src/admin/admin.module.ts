@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AdminController } from './admin.controller';
-import { AdminService } from './admin.service';
+import { ReportsController } from './controllers/reports.controller';
+import { ModerationController } from './controllers/moderation.controller';
+import { ReportsService } from './services/reports.service';
+import { ModerationService } from './services/moderation.service';
 import { AdminGuard } from './admin.guard';
 import {
   PostReport,
@@ -31,8 +33,8 @@ import { User, UserSchema } from '@/database/schemas/user';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  controllers: [AdminController],
-  providers: [AdminService, AdminGuard],
-  exports: [AdminService, AdminGuard],
+  controllers: [ReportsController, ModerationController],
+  providers: [ReportsService, ModerationService, AdminGuard],
+  exports: [ReportsService, ModerationService, AdminGuard],
 })
 export class AdminModule {}

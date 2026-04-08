@@ -26,7 +26,7 @@ import {
   RestorePostDto,
   RestoreUserDto,
 } from './reports.dto';
-import { AdminGuard } from '@/modules/admin/admin.guard';
+import { AdminGuard } from '@/admin/admin.guard';
 
 @Controller('reports')
 export class ReportsController {

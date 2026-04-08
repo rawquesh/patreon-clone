@@ -22,6 +22,7 @@ import { CreatorHistoryModule } from './creator-history/creator-history.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { PushNotificationsModule } from './push-notifications/push-notifications.module';
 import { ReportsModule } from './reports/reports.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ReportsModule } from './reports/reports.module';
     WebhooksModule,
     PushNotificationsModule,
     ReportsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
