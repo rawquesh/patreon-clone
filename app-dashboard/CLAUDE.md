@@ -2,7 +2,7 @@
 
 ## Overview
 
-Admin dashboard for the Patreon Clone creator platform. Built on Next.js 15 App Router with shadcn/ui, Tailwind CSS, and Genkit for AI features.
+Admin dashboard for the Patreon Clone creator platform. Built on Next.js 15 App Router with shadcn/ui, Tailwind CSS, and Recharts.
 
 ## Folder Structure
 
@@ -14,7 +14,6 @@ src/
 │   └── (app)/              # Route group: authenticated app shell
 │       ├── layout.tsx      # Sidebar + header shell
 │       ├── page.tsx        # Dashboard
-│       ├── anomaly-detection/
 │       ├── content/
 │       ├── creators/
 │       ├── members/
@@ -39,7 +38,6 @@ src/
 │   ├── content/
 │   ├── subscriptions/
 │   ├── payouts/
-│   ├── anomaly-detection/
 │   └── dashboard/
 │       └── components/
 │
@@ -58,11 +56,6 @@ src/
 │   ├── post.ts
 │   ├── subscription.ts
 │   └── payout.ts
-│
-└── ai/                     # Genkit AI layer
-    ├── genkit.ts           # AI instance configuration
-    ├── dev.ts              # Dev server entry
-    └── flows/             # AI flow definitions
 ```
 
 ## Key Conventions
@@ -89,16 +82,12 @@ When a page needs client-side interactivity (filters, charts, forms):
 All status badges use `src/components/status-badge.tsx`. When adding a new domain, add a `StatusEntry[]` config and a typed export function. Never copy-paste variant maps into page files.
 
 ### Server Actions
-Server actions live next to the page that uses them (e.g., `anomaly-detection/actions.ts`). Use `useFormState` from `react-dom` for form state.
-
-### AI Flows
-Genkit flows are defined in `src/ai/flows/`. The `dev.ts` entry registers them with the Genkit dev server. Run `npm run genkit:dev` to develop AI flows locally.
+Server actions use the `'use server'` directive. Use `useFormState` from `react-dom` for form state.
 
 ## What's Working
 
-- All 7 dashboard pages render with mock data
+- All 6 dashboard pages render with mock data
 - Select filters on Content and Subscriptions pages work (client-side)
-- Anomaly Detection AI feature with Genkit + Gemini
 - Dark mode toggle
 - Mobile sidebar collapse/expand
 
@@ -109,12 +98,6 @@ Genkit flows are defined in `src/ai/flows/`. The `dev.ts` entry registers them w
 - No real database — all data from `src/lib/data.ts`
 - No Stripe integration — buttons exist but are non-functional
 
-## Environment Variables
-
-| Variable | Required | Description |
-|---|---|---|
-| `GEMINI_API_KEY` | For anomaly detection | Google AI API key |
-
 ## Common Tasks
 
 ```bash
@@ -123,7 +106,4 @@ npm run typecheck
 
 # Build
 npm run build
-
-# Develop with AI flows
-npm run genkit:dev
 ```

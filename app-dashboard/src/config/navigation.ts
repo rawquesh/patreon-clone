@@ -5,7 +5,6 @@ import {
   FileText,
   BadgeDollarSign,
   Banknote,
-  Bot,
 } from 'lucide-react';
 
 export type NavItem = {
@@ -21,5 +20,4 @@ export const navigationItems: NavItem[] = [
   { href: '/content', label: 'Content Feed', icon: FileText },
   { href: '/subscriptions', label: 'Subscriptions', icon: BadgeDollarSign },
   { href: '/payouts', label: 'Payouts', icon: Banknote },
-  { href: '/anomaly-detection', label: 'Anomaly Detection', icon: Bot },
 ];

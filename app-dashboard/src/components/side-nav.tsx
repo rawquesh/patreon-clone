@@ -14,7 +14,6 @@ import {
   User,
   FileText,
   BadgeDollarSign,
-  Bot,
 } from 'lucide-react';
 
 const menuItems = [
@@ -24,7 +23,6 @@ const menuItems = [
   { href: '/content', label: 'Content Feed', icon: FileText },
   { href: '/subscriptions', label: 'Subscriptions', icon: BadgeDollarSign },
   { href: '/payouts', label: 'Payouts', icon: BadgeDollarSign },
-  { href: '/anomaly-detection', label: 'Anomaly Detection', icon: Bot },
 ];
 
 export function SideNav() {
