@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.patreon-clone.app",
+      "sha256_cert_fingerprints": [
+        "85:F3:0A:F5:6B:04:06:BB:9C:12:80:23:35:24:CD:DE:CB:58:CD:94:4A:C8:20:4E:73:3C:7C:AA:4F:F6:FD:B9"
+      ]
+    }
+  }
+]

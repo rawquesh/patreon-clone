@@ -1,0 +1,148 @@
+import React from "react";
+import { Box, Flex, Heading, Link, Text, Badge } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import Scroller from "@/components/ui/scroller";
+import SectionSkeleton from "@/components/ui/section-skeleton";
+import { usePopularThisWeek } from "@/lib/backend-services/home-service";
+import Image from "next/image";
+import { CreatorCategory } from "@/lib/constants";
+
+interface PopularCreatorCardProps {
+  name: string;
+  username: string;
+  image: string;
+  headline: string;
+  category?: CreatorCategory;
+}
+
+const getCategoryDisplayName = (category?: CreatorCategory) => {
+  if (!category) return "";
+
+  return category
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
+const PopularCreatorCard: React.FC<PopularCreatorCardProps> = ({
+  name,
+  username,
+  image,
+  headline,
+  category,
+}) => {
+  return (
+    <Box
+      minWidth="300px"
+      p={3}
+      borderRadius="md"
+      _hover={{ bg: "gray.50" }}
+      transition="all 0.2s"
+      cursor="pointer"
+      flexShrink={0}
+      onClick={() => (window.location.href = `/creator/${username}`)}
+    >
+      <Flex gap={3}>
+        <Box
+          position="relative"
+          width="50px"
+          height="50px"
+          borderRadius="full"
+          overflow="hidden"
+          flexShrink={0}
+        >
+          <Image
+            src={image || "/placeholder-avatar.png"}
+            alt={name}
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </Box>
+        <Box flex={1}>
+          <Flex justify="space-between" align="center" mb={1}>
+            <Text
+              fontWeight="bold"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              width="70%"
+            >
+              {name}
+            </Text>
+            {category && (
+              <Badge
+                colorScheme="blue"
+                fontSize="xs"
+                borderRadius="full"
+                px={2}
+              >
+                {getCategoryDisplayName(category)}
+              </Badge>
+            )}
+          </Flex>
+          <Text
+            fontSize="sm"
+            color="gray.600"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {headline}
+          </Text>
+        </Box>
+      </Flex>
+    </Box>
+  );
+};
+
+const PopularThisWeek: React.FC = () => {
+  const { data: popularCreators, isLoading, isError } = usePopularThisWeek();
+
+  if (isLoading) {
+    return <SectionSkeleton type="popular-this-week" />;
+  }
+
+  if (isError || !popularCreators || popularCreators.length === 0) {
+    return null;
+  }
+
+  const titleComponent = (
+    <Flex justify="space-between" align="center" width="100%">
+      <Heading as="h2" size="md">
+        Popular this week
+      </Heading>
+      <Link as={NextLink} href="/explore" color="blue.500" fontSize="sm">
+        <Flex align="center">
+          See all
+          <ChevronRightIcon ml={1} />
+        </Flex>
+      </Link>
+    </Flex>
+  );
+
+  return (
+    <Box width="100%" mt={8}>
+      <Scroller
+        titleComponent={titleComponent}
+        containerProps={{
+          gap: 4,
+          pb: 4,
+        }}
+      >
+        {popularCreators.map((creator) => (
+          <PopularCreatorCard
+            key={creator._id}
+            name={creator.displayName}
+            username={creator.creatorUsername}
+            image={creator.profilePicture}
+            headline={creator.creatorHeadline}
+            category={creator.creatorCategory}
+          />
+        ))}
+      </Scroller>
+    </Box>
+  );
+};
+
+export default PopularThisWeek;

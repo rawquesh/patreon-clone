@@ -1,0 +1,180 @@
+import api from "@/lib/api";
+import {
+	CreateDiscountDto,
+	CreateGiftDto,
+	IDiscount,
+	IGift,
+	UpdateDiscountDto,
+	UpdateGiftDto,
+} from "@/typings/IDiscount";
+
+export const fetchDiscounts = async (): Promise<IDiscount[]> => {
+	try {
+		const { data } = await api.get("/promotions/discounts");
+		return data.discounts;
+	} catch (error) {
+		console.error("Error fetching discounts:", error);
+		throw error;
+	}
+};
+
+export const fetchDiscount = async (id: string): Promise<IDiscount> => {
+	try {
+		const { data } = await api.get(`/promotions/discounts/${id}`);
+		return data;
+	} catch (error) {
+		console.error(`Error fetching discount ${id}:`, error);
+		throw error;
+	}
+};
+
+export const createDiscount = async (
+	discount: CreateDiscountDto
+): Promise<IDiscount> => {
+	try {
+		const { data } = await api.post("/promotions/discounts", discount);
+		return data;
+	} catch (error) {
+		console.error("Error creating discount:", error);
+		throw error;
+	}
+};
+
+export const updateDiscount = async (
+	id: string,
+	discount: UpdateDiscountDto
+): Promise<IDiscount> => {
+	try {
+		const { data } = await api.put(`/promotions/discounts/${id}`, discount);
+		return data;
+	} catch (error) {
+		console.error(`Error updating discount ${id}:`, error);
+		throw error;
+	}
+};
+
+export const deleteDiscount = async (
+	id: string
+): Promise<{ success: boolean }> => {
+	try {
+		const { data } = await api.delete(`/promotions/discounts/${id}`);
+		return data;
+	} catch (error) {
+		console.error(`Error deleting discount ${id}:`, error);
+		throw error;
+	}
+};
+
+export const generateDiscountCode = async (): Promise<string> => {
+	try {
+		const { data } = await api.post("/promotions/discounts/generate-code");
+		return data.code;
+	} catch (error) {
+		console.error("Error generating discount code:", error);
+		return generateRandomCode();
+	}
+};
+
+export const fetchGifts = async (): Promise<IGift[]> => {
+	try {
+		const { data } = await api.get("/promotions/gifts");
+		return data.gifts;
+	} catch (error) {
+		console.error("Error fetching gifts:", error);
+		throw error;
+	}
+};
+
+export const fetchGift = async (id: string): Promise<IGift> => {
+	try {
+		const { data } = await api.get(`/promotions/gifts/${id}`);
+		return data;
+	} catch (error) {
+		console.error(`Error fetching gift ${id}:`, error);
+		throw error;
+	}
+};
+
+export const createGift = async (gift: CreateGiftDto): Promise<IGift> => {
+	try {
+		const { data } = await api.post("/promotions/gifts", gift);
+		return data;
+	} catch (error) {
+		console.error("Error creating gift:", error);
+		throw error;
+	}
+};
+
+export const updateGift = async (
+	id: string,
+	gift: UpdateGiftDto
+): Promise<IGift> => {
+	try {
+		const { data } = await api.put(`/promotions/gifts/${id}`, gift);
+		return data;
+	} catch (error) {
+		console.error(`Error updating gift ${id}:`, error);
+		throw error;
+	}
+};
+
+export const deleteGift = async (id: string): Promise<{ success: boolean }> => {
+	try {
+		const { data } = await api.delete(`/promotions/gifts/${id}`);
+		return data;
+	} catch (error) {
+		console.error(`Error deleting gift ${id}:`, error);
+		throw error;
+	}
+};
+
+export const generateGiftCode = async (): Promise<string> => {
+	try {
+		const { data } = await api.post("/promotions/gifts/generate-code");
+		return data.code;
+	} catch (error) {
+		console.error("Error generating gift code:", error);
+		return generateRandomCode();
+	}
+};
+
+export const validatePromotion = async (
+	code: string
+): Promise<{
+	isValid: boolean;
+	message: string;
+	promotion?: IDiscount | IGift;
+}> => {
+	try {
+		const { data } = await api.post("/promotions/discounts/validate", { code });
+		return data;
+	} catch (error) {
+		console.error(`Error validating promotion code ${code}:`, error);
+		throw error;
+	}
+};
+
+export const redeemPromotion = async (
+	code: string,
+	membershipId: string
+): Promise<any> => {
+	try {
+		const { data } = await api.post("/promotions/discounts/redeem", {
+			code,
+			membershipId,
+		});
+		return data;
+	} catch (error) {
+		console.error(`Error redeeming promotion code ${code}:`, error);
+		throw error;
+	}
+};
+
+const generateRandomCode = (length: number = 8): string => {
+	const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	let result = "";
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return result;
+};

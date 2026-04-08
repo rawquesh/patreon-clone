@@ -1,0 +1,83 @@
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-BlackItalic.otf") format("opentype");
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-LightItalic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-MediumItalic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-RegularItalic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-Semibold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "TestTiemposHeadline";
+    src: url("/fonts/TestTiemposHeadline-SemiboldItalic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
+}
