@@ -94,8 +94,8 @@ const customConfig = defineConfig({
 				},
 			},
 			fonts: {
-				heading: { value: "tiempostFont, sans-serif" },
-				body: { value: "Epilogue, sans-serif" },
+				heading: { value: "var(--font-sora), sans-serif" },
+				body: { value: "var(--font-dm-sans), sans-serif" },
 			},
 		},
 	},

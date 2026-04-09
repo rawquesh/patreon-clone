@@ -82,6 +82,7 @@ export function InteractiveHero() {
             <Heading
               as="h1"
               fontSize={{ base: "2.5rem", md: "3rem" }}
+              fontWeight="medium"
               color={branding.colors.textHeader}
               lineHeight="1.2"
             >

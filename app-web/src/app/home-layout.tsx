@@ -45,7 +45,6 @@ export default function Layout({ children }: LayoutProps) {
                   fontSize: "2xl",
                   fontWeight: "bold",
                   color: textHeaderColor,
-                  fontFamily: "'Tiempos Headline', serif",
                   textDecoration: "none",
                   _hover: { textDecoration: "none" },
                 },
@@ -60,7 +59,6 @@ export default function Layout({ children }: LayoutProps) {
                 gap={8}
                 css={{
                   "& a": {
-                    fontFamily: "Epilogue",
                     fontWeight: 500,
                     fontSize: "18px",
                   },

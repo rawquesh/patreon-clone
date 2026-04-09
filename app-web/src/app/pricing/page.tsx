@@ -153,7 +153,7 @@ export default function PricingPage() {
               >
                 Premium Features
               </Text>
-              <Heading as="h2" size="xl" fontFamily="'Playfair Display', serif">
+              <Heading as="h2" size="xl">
                 What&apos;s Included
               </Heading>
               <Text fontSize="lg">
@@ -196,7 +196,6 @@ export default function PricingPage() {
                   <Heading
                     size="sm"
                     fontSize={"xl"}
-                    fontFamily="'Playfair Display', serif"
                   >
                     {feature.title}
                   </Heading>

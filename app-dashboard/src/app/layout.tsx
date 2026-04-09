@@ -1,6 +1,19 @@
 import type {Metadata} from 'next';
+import {Sora, DM_Sans} from 'next/font/google';
 import {branding} from '@/config/branding';
 import './globals.css';
+
+const sora = Sora({
+  variable: '--font-sora',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: branding.appName,
@@ -14,15 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className={`${sora.variable} ${dmSans.variable} font-sans antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

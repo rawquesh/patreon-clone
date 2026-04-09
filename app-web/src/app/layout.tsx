@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Epilogue } from "next/font/google";
+import { Sora, DM_Sans } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
 import "./fonts.css";
 import "./main.css";
-import { tiempostFont } from "@/lib/font";
 import ReactQueryProviders from "@/lib/react-query";
 import { AuthProvider } from "@/context/auth.provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -13,9 +12,16 @@ import { SubscriptionProvider } from "@/context/subscription.provider";
 import { NotificationsProvider } from "@/context/notifications.provider";
 import { seoDefaults, getBaseUrl, viewport } from "@/config/seo";
 
-const epilogue = Epilogue({
-  variable: "--font-epilogue-mono",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const baseUrl = getBaseUrl();
@@ -33,7 +39,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${epilogue.variable} ${tiempostFont.variable}`}
+        className={`${sora.variable} ${dmSans.variable}`}
       >
         <Provider>
           <ReactQueryProviders>
