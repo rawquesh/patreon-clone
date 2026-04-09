@@ -12,6 +12,7 @@ import {
   CategoryScale,
   Filler,
   Legend,
+  ChartJS,
 } from "chart.js";
 
 ChartJS.register(

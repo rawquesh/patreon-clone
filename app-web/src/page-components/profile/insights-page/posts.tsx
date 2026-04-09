@@ -3,6 +3,7 @@ import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
 import { Line } from "react-chartjs-2";
 import { branding } from "@/config/branding";
 import {
+  ChartJS,
   LineElement,
   PointElement,
   LinearScale,

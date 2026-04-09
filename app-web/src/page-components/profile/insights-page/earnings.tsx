@@ -13,6 +13,7 @@ import {
 import { Line, Bar } from "react-chartjs-2";
 import { branding } from "@/config/branding";
 import {
+  ChartJS,
   LineElement,
   PointElement,
   LinearScale,
