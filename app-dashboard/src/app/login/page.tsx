@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -16,7 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { AlertCircle, LayoutTemplate, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
+import Image from 'next/image';
+import { branding } from '@/config/branding';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -26,7 +27,6 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -83,20 +83,17 @@ export default function LoginPage() {
 
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="space-y-1 text-center pb-2 pt-8 px-8">
-              {/* Logo with glow effect */}
+              {/* Logo */}
               <div className="flex justify-center mb-2">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-primary blur-2xl opacity-30" />
-                  <div className="relative bg-gradient-primary p-4 rounded-2xl">
-                    <LayoutTemplate className="h-8 w-8 text-white" />
-                  </div>
+                <div className="relative w-16 h-16">
+                  <Image src="/logo.png" alt={branding.appName} fill className="object-contain" />
                 </div>
               </div>
 
               {/* Title */}
               <div className="space-y-1">
                 <CardTitle className="text-2xl font-bold text-gradient">
-                  Patreon Clone Admin
+                  {branding.appName} Admin
                 </CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">
                   Sign in to access the admin dashboard
@@ -202,7 +199,7 @@ export default function LoginPage() {
 
               {/* Footer note */}
               <div className="text-center text-xs text-muted-foreground">
-                Protected by Patreon Clone admin authentication
+                Protected by {branding.appName} admin authentication
               </div>
             </CardContent>
           </Card>

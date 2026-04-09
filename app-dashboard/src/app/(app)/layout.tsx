@@ -12,7 +12,9 @@ import {
   SidebarInset,
   SidebarFooter,
 } from '@/components/ui/sidebar';
-import { LogOut, LayoutTemplate, Menu } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
+import Image from 'next/image';
+import { branding } from '@/config/branding';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SideNav } from '@/components/side-nav';
 import { Button } from '@/components/ui/button';
@@ -34,15 +36,12 @@ function AppSidebarHeader() {
       <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-primary rounded-t-xl" />
       <SidebarHeader className="pt-4">
         <div className="flex items-center gap-2.5 px-2">
-          {/* Logo with glow */}
-          <div className="relative flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-primary opacity-20 blur-md rounded-xl" />
-            <div className="relative bg-gradient-primary p-2 rounded-xl">
-              <LayoutTemplate className="h-5 w-5 text-white" />
-            </div>
+          {/* Logo */}
+          <div className="relative w-9 h-9 flex items-center justify-center rounded-xl overflow-hidden">
+            <Image src="/logo.png" alt={branding.appName} fill className="object-contain" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-gradient">Patreon Clone</h1>
+            <h1 className="text-xl font-bold tracking-tight text-gradient">{branding.appName}</h1>
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Admin Panel
             </p>
@@ -87,7 +86,7 @@ function AppSidebarFooter({ adminUser, onLogout }: { adminUser: AdminUser | null
             {displayName}
           </span>
           <span className="text-[11px] text-muted-foreground truncate">
-            {adminUser?.email || 'admin@patreon-clone.example.com'}
+            {adminUser?.email || branding.support.email}
           </span>
         </div>
         <Button
@@ -128,8 +127,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      {/* Glass Sidebar */}
-      <Sidebar className="glass-card-static border-r border-white/20 dark:border-white/10">
+      {/* Glass Sidebar — z-[60] keeps it above dialog overlay (z-50) */}
+      <Sidebar className="glass-card-static border-r border-white/20 dark:border-white/10 z-[60]">
         {/* Gradient top decoration */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
         {/* Subtle inner gradient */}
@@ -147,7 +146,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       <SidebarInset>
         {/* Glass Header */}
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b glass-card-static px-4 sm:px-6 lg:px-8 gap-4">
+        <header className="sticky top-0 z-[55] flex h-16 items-center justify-between border-b glass-card-static px-4 sm:px-6 lg:px-8 gap-4">
           <div className="md:hidden">
             <SidebarTrigger>
               <Button variant="ghost" size="icon" className="h-9 w-9">
@@ -158,8 +157,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           {/* Breadcrumb / page title area — can be used for dynamic titles */}
           <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-            <LayoutTemplate className="h-4 w-4" />
-            <span>Patreon Clone Admin</span>
+            <div className="relative w-4 h-4">
+              <Image src="/logo.png" alt={branding.appName} fill className="object-contain" />
+            </div>
+            <span>{branding.appName} Admin</span>
           </div>
 
           {/* Right side actions slot */}

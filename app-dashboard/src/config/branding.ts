@@ -4,18 +4,18 @@
  */
 
 export const branding = {
-  appName: 'Patreon Clone',
+  appName: 'Blue Touch',
   tagline: 'Empowering creators and their communities',
-  shortName: 'Patreon Clone',
-  description: 'Patreon Clone',
+  shortName: 'Blue Touch',
+  description: 'Blue Touch',
 
   support: {
-    email: 'admin@patreon-clone.example.com',
-    url: 'https://patreon-clone.example.com/support',
+    email: 'info@bluetouch.dev',
+    url: 'https://bluetouch.dev/support',
   },
 
   social: {
-    twitter: 'https://twitter.com/patreon-clone',
+    twitter: 'https://twitter.com/bluetouch',
     instagram: 'https://instagram.com/patreon-clone',
     github: 'https://github.com/patreon-clone',
   },

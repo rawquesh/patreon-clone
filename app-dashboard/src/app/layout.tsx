@@ -1,9 +1,10 @@
 import type {Metadata} from 'next';
+import {branding} from '@/config/branding';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Patreon Clone',
-  description: 'Patreon Clone',
+  title: branding.appName,
+  description: branding.tagline,
 };
 
 export default function RootLayout({

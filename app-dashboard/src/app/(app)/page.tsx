@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { branding } from '@/config/branding';
 import { PageHeader } from '@/components/page-header';
 import { StatCard } from '@/components/stat-card';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -146,7 +147,7 @@ export default function DashboardPage() {
       <>
         <PageHeader
           title="Dashboard"
-          description="An overview of your Patreon Clone platform."
+          description={`An overview of your ${branding.appName} platform.`}
         />
         <div className="mb-8">
           <Skeleton className="h-32 w-full rounded-2xl" />
@@ -207,7 +208,7 @@ export default function DashboardPage() {
   if (error) {
     return (
       <>
-        <PageHeader title="Dashboard" description="An overview of your Patreon Clone platform." />
+        <PageHeader title="Dashboard" description={`An overview of your ${branding.appName} platform.`} />
         <Card className="mt-4 glass-card-static">
           <CardContent className="py-12 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4">
@@ -239,7 +240,7 @@ export default function DashboardPage() {
     <>
       <PageHeader
         title="Dashboard"
-        description="An overview of your Patreon Clone platform."
+        description={`An overview of your ${branding.appName} platform.`}
         gradientTitle
       />
 
