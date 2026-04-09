@@ -5,7 +5,6 @@ import {
   Box,
   Button as ChakraButton,
   Center,
-  Container,
   Separator,
   Flex,
   Heading,
@@ -108,7 +107,7 @@ const MembershipCheckoutPage: React.FC = () => {
   const seatsLeft = membership.seatsLeft || 0;
 
   return (
-    <Container maxW="container.md" py={8}>
+    <Box maxW="768px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
       <Heading as="h1" mb={6} fontSize="2xl" textAlign="center">
         Complete your subscription
       </Heading>
@@ -224,7 +223,7 @@ const MembershipCheckoutPage: React.FC = () => {
           </Stack>
         </Box>
       </Flex>
-    </Container>
+    </Box>
   );
 };
 

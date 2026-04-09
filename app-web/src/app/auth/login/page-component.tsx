@@ -1,5 +1,6 @@
 "use client";
 
+import { branding } from "@/config/branding";
 import { Button } from "@/components/ui/button";
 import ButtonWithIcon from "@/components/ui/button-with-icon";
 import { InputGroup } from "@/components/ui/input-group";
@@ -84,7 +85,7 @@ const LoginPages: React.FC = () => {
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <Image w={"56px"} src="/icons/logo.svg" alt="Patreon Clone" />
+      <Image w={"56px"} src="/icons/logo.svg" alt={branding.name} />
       {/* <Logo /> */}
       <Text fontSize={"xl"} fontWeight={600} textAlign={"center"}>
         Log in or Sign up

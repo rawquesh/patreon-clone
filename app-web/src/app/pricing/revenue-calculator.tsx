@@ -20,7 +20,7 @@ const RevenueCalculator: React.FC = () => {
   const [subscribers, setSubscribers] = useState<number>(500);
   const [price, setPrice] = useState<number>(10);
   const [monthlyRevenue, setMonthlyRevenue] = useState<number>(0);
-  const [patreon-cloneFee, setPatreon CloneFee] = useState<number>(0);
+  const [platformFee, setPlatformFee] = useState<number>(0);
   const [processingFee, setProcessingFee] = useState<number>(0);
   const [creatorEarnings, setCreatorEarnings] = useState<number>(0);
 
@@ -28,12 +28,12 @@ const RevenueCalculator: React.FC = () => {
     const calculateRevenue = () => {
       const revenue = subscribers * price;
       setMonthlyRevenue(revenue);
-      const platformFee = revenue * (branding.platform.feePercentage / 100);
-      setPatreon CloneFee(platformFee);
+      const platformFeeValue = revenue * (branding.platform.feePercentage / 100);
+      setPlatformFee(platformFeeValue);
       const transactionCount = revenue > 0 ? subscribers : 0;
       const processing = revenue * 0.029 + transactionCount * 0.3;
       setProcessingFee(processing);
-      const earnings = revenue - platformFee - processing;
+      const earnings = revenue - platformFeeValue - processing;
       setCreatorEarnings(Math.max(0, earnings));
     };
 
@@ -253,7 +253,7 @@ const RevenueCalculator: React.FC = () => {
                 <Flex justify="space-between">
                   <Text color={branding.colors.star}>{branding.name} Fee ({branding.platform.feePercentage}%)</Text>
                   <Text fontWeight="medium" color="red.600">
-                    -{formatCurrency(patreon-cloneFee)}
+                    -{formatCurrency(platformFee)}
                   </Text>
                 </Flex>
                 <Flex justify="space-between">

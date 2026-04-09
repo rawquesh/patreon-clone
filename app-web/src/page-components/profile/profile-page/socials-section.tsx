@@ -1,12 +1,12 @@
 "use client";
+import { branding } from "@/config/branding";
 import {
-  Editable,
-  EditableRoot,
   Flex,
   Stack,
   Text,
   HStack,
   Link,
+  Input,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useEffect, useState } from "react";
@@ -128,36 +128,28 @@ const SocialsSection: React.FC = () => {
       <Text fontWeight={600} fontSize={"xl"}>
         {user?.creatorUsername}
       </Text>
-      <EditableRoot
-        value={headline}
+      <Input
+        value={headline || ""}
         onChange={(e) =>
           setHeadline(() => {
-            const val = (e.target as unknown as { value: string | undefined })
-              .value;
+            const val = e.target.value;
             const pre = user?.creatorHeadline || "";
-
             setHasHeadlineChanged(val?.trim() !== pre?.trim());
-
             return val;
           })
         }
         w={"180px"}
         fontSize={"sm"}
         color={"star.600"}
+        textAlign={"center"}
         placeholder={"Add headline"}
+        variant={"flushed"}
         key={JSON.stringify(user)}
-      >
-        <Editable.Preview
-          minW={"100%"}
-          textAlign={"center"}
-          display={"block"}
-        ></Editable.Preview>
-        <Editable.Input />
-      </EditableRoot>
+      />
       <Flex color={"star.600"} gap={2} mb={2}>
         <Icon icon={"solar:link-bold"} />
         <Text transform={"translateY(-2px)"} fontSize={"sm"}>
-          patreon-clone.example.com/creator/{user?.creatorUsername}
+          {branding.urls.frontend}/creator/{user?.creatorUsername}
         </Text>
       </Flex>
 

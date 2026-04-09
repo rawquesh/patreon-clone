@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Flex,
   Heading,
   HStack,
@@ -46,7 +45,7 @@ const Desktop = () => {
       top={0}
       left={0}
     >
-      <Container maxW="1200px" py={3}>
+      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }} py={3}>
         <Flex justify="space-between" align="center">
           <HStack>
             <Image src="/icons/logo.png" h={"36px"} alt="logo" />
@@ -55,7 +54,7 @@ const Desktop = () => {
                 {branding.name}
               </Heading>
               {/* <Text fontSize="12px" color="#5A5954">
-            Jewish Community Hub
+            Creator Hub
           </Text> */}
             </VStack>
           </HStack>
@@ -86,7 +85,7 @@ const Desktop = () => {
             </Link>
           </HStack>
         </Flex>
-      </Container>
+      </Box>
     </Box>
   );
 };
@@ -107,11 +106,12 @@ const Mobile = () => {
 
       // border={"2px solid red"}
     >
-      <Container
+      <Box
         justifyContent={"space-between"}
         display={"flex"}
         alignItems={"center"}
         maxW={"100vw"}
+        px={{ base: 6 }}
       >
         <HStack>
           <Image src="/icons/logo.png" h={"36px"} alt="logo" />
@@ -120,7 +120,7 @@ const Mobile = () => {
               {branding.name}
             </Heading>
             {/* <Text fontSize="12px" color="#5A5954">
-            Jewish Community Hub
+            Creator Hub
           </Text> */}
           </VStack>
         </HStack>
@@ -147,7 +147,7 @@ const Mobile = () => {
                   {branding.name}
                 </Heading>
                 {/* <Text fontSize="12px" color="#5A5954">
-            Jewish Community Hub
+            Creator Hub
           </Text> */}
               </VStack>
             </HStack>
@@ -170,7 +170,7 @@ const Mobile = () => {
             </Link>
           </DrawerContent>
         </DrawerRoot>
-      </Container>
+      </Box>
     </Box>
   );
 };

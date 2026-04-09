@@ -18,9 +18,10 @@ import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { branding } from "@/config/branding";
 import {
-  CreatorCategory,
   ContentVisibility,
+  CreatorCategory,
 } from "@/typings/IUser";
 import { Gender } from "@/types/auth";
 
@@ -192,7 +193,7 @@ const OnboardingForm: React.FC = () => {
         </Text>
         <Group w={"100%"}>
           <InputElement>
-            <Text fontWeight={500}>patreon-clone.example.com/</Text>
+            <Text fontWeight={500}>{branding.urls.frontend}/</Text>
           </InputElement>
           <Input
             w={"100%"}
@@ -301,8 +302,8 @@ const OnboardingForm: React.FC = () => {
           </Box>
           <Text fontSize="sm">
             By creating an account and checking this box, you are providing your
-            written agreement with, and consent to, (1) the Patreon Clone Privacy
-            Policy, which cover your use of the Patreon Clone website and apps and can
+            written agreement with, and consent to, (1) the {branding.name} Privacy
+            Policy, which covers your use of the {branding.name} website and apps and can
             be found here:{" "}
             <Link href="/privacy-policy" passHref legacyBehavior>
               <a
@@ -313,8 +314,8 @@ const OnboardingForm: React.FC = () => {
                 Privacy Policy
               </a>
             </Link>
-            ; and (2) the Patreon Clone Terms of Service, which cover your use of the
-            Patreon Clone website and apps and can be found here:{" "}
+            ; and (2) the {branding.name} Terms of Service, which cover your use of the
+            {branding.name} website and apps and can be found here:{" "}
             <Link href="/tos" passHref legacyBehavior>
               <a
                 target="_blank"

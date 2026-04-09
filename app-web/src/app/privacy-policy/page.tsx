@@ -1,21 +1,19 @@
-import { Box, Heading, Text, List, Container } from "@chakra-ui/react";
+import { Box, Heading, Text, List } from "@chakra-ui/react";
 import React from "react";
 import { branding } from "@/config/branding";
 
 const PrivacyPolicyPage: React.FC = () => {
 	return (
-		<Container maxW="800px" py={12}>
+		<Box maxW="800px" mx="auto" py={12} px={{ base: 4, md: 6 }}>
 			<Box>
 				<Heading as="h1" size="xl" mb={6}>
-					Patreon Clone Privacy Policy
+					{branding.name} Privacy Policy
 				</Heading>
 				<Text mb={4} fontStyle="italic">
-					Effective Date: March 1, 2025
+					Effective Date: {branding.legal.effectiveDate}
 				</Text>
 				<Text mb={6}>
-					{
-						'Patreon Clone ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website, applications, and services (collectively, the "Services"). By using Patreon Clone, you agree to the terms of this Privacy Policy. If you do not agree with this policy, please discontinue use of our Services.'
-					}
+					{branding.name} (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) is committed to protecting your privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website, applications, and services (collectively, the &ldquo;Services&rdquo;). By using {branding.name}, you agree to the terms of this Privacy Policy. If you do not agree with this policy, please discontinue use of our Services.
 				</Text>
 				<Text mb={6}>
 					We may update this Privacy Policy from time to time. If we make
@@ -28,7 +26,7 @@ const PrivacyPolicyPage: React.FC = () => {
 				</Heading>
 				<Text mb={4}>
 					We collect different types of information depending on how you
-					interact with Patreon Clone.
+					interact with {branding.name}.
 				</Text>
 
 				<Heading as="h3" size="md" mt={6} mb={3}>
@@ -57,7 +55,7 @@ const PrivacyPolicyPage: React.FC = () => {
 							Payment Information:
 						</Text>{" "}
 						If you subscribe or make purchases, our third-party payment
-						processors (e.g., Stripe, PayPal) handle your payment data. Patreon Clone
+						processors (e.g., Stripe, PayPal) handle your payment data. {branding.name}
 						does not store your full payment details.
 					</List.Item>
 					<List.Item>
@@ -79,7 +77,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					B. Information We Collect Automatically
 				</Heading>
 				<Text mb={3}>
-					When you use Patreon Clone, we automatically collect certain information,
+					When you use {branding.name}, we automatically collect certain information,
 					including:
 				</Text>
 				<List.Root gap={2} mb={4}>
@@ -105,7 +103,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					C. Information from Third Parties
 				</Heading>
 				<Text mb={3}>
-					If you connect Patreon Clone with third-party services (e.g., social media
+					If you connect {branding.name} with third-party services (e.g., social media
 					accounts), we may receive information from those platforms, including:
 				</Text>
 				<List.Root gap={1} mb={4}>
@@ -115,7 +113,7 @@ const PrivacyPolicyPage: React.FC = () => {
 				</List.Root>
 				<Text mb={6}>
 					We encourage you to review the privacy policies of any third-party
-					services you link to Patreon Clone.
+					services you link to {branding.name}.
 				</Text>
 
 				<Heading as="h2" size="lg" mt={8} mb={4}>
@@ -127,7 +125,7 @@ const PrivacyPolicyPage: React.FC = () => {
 						<Text fontWeight="bold" as="span">
 							Account Management:
 						</Text>{" "}
-						Creating and managing your Patreon Clone account.
+						Creating and managing your {branding.name} account.
 					</List.Item>
 					<List.Item>
 						<Text fontWeight="bold" as="span">
@@ -179,7 +177,7 @@ const PrivacyPolicyPage: React.FC = () => {
 				</Heading>
 				<Text mb={4}>
 					Certain profile details, such as your username and profile picture,
-					are visible to others on Patreon Clone. Your posts and comments are public
+					are visible to others on {branding.name}. Your posts and comments are public
 					within the communities you engage with.
 				</Text>
 
@@ -220,7 +218,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					D. In Business Transfers
 				</Heading>
 				<Text mb={6}>
-					If Patreon Clone undergoes a merger, acquisition, or sale of assets, your
+					If {branding.name} undergoes a merger, acquisition, or sale of assets, your
 					information may be transferred as part of that transaction. We will
 					notify you if your information becomes subject to a different privacy
 					policy.
@@ -248,9 +246,7 @@ const PrivacyPolicyPage: React.FC = () => {
 						<Text fontWeight="bold" as="span">
 							Opt-Out of Marketing:
 						</Text>{" "}
-						{
-							'You can unsubscribe from promotional emails using the "unsubscribe" link in the email.'
-						}
+						You can unsubscribe from promotional emails using the &ldquo;unsubscribe&rdquo; link in the email.
 					</List.Item>
 					<List.Item>
 						<Text fontWeight="bold" as="span">
@@ -282,7 +278,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					7. International Users
 				</Heading>
 				<Text mb={6}>
-					If you access Patreon Clone from outside the United States, your information
+					If you access {branding.name} from outside the United States, your information
 					may be transferred and stored in the U.S. By using our Services, you
 					consent to this transfer.
 				</Text>
@@ -291,9 +287,9 @@ const PrivacyPolicyPage: React.FC = () => {
 					8. Children&apos;s Privacy
 				</Heading>
 				<Text mb={6}>
-					Patreon Clone is not intended for users under the age of 13. If we become
+					{branding.name} is not intended for users under the age of {branding.legal.minimumAge}. If we become
 					aware that we have collected personal information from a child under
-					13, we will take steps to delete that information.
+					{branding.legal.minimumAge}, we will take steps to delete that information.
 				</Text>
 
 				<Heading as="h2" size="lg" mt={8} mb={4}>
@@ -335,7 +331,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					10. Third-Party Links & Services
 				</Heading>
 				<Text mb={6}>
-					Patreon Clone may contain links to third-party websites. We are not
+					{branding.name} may contain links to third-party websites. We are not
 					responsible for their privacy practices and encourage you to review
 					their policies.
 				</Text>
@@ -346,7 +342,7 @@ const PrivacyPolicyPage: React.FC = () => {
 				<Text mb={6}>
 					We may update this Privacy Policy periodically. If significant changes
 					are made, we will notify users via email or a platform notice.
-					Continued use of Patreon Clone after updates constitutes acceptance of the
+					Continued use of {branding.name} after updates constitutes acceptance of the
 					new terms.
 				</Text>
 
@@ -358,13 +354,13 @@ const PrivacyPolicyPage: React.FC = () => {
 					contact us at:
 				</Text>
 				<Text mb={1}>
-					📧 <b>Email:</b> {branding.contact.privacyEmail}
+					Email: <b>{branding.contact.privacyEmail}</b>
 				</Text>
 				<Text mb={6}>
-					📍 <b>Mailing Address:</b> 123 Community Way, San Francisco, CA 94105
+					Mailing Address: <b>{branding.contact.mailingAddress}</b>
 				</Text>
 			</Box>
-		</Container>
+		</Box>
 	);
 };
 

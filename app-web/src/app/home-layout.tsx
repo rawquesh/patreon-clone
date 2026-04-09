@@ -2,7 +2,6 @@ import React from "react";
 import {
   Box,
   Button,
-  Container,
   Flex,
   Grid,
   GridItem,
@@ -38,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* <Global styles={fontStyles} /> */}
 
       <Box as="header" bg="white" borderBottom="1px" borderColor={borderColor}>
-        <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }}>
+        <Box maxW="7xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
           <Flex justify="space-between" h="16" align="center">
             <Flex
               css={{
@@ -99,13 +98,13 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             </Flex>
           </Flex>
-        </Container>
+        </Box>
       </Box>
 
       <Box as="main">{children}</Box>
 
       <Box as="footer" bg={textHeaderColor} color="white" py={12}>
-        <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }}>
+        <Box maxW="7xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
           <Grid
             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
             gap={8}
@@ -115,7 +114,7 @@ export default function Layout({ children }: LayoutProps) {
                 {branding.name}
               </Heading>
               <Text color={textSubheaderColor}>
-                Empowering Jewish creators to share their voices and build
+                Empowering creators to share their voices and build
                 thriving communities.
               </Text>
             </GridItem>
@@ -157,7 +156,7 @@ export default function Layout({ children }: LayoutProps) {
               </Text>
             </GridItem>
           </Grid>
-        </Container>
+        </Box>
       </Box>
     </Box>
   );

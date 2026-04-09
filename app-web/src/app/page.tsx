@@ -9,7 +9,6 @@ import {
   HStack,
   SimpleGrid,
   Image,
-  Container,
   Icon,
 } from "@chakra-ui/react";
 // Import the interactive components
@@ -44,7 +43,7 @@ export default function MarketingPage() {
 
         {/* Community Section */}
         <Box as="section" py="6rem" bg="white">
-          <Container maxW="1200px">
+          <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} align="start" mb={12}>
               <Text
                 bg={branding.colors.bgWarm}
@@ -58,12 +57,10 @@ export default function MarketingPage() {
                 {marketing.communitySection.pillLabel}
               </Text>
               <Heading as="h2" size="3xl">
-                Join Thriving Jewish Communities
+                {marketing.heroSection.joinMessage}
               </Heading>
               <Text fontSize="lg">
-                Discover spaces where Jewish voices are celebrated, shared, and
-                supported. From Torah scholars to Jewish artists, find your
-                place in our growing {branding.name}.
+                {marketing.heroSection.discoverMessage} {marketing.heroSection.fromText}
               </Text>
             </VStack>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
@@ -145,7 +142,7 @@ export default function MarketingPage() {
                 </Button>
               </Link>
             </Flex>
-          </Container>
+          </Box>
         </Box>
 
         {/* CTA Section */}
@@ -155,7 +152,7 @@ export default function MarketingPage() {
           bg={branding.colors.primary}
           color="white"
         >
-          <Container maxW="1200px">
+          <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
             <Flex
               direction={{ base: "column", lg: "row" }}
               gap={{ base: 12, lg: 16 }}
@@ -180,8 +177,7 @@ export default function MarketingPage() {
                 </Text>
                 <Heading size="2xl">Start building your {branding.name} today</Heading>
                 <Text color="whiteAlpha.800" maxW="550px">
-                  Join hundreds of Jewish creators building meaningful
-                  communities and sustainable income through their passion and
+                  {marketing.heroSection.joinCreators} and sustainable income through their passion and
                   creativity.
                 </Text>
 
@@ -229,7 +225,7 @@ export default function MarketingPage() {
                       boxSize="24px"
                       flexShrink={0}
                     />
-                    <Text>Direct access to the Jewish voices you love</Text>
+                    <Text>{marketing.heroSection.directAccess}</Text>
                   </HStack>
                   <HStack gap={4}>
                     <Icon
@@ -324,7 +320,7 @@ export default function MarketingPage() {
                 </VStack>
               </Box>
             </Flex>
-          </Container>
+          </Box>
         </Box>
       </>
 

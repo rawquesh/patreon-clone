@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { homeAPI } from "@/lib/backend-services/home-service";
 import { useSubscription } from "@/context/subscription.provider";
+import { branding } from "@/config/branding";
 
 // Interface for creator data from posts
 interface Creator {
@@ -220,7 +221,7 @@ const HomePage: React.FC = () => {
   if (!user) {
     return (
       <Box p={6} maxW="1200px" mx="auto">
-        <Heading mb={6}>Welcome to Patreon Clone</Heading>
+        <Heading mb={6}>{branding.name}</Heading>
         <Text fontSize="lg">
           Sign in to see posts from creators you follow.
         </Text>

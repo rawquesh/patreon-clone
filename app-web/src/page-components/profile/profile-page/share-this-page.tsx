@@ -1,6 +1,7 @@
 "use client";
 
 import { IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   DialogBody,
@@ -166,7 +167,7 @@ const ShareThisPage: React.FC<Props> = () => {
           <Stack>
             <ProfilePreview
               username="goutham"
-              profilePicture="https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+              profilePicture={branding.assets.placeholderProfilePicture}
               coverImage="/icons/cover.svg"
             />
             <Stack mt={"24px"}>

@@ -1,21 +1,19 @@
-import { Box, Heading, Text, List, Container } from "@chakra-ui/react";
+import { Box, Heading, Text, List } from "@chakra-ui/react";
 import React from "react";
 import { branding } from "@/config/branding";
 
 const TermsOfServicePage: React.FC = () => {
   return (
-    <Container maxW="800px" py={12}>
+    <Box maxW="800px" mx="auto" py={12} px={{ base: 4, md: 6 }}>
       <Box>
         <Heading as="h1" size="xl" mb={6}>
-          Patreon Clone Terms of Service
+          {branding.name} Terms of Service
         </Heading>
         <Text mb={4} fontStyle="italic">
-          Effective Date: March 1, 2025
+          Effective Date: {branding.legal.effectiveDate}
         </Text>
         <Text mb={6}>
-          {
-            'Welcome to Patreon Clone! Patreon Clone is a platform that empowers Jewish content creators to build, engage, and monetize their communities. By using Patreon Clone, you agree to these Terms of Service ("Terms"), which govern your access to and use of our platform, website, and related services ("Services").'
-          }
+          {branding.name} is a platform that empowers content creators to build, engage, and monetize their communities. By using {branding.name}, you agree to these Terms of Service (&ldquo;Terms&rdquo;), which govern your access to and use of our platform, website, and related services (&ldquo;Services&rdquo;).
         </Text>
 
         <Heading as="h2" size="lg" mt={8} mb={4}>
@@ -27,13 +25,13 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={4} gap={1}>
           <List.Item>
-            You must be at least 13 years old to create an account. If you are
-            under 18, you may only use Patreon Clone with parental or guardian
+            You must be at least {branding.legal.minimumAge} years old to create an account. If you are
+            under {branding.legal.minimumCreatorAge}, you may only use {branding.name} with parental or guardian
             permission.
           </List.Item>
           <List.Item>
             If you create an account as a content creator, you must be at least
-            18 years old.
+            {branding.legal.minimumCreatorAge} years old.
           </List.Item>
         </List.Root>
 
@@ -59,7 +57,7 @@ const TermsOfServicePage: React.FC = () => {
             You may delete your account at any time through your settings.
           </List.Item>
           <List.Item>
-            Patreon Clone reserves the right to suspend or terminate accounts that
+            {branding.name} reserves the right to suspend or terminate accounts that
             violate our policies or for other reasons deemed necessary.
           </List.Item>
         </List.Root>
@@ -67,7 +65,7 @@ const TermsOfServicePage: React.FC = () => {
         <Heading as="h2" size="lg" mt={8} mb={4}>
           2. User Types & Access Levels
         </Heading>
-        <Text mb={4}>Patreon Clone has three primary user types:</Text>
+        <Text mb={4}>{branding.name} has three primary user types:</Text>
         <List.Root mb={4} gap={2}>
           <List.Item>
             <Text fontWeight="bold" as="span">
@@ -111,7 +109,7 @@ const TermsOfServicePage: React.FC = () => {
             Members pay for subscriptions on a monthly or annual basis.
           </List.Item>
           <List.Item>
-            Patreon Clone facilitates payments via third-party processors like Stripe.
+            {branding.name} facilitates payments via third-party processors like Stripe.
             By using our Services, you agree to their terms.
           </List.Item>
           <List.Item>Subscription payments are billed in advance.</List.Item>
@@ -122,8 +120,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={4} gap={1}>
           <List.Item>
-            Patreon Clone takes a percentage of creator earnings to cover platform
-            costs. Fee details are available on our pricing page.
+            {branding.name} {branding.platform.feeDescription}. Fee details are available on our pricing page.
           </List.Item>
         </List.Root>
 
@@ -149,7 +146,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={4} gap={1}>
           <List.Item>
-            Creators retain full ownership of their content but grant Patreon Clone a
+            Creators retain full ownership of their content but grant {branding.name} a
             non-exclusive license to host, display, and distribute it within the
             platform.
           </List.Item>
@@ -164,7 +161,7 @@ const TermsOfServicePage: React.FC = () => {
             property rights is prohibited.
           </List.Item>
           <List.Item>
-            Patreon Clone reserves the right to remove content that violates these
+            {branding.name} reserves the right to remove content that violates these
             standards.
           </List.Item>
         </List.Root>
@@ -211,12 +208,11 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
 
         <Heading as="h3" size="md" mt={6} mb={3}>
-          6.1 Patreon Clone&apos;s Role:
+          6.1 {branding.name}&apos;s Role:
         </Heading>
         <List.Root mb={4} gap={1}>
           <List.Item>
-            Patreon Clone acts as an intermediary between creators and their
-            audiences.
+            {branding.name} {branding.platform.roleDescription}.
           </List.Item>
           <List.Item>
             We are not liable for disputes between users or third-party claims
@@ -229,9 +225,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={4} gap={1}>
           <List.Item>
-            {
-              'Patreon Clone is provided on an "as is" basis. We are not responsible for service interruptions, loss of earnings, or data breaches.'
-            }
+            {branding.name} is provided on an &ldquo;as is&rdquo; basis. We are not responsible for service interruptions, loss of earnings, or data breaches.
           </List.Item>
           <List.Item>
             Our total liability is limited to the amount paid by a user in the
@@ -248,7 +242,7 @@ const TermsOfServicePage: React.FC = () => {
             on their earnings.
           </List.Item>
           <List.Item>
-            Patreon Clone may collect tax-related information as required by law.
+            {branding.name} may collect tax-related information as required by law.
           </List.Item>
         </List.Root>
 
@@ -262,7 +256,7 @@ const TermsOfServicePage: React.FC = () => {
         <List.Root mb={4} gap={1}>
           <List.Item>
             Any disputes will be resolved through binding arbitration in
-            California.
+            {branding.legal.jurisdiction}.
           </List.Item>
           <List.Item>Users waive the right to class action lawsuits.</List.Item>
         </List.Root>
@@ -272,7 +266,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={6} gap={1}>
           <List.Item>
-            These Terms are governed by the laws of California.
+            These Terms are governed by the laws of {branding.legal.governingLaw}.
           </List.Item>
         </List.Root>
 
@@ -281,7 +275,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <List.Root mb={6} gap={1}>
           <List.Item>
-            Patreon Clone may update these Terms from time to time. Significant
+            {branding.name} may update these Terms from time to time. Significant
             changes will be communicated through the platform.
           </List.Item>
         </List.Root>
@@ -293,7 +287,7 @@ const TermsOfServicePage: React.FC = () => {
           For questions about these Terms, contact us at {branding.contact.supportEmail}.
         </Text>
       </Box>
-    </Container>
+    </Box>
   );
 };
 

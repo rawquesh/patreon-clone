@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Flex,
   Grid,
   Heading,
@@ -15,13 +14,13 @@ import { branding } from "@/config/branding";
 export const MarketingPageFooter = () => {
   return (
     <Box as="footer" py={20} bg="white">
-      <Container maxW="1200px">
+      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
         <Flex alignItems={"start"} justify="space-between">
           <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
             <VStack align="start" gap={4}>
               <Heading size="sm">{branding.name}</Heading>
               <Text fontSize="sm">
-                Empowering Jewish creators to share their voices, build thriving
+                Empowering creators to share their voices, build thriving
                 communities, and generate meaningful connections.
               </Text>
             </VStack>
@@ -61,7 +60,7 @@ export const MarketingPageFooter = () => {
         >
           {branding.copyright}
         </Text>
-      </Container>
+      </Box>
     </Box>
   );
 };

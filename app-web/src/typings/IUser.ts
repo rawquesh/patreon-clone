@@ -42,10 +42,10 @@ export enum CreatorCategory {
   GENERAL_EDUCATION = "General Education",
   FOOD_COOKING = "Food & Cooking",
   LIFESTYLE_WELLNESS = "Lifestyle & Wellness",
-  TRAVEL_ISRAEL = "Travel & Israel",
+  TRAVEL_ADVENTURE = "Travel & Adventure",
   BUSINESS_FINANCE = "Business & Finance",
   RELATIONSHIPS_PARENTING = "Relationships & Parenting",
-  TORAH_STUDY = "Torah Study",
+  EDUCATION_LEARNING = "Education & Learning",
   FITNESS_HEALTH = "Fitness & Health",
 }
 

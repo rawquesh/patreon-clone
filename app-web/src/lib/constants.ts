@@ -10,9 +10,9 @@ export const HARDCODED_CATEGORIES = [
   { id: "GENERAL_EDUCATION", name: "General Education" },
   { id: "FOOD_COOKING", name: "Food & Cooking" },
   { id: "LIFESTYLE_WELLNESS", name: "Lifestyle & Wellness" },
-  { id: "TRAVEL_ISRAEL", name: "Travel & Israel" },
+  { id: "TRAVEL_ADVENTURE", name: "Travel & Adventure" },
   { id: "BUSINESS_FINANCE", name: "Business & Finance" },
   { id: "RELATIONSHIPS_PARENTING", name: "Relationships & Parenting" },
-  { id: "TORAH_STUDY", name: "Torah Study" },
+  { id: "EDUCATION_LEARNING", name: "Education & Learning" },
   { id: "FITNESS_HEALTH", name: "Fitness & Health" },
 ];

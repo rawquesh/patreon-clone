@@ -6,7 +6,7 @@ import {
   useTopCreatorsByCategory,
 } from "@/lib/backend-services/home-service";
 import CreatorCard from "@/components/ui/creator-card";
-import { Container, Grid, Heading, Text, Spinner } from "@chakra-ui/react";
+import { Box, Grid, Heading, Text, Spinner } from "@chakra-ui/react";
 import React from "react";
 
 type Props = {
@@ -37,38 +37,38 @@ const CategoryPage = ({ category: categoryId }: Props) => {
   // Handle invalid category ID before loading/error states
   if (!categoryObject) {
     return (
-      <Container maxW="container.xl" py={8}>
+      <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
         <Heading as="h1" mb={6}>
           Category Not Found
         </Heading>
         <Text>The category ID {categoryId} is not valid.</Text>
-      </Container>
+      </Box>
     );
   }
 
   // Handle Loading state
   if (isLoading) {
     return (
-      <Container centerContent py={20}>
+      <Box mx="auto" py={20} textAlign="center">
         <Spinner size="xl" />
         <Text mt={4}>Loading creators...</Text>
-      </Container>
+      </Box>
     );
   }
 
   // Handle Error state - Simplified
   if (isError) {
     return (
-      <Container maxW="container.xl" py={8}>
+      <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
         <Text color="red.500">
           Error: Could not load creators for this category.
         </Text>
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <Container maxW="container.xl" py={8}>
+    <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
       <Heading as="h1" mb={6}>
         Top Creators in {categoryName}
       </Heading>
@@ -96,7 +96,7 @@ const CategoryPage = ({ category: categoryId }: Props) => {
           ))}
         </Grid>
       )}
-    </Container>
+    </Box>
   );
 };
 

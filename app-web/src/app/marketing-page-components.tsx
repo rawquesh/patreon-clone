@@ -11,7 +11,6 @@ import {
   HStack,
   Image,
   IconButton,
-  Container,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { branding, marketing } from "@/config";
@@ -26,7 +25,7 @@ const featuresData: Record<
       icon: <Icon icon="stash:monetize" />,
       title: "Turn Your Passion Into Income",
       description:
-        `Transform your Torah, creativity, and expertise into sustainable income. With ${branding.name}, you can offer paid subscriptions, host live events or shiurim, share exclusive content, or teach classes — all on a platform that respects your values and mission.`,
+        `Transform your creativity and expertise into sustainable income. With ${branding.name}, you can offer paid subscriptions, host live events, share exclusive content, or teach classes — all on a platform that respects your values and mission.`,
     },
     {
       icon: <Icon icon="hugeicons:honor" />,
@@ -48,8 +47,7 @@ const featuresData: Record<
       description: `Your followers aren't just numbers — they're people seeking
                   connection. ${branding.name} transforms passive followers into active
                   community members who feel seen, heard, and valued through
-                  tools designed specifically for Jewish creators and
-                  communities.`,
+                  tools designed specifically for creators and communities.`,
     },
   ],
   "Simplify Your Work": [
@@ -68,21 +66,20 @@ const featuresData: Record<
                   focus on creating value rather than fighting with technology.`,
     },
   ],
-  "Torah Values": [
+  "Creator Values": [
     {
-      icon: <Icon icon="mdi:jewish" />,
-      title: "Built for Jewish Creators",
+      icon: <Icon icon="mdi:account-heart" />,
+      title: "Built for Creators",
       description: `Unlike mainstream platforms, ${branding.name} was built from the ground
-                  up for Jewish creators. Everything reflects the needs of a
-                  Torah-centered life, from scheduling around holidays to
-                  content moderation aligned with Jewish values.`,
+                  up for creators. Everything reflects the needs of a modern creator,
+                  from flexible scheduling to content moderation aligned with community values.`,
     },
     {
       icon: <Icon icon="game-icons:peace-dove" />,
-      title: "A Peaceful, Jewish-Centered Environment",
+      title: "A Peaceful, Creator-Centered Environment",
       description: `Enjoy a space free from trolls, spam, and the distractions of
                   mainstream social media. ${branding.name} provides a respectful
-                  environment where Jewish voices can be shared authentically,
+                  environment where creators can share their work authentically,
                   without fear of censorship or harassment.`,
     },
   ],
@@ -93,7 +90,7 @@ export function FeaturesSection() {
 
   return (
     <Box as="section" py="6rem">
-      <Container maxW="1200px" px={{ base: 4, md: 8 }}>
+      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 8 }}>
         <VStack gap={4} align="flex-start" mb={12}>
           <Text
             bg={branding.colors.bgWarm}
@@ -193,7 +190,7 @@ export function FeaturesSection() {
             ))}
           </VStack>
         </Flex>
-      </Container>
+      </Box>
     </Box>
   );
 }
@@ -209,7 +206,7 @@ export function TestimonialsSlider() {
 
   return (
     <Box as="section" bg={branding.colors.bgWarm} py="6rem">
-      <Container maxW="800px" px={4}>
+      <Box maxW="800px" mx="auto" px={{ base: 4, md: 6 }}>
         <VStack gap={8} textAlign="center">
           <Text
             bg={branding.colors.duneLight}
@@ -321,7 +318,7 @@ export function TestimonialsSlider() {
             </IconButton>
           </HStack>
         </VStack>
-      </Container>
+      </Box>
     </Box>
   );
 }

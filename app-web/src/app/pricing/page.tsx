@@ -8,7 +8,6 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Container,
 } from "@chakra-ui/react";
 import {
   EarningsCalculator,
@@ -86,7 +85,7 @@ export default function PricingPage() {
           pt={{ base: "5rem", md: "8rem" }}
           pb="3rem"
         >
-          <Container maxW="960px">
+          <Box maxW="960px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4}>
               <Text
                 bg={branding.colors.bgWarm}
@@ -123,11 +122,11 @@ export default function PricingPage() {
                 introduce paid options when you&apos;re ready.
               </Text>
             </VStack>
-          </Container>
+          </Box>
         </Box>
 
         <Box as="section" py={{ base: "3rem", md: "4rem" }}>
-          <Container maxW="1000px">
+          <Box maxW="1000px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={10}>
               <Heading as="h2" size="3xl">
                 See how much you could earn
@@ -138,11 +137,11 @@ export default function PricingPage() {
               </Text>
             </VStack>
             <EarningsCalculator />
-          </Container>
+          </Box>
         </Box>
 
         <Box as="section" py="6rem" bg={branding.colors.bgWarm}>
-          <Container maxW="1200px">
+          <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={12}>
               <Text
                 bg={branding.colors.duneLight}
@@ -205,11 +204,11 @@ export default function PricingPage() {
                 </VStack>
               ))}
             </SimpleGrid>
-          </Container>
+          </Box>
         </Box>
 
         <Box as="section" py="6rem">
-          <Container maxW="1000px">
+          <Box maxW="1000px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={12}>
               <Heading as="h2" size="xl">
                 Frequently Asked Questions
@@ -219,7 +218,7 @@ export default function PricingPage() {
               </Text>
             </VStack>
             <FaqAccordion />
-          </Container>
+          </Box>
         </Box>
 
         <Box
@@ -229,13 +228,13 @@ export default function PricingPage() {
           color="white"
           textAlign="center"
         >
-          <Container maxW="800px">
+          <Box maxW="800px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={6}>
               <Heading as="h2" size="xl" color="white">
                 Ready to build your {branding.name}?
               </Heading>
               <Text fontSize="lg" color="whiteAlpha.900">
-                Join hundreds of Jewish creators building meaningful connections
+                Join hundreds of creators building meaningful connections
                 and sustainable income.
               </Text>
               <HStack gap={4}>
@@ -265,7 +264,7 @@ export default function PricingPage() {
                 </Link>
               </HStack>
             </VStack>
-          </Container>
+          </Box>
         </Box>
       </>
 

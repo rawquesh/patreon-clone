@@ -1,4 +1,5 @@
 "use client";
+import { branding } from "@/config/branding";
 import { Editable, EditableRoot, Flex, Stack, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState } from "react";
@@ -51,7 +52,7 @@ const SocialsSection: React.FC = () => {
       <Flex color={"star.600"} gap={2}>
         <Icon icon={"solar:link-bold"} />
         <Text transform={"translateY(-2px)"} fontSize={"sm"}>
-          patreon-clone.example.com/username
+          {branding.urls.frontend}/username
         </Text>
       </Flex>
     </Stack>

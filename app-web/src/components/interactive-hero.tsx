@@ -9,7 +9,6 @@ import {
   Button,
   VStack,
   HStack,
-  Container,
   Image,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -57,7 +56,7 @@ export function InteractiveHero() {
 
   return (
     <Box as="section" pt={{ base: "5rem", md: "8rem" }} pb="5rem">
-      <Container maxW="1200px">
+      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
         <Flex
           direction={{ base: "column-reverse", lg: "row" }}
           align="center"
@@ -94,7 +93,7 @@ export function InteractiveHero() {
                 textDecorationColor="rgba(29, 112, 191, 0.2)"
                 textUnderlineOffset="8px"
               >
-                Jewish Community
+                Creator Community
               </Box>{" "}
               online
             </Heading>
@@ -195,7 +194,7 @@ export function InteractiveHero() {
             <div className="pattern pattern-2"></div>
           </MotionFlex>
         </Flex>
-      </Container>
+      </Box>
     </Box>
   );
 }

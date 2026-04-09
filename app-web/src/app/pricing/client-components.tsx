@@ -268,7 +268,7 @@ const faqData = [
   },
   {
     q: `What makes ${branding.name} different from other platforms?`,
-    a: `${branding.name} is specifically built for Jewish creators. Our platform is designed with Torah values at its core, offering features tailored to Jewish community needs.`,
+    a: `${branding.name} is specifically built for creators. Our platform is designed with community values at its core, offering features tailored to creator community needs.`,
   },
 ];
 

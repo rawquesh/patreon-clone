@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Box,
-  Container,
   Flex,
   Grid,
   Heading,
@@ -109,7 +108,7 @@ export default function SearchPage() {
   };
 
   return (
-    <Container maxW="container.xl" py={8}>
+    <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
       <Box mb={8}>
         <form onSubmit={handleSearch}>
           <Flex position="relative">
@@ -438,6 +437,6 @@ export default function SearchPage() {
           color: #3182ce;
         }
       `}</style>
-    </Container>
+    </Box>
   );
 }

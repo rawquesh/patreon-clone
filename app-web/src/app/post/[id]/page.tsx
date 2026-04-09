@@ -55,7 +55,7 @@ export async function generateMetadata(
   } catch (error) {
     console.log(error);
     return {
-      title: "Post | Patreon Clone",
+      title: `Post | ${branding.name}`,
       description: "View post content",
     };
   }

@@ -1,3 +1,4 @@
+import { branding } from "@/config/branding";
 import {
   Image,
   Stack,
@@ -403,7 +404,7 @@ const AboutPage: React.FC<{ creatorUsername: string }> = ({
           <Text fontWeight={600}>Introduce yourself</Text>
           <Text>
             Help people coming to your page get to know you. Share more about
-            who you are, what you create, and why you&apos;re on Patreon Clone!
+            who you are, what you create, and why you&apos;re on {branding.name}!
           </Text>
           {/* Trigger Button for Modal */}
           <Button onClick={onOpen} mx={"auto"} w={"fit"} variant={"outline"}>

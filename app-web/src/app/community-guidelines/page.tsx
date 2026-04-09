@@ -1,24 +1,24 @@
 import React from "react";
-import { Box, Heading, Text, List, Stack, Container } from "@chakra-ui/react";
+import { Box, Heading, Text, List, Stack } from "@chakra-ui/react";
 import { branding } from "@/config/branding";
 
 const CommunityGuidelinesPage: React.FC = () => {
   return (
-    <Container maxW="1024px" py={12} px={{ base: 4, md: 8 }}>
+    <Box maxW="1024px" mx="auto" py={12} px={{ base: 4, md: 6 }}>
       <Stack gap={8}>
         <Box>
           <Heading as="h1" size="xl" mb={2}>
-            Patreon Clone Community Guidelines
+            {branding.name} Community Guidelines
           </Heading>
-          <Text fontStyle="italic">Version 1.0 — Effective [Date]</Text>
+          <Text fontStyle="italic">Version 1.0 — Effective {branding.legal.effectiveDate}</Text>
         </Box>
 
         <Text>
-          Patreon Clone is dedicated to fostering a positive, respectful, and
-          meaningful space for Jewish creators and their communities. These
+          {branding.name} is dedicated to fostering a positive, respectful, and
+          meaningful space for creators and their communities. These
           Community Guidelines establish the standards for interaction on
-          Patreon Clone, ensuring a safe and engaging environment for everyone. By
-          using Patreon Clone, you agree to abide by these guidelines in addition to
+          {branding.name}, ensuring a safe and engaging environment for everyone. By
+          using {branding.name}, you agree to abide by these guidelines in addition to
           our Terms of Service.
         </Text>
 
@@ -79,15 +79,14 @@ const CommunityGuidelinesPage: React.FC = () => {
                   </Text>
                   <List.Root>
                     <List.Item>
-                      Educational or religious discussions within a respectful
-                      context.
+                      Educational discussions within a respectful context.
                     </List.Item>
                     <List.Item>
                       Breastfeeding or post-mastectomy images.
                     </List.Item>
                     <List.Item>
                       Depictions of art or history that align with
-                      Patreon Clone&apos;s mission.
+                      {branding.name}&apos;s mission.
                     </List.Item>
                   </List.Root>
                 </List.Item>
@@ -142,7 +141,7 @@ const CommunityGuidelinesPage: React.FC = () => {
           <Heading as="h2" size="lg" mb={4}>
             2. Prohibited Activities
           </Heading>
-          <Text mb={4}>The following actions are not allowed on Patreon Clone:</Text>
+          <Text mb={4}>The following actions are not allowed on {branding.name}:</Text>
 
           <Stack gap={4}>
             <Box>
@@ -218,13 +217,13 @@ const CommunityGuidelinesPage: React.FC = () => {
             <List.Root pl={4}>
               <List.Item>
                 Set their own engagement rules, as long as they align with
-                Patreon Clone&apos;s guidelines.
+                {branding.name}&apos;s guidelines.
               </List.Item>
               <List.Item>
                 Remove comments, posts, or members who violate their rules.
               </List.Item>
               <List.Item>
-                Report issues to Patreon Clone for further review.
+                Report issues to {branding.name} for further review.
               </List.Item>
             </List.Root>
           </Box>
@@ -243,7 +242,7 @@ const CommunityGuidelinesPage: React.FC = () => {
             {'4. Enforcement & "Three Strikes" Policy'}
           </Heading>
           <Text mb={4}>
-            Patreon Clone reserves the right to take action against violations,
+            {branding.name} reserves the right to take action against violations,
             including:
           </Text>
 
@@ -295,9 +294,9 @@ const CommunityGuidelinesPage: React.FC = () => {
               </Heading>
               <Text>
                 If you believe a strike was issued in error, you may appeal
-                within <strong>15 days</strong> by responding to the
-                notification email. Patreon Clone will review and respond within{" "}
-                <strong>30 days</strong>.
+                within <strong>{branding.legal.strikeAppealDays} days</strong> by responding to the
+                notification email. We will review and respond within{" "}
+                <strong>{branding.legal.strikeReviewDays} days</strong>.
               </Text>
             </Box>
           </Stack>
@@ -314,7 +313,7 @@ const CommunityGuidelinesPage: React.FC = () => {
           </Text>
         </Box>
       </Stack>
-    </Container>
+    </Box>
   );
 };
 

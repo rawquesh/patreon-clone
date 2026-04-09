@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { branding } from "@/config/branding";
 import {
   DialogBody,
   DialogContent,
@@ -62,7 +63,7 @@ const NewChatModal: React.FC = () => {
                 width={"90px"}
                 height={"90px"}
                 shape={"rounded"}
-                src="https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+                src={branding.assets.placeholderProfilePicture}
               />
             </Center>
             <Field label="Name">

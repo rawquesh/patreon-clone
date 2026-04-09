@@ -1,4 +1,4 @@
-export { branding } from "./branding";
+export { branding, getProfileUrl } from "./branding";
 export type { Branding } from "./branding";
 
 export { seoDefaults, getBaseUrl } from "./seo";

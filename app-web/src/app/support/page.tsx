@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  Container,
   Field,
   Heading,
   Input,
@@ -119,7 +118,7 @@ const SupportPage: React.FC = () => {
       <MarketingHeader />
 
       <Box as="section" bg="white" pt={{ base: "5rem", md: "8rem" }} pb={20}>
-        <Container maxW="3xl" px={{ base: 4, sm: 6, lg: 8 }}>
+        <Box maxW="3xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
           <Box maxW="2xl" mx="auto">
             <Heading
               as="h1"
@@ -315,7 +314,7 @@ const SupportPage: React.FC = () => {
               </Text>
             </Box>
           </Box>
-        </Container>
+        </Box>
       </Box>
 
       <MarketingPageFooter />

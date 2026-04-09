@@ -1,5 +1,6 @@
 "use client";
 import Comment from "@/components/comment";
+import { branding } from "@/config/branding";
 import {
   EditInput,
   ReplyInput,
@@ -109,7 +110,7 @@ const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
           onCancel={() => {}}
           avatarUrl={
             user?.profilePicture ||
-            "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+            branding.assets.placeholderProfilePicture
           }
         />
       )}
@@ -123,7 +124,7 @@ const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
           onCancel={() => {}}
           avatarUrl={
             user?.profilePicture ||
-            "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+            branding.assets.placeholderProfilePicture
           }
         />
       )}

@@ -1,4 +1,5 @@
 import React from "react";
+import { branding } from "@/config/branding";
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -32,7 +33,7 @@ const ViewChatDetails: React.FC = () => {
             <Flex gap={4} alignItems={"center"}>
               <Avatar
                 src={
-                  "https://patreon-clone-test-dps.s3.eu-north-1.amazonaws.com/profile-pictures/placeholder-male.jpg"
+                  branding.assets.placeholderProfilePicture
                 }
                 size={"2xl"}
               />

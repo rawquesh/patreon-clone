@@ -84,7 +84,7 @@ const DesktopSidenav: React.FC<Props> = ({ mode }) => {
             {branding.name}
           </Heading>
           {/* <Text fontSize="12px" color="#5A5954">
-            Jewish Community Hub
+            Creator Hub
           </Text> */}
         </VStack>
       </HStack>
