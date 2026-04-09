@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { branding, business } from './config';
 import * as express from 'express';
 
 async function bootstrap() {
@@ -26,18 +27,12 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://patreon-clone.vercel.app',
-      'https://www.patreon-clone.example.com',
-      'https://patreon-clone.example.com',
-    ],
+    origin: branding.corsOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   });
 
-  await app.listen(8080);
+  await app.listen(business.server.port);
 }
 bootstrap();

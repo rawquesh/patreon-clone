@@ -23,59 +23,12 @@ import { MarketingHeader } from "@/components/marketing-header";
 import { InteractiveHero } from "@/components/interactive-hero";
 import { HomePageForm } from "./home-page-form";
 import { MarketingPageFooter } from "./marketing-page-footer";
-
-const communityCardsData = [
-  {
-    imageSrc:
-      "https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?auto=format&fit=crop&w=400",
-    tag: "Torah Learning",
-    title: "Daily Daf Insights",
-    description:
-      "A community dedicated to daily Talmud study with insightful commentary and discussion.",
-    stat1: "5.2K Members",
-    stat2: "Daily",
-    author: {
-      name: "Rabbi David Katz",
-      title: "Torah Educator",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-  },
-  {
-    imageSrc:
-      "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=400",
-    tag: "Jewish Art",
-    title: "Modern Judaica",
-    description:
-      "Contemporary Jewish artists exploring traditional themes through modern artistic expressions.",
-    stat1: "3.8K Members",
-    stat2: "Weekly",
-    author: {
-      name: "Sarah Goldstein",
-      title: "Jewish Visual Artist",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-  },
-  {
-    imageSrc:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=400",
-    tag: "Podcast",
-    title: "Jewish History Unveiled",
-    description:
-      "Exploring the rich tapestry of Jewish history through engaging storytelling and scholarly research.",
-    stat1: "7.4K Listeners",
-    stat2: "Bi-weekly",
-    author: {
-      name: "Josh Levine",
-      title: "Jewish History Podcaster",
-      avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-    },
-  },
-];
+import { branding, marketing } from "@/config";
 
 export default function MarketingPage() {
   return (
     <Box
-      color="#5A5954"
+      color={branding.colors.star}
       // maxW="99vw"
       // border={"2px solid red"}
       mx={"auto"}
@@ -94,15 +47,15 @@ export default function MarketingPage() {
           <Container maxW="1200px">
             <VStack gap={4} align="start" mb={12}>
               <Text
-                bg="#F7F5ED"
-                color="#1D70BF"
+                bg={branding.colors.bgWarm}
+                color={branding.colors.primary}
                 fontWeight="600"
                 px={4}
                 py={2}
                 borderRadius="full"
                 fontSize={".75rem"}
               >
-                Find Your Patreon Clone
+                {marketing.communitySection.pillLabel}
               </Text>
               <Heading as="h2" size="3xl">
                 Join Thriving Jewish Communities
@@ -110,11 +63,11 @@ export default function MarketingPage() {
               <Text fontSize="lg">
                 Discover spaces where Jewish voices are celebrated, shared, and
                 supported. From Torah scholars to Jewish artists, find your
-                place in our growing patreon-clone.
+                place in our growing {branding.name}.
               </Text>
             </VStack>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
-              {communityCardsData.map((card, index) => (
+              {marketing.communityCards.map((card, index) => (
                 <Box
                   key={index}
                   bg="white"
@@ -137,7 +90,7 @@ export default function MarketingPage() {
                   <VStack p={6} align="start" gap={4}>
                     <Text
                       bg="rgba(29, 112, 191, 0.1)"
-                      color="#1D70BF"
+                      color={branding.colors.primary}
                       fontWeight="600"
                       px={3}
                       py={1}
@@ -151,14 +104,14 @@ export default function MarketingPage() {
                       {card.description}
                     </Text>
                     {/* STATS HSTACK - CORRECTED */}
-                    <HStack gap={6} color="#5A5954" fontSize="sm" w="full">
+                    <HStack gap={6} color={branding.colors.star} fontSize="sm" w="full">
                       {/* Added boxSize="16px" to both Icons */}
                       <HStack gap={2}>
-                        <Icon as={UserIcon} color="#1D70BF" boxSize="16px" />{" "}
+                        <Icon as={UserIcon} color={branding.colors.primary} boxSize="16px" />{" "}
                         <Text>{card.stat1}</Text>
                       </HStack>
                       <HStack gap={2}>
-                        <Icon as={PostIcon} color="#1D70BF" boxSize="16px" />{" "}
+                        <Icon as={PostIcon} color={branding.colors.primary} boxSize="16px" />{" "}
                         <Text>{card.stat2}</Text>
                       </HStack>
                     </HStack>
@@ -183,9 +136,9 @@ export default function MarketingPage() {
             <Flex justify="center" mt={12}>
               <Link href={"/community"}>
                 <Button
-                  bg="#1D70BF"
+                  bg={branding.colors.primary}
                   color="white"
-                  _hover={{ bg: "#3283d1" }}
+                  _hover={{ bg: branding.colors.primaryHover }}
                   size="lg"
                 >
                   Explore All Communities
@@ -199,7 +152,7 @@ export default function MarketingPage() {
         <Box
           as="section"
           py={{ base: "4rem", md: "6rem" }}
-          bg="#1D70BF"
+          bg={branding.colors.primary}
           color="white"
         >
           <Container maxW="1200px">
@@ -225,7 +178,7 @@ export default function MarketingPage() {
                 >
                   Ready to Share Your Voice?
                 </Text>
-                <Heading size="2xl">Start building your Patreon Clone today</Heading>
+                <Heading size="2xl">Start building your {branding.name} today</Heading>
                 <Text color="whiteAlpha.800" maxW="550px">
                   Join hundreds of Jewish creators building meaningful
                   communities and sustainable income through their passion and
@@ -307,14 +260,14 @@ export default function MarketingPage() {
                     <Button
                       size="lg"
                       bg="white"
-                      color="#1D70BF"
+                      color={branding.colors.primary}
                       _hover={{ bg: "gray.200" }}
                     >
                       Get Started
                     </Button>
                   </Link>
                   <Link
-                    href={"https://app.simplymeet.me/patreon-clone/patreon-clone-intro"}
+                    href={branding.urls.meeting}
                     target="_blank"
                   >
                     <Button
@@ -337,29 +290,29 @@ export default function MarketingPage() {
                 flex={1}
                 w="full"
                 bg="white"
-                color="#201F18"
+                color={branding.colors.textDark}
                 p={{ base: 6, md: 10 }}
                 borderRadius="16px"
                 boxShadow="0 20px 60px rgba(0,0,0,0.1)"
               >
                 <VStack gap={4} align="stretch">
                   <Heading size="lg" textAlign="center" mb={4}>
-                    Join Patreon Clone
+                    Join {branding.name}
                   </Heading>
                   <HomePageForm />
                   <Text
                     css={{
                       "& a": {
-                        color: "#1D70BF",
+                        color: branding.colors.primary,
                       },
                     }}
                     fontSize="xs"
                     textAlign="center"
-                    color="#5A5954"
+                    color={branding.colors.star}
                     pt={2}
                   >
                     By signing up, you agree to our{" "}
-                    <Link href="/tos" target="_blank" color="#1D70BF">
+                    <Link href="/tos" target="_blank" color={branding.colors.primary}>
                       Terms of Service
                     </Link>{" "}
                     and{" "}

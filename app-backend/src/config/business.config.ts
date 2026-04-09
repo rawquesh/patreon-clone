@@ -67,6 +67,8 @@ export const business = {
    * These should be overridden by S3_BUCKET_NAME, S3_COLLECTIONS_BUCKET, etc. in .env.
    */
   s3: {
+    /** Base URL for the default S3 bucket (used to construct full asset URLs). */
+    baseUrl: process.env.S3_ASSETS_BASE_URL || 'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com',
     defaultBucket: process.env.S3_BUCKET_NAME || 'patreon-clone-assets',
     collectionsBucket:
       process.env.S3_COLLECTIONS_BUCKET || 'patreon-clone-collections',

@@ -1,3 +1,5 @@
+import 'package:patreon-clone/config/index.dart';
+
 class AppTypes {
   static const String user = "user";
   static const String admin = "admin";
@@ -31,7 +33,7 @@ class AppAssets {
   static const String loginHeader = '$imagesFolder/login_header.png';
   static const String otpHeader = '$imagesFolder/otp_header.png';
   static const String signupBanner = '$imagesFolder/signupBanner.png';
-  static const String patreon-cloneLogo = '$imagesFolder/patreon-clone_logo.png';
+  static const String patreon-cloneLogo = AppConfig.logoAssetPath;
   static const String male = '$imagesFolder/male.png';
   static const String communityPolicyIcon = '$imagesFolder/community_policy_icon.png';
   static const String featureRequestIcon = '$imagesFolder/feature_request_icon.png';

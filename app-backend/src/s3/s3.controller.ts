@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { S3Service } from './s3.service';
+import { business } from '@/config';
 
 class CreateVideoUploadSessionDto {
   fileName: string;
@@ -51,7 +52,7 @@ export class S3Controller {
         fileName,
         fileType,
         fileSize,
-        bucket: 'patreon-clone-assets',
+        bucket: business.s3.defaultBucket,
         folder: 'videos',
       });
       console.log(result);
@@ -77,7 +78,7 @@ export class S3Controller {
       );
     }
 
-    const bucket = 'patreon-clone-assets';
+    const bucket = business.s3.defaultBucket;
 
     try {
       const videoUrl = await this.s3Service.completeMultipartUpload({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/styles/styles.dart';
 import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
 import 'package:patreon-clone/models/creator/creator_model.dart';
@@ -202,7 +203,7 @@ class _CreatorProfileDetailsWidgetState extends State<CreatorProfileDetailsWidge
                     child: CommonCachedNetworkImage(
                       imageUrl: widget.creatorModel.profileCover.isNotEmpty
                           ? widget.creatorModel.profileCover
-                          : "https://picsum.photos/400/200", // Fallback image
+                          : AppConfig.placeholderImageUrl, // Fallback image
                       height: _getResponsiveSize(140),
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -283,7 +284,7 @@ class _CreatorProfileDetailsWidgetState extends State<CreatorProfileDetailsWidge
                                 SizedBox(height: _getResponsiveSize(12)),
                                 GestureDetector(
                                   onTap: () {
-                                    final url = 'https://patreon-clone.example.com/creator/${widget.creatorModel.username}';
+                                    final url = AppConfig.creatorShareUrl(widget.creatorModel.username);
                                     Clipboard.setData(ClipboardData(text: url));
                                     MyToast.showSuccess(context: context, msg: 'Link copied to clipboard!');
                                   },
@@ -293,7 +294,7 @@ class _CreatorProfileDetailsWidgetState extends State<CreatorProfileDetailsWidge
                                       Icon(Icons.link, size: _getResponsiveSize(16), color: themeData.primaryColor),
                                       SizedBox(width: _getResponsiveSize(4)),
                                       Text(
-                                        'patreon-clone.example.com/creator/${widget.creatorModel.username}',
+                                        AppConfig.creatorWebsiteUrl(widget.creatorModel.username),
                                         style: TextStyle(
                                           fontSize: _getResponsiveSize(14),
                                           color: themeData.primaryColor,

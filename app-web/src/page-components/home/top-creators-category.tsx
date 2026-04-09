@@ -3,6 +3,7 @@ import { Box, Flex, Heading, Link, Text, Badge } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Scroller from "@/components/ui/scroller";
+import { branding } from "@/config/branding";
 import SectionSkeleton from "@/components/ui/section-skeleton";
 import {
   useTopCreatorsByCategory,
@@ -135,7 +136,7 @@ const TopCreatorsCategory: React.FC = () => {
           style={{
             padding: "8px 12px",
             borderRadius: "6px",
-            border: "1px solid #E2E8F0",
+            border: `1px solid ${branding.colors.border}`,
             backgroundColor: "white",
             fontSize: "14px",
             fontWeight: "500",

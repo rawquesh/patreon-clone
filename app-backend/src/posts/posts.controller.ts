@@ -25,6 +25,7 @@ import {
 } from '@nestjs/platform-express';
 import { PostsService } from './posts.service';
 import { S3Service } from '@/s3/s3.service';
+import { business } from '@/config';
 import {
   CommentsQueryDto,
   CreateAudioPostDto,
@@ -401,7 +402,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           attachments.push({
             url: fileUrl,
@@ -451,7 +452,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newAttachments.push({
             url: fileUrl,
@@ -530,18 +531,18 @@ export class PostsController {
         fileName: video.originalname,
         fileSize: `${fileSizeMB} MB (${video.size} bytes)`,
         mimeType: video.mimetype,
-        bucket: 'patreon-clone-assets',
+        bucket: business.s3.defaultBucket,
         folder: 'videos',
         timestamp: new Date().toISOString(),
         uploadStartTime,
       });
 
       try {
-        // Upload videos to patreon-clone-assets bucket per requirement
+        // Upload videos to the configured S3 bucket
         finalVideoUrl = await this.s3Service.uploadFile(
           video,
           'videos',
-          'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
 
         // Log video upload completion
@@ -606,7 +607,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'video-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
 
           const attachmentEndTime = Date.now();
@@ -715,7 +716,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'video-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newAttachments.push({
             url: fileUrl,
@@ -793,7 +794,7 @@ export class PostsController {
       audioFileUrl = await this.s3Service.uploadFile(
         audioFile,
         'audio',
-        'patreon-clone-assets',
+        business.s3.defaultBucket,
       );
     } catch (error) {
       throw new BadRequestException(
@@ -807,7 +808,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'audio-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           attachments.push({
             url: fileUrl,
@@ -869,7 +870,7 @@ export class PostsController {
         audioFileUrl = await this.s3Service.uploadFile(
           audioFile,
           'audio',
-          'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
       } catch (error) {
         throw new BadRequestException(
@@ -888,7 +889,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'audio-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newAttachments.push({
             url: fileUrl,
@@ -985,7 +986,7 @@ export class PostsController {
       blurredThumbnailUrl = await this.s3Service.uploadFile(
         blurredImageFile,
         'images/thumbnails',
-        'patreon-clone-assets',
+        business.s3.defaultBucket,
       );
     } catch (error) {
       console.error('Failed to create or upload blurred thumbnail:', error);
@@ -997,7 +998,7 @@ export class PostsController {
         const imageUrl = await this.s3Service.uploadFile(
           image,
           'images',
-          'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
         imageUrls.push(imageUrl);
       } catch (error) {
@@ -1015,7 +1016,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'image-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           attachments.push({
             url: fileUrl,
@@ -1092,7 +1093,7 @@ export class PostsController {
           const imageUrl = await this.s3Service.uploadFile(
             image,
             'images',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newImageUrls.push(imageUrl);
         } catch (error) {
@@ -1115,7 +1116,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'image-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newAttachments.push({
             url: fileUrl,
@@ -1183,7 +1184,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'link-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           attachments.push({
             url: fileUrl,
@@ -1244,7 +1245,7 @@ export class PostsController {
           const fileUrl = await this.s3Service.uploadFile(
             file,
             'link-post-attachments',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
           newAttachments.push({
             url: fileUrl,
@@ -1386,13 +1387,13 @@ export class PostsController {
 
   private getBucketNameForPostType(type: PostType): string {
     const bucketMap = {
-      [PostType.TEXT]: 'patreon-clone-assets',
-      [PostType.IMAGE]: 'patreon-clone-assets',
-      [PostType.AUDIO]: 'patreon-clone-assets',
-      [PostType.VIDEO]: 'patreon-clone-assets',
-      [PostType.LINK]: 'patreon-clone-assets',
+      [PostType.TEXT]: business.s3.defaultBucket,
+      [PostType.IMAGE]: business.s3.defaultBucket,
+      [PostType.AUDIO]: business.s3.defaultBucket,
+      [PostType.VIDEO]: business.s3.defaultBucket,
+      [PostType.LINK]: business.s3.defaultBucket,
     };
-    return bucketMap[type] || 'patreon-clone-assets';
+    return bucketMap[type] || business.s3.defaultBucket;
   }
 
   @PostMethod(':id/publish')

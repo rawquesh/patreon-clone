@@ -18,7 +18,7 @@ export default function RootLayout({
       <SideNav mode="creator" />
       <Box
         ml={{ base: 0, lg: "300px" }}
-        bg={"#F7F5ED"}
+        bg={branding.colors.bgWarm}
         minH={"100vh"}
         mt={{ base: "48px", md: 0 }}
         // pb={"100px"}

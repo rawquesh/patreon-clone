@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
+import { branding } from "@/config/branding";
 
 export const SubscriptionIcon = <Icon icon={"stash:subscription-list-light"} />;
 
@@ -51,7 +52,7 @@ export function EarningsCalculator() {
       const annualTotal = revenue * 12 * 0.9;
       revenue = Math.round(annualTotal / 12);
     }
-    const platformFeeValue = Math.round(revenue * 0.1);
+    const platformFeeValue = Math.round(revenue * (branding.platform.feePercentage / 100));
     const processingFeeValue = Math.round(revenue * 0.029 + members * 0.3);
     const netEarnings = revenue - platformFeeValue - processingFeeValue;
     setEarnings({
@@ -70,21 +71,21 @@ export function EarningsCalculator() {
       <HStack justify="center" mb={8}>
         <Button
           onClick={() => setIsAnnual(false)}
-          bg={!isAnnual ? "#1D70BF" : "#F7F5ED"}
-          color={!isAnnual ? "white" : "#5A5954"}
+          bg={!isAnnual ? branding.colors.primary : branding.colors.bgWarm}
+          color={!isAnnual ? "white" : branding.colors.star}
           borderRadius="full"
           boxShadow={!isAnnual ? "0 4px 12px rgba(29, 112, 191, 0.25)" : "none"}
-          _hover={{ bg: !isAnnual ? "#3283d1" : "rgba(29, 112, 191, 0.1)" }}
+          _hover={{ bg: !isAnnual ? branding.colors.primaryHover : "rgba(29, 112, 191, 0.1)" }}
         >
           Monthly Billing
         </Button>
         <Button
           onClick={() => setIsAnnual(true)}
-          bg={isAnnual ? "#1D70BF" : "#F7F5ED"}
-          color={isAnnual ? "white" : "#5A5954"}
+          bg={isAnnual ? branding.colors.primary : branding.colors.bgWarm}
+          color={isAnnual ? "white" : branding.colors.star}
           borderRadius="full"
           boxShadow={isAnnual ? "0 4px 12px rgba(29, 112, 191, 0.25)" : "none"}
-          _hover={{ bg: isAnnual ? "#3283d1" : "rgba(29, 112, 191, 0.1)" }}
+          _hover={{ bg: isAnnual ? branding.colors.primaryHover : "rgba(29, 112, 191, 0.1)" }}
         >
           Annual Billing
         </Button>
@@ -106,7 +107,7 @@ export function EarningsCalculator() {
             <Box>
               <Flex justify="space-between" mb={2}>
                 <Text fontWeight="600">Membership Fee</Text>
-                <Text color="#1D70BF" fontWeight="bold">
+                <Text color={branding.colors.primary} fontWeight="bold">
                   ${fee}
                 </Text>
               </Flex>
@@ -119,7 +120,7 @@ export function EarningsCalculator() {
               >
                 <Slider.Control>
                   <Slider.Track bg="gray.200">
-                    <Slider.Range bg="#1D70BF" />
+                    <Slider.Range bg={branding.colors.primary} />
                   </Slider.Track>
                   <Slider.Thumb index={0} boxSize={6} />
                 </Slider.Control>
@@ -142,7 +143,7 @@ export function EarningsCalculator() {
             <Box>
               <Flex justify="space-between" mb={2}>
                 <Text fontWeight="600">Number of Members</Text>
-                <Text color="#1D70BF" fontWeight="bold">
+                <Text color={branding.colors.primary} fontWeight="bold">
                   {members.toLocaleString()}
                 </Text>
               </Flex>
@@ -155,7 +156,7 @@ export function EarningsCalculator() {
               >
                 <Slider.Control>
                   <Slider.Track bg="gray.200">
-                    <Slider.Range bg="#1D70BF" />
+                    <Slider.Range bg={branding.colors.primary} />
                   </Slider.Track>
                   <Slider.Thumb index={0} boxSize={6} />
                 </Slider.Control>
@@ -178,7 +179,7 @@ export function EarningsCalculator() {
           </VStack>
           <VStack
             flex={1}
-            bg="#F7F5ED"
+            bg={branding.colors.bgWarm}
             p={8}
             borderRadius="12px"
             align="stretch"
@@ -192,7 +193,7 @@ export function EarningsCalculator() {
                 as="h4"
                 size="2xl"
                 textAlign="center"
-                color="#1D70BF"
+                color={branding.colors.primary}
                 my={2}
               >
                 ${earnings.net.toLocaleString()}
@@ -213,7 +214,7 @@ export function EarningsCalculator() {
                   </Text>
                 </Flex>
                 <Flex w="full" justify="space-between" pt={3}>
-                  <Text fontSize="sm">Patreon Clone Platform Fee (10%)</Text>
+                  <Text fontSize="sm">{branding.name} Platform Fee ({branding.platform.feePercentage}%)</Text>
                   <Text fontWeight="bold" fontSize="sm">
                     -${earnings.platformFee.toLocaleString()}
                   </Text>
@@ -233,15 +234,15 @@ export function EarningsCalculator() {
                   fontWeight="bold"
                 >
                   <Text>You Keep</Text>
-                  <Text color="#1D70BF">${earnings.net.toLocaleString()}</Text>
+                  <Text color={branding.colors.primary}>${earnings.net.toLocaleString()}</Text>
                 </Flex>
               </VStack>
             </Box>
             <Button
               w="full"
-              bg="#1D70BF"
+              bg={branding.colors.primary}
               color="white"
-              _hover={{ bg: "#3283d1" }}
+              _hover={{ bg: branding.colors.primaryHover }}
             >
               Start Your Community
             </Button>
@@ -254,20 +255,20 @@ export function EarningsCalculator() {
 
 const faqData = [
   {
-    q: "How does Patreon Clone's pricing work?",
-    a: "Patreon Clone charges a flat 10% platform fee on the revenue you generate through paid memberships, plus standard payment processing fees. There are no setup fees or monthly minimums.",
+    q: `How does ${branding.name}'s pricing work?`,
+    a: `${branding.name} charges a flat ${branding.platform.feePercentage}% platform fee on the revenue you generate through paid memberships, plus standard payment processing fees. There are no setup fees or monthly minimums.`,
   },
   {
     q: "Are there any hidden fees?",
-    a: "No. The only fees you'll pay are the 10% platform fee and standard payment processing fees. All features are included for every creator.",
+    a: `No. The only fees you'll pay are the ${branding.platform.feePercentage}% platform fee and standard payment processing fees. All features are included for every creator.`,
   },
   {
     q: "When do I get paid?",
     a: "Payouts are processed on a monthly basis. For subscription payments, you'll receive your earnings 7 days after they're processed.",
   },
   {
-    q: "What makes Patreon Clone different from other platforms?",
-    a: "Patreon Clone is specifically built for Jewish creators. Our platform is designed with Torah values at its core, offering features tailored to Jewish community needs.",
+    q: `What makes ${branding.name} different from other platforms?`,
+    a: `${branding.name} is specifically built for Jewish creators. Our platform is designed with Torah values at its core, offering features tailored to Jewish community needs.`,
   },
 ];
 

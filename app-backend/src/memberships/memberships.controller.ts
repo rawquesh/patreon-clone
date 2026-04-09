@@ -22,6 +22,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MembershipsService } from './memberships.service';
+import { business } from '@/config';
 import {
   UpdateMembershipDto,
   CreatePayoutRequestDto,
@@ -178,7 +179,7 @@ export class MembershipsController {
       const coverImageUrl = await this.s3Service.uploadFile(
         coverImage,
         'membership-covers',
-        'patreon-clone-assets',
+        business.s3.defaultBucket,
       );
 
       return this.membershipsService.createMembership(req.user.userId, {
@@ -246,7 +247,7 @@ export class MembershipsController {
         coverImageUrl = await this.s3Service.uploadFile(
           coverImage,
           'membership-covers',
-          'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
 
         if (membership.coverImage && membership.coverImage !== coverImageUrl) {

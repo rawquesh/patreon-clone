@@ -71,14 +71,29 @@ export const branding = {
     greenDark: "#618967",
     star: "#5A5954",
     textHeader: "#141413",
+    textDark: "#201F18",
     border: "#E6E5DD",
     bgLight: "#EBEAE4",
     bgWarm: "#F7F5ED",
     white: "#FFFFFF",
+    /** Used for join/subscribe/success action buttons */
+    success: "#38A169",
+    /** Used for like/heart interaction feedback */
+    like: "#e92145",
+    /** Used for default link color in some pages */
+    linkBlue: "#3182ce",
+    /** Light blue variant used in about page */
+    lightBlue: "#73BAFF",
+    /** Desert light variant used in about page */
+    desertLight: "#EBDBBC",
+    /** Green light variant used in about page */
+    greenLight: "#B8E5BE",
+    /** Gray-tan variant used in about page */
+    grayTan: "#C4C3BB",
   },
 
-  // Copyright text (year is automatically updated)
-  copyright: `© ${new Date().getFullYear()} Patreon Clone. All rights reserved.`,
+  // Copyright text (year is automatically updated via a getter)
+  get copyright() { return `© ${new Date().getFullYear()} ${this.name}. All rights reserved.`; },
 
   // Platform settings
   platform: {

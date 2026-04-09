@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const passport_1 = require("@nestjs/passport");
 const users_service_1 = require("./users.service");
+const config_1 = require("../config");
 const s3_service_1 = require("../s3/s3.service");
 const UpdateProfileDto_1 = require("./UpdateProfileDto");
 const users_dto_1 = require("./users.dto");
@@ -39,10 +40,10 @@ let UsersController = class UsersController {
             if (!user) {
                 throw new Error('User not found');
             }
-            const photoUrl = await this.s3Service.uploadFile(file, req.user.userId, 'patreon-clone-assets');
+            const photoUrl = await this.s3Service.uploadFile(file, req.user.userId, config_1.business.s3.defaultBucket);
             if (user.profilePicture) {
                 try {
-                    await this.s3Service.deleteFile(user.profilePicture, 'patreon-clone-assets');
+                    await this.s3Service.deleteFile(user.profilePicture, config_1.business.s3.defaultBucket);
                 }
                 catch (error) {
                     console.error('Failed to delete old profile photo:', error);
@@ -88,7 +89,7 @@ let UsersController = class UsersController {
     async updateProfileCover(req, file) {
         try {
             const user = await this.usersService.findById(req.user.userId);
-            const bucket = 'patreon-clone-assets';
+            const bucket = config_1.business.s3.defaultBucket;
             if (user.profileCover) {
                 try {
                     await this.s3Service.deleteFile(user.profileCover, bucket);

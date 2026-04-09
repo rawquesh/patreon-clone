@@ -22,16 +22,15 @@ const membership_1 = require("../database/schemas/membership");
 const subscription_1 = require("../database/schemas/subscription");
 const payout_1 = require("../database/schemas/payout");
 const notification_generator_service_1 = require("../notifications/notification-generator.service");
-const config_1 = require("@nestjs/config");
+const config_1 = require("../config");
 let MembershipsService = class MembershipsService {
-    constructor(membershipModel, subscriptionModel, payoutRequestModel, userModel, paymentsService, notificationGenerator, configService) {
+    constructor(membershipModel, subscriptionModel, payoutRequestModel, userModel, paymentsService, notificationGenerator) {
         this.membershipModel = membershipModel;
         this.subscriptionModel = subscriptionModel;
         this.payoutRequestModel = payoutRequestModel;
         this.userModel = userModel;
         this.paymentsService = paymentsService;
         this.notificationGenerator = notificationGenerator;
-        this.configService = configService;
         this.platformFeePercentage = 15;
     }
     async createMembership(userId, createMembershipDto) {
@@ -707,7 +706,7 @@ let MembershipsService = class MembershipsService {
         }
         if (membership.monthlyRate === 0) {
             await this.createFreeSubscription(userId, creator._id.toString());
-            return `${this.configService.get('FRONTEND_URL')}/creator/${creator._id.toString()}`;
+            return `${config_1.branding.frontendUrl}/creator/${creator._id.toString()}`;
         }
         const subscriber = await this.userModel.findById(userId);
         if (!subscriber) {
@@ -743,8 +742,8 @@ let MembershipsService = class MembershipsService {
                     },
                 ]
                 : undefined,
-            success_url: `${this.configService.get('FRONTEND_URL')}/creator/${creator.creatorUsername.toString()}?subscription_success=true`,
-            cancel_url: `${this.configService.get('FRONTEND_URL')}/cancel`,
+            success_url: `${config_1.branding.frontendUrl}/creator/${creator.creatorUsername.toString()}?subscription_success=true`,
+            cancel_url: `${config_1.branding.frontendUrl}/cancel`,
             metadata: {
                 membershipId: membershipId,
                 subscriberId: userId,
@@ -918,7 +917,6 @@ exports.MembershipsService = MembershipsService = __decorate([
         mongoose_2.Model,
         mongoose_2.Model,
         payments_service_1.PaymentsService,
-        notification_generator_service_1.NotificationGeneratorService,
-        config_1.ConfigService])
+        notification_generator_service_1.NotificationGeneratorService])
 ], MembershipsService);
 //# sourceMappingURL=memberships.service.js.map

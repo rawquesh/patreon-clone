@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CollectionsService } from './collections.service';
 import { S3Service } from '../s3/s3.service';
+import { business } from '@/config';
 import {
   CreateCollectionDto,
   UpdateCollectionDto,
@@ -98,7 +99,7 @@ export class CollectionsController {
           coverImageUrl = await this.s3Service.uploadFile(
             coverImage,
             'collections',
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
 
           // Delete old cover image if it exists and is different
@@ -257,7 +258,7 @@ export class CollectionsController {
         coverImageUrl = await this.s3Service.uploadFile(
           coverImage,
           'collections',
-          'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
       } catch (error) {
         throw new BadRequestException(

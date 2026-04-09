@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
+import 'package:patreon-clone/config/index.dart';
 
 class HomePageTabs {
   static const int home = 0;
@@ -22,7 +23,7 @@ class _FlashyTabBarExampleState extends State<FlashyTabBarExample> {
   final List<Widget> tabItems = [
     const Center(child: Text('Home')),
     const Center(child: Text('Explore')),
-    const Center(child: Text('Community')),
+    const Center(child: Text(AppConfig.communityTabLabel)),
     const Center(child: Text('Notifications')),
     const Center(child: Text('Profile')),
   ];
@@ -46,7 +47,7 @@ class _FlashyTabBarExampleState extends State<FlashyTabBarExample> {
           ),
           FlashyTabBarItem(
             icon: const Icon(Icons.group),
-            title: const Text('Community'),
+            title: const Text(AppConfig.communityTabLabel),
           ),
           FlashyTabBarItem(
             icon: const Icon(Icons.notifications),

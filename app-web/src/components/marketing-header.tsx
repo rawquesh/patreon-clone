@@ -20,6 +20,7 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { branding } from "@/config/branding";
 
 export const MarketingHeader = () => {
   return (
@@ -50,8 +51,8 @@ const Desktop = () => {
           <HStack>
             <Image src="/icons/logo.png" h={"36px"} alt="logo" />
             <VStack align="start" gap={0}>
-              <Heading size="3xl" color="#141413">
-                Patreon Clone
+              <Heading size="3xl" color={branding.colors.textHeader}>
+                {branding.name}
               </Heading>
               {/* <Text fontSize="12px" color="#5A5954">
             Jewish Community Hub
@@ -79,7 +80,7 @@ const Desktop = () => {
           </Button>
         </Link> */}
             <Link href={"/auth/login"}>
-              <Button bg="#1D70BF" color="white" _hover={{ bg: "#3283d1" }}>
+              <Button bg={branding.colors.primary} color="white" _hover={{ bg: branding.colors.primaryHover }}>
                 Login
               </Button>
             </Link>
@@ -115,8 +116,8 @@ const Mobile = () => {
         <HStack>
           <Image src="/icons/logo.png" h={"36px"} alt="logo" />
           <VStack align="start" gap={0}>
-            <Heading size="3xl" color="#141413">
-              Patreon Clone
+            <Heading size="3xl" color={branding.colors.textHeader}>
+              {branding.name}
             </Heading>
             {/* <Text fontSize="12px" color="#5A5954">
             Jewish Community Hub
@@ -142,8 +143,8 @@ const Mobile = () => {
             <HStack>
               <Image src="/icons/logo.png" h={"36px"} alt="logo" />
               <VStack align="start" gap={0}>
-                <Heading size="3xl" color="#141413">
-                  Patreon Clone
+                <Heading size="3xl" color={branding.colors.textHeader}>
+                  {branding.name}
                 </Heading>
                 {/* <Text fontSize="12px" color="#5A5954">
             Jewish Community Hub
@@ -163,7 +164,7 @@ const Mobile = () => {
               <Link href={"/community"}>Community</Link>
             </Stack>
             <Link href={"/auth/login"}>
-              <Button bg="#1D70BF" color="white" _hover={{ bg: "#3283d1" }}>
+              <Button bg={branding.colors.primary} color="white" _hover={{ bg: branding.colors.primaryHover }}>
                 Login
               </Button>
             </Link>

@@ -18,6 +18,7 @@ const platform_express_1 = require("@nestjs/platform-express");
 const s3_service_1 = require("../s3/s3.service");
 const passport_1 = require("@nestjs/passport");
 const chat_service_1 = require("./chat.service");
+const config_1 = require("../config");
 let ChatUploadsController = class ChatUploadsController {
     constructor(s3Service, chatService) {
         this.s3Service = s3Service;
@@ -32,7 +33,7 @@ let ChatUploadsController = class ChatUploadsController {
             if (!hasAccess) {
                 throw new common_1.BadRequestException('You do not have access to this chat');
             }
-            const fileUrl = await this.s3Service.uploadFile(file, `chats/${chatId}/${new Date().toISOString()}-${file.originalname}`, 'patreon-clone-assets');
+            const fileUrl = await this.s3Service.uploadFile(file, `chats/${chatId}/${new Date().toISOString()}-${file.originalname}`, config_1.business.s3.defaultBucket);
             return {
                 success: true,
                 fileUrl,

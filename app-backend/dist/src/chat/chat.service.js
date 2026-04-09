@@ -24,6 +24,7 @@ const subscription_1 = require("../database/schemas/subscription");
 const s3_service_1 = require("../s3/s3.service");
 const notification_generator_service_1 = require("../notifications/notification-generator.service");
 const chat_gateway_1 = require("./chat.gateway");
+const config_1 = require("../config");
 const getObjectIdString = (docOrId) => {
     if (!docOrId)
         return null;
@@ -531,7 +532,7 @@ let ChatService = ChatService_1 = class ChatService {
         let attachment = null;
         if (attachmentFile) {
             try {
-                const fileUrl = await this.s3Service.uploadFile(attachmentFile, `chat-attachments/${chatId}`, process.env.AWS_S3_BUCKET_NAME || 'patreon-clone-assets');
+                const fileUrl = await this.s3Service.uploadFile(attachmentFile, `chat-attachments/${chatId}`, config_1.business.s3.defaultBucket);
                 attachment = {
                     url: fileUrl,
                     fileName: attachmentFile.originalname,

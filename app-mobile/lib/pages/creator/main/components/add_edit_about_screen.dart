@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/models/social_link/social_links.dart';
 import 'package:patreon-clone/utils/my_safe_state.dart';
 import 'package:patreon-clone/utils/my_toast.dart';
@@ -32,12 +33,12 @@ class _AddEditAboutScreenState extends State<AddEditAboutScreen> with MySafeStat
   bool _isLoading = false;
 
   final List<Map<String, dynamic>> _platforms = [
-    {'platform': 'youtube', 'label': 'YouTube', 'icon': FontAwesomeIcons.youtube, 'placeholder': 'youtube.com/channel/...'},
-    {'platform': 'instagram', 'label': 'Instagram', 'icon': FontAwesomeIcons.instagram, 'placeholder': 'instagram.com/username'},
-    {'platform': 'twitter', 'label': 'Twitter', 'icon': FontAwesomeIcons.xTwitter, 'placeholder': 'twitter.com/username'},
-    {'platform': 'facebook', 'label': 'Facebook', 'icon': FontAwesomeIcons.facebook, 'placeholder': 'facebook.com/username'},
-    {'platform': 'tiktok', 'label': 'TikTok', 'icon': FontAwesomeIcons.tiktok, 'placeholder': 'tiktok.com/@username'},
-    {'platform': 'twitch', 'label': 'Twitch', 'icon': FontAwesomeIcons.twitch, 'placeholder': 'twitch.tv/username'},
+    {'platform': 'youtube', 'label': 'YouTube', 'icon': FontAwesomeIcons.youtube, 'placeholder': AppConfig.socialLinkHintYoutube},
+    {'platform': 'instagram', 'label': 'Instagram', 'icon': FontAwesomeIcons.instagram, 'placeholder': AppConfig.socialLinkHintInstagram},
+    {'platform': 'twitter', 'label': 'Twitter', 'icon': FontAwesomeIcons.xTwitter, 'placeholder': AppConfig.socialLinkHintTwitter},
+    {'platform': 'facebook', 'label': 'Facebook', 'icon': FontAwesomeIcons.facebook, 'placeholder': AppConfig.socialLinkHintFacebook},
+    {'platform': 'tiktok', 'label': 'TikTok', 'icon': FontAwesomeIcons.tiktok, 'placeholder': AppConfig.socialLinkHintTiktok},
+    {'platform': 'twitch', 'label': 'Twitch', 'icon': FontAwesomeIcons.twitch, 'placeholder': AppConfig.socialLinkHintTwitch},
   ];
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
 import 'package:patreon-clone/backend/creator_section/my_creator_page_controller.dart';
@@ -50,12 +51,12 @@ class _PublishCreatorScreenState extends State<PublishCreatorScreen> {
   Future<void> _handleNavigation(String url) async {
     MyPrint.printOnConsole("_handleNavigation:$url");
 
-    // https://patreon-clone.example.com/creator/stripe/complete
+    // Stripe onboarding completion URL
 
-    if (url.contains('https://patreon-clone.example.com/profile')) {
+    if (url.contains('${AppConfig.frontendDomain}/profile')) {
       await _controller.completeStripeOnboarding();
       if (mounted) Navigator.of(context).pop(true);
-    } else if (url == "https://patreon-clone.example.com/creator/stripe/complete") {
+    } else if (url == "${AppConfig.frontendDomain}/creator/stripe/complete") {
       if (mounted) Navigator.of(context).pop(true);
     }
   }

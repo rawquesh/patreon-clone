@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SignUpDto, LoginDto, RegisterDto, GoogleTokenDto } from './auth.dto';
+import { branding } from '@/config';
 
 @Controller('auth')
 export class AuthController {
@@ -40,9 +41,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(@Req() req, @Res() res) {
     const { token } = await this.authService.googleLogin(req.user);
-    console.log('FRONTEND_URL');
-    console.log(process.env.FRONTEND_URL);
-    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}`);
+    res.redirect(`${branding.frontendUrl}/auth/callback?token=${token}`);
   }
 
   @Post('google/mobile')

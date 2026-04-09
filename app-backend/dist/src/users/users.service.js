@@ -121,7 +121,7 @@ let UsersService = class UsersService {
                 description: 'Access to free content from this creator',
                 monthlyRate: 0,
                 benefits: ['Access to public posts', 'Join the community'],
-                coverImage: 'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com/membership-covers/membership.jpg',
+                coverImage: '${business.s3.baseUrl}/membership-covers/membership.jpg',
                 isActive: true,
             };
             const existingFreeMembership = await this.membershipModel.findOne({
@@ -316,7 +316,7 @@ let UsersService = class UsersService {
                     description: 'Access to free content from this creator',
                     monthlyRate: 0,
                     benefits: ['Access to public posts', 'Join the community'],
-                    coverImage: 'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com/membership-covers/membership.jpg',
+                    coverImage: '${business.s3.baseUrl}/membership-covers/membership.jpg',
                     isActive: true,
                 });
             }

@@ -20,6 +20,7 @@ import { Subscription } from '@/database/schemas/subscription';
 import { PayoutRequest } from '@/database/schemas/payout';
 import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
 import { ConfigService } from '@nestjs/config';
+import { branding } from '@/config';
 
 @Injectable()
 export class MembershipsService {
@@ -34,7 +35,7 @@ export class MembershipsService {
     @InjectModel(User.name) private userModel: Model<User>,
     private paymentsService: PaymentsService,
     private notificationGenerator: NotificationGeneratorService,
-    private configService: ConfigService,
+    // ConfigService removed -- use branding from @/config for branding values
   ) {
     this.platformFeePercentage = 15;
   }
@@ -999,7 +1000,7 @@ export class MembershipsService {
 
     if (membership.monthlyRate === 0) {
       await this.createFreeSubscription(userId, creator._id.toString());
-      return `${this.configService.get('FRONTEND_URL')}/creator/${creator._id.toString()}`;
+      return `${branding.frontendUrl}/creator/${creator._id.toString()}`;
     }
 
     const subscriber = await this.userModel.findById(userId);
@@ -1045,8 +1046,8 @@ export class MembershipsService {
             },
           ]
         : undefined,
-      success_url: `${this.configService.get('FRONTEND_URL')}/creator/${creator.creatorUsername.toString()}?subscription_success=true`,
-      cancel_url: `${this.configService.get('FRONTEND_URL')}/cancel`,
+      success_url: `${branding.frontendUrl}/creator/${creator.creatorUsername.toString()}?subscription_success=true`,
+      cancel_url: `${branding.frontendUrl}/cancel`,
       metadata: {
         membershipId: membershipId,
         subscriberId: userId,

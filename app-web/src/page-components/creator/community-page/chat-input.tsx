@@ -11,6 +11,7 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState, useRef } from "react";
 import { useChat } from "@/context/chat.provider";
+import { branding } from "@/config/branding";
 
 // Define props
 interface ChatInputProps {
@@ -78,7 +79,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ isDisabled }) => {
       }}
       p={4}
       zIndex={1000}
-      bg={"#F7F5ED"}
+      bg={branding.colors.bgWarm}
     >
       <Stack gap={4}>
         {previewUrl && (

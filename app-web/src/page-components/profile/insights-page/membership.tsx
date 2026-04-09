@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
+import { branding } from "@/config/branding";
 import {
-  Chart as ChartJS,
   BarElement,
   PointElement,
   LinearScale,
@@ -68,7 +68,7 @@ const MembershipsTab = () => {
       {
         label: "New Members",
         data: chartValues,
-        borderColor: "#3182ce",
+        borderColor: branding.colors.linkBlue,
         backgroundColor: "rgba(49, 130, 206, 0.5)",
         borderRadius: 4,
       },

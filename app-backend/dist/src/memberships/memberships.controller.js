@@ -16,6 +16,7 @@ exports.MembershipsController = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const memberships_service_1 = require("./memberships.service");
+const config_1 = require("../config");
 const memberships_dto_1 = require("./memberships.dto");
 const platform_express_1 = require("@nestjs/platform-express");
 const s3_service_1 = require("../s3/s3.service");
@@ -91,7 +92,7 @@ let MembershipsController = class MembershipsController {
     }
     async createMembership(req, createMembershipDto, coverImage) {
         try {
-            const coverImageUrl = await this.s3Service.uploadFile(coverImage, 'membership-covers', 'patreon-clone-assets');
+            const coverImageUrl = await this.s3Service.uploadFile(coverImage, 'membership-covers', config_1.business.s3.defaultBucket);
             return this.membershipsService.createMembership(req.user.userId, {
                 ...createMembershipDto,
                 coverImage: coverImageUrl,
@@ -112,7 +113,7 @@ let MembershipsController = class MembershipsController {
             }
             let coverImageUrl = membership.coverImage;
             if (coverImage) {
-                coverImageUrl = await this.s3Service.uploadFile(coverImage, 'membership-covers', 'patreon-clone-assets');
+                coverImageUrl = await this.s3Service.uploadFile(coverImage, 'membership-covers', config_1.business.s3.defaultBucket);
                 if (membership.coverImage && membership.coverImage !== coverImageUrl) {
                     try {
                         await this.s3Service.deleteFile(membership.coverImage, 'patreon-clone-test-cover');

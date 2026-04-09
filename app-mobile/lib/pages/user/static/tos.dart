@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class _AppStyles {
@@ -45,7 +46,7 @@ class _AppStyles {
 
   static const TextStyle linkText = TextStyle(
     fontSize: 15.0,
-    color: Color(0xff1E6FBF),
+    color: AppConfig.linkColor,
     decoration: TextDecoration.underline,
     height: 1.6,
   );
@@ -70,22 +71,17 @@ class TOSScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Patreon Clone Terms of Service', style: _AppStyles.heading1),
+              const Text('${AppConfig.appName} Terms of Service', style: _AppStyles.heading1),
               const SizedBox(height: 8),
-              const Text('Effective Date: March 1, 2025', style: _AppStyles.effectiveDate),
+              const Text('Effective Date: ${AppConfig.legalEffectiveDate}', style: _AppStyles.effectiveDate),
               const SizedBox(height: 24),
-              const Text(
-                'Welcome to Patreon Clone! Patreon Clone is a platform that empowers Jewish content creators to build, engage, and monetize their communities. By using Patreon Clone, you agree to these Terms of Service ("Terms"), which govern your access to and use of our platform, website, and related services ("Services").',
-                style: _AppStyles.bodyText,
-              ),
+              Text(AppConfig.tosWelcome(), style: _AppStyles.bodyText),
               const SizedBox(height: 32),
               const Text('1. Account Creation & Responsibilities', style: _AppStyles.heading2),
               const SizedBox(height: 24),
               const Text('1.1 Eligibility:', style: _AppStyles.subheading),
-              const _BulletPoint(
-                  text:
-                      'You must be at least 13 years old to create an account. If you are under 18, you may only use Patreon Clone with parental or guardian permission.'),
-              const _BulletPoint(text: 'If you create an account as a content creator, you must be at least 18 years old.'),
+              _BulletPoint(text: AppConfig.tosEligibility()),
+              _BulletPoint(text: AppConfig.tosEligibilityCreatorText()),
               const SizedBox(height: 24),
               const Text('1.2 Account Security:', style: _AppStyles.subheading),
               const _BulletPoint(text: 'You are responsible for maintaining the confidentiality of your account credentials.'),
@@ -93,16 +89,11 @@ class TOSScreen extends StatelessWidget {
               const SizedBox(height: 24),
               const Text('1.3 Account Termination:', style: _AppStyles.subheading),
               const _BulletPoint(text: 'You may delete your account at any time through your settings.'),
-              const _BulletPoint(
-                  text:
-                      'Patreon Clone reserves the right to suspend or terminate accounts that violate our policies or for other reasons deemed necessary.'),
+              _BulletPoint(text: AppConfig.tosTerminationText()),
               const SizedBox(height: 32),
               const Text('2. User Types & Access Levels', style: _AppStyles.heading2),
               const SizedBox(height: 16),
-              const Text(
-                'Patreon Clone has three primary user types:',
-                style: _AppStyles.bodyText,
-              ),
+              Text(AppConfig.tosUserTypes(), style: _AppStyles.bodyText),
               const _BulletPoint(
                   title: 'Members:', text: 'Users who follow and support creators by subscribing to their content.'),
               const _BulletPoint(
@@ -118,22 +109,16 @@ class TOSScreen extends StatelessWidget {
               const SizedBox(height: 32),
               const Text('3. Subscriptions & Payments', style: _AppStyles.heading2),
               const SizedBox(height: 16),
-              const Text(
-                'Creators are responsible for reporting and paying applicable taxes on their earnings. Patreon Clone may collect tax-related information as required by law.',
-                style: _AppStyles.bodyText,
-              ),
+              Text(AppConfig.tosTax(), style: _AppStyles.bodyText),
               const SizedBox(height: 32),
               const Text('4. Content Guidelines', style: _AppStyles.heading2),
               const SizedBox(height: 16),
-              const Text(
-                'Creators are responsible for reporting and paying applicable taxes on their earnings. Patreon Clone may collect tax-related information as required by law.',
-                style: _AppStyles.bodyText,
-              ),
+              Text(AppConfig.tosTax(), style: _AppStyles.bodyText),
               const SizedBox(height: 32),
               const Text('10. Contact Information', style: _AppStyles.heading2),
               const SizedBox(height: 16),
               const Text(
-                'For questions about these Terms, contact us at support@patreon-clone.example.com.',
+                'For questions about these Terms, contact us at ${AppConfig.supportEmail}.',
                 style: _AppStyles.bodyText,
               ),
               SizedBox(height: MediaQuery.of(context).padding.bottom)

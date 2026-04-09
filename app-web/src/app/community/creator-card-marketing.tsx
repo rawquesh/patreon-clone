@@ -4,6 +4,7 @@ import { Box, Stack, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { branding } from "@/config/branding";
 
 interface Props {
   image: string;
@@ -71,7 +72,7 @@ const CreatorCardMarketing: React.FC<Props> = ({
         <VStack p={6} align="start" gap={4}>
           <Text
             bg="rgba(29, 112, 191, 0.1)"
-            color="#1D70BF"
+            color={branding.colors.primary}
             fontWeight="600"
             px={3}
             py={1}

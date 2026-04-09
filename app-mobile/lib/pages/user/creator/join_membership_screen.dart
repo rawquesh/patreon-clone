@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
 import 'package:patreon-clone/backend/memberships/membership_provider.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _JoinMembershipScreenState extends State<JoinMembershipScreen> {
 
     if (url.contains('subscription_success=true')) {
       Navigator.of(context).pop(true);
-    } else if (url == "https://patreon-clone.example.com/") {
+    } else if (url == "${AppConfig.frontendDomain}/") {
       Navigator.of(context).pop(false);
     }
   }

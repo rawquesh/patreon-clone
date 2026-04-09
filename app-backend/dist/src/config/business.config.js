@@ -37,6 +37,7 @@ exports.business = {
         gracePeriodDays: 7,
     },
     s3: {
+        baseUrl: process.env.S3_ASSETS_BASE_URL || 'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com',
         defaultBucket: process.env.S3_BUCKET_NAME || 'patreon-clone-assets',
         collectionsBucket: process.env.S3_COLLECTIONS_BUCKET || 'patreon-clone-collections',
         testBucket: process.env.S3_TEST_BUCKET || 'patreon-clone-test-cover',

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
 import { Line } from "react-chartjs-2";
+import { branding } from "@/config/branding";
 import {
-  Chart as ChartJS,
   LineElement,
   PointElement,
   LinearScale,
@@ -62,7 +62,7 @@ const PostsTab = () => {
           ? Object.values(postsData.impressionData)
           : [],
         fill: true,
-        borderColor: "#BD6547",
+        borderColor: branding.colors.accent,
         backgroundColor: "rgba(189, 101, 71, 0.2)",
         tension: 0.4,
         yAxisID: "y",
@@ -73,7 +73,7 @@ const PostsTab = () => {
           ? Object.values(postsData.engagementData)
           : [],
         fill: false,
-        borderColor: "#3182ce",
+        borderColor: branding.colors.linkBlue,
         tension: 0.4,
         yAxisID: "y1",
       },

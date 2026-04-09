@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/models/membership/membership_model.dart';
 import 'package:patreon-clone/models/subscription/subscription_model.dart';
 import 'package:patreon-clone/utils/my_safe_state.dart';
@@ -252,7 +253,7 @@ class _MembershipSectionWidgetState extends State<MembershipSectionWidget> with 
 
                 // Title
                 Text(
-                  'Welcome to the Patreon Clone!',
+                  AppConfig.membershipWelcome(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

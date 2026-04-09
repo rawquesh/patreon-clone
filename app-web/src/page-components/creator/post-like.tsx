@@ -7,6 +7,7 @@ import {
   usePostLiked,
 } from "@/lib/backend-services/post-service";
 import React, { useEffect, useState } from "react";
+import { branding } from "@/config/branding";
 
 interface PostLikeProps {
   likes: number;
@@ -65,7 +66,7 @@ const PostLike: React.FC<PostLikeProps> = ({
         onClick: handleLikeToggle,
         css: {
           "& svg": {
-            color: isLiked ? "#e92145" : "star.600",
+            color: isLiked ? branding.colors.like : "star.600",
           },
         },
       }}

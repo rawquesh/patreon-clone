@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import Stripe from 'stripe';
 import { User } from '@/database/schemas/user';
+import { branding } from '@/config';
 
 @Injectable()
 export class PaymentsService {
@@ -64,8 +65,8 @@ export class PaymentsService {
 
     const accountLink = await this.stripe.accountLinks.create({
       account: account.id,
-      refresh_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/refresh`,
-      return_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/complete`,
+      refresh_url: `${branding.frontendUrl}/creator/stripe/refresh`,
+      return_url: `${branding.frontendUrl}/creator/stripe/complete`,
       type: 'account_onboarding',
       collect: 'currently_due',
     });
@@ -117,8 +118,8 @@ export class PaymentsService {
 
     const accountLink = await this.stripe.accountLinks.create({
       account: user.stripeConnectAccountId,
-      refresh_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/refresh`,
-      return_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/complete`,
+      refresh_url: `${branding.frontendUrl}/creator/stripe/refresh`,
+      return_url: `${branding.frontendUrl}/creator/stripe/complete`,
       type: 'account_onboarding',
       collect: 'eventually_due',
     });

@@ -30,6 +30,7 @@ import * as cheerio from 'cheerio'; // Import cheerio
 import { PostInsight } from '@/database/schemas/analytics';
 import { MembershipsService } from '@/memberships/memberships.service';
 import { User } from '@/database/schemas/user';
+import { branding, business } from '@/config';
 
 export interface PostLike {
   _id?: string;
@@ -93,7 +94,7 @@ export class PostsService {
               };
 
               const s3Folder = `posts/${postId || 'new'}/content-images`;
-              const s3Bucket = 'patreon-clone-assets'; // Adjust bucket if needed
+              const s3Bucket = business.s3.defaultBucket;
 
               const s3Url = await this.s3Service.uploadFile(
                 simulatedFile,
@@ -327,7 +328,7 @@ export class PostsService {
       // Basic acceptance for uploaded/self-hosted URLs
       const isS3Upload =
         videoUrl.includes('amazonaws.com/') ||
-        videoUrl.includes('patreon-clone-assets');
+        videoUrl.includes(business.s3.defaultBucket);
       if (isS3Upload) {
         videoInfo = {
           isValid: true,
@@ -389,7 +390,7 @@ export class PostsService {
           isValid: true,
           platform: 'youtube',
           videoId,
-          thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+          thumbnailUrl: `${branding.video.youtubeThumbnailBase}/${videoId}/maxresdefault.jpg`,
         };
       } else if (url.includes('vimeo.com')) {
         const videoId = url.split('vimeo.com/')[1].split('?')[0];

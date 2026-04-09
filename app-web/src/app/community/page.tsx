@@ -5,10 +5,11 @@ import ExploreSearchBar from "@/page-components/explore/search-bar";
 import { MarketingHeader } from "@/components/marketing-header";
 import { MarketingPageFooter } from "../marketing-page-footer";
 import { MarketingComponents } from "./marketing-components";
+import { branding } from "@/config/branding";
 
 export default function PricingPage() {
   return (
-    <Box color="#5A5954" bg="white">
+    <Box color={branding.colors.star} bg="white">
       <MarketingHeader />
 
       <>
@@ -21,8 +22,8 @@ export default function PricingPage() {
           <Container maxW="1200px">
             <VStack gap={4}>
               <Text
-                bg="#F7F5ED"
-                color="#1D70BF"
+                bg={branding.colors.bgWarm}
+                color={branding.colors.primary}
                 fontWeight="600"
                 px={4}
                 py={2}
@@ -41,7 +42,7 @@ export default function PricingPage() {
                   Discover{" "}
                 </Box>
                 <Box
-                  color="#1D70BF"
+                  color={branding.colors.primary}
                   as={"span"}
                   textDecorationColor="rgba(29, 112, 191, 0.2) !important"
                   textDecoration={"underline"}
@@ -53,7 +54,7 @@ export default function PricingPage() {
                   to Follow
                 </Box>
               </Heading>
-              <Text fontSize="lg" color="#5A5954" maxW="80%">
+              <Text fontSize="lg" color={branding.colors.star} maxW="80%">
                 Connect with passionate Jewish voices across a variety of topics
                 and interests. From Torah study to kosher cooking, music to
                 lifestyle content.

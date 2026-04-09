@@ -13,6 +13,7 @@ import {
 import React from "react";
 import { navItems } from "./data";
 import NavLinkItem from "./nav-link-item";
+import { branding } from "@/config/branding";
 import UserAvatar from "./user-avatar";
 import NavPopover from "./nav-popover";
 import MembershipItem from "./membership-item";
@@ -20,7 +21,6 @@ import { useAuth } from "@/context/auth.provider";
 import CreateModal from "@/page-components/profile/profile-page/create-modal";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import { branding } from "@/config/branding";
 import { ISubscription as Subscription } from "@/typings/ISubscription";
 
 interface UserSubscriptionsResponse {
@@ -80,7 +80,7 @@ const DesktopSidenav: React.FC<Props> = ({ mode }) => {
       <HStack mb={6}>
         <Image src="/icons/logo.png" h={"32px"} alt="logo" />
         <VStack align="start" gap={0}>
-          <Heading size="2xl" color="#141413">
+          <Heading size="2xl" color={branding.colors.textHeader}>
             {branding.name}
           </Heading>
           {/* <Text fontSize="12px" color="#5A5954">

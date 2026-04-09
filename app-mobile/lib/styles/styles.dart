@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 
 class Styles {
   static final Styles _instance = Styles._();
@@ -20,7 +21,8 @@ class Styles {
   static const Color blue800 = Color(0xFF134B80);
   static const Color blue900 = Color(0xFF0D3459);
 
-  Color lightPrimaryColor = const Color(0xff1E6FBF);
+  /// Primary color for light theme — derived from AppConfig.
+  Color lightPrimaryColor = AppConfig.primaryColor;
   Color darkPrimaryColor = blue500;
 
   Color lightPrimaryVariant = blue400;
@@ -50,7 +52,7 @@ class Styles {
   Color lightAppBarColor = scaffoldBackground;
 
 // Scaffold background color
-  static const Color scaffoldBackground = Color(0xffF7F5ED);
+  static const Color scaffoldBackground = AppConfig.scaffoldBackground;
 
   static Color scaffoldBackground2 = const Color(0xffFBFBF9);
   double buttonBorderRadius = 5;

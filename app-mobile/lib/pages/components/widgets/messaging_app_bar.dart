@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/styles/styles.dart';
 import 'package:patreon-clone/styles/font_manager.dart';
 
@@ -76,7 +77,7 @@ class MessagingAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontWeight: FontWeight.w500,
               ).withEpilogue,
               tabs: const [
-                Tab(text: 'Community'),
+                Tab(text: AppConfig.communityTabLabel),
                 Tab(text: 'Direct Messages'),
               ],
             ),

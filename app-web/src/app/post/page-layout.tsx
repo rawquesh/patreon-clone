@@ -18,8 +18,8 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
           p={6}
           justifyContent={"space-between"}
           alignItems={"center"}
-          bg={"#F7F5ED"}
-          borderBottom={"1px solid #E0E0E0"}
+          bg={branding.colors.bgWarm}
+          borderBottom={`1px solid ${branding.colors.border}`}
           boxShadow={"xl"}
         >
           <Logo />
@@ -30,7 +30,7 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
       )}
       <Box
         ml={{ base: 0, lg: Boolean(user) ? "300px" : 0 }}
-        bg={"#F7F5ED"}
+        bg={branding.colors.bgWarm}
         minH={"100vh"}
         mt={{ base: "48px", md: 0 }}
       >

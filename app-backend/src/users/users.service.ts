@@ -35,6 +35,7 @@ import { PaymentsService } from '@/payments/payments.service';
 import * as bcrypt from 'bcrypt';
 import Stripe from 'stripe';
 import { DeleteUserDto } from './users.dto';
+import { business } from '@/config';
 
 interface RequestingUser {
   userId: string;
@@ -182,7 +183,7 @@ export class UsersService {
         monthlyRate: 0,
         benefits: ['Access to public posts', 'Join the community'],
         coverImage:
-          'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com/membership-covers/membership.jpg',
+          '${business.s3.baseUrl}/membership-covers/membership.jpg',
         isActive: true,
       };
 
@@ -447,7 +448,7 @@ export class UsersService {
           monthlyRate: 0,
           benefits: ['Access to public posts', 'Join the community'],
           coverImage:
-            'https://patreon-clone-assets.s3.eu-north-1.amazonaws.com/membership-covers/membership.jpg',
+            '${business.s3.baseUrl}/membership-covers/membership.jpg',
           isActive: true,
         });
       }

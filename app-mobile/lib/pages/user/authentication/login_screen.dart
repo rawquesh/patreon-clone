@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
 // import 'package:patreon-clone/navigation/navigation_type.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/constants/constants.dart';
 import 'package:patreon-clone/styles/styles.dart';
 import 'package:patreon-clone/models/user/data_model/user_model.dart';
@@ -507,7 +508,7 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
     return TextButton(
       onPressed: () async {
         final Uri emailLaunchUri =
-            Uri(scheme: 'mailto', path: 'support@patreon-clone.example.com', query: Uri.encodeFull('subject=Patreon Clone App Login Help'));
+            Uri(scheme: 'mailto', path: AppConfig.supportEmail, query: Uri.encodeFull('subject=${AppConfig.appName} App Login Help'));
         if (await canLaunchUrl(emailLaunchUri)) {
           await launchUrl(emailLaunchUri);
         }
@@ -526,7 +527,7 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
           // fontFamily: FontManager.fontFamily,
         ),
         children: [
-          const TextSpan(text: "By signing up, you are creating a Patreon Clone account and agree to Patreon Clone's "),
+          const TextSpan(text: "By signing up, you are creating a ${AppConfig.appName} account and agree to ${AppConfig.appName}'s "),
           TextSpan(
             text: "Terms",
             style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
@@ -535,7 +536,7 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
                 context.pushNamed(
                   Routes.legal,
                   extra: {
-                    'url': "https://www.patreon-clone.example.com/tos",
+                    'url': AppConfig.termsOfServiceUrl,
                     'title': "Terms of Service",
                   },
                 );
@@ -550,7 +551,7 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
                 context.pushNamed(
                   Routes.legal,
                   extra: {
-                    'url': "https://www.patreon-clone.example.com/privacy-policy",
+                    'url': AppConfig.privacyPolicyUrl,
                     'title': "Privacy Policy",
                   },
                 );

@@ -21,6 +21,7 @@ const mongoose_2 = require("mongoose");
 const bcrypt = require("bcrypt");
 const user_1 = require("../database/schemas/user");
 const payments_service_1 = require("../payments/payments.service");
+const config_1 = require("../config");
 const axios_1 = require("axios");
 let AuthService = AuthService_1 = class AuthService {
     constructor(userModel, jwtService, paymentsService) {
@@ -32,7 +33,7 @@ let AuthService = AuthService_1 = class AuthService {
     async verifyGoogleAccessToken(accessToken) {
         try {
             this.logger.log('Attempting to verify Google access token...');
-            const response = await axios_1.default.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+            const response = await axios_1.default.get(config_1.branding.google.userInfoUrl, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },

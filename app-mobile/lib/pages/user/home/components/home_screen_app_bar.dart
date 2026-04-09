@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,7 @@ class StockStriveAppBar extends StatelessWidget implements PreferredSizeWidget {
                           backgroundColor: Colors.transparent,
                           child: ClipOval(
                             child: Image.network(
-                              'https://picsum.photos/40/40',
+                              AppConfig.placeholderImageUrl,
                               width: 35,
                               height: 35,
                               fit: BoxFit.cover,
@@ -64,7 +65,7 @@ class StockStriveAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'StockStrive',
+                        AppConfig.appName,
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.bold,
                           color: themeData.colorScheme.onPrimary,

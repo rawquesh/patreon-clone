@@ -14,6 +14,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
 
 const RevenueCalculator: React.FC = () => {
   const [subscribers, setSubscribers] = useState<number>(500);
@@ -27,7 +28,7 @@ const RevenueCalculator: React.FC = () => {
     const calculateRevenue = () => {
       const revenue = subscribers * price;
       setMonthlyRevenue(revenue);
-      const platformFee = revenue * 0.1;
+      const platformFee = revenue * (branding.platform.feePercentage / 100);
       setPatreon CloneFee(platformFee);
       const transactionCount = revenue > 0 ? subscribers : 0;
       const processing = revenue * 0.029 + transactionCount * 0.3;
@@ -81,8 +82,8 @@ const RevenueCalculator: React.FC = () => {
       overflow="hidden"
       variant="outline"
     >
-      <Card.Header bg="#F1E6D0" borderBottomWidth="1px" borderColor="gray.200">
-        <Heading size="lg" fontWeight="bold" color="#141413">
+      <Card.Header bg={branding.colors.duneLight} borderBottomWidth="1px" borderColor="gray.200">
+        <Heading size="lg" fontWeight="bold" color={branding.colors.textHeader}>
           Revenue Calculator
         </Heading>
       </Card.Header>
@@ -94,7 +95,7 @@ const RevenueCalculator: React.FC = () => {
               <Flex justify="space-between" align="center" mb={2}>
                 <Field.Label
                   fontWeight="medium"
-                  color="#5A5954"
+                  color={branding.colors.star}
                   htmlFor="subscribers-input"
                 >
                   Subscribers
@@ -136,12 +137,12 @@ const RevenueCalculator: React.FC = () => {
             >
               <Slider.Control>
                 <Slider.Track bg="orange.100">
-                  <Slider.Range bg="#CB785C" />
+                  <Slider.Range bg={branding.colors.accent} />
                 </Slider.Track>
                 <Slider.Thumb index={0} boxSize={4} />
               </Slider.Control>
             </Slider.Root>
-            <Flex justify="space-between" fontSize="sm" color="#5A5954">
+            <Flex justify="space-between" fontSize="sm" color={branding.colors.star}>
               <Text>0</Text>
               <Text>2,500</Text>
               <Text>5,000</Text>
@@ -156,7 +157,7 @@ const RevenueCalculator: React.FC = () => {
               <Flex justify="space-between" align="center" mb={2}>
                 <Field.Label
                   fontWeight="medium"
-                  color="#5A5954"
+                  color={branding.colors.star}
                   htmlFor="price-input"
                 >
                   Subscription Price, USD per month
@@ -210,12 +211,12 @@ const RevenueCalculator: React.FC = () => {
             >
               <Slider.Control>
                 <Slider.Track bg="orange.100">
-                  <Slider.Range bg="#CB785C" />
+                  <Slider.Range bg={branding.colors.accent} />
                 </Slider.Track>
                 <Slider.Thumb index={0} boxSize={4} />
               </Slider.Control>
             </Slider.Root>
-            <Flex justify="space-between" fontSize="sm" color="#5A5954">
+            <Flex justify="space-between" fontSize="sm" color={branding.colors.star}>
               <Text>$0</Text>
               <Text>$25</Text>
               <Text>$50</Text>
@@ -225,7 +226,7 @@ const RevenueCalculator: React.FC = () => {
           </Box>
 
           {/* Results Section (remains the same) */}
-          <Box bg="#EBEAE4" p={6} borderRadius="lg" mt={6}>
+          <Box bg={branding.colors.bgLight} p={6} borderRadius="lg" mt={6}>
             <VStack gap={4} align="stretch">
               <Flex
                 justify="space-between"
@@ -234,36 +235,36 @@ const RevenueCalculator: React.FC = () => {
                 borderBottomWidth="1px"
                 borderColor="gray.300"
               >
-                <Heading size="md" fontWeight="semibold" color="#141413">
+                <Heading size="md" fontWeight="semibold" color={branding.colors.textHeader}>
                   Monthly Earnings
                 </Heading>
-                <Text fontSize="2xl" fontWeight="bold" color="#CB785C">
+                <Text fontSize="2xl" fontWeight="bold" color={branding.colors.accent}>
                   {formatCurrency(creatorEarnings)}
                 </Text>
               </Flex>
 
               <VStack gap={2} align="stretch" fontSize="sm">
                 <Flex justify="space-between">
-                  <Text color="#5A5954">Monthly Revenue</Text>
+                  <Text color={branding.colors.star}>Monthly Revenue</Text>
                   <Text fontWeight="medium">
                     {formatCurrency(monthlyRevenue)}
                   </Text>
                 </Flex>
                 <Flex justify="space-between">
-                  <Text color="#5A5954">Patreon Clone Fee (10%)</Text>
+                  <Text color={branding.colors.star}>{branding.name} Fee ({branding.platform.feePercentage}%)</Text>
                   <Text fontWeight="medium" color="red.600">
                     -{formatCurrency(patreon-cloneFee)}
                   </Text>
                 </Flex>
                 <Flex justify="space-between">
-                  <Text color="#5A5954">Processing Fee (2.9% + $0.30/sub)</Text>
+                  <Text color={branding.colors.star}>Processing Fee (2.9% + $0.30/sub)</Text>
                   <Text fontWeight="medium" color="red.600">
                     -{formatCurrency(processingFee)}
                   </Text>
                 </Flex>
               </VStack>
             </VStack>
-            <Text mt={4} fontSize="xs" color="#5A5954" fontStyle="italic">
+            <Text mt={4} fontSize="xs" color={branding.colors.star} fontStyle="italic">
               This is an estimate and actual earnings may vary.
             </Text>
           </Box>

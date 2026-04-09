@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { User, AuthProvider } from '@/database/schemas/user';
 import { SignUpDto, LoginDto, RegisterDto } from './auth.dto';
 import { PaymentsService } from '@/payments/payments.service';
+import { branding } from '@/config';
 import axios from 'axios';
 
 export interface AuthResponse {
@@ -32,7 +33,7 @@ export class AuthService {
     try {
       this.logger.log('Attempting to verify Google access token...');
       const response = await axios.get(
-        'https://www.googleapis.com/oauth2/v2/userinfo',
+        branding.google.userInfoUrl,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

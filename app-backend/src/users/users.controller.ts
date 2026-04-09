@@ -24,6 +24,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
+import { business } from '@/config';
 import { S3Service } from '@/s3/s3.service';
 import { UpdateProfileDto } from './UpdateProfileDto';
 import {
@@ -91,14 +92,14 @@ export class UsersController {
       const photoUrl = await this.s3Service.uploadFile(
         file,
         req.user.userId,
-        'patreon-clone-assets',
+        business.s3.defaultBucket,
       );
 
       if (user.profilePicture) {
         try {
           await this.s3Service.deleteFile(
             user.profilePicture,
-            'patreon-clone-assets',
+            business.s3.defaultBucket,
           );
         } catch (error) {
           console.error('Failed to delete old profile photo:', error);
@@ -181,7 +182,7 @@ export class UsersController {
   ) {
     try {
       const user = await this.usersService.findById(req.user.userId);
-      const bucket = 'patreon-clone-assets';
+      const bucket = business.s3.defaultBucket;
 
       if (user.profileCover) {
         try {

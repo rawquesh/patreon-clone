@@ -18,6 +18,7 @@ const passport_1 = require("@nestjs/passport");
 const platform_express_1 = require("@nestjs/platform-express");
 const collections_service_1 = require("./collections.service");
 const s3_service_1 = require("../s3/s3.service");
+const config_1 = require("../config");
 const collections_dto_1 = require("./collections.dto");
 const optional_auth_guard_1 = require("../auth/optional-auth-guard");
 let CollectionsController = class CollectionsController {
@@ -49,7 +50,7 @@ let CollectionsController = class CollectionsController {
             let coverImageUrl = collection.coverImage;
             if (coverImage) {
                 try {
-                    coverImageUrl = await this.s3Service.uploadFile(coverImage, 'collections', 'patreon-clone-assets');
+                    coverImageUrl = await this.s3Service.uploadFile(coverImage, 'collections', config_1.business.s3.defaultBucket);
                     if (collection.coverImage &&
                         collection.coverImage !== coverImageUrl) {
                         try {
@@ -133,7 +134,7 @@ let CollectionsController = class CollectionsController {
         let coverImageUrl;
         if (coverImage) {
             try {
-                coverImageUrl = await this.s3Service.uploadFile(coverImage, 'collections', 'patreon-clone-assets');
+                coverImageUrl = await this.s3Service.uploadFile(coverImage, 'collections', config_1.business.s3.defaultBucket);
             }
             catch (error) {
                 throw new common_1.BadRequestException(`Failed to upload cover image: ${error.message}`);

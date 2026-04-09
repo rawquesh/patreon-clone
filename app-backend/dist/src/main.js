@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
+const config_1 = require("./config");
 const express = require("express");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
@@ -20,18 +21,12 @@ async function bootstrap() {
         }
     });
     app.enableCors({
-        origin: [
-            'http://localhost:3000',
-            'http://localhost:3001',
-            'https://patreon-clone.vercel.app',
-            'https://www.patreon-clone.example.com',
-            'https://patreon-clone.example.com',
-        ],
+        origin: config_1.branding.corsOrigins,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true,
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     });
-    await app.listen(8080);
+    await app.listen(config_1.business.server.port);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

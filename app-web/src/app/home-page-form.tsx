@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Field, Input, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import { branding } from "@/config/branding";
 
 export const HomePageForm = () => {
   const router = useRouter();
@@ -43,9 +44,9 @@ export const HomePageForm = () => {
         <Button
           w="full"
           size="lg"
-          bg="#1D70BF"
+          bg={branding.colors.primary}
           color="white"
-          _hover={{ bg: "#3283d1" }}
+          _hover={{ bg: branding.colors.primaryHover }}
           mt={4}
           type="submit"
         >

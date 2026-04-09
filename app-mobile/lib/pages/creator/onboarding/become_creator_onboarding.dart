@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
 // import 'package:patreon-clone/navigation/navigation_type.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/backend/user/user_repository.dart';
 import 'package:patreon-clone/constants/shared_preference_constants.dart';
 import 'package:patreon-clone/constants/user_constants.dart';
@@ -221,7 +222,7 @@ class _BecomeCreatorOnboardingState extends State<BecomeCreatorOnboarding> with 
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'patreon-clone.example.com/',
+                            '${AppConfig.frontendDomain.replaceAll('https://', '').replaceAll('http://', '').replaceAll('www.', '')}/',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
@@ -408,35 +409,7 @@ class _BecomeCreatorOnboardingState extends State<BecomeCreatorOnboarding> with 
                               height: 1.4,
                             ),
                             children: [
-                              const TextSpan(
-                                  text:
-                                      'By creating an account and checking this box, you are providing your written agreement with, and consent to, (1) the patreon-clone '),
-                              TextSpan(
-                                text: 'Privacy Policy',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: themeData.primaryColor,
-                                ),
-                              ),
-                              const TextSpan(
-                                  text: ', which cover your use of the patreon-clone website and apps and can be found here: '),
-                              TextSpan(
-                                text: 'Privacy Policy',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: themeData.primaryColor,
-                                ),
-                              ),
-                              const TextSpan(
-                                  text:
-                                      ' and (2) the patreon-clone Terms of Service, which cover your use of the patreon-clone website and apps and can be found here: '),
-                              TextSpan(
-                                text: 'Terms of Service',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: themeData.primaryColor,
-                                ),
-                              ),
+                              TextSpan(text: AppConfig.creatorConsent()),
                             ],
                           ),
                         ),

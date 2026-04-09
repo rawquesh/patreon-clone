@@ -18,6 +18,7 @@ import {
 } from "@/lib/backend-services/subscription-service";
 import { PricingCard } from "@/page-components/creator/pricing-card";
 import { Button } from "@/components/ui/button";
+import { branding } from "@/config/branding";
 
 interface FreeMembershipCardProps {
   creatorId: string;
@@ -43,13 +44,13 @@ const FreeMembershipCard: React.FC<FreeMembershipCardProps> = ({
       color={"star.800"}
       mb={4}
       position="relative"
-      border="2px solid #38A169"
+      border={`2px solid ${branding.colors.success}`}
     >
       <Box
         position="absolute"
         top={0}
         right={0}
-        bg="#38A169"
+        bg=branding.colors.success
         color="white"
         px={2}
         py={1}

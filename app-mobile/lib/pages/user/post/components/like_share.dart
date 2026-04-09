@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/models/post/data_model/post_model.dart';
 import 'package:patreon-clone/utils/my_safe_state.dart';
 import 'package:provider/provider.dart';
@@ -101,7 +102,7 @@ class _MyLikeCommentShareWidgetState extends State<MyLikeCommentShareWidget> wit
   }
 
   void _sharePost() {
-    final shareText = 'https://patreon-clone.example.com/post/${widget.post.id}';
+    final shareText = AppConfig.postShareUrl(widget.post.id);
 
     showDialog(
       context: context,
@@ -129,19 +130,19 @@ class _MyLikeCommentShareWidgetState extends State<MyLikeCommentShareWidget> wit
                   _buildExternalAppButton(
                     icon: FontAwesomeIcons.xTwitter,
                     label: 'Twitter',
-                    shareUrl: 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(shareText)}',
+                    shareUrl: '${AppConfig.twitterShareBase}?text=${Uri.encodeComponent(shareText)}',
                     notInstalledMessage: 'Twitter is not installed.',
                   ),
                   _buildExternalAppButton(
                     icon: FontAwesomeIcons.facebookF,
                     label: 'Facebook',
-                    shareUrl: 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(shareText)}',
+                    shareUrl: '${AppConfig.facebookShareBase}?u=${Uri.encodeComponent(shareText)}',
                     notInstalledMessage: 'Facebook is not installed.',
                   ),
                   _buildExternalAppButton(
                     icon: FontAwesomeIcons.whatsapp,
                     label: 'WhatsApp',
-                    shareUrl: 'whatsapp://send?text=${Uri.encodeComponent(shareText)}',
+                    shareUrl: '${AppConfig.whatsappShareBase}://send?text=${Uri.encodeComponent(shareText)}',
                     notInstalledMessage: 'WhatsApp is not installed.',
                   ),
                   _buildShareButton(

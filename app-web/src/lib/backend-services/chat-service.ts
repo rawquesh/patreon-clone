@@ -133,8 +133,8 @@ class ChatService {
         console.error("[ChatService] connect() failed: No token found.");
         throw new Error("Not authenticated");
       }
-      const apiUrl = `${branding.urls.apiServer}`;
-      this.socket = io(`https://${apiUrl}/chat`, {
+      const apiUrl = branding.urls.apiServer;
+      this.socket = io(`${apiUrl}/chat`, {
         auth: { token },
         transports: ["websocket"],
         reconnection: true,

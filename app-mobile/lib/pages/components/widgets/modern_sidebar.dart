@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class ModernSidebar extends StatelessWidget {
@@ -72,7 +73,7 @@ class ModernSidebar extends StatelessWidget {
         SidebarXItem(icon: Icons.bar_chart_outlined, label: 'Insights'),
         SidebarXItem(icon: Icons.account_balance_wallet_outlined, label: 'Payouts'),
         SidebarXItem(icon: Icons.local_offer_outlined, label: 'Promotions'),
-        SidebarXItem(icon: Icons.chat_bubble_outline, label: 'Community'),
+        SidebarXItem(icon: Icons.chat_bubble_outline, label: AppConfig.communityTabLabel),
         SidebarXItem(icon: Icons.notifications_none, label: 'Notifications'),
         SidebarXItem(icon: Icons.settings_outlined, label: 'Settings'),
       ],

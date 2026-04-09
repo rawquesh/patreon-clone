@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:patreon-clone/config/index.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -50,21 +51,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyXXXXXXXXXXXXXXXXXXXXXX',
-    appId: '1:00000000000:android:xxxxxxxxxxxxxxxxxxxxxxxx',
-    messagingSenderId: '00000000000',
-    projectId: 'your-firebase-project-id',
-    storageBucket: 'your-firebase-project.firebasestorage.app',
+    apiKey: FirebaseConfig.androidApiKey,
+    appId: FirebaseConfig.androidAppId,
+    messagingSenderId: FirebaseConfig.androidMessagingSenderId,
+    projectId: FirebaseConfig.androidProjectId,
+    storageBucket: FirebaseConfig.androidStorageBucket,
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyXXXXXXXXXXXXXXXXXXXXXX',
-    appId: '1:00000000000:ios:xxxxxxxxxxxxxxxxxxxxxxxx',
-    messagingSenderId: '00000000000',
-    projectId: 'your-firebase-project-id',
-    storageBucket: 'your-firebase-project.firebasestorage.app',
-    androidClientId: '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-    iosClientId: '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-    iosBundleId: 'com.patreon-clone.app',
+    apiKey: FirebaseConfig.iosApiKey,
+    appId: FirebaseConfig.iosAppId,
+    messagingSenderId: FirebaseConfig.iosMessagingSenderId,
+    projectId: FirebaseConfig.iosProjectId,
+    storageBucket: FirebaseConfig.iosStorageBucket,
+    androidClientId: FirebaseConfig.androidClientId,
+    iosClientId: FirebaseConfig.iosClientId,
+    iosBundleId: FirebaseConfig.iosBundleId,
   );
 }

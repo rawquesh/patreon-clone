@@ -52,9 +52,7 @@ const SupportPage: React.FC = () => {
 
     // Get access key from environment variable or use a placeholder
     // Users need to get their access key from https://web3forms.com/
-    const accessKey =
-      process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ||
-      "8575bd15-9365-47f3-aeb0-b4eb8c3734ab";
+    const accessKey = branding.services.web3FormsAccessKey;
 
     if (!accessKey) {
       setSubmitStatus({
@@ -151,7 +149,7 @@ const SupportPage: React.FC = () => {
               borderRadius="12px"
               p={8}
               border="1px"
-              borderColor="#E6E5DD"
+              borderColor={branding.colors.border}
             >
               <form onSubmit={handleSubmit}>
                 <VStack gap={6} align="stretch">

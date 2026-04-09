@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const auth_service_1 = require("./auth.service");
 const auth_dto_1 = require("./auth.dto");
+const config_1 = require("../config");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -33,9 +34,7 @@ let AuthController = class AuthController {
     async googleAuth() { }
     async googleAuthCallback(req, res) {
         const { token } = await this.authService.googleLogin(req.user);
-        console.log('FRONTEND_URL');
-        console.log(process.env.FRONTEND_URL);
-        res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}`);
+        res.redirect(`${config_1.branding.frontendUrl}/auth/callback?token=${token}`);
     }
     async googleMobileLogin(googleTokenDto) {
         return this.authService.verifyGoogleAccessToken(googleTokenDto.accessToken);

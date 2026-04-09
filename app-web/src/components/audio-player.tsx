@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Box, Flex, Text, Center, Stack, Slider } from "@chakra-ui/react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { branding } from "@/config/branding";
 import Waveform from "./waveform";
 import { Avatar } from "./ui/avatar";
 
@@ -110,12 +111,12 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
           as="button"
           w="12"
           h="12"
-          bg="#1F78CC"
+          bg=branding.colors.primary
           borderRadius="full"
           onClick={handlePlayPause}
           color="white"
-          _hover={{ bg: "#1F78CC" }}
-          _active={{ bg: "#1F78CC" }}
+          _hover={{ bg: branding.colors.primary }}
+          _active={{ bg: branding.colors.primary }}
           css={{
             "& svg": {
               color: "white",
@@ -146,11 +147,11 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
                 display: "block",
                 width: "12px",
                 height: "12px",
-                backgroundColor: "#1F78CC",
+                backgroundColor: branding.colors.primary,
                 // display: "none",
               },
               "& .chakra-slider__range": {
-                bg: "#1F78CC",
+                bg: branding.colors.primary,
               },
             }}
           >
@@ -213,11 +214,11 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
               display: "none",
               width: "14px",
               height: "14px",
-              backgroundColor: "#1F78CC",
+              backgroundColor: branding.colors.primary,
               borderRightRadius: "100px",
             },
             "& .chakra-slider__range": {
-              bg: "#1F78CC",
+              bg: branding.colors.primary,
             },
           }}
         >
@@ -244,12 +245,12 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
         as="button"
         w="12"
         h="12"
-        bg="#1F78CC"
+        bg=branding.colors.primary
         borderRadius="full"
         onClick={handlePlayPause}
         color="white"
-        _hover={{ bg: "#1F78CC" }}
-        _active={{ bg: "#1F78CC" }}
+        _hover={{ bg: branding.colors.primary }}
+        _active={{ bg: branding.colors.primary }}
         css={{
           "& svg": {
             color: "white !important",

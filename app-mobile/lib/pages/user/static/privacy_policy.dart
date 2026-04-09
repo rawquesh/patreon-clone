@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/styles/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,7 +47,7 @@ class _AppStyles {
 
   static const TextStyle linkText = TextStyle(
     fontSize: 15.0,
-    color: Color(0xff1E6FBF),
+    color: AppConfig.linkColor,
     decoration: TextDecoration.underline,
     height: 1.6,
   );
@@ -72,14 +73,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Patreon Clone Privacy Policy', style: _AppStyles.heading1),
+              const Text('${AppConfig.appName} Privacy Policy', style: _AppStyles.heading1),
               const SizedBox(height: 8),
-              const Text('Effective Date: March 1, 2025', style: _AppStyles.effectiveDate),
+              const Text('Effective Date: ${AppConfig.legalEffectiveDate}', style: _AppStyles.effectiveDate),
               const SizedBox(height: 24),
-              const Text(
-                'Patreon Clone ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website, applications, and services (collectively, the "Services"). By using Patreon Clone, you agree to the terms of this Privacy Policy. If you do not agree with this policy, please discontinue use of our Services.',
-                style: _AppStyles.bodyText,
-              ),
+              Text(AppConfig.privacyWelcome(), style: _AppStyles.bodyText),
               const SizedBox(height: 16),
               const Text(
                 'We may update this Privacy Policy from time to time. If we make significant changes, we will notify you by updating the date at the top of this page and, if necessary, through additional notifications.',
@@ -89,7 +87,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const Text('1. Information We Collect', style: _AppStyles.heading2),
               const SizedBox(height: 16),
               const Text(
-                'We collect different types of information depending on how you interact with Patreon Clone.',
+                'We collect different types of information depending on how you interact with ${AppConfig.appName}.',
                 style: _AppStyles.bodyText,
               ),
               const SizedBox(height: 24),
@@ -115,7 +113,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const _BulletPoint(
                   title: 'Payment Information:',
                   text:
-                      'If you subscribe or make purchases, our third-party payment processors (e.g., Stripe, PayPal) handle your payment data. Patreon Clone does not store your full payment details.'),
+                      'If you subscribe or make purchases, our third-party payment processors (e.g., Stripe, PayPal) handle your payment data. ${AppConfig.appName} does not store your full payment details.'),
               const _BulletPoint(
                   title: 'Profile Information:',
                   text:
@@ -126,7 +124,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const Text('B. Information We Collect Automatically', style: _AppStyles.subheading),
               const SizedBox(height: 12),
               const Text(
-                'When you use Patreon Clone, we automatically collect certain information, including:',
+                'When you use ${AppConfig.appName}, we automatically collect certain information, including:',
                 style: _AppStyles.bodyText,
               ),
               const _BulletPoint(
@@ -141,7 +139,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const Text('C. Information from Third Parties', style: _AppStyles.subheading),
               const SizedBox(height: 12),
               const Text(
-                'If you connect Patreon Clone with third-party services (e.g., social media accounts), we may receive information from those platforms, including:',
+                'If you connect ${AppConfig.appName} with third-party services (e.g., social media accounts), we may receive information from those platforms, including:',
                 style: _AppStyles.bodyText,
               ),
               const _BulletPoint(text: 'Your public profile details'),
@@ -149,7 +147,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const _BulletPoint(text: 'Engagement data (e.g., likes, follows)'),
               const SizedBox(height: 12),
               const Text(
-                'We encourage you to review the privacy policies of any third-party services you link to Patreon Clone.',
+                'We encourage you to review the privacy policies of any third-party services you link to ${AppConfig.appName}.',
                 style: _AppStyles.bodyText,
               ),
               const SizedBox(height: 32),
@@ -159,20 +157,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'We use your information for the following purposes:',
                 style: _AppStyles.bodyText,
               ),
-              const _BulletPoint(title: 'Account Management:', text: 'Creating and managing your Patreon Clone account.'),
-              const _BulletPoint(
-                  title: 'Community Engagement:',
-                  text: 'Enabling you to participate in discussions, support creators, and engage with content.'),
-              const _BulletPoint(
-                  title: 'Security & Fraud Prevention:',
-                  text: 'Protecting against fraudulent activities and ensuring platform security.'),
-              const _BulletPoint(
-                  title: 'Personalization:', text: 'Customizing your experience, including content recommendations.'),
-              const _BulletPoint(
-                  title: 'Communication:', text: 'Sending you notifications, updates, and customer support messages.'),
-              const _BulletPoint(
-                  title: 'Legal Compliance:',
-                  text: 'Complying with applicable laws, responding to legal requests, and enforcing our terms.'),
+              _BulletPoint(title: 'Account Management:', text: AppConfig.tosAccountMgmt()),
+              _BulletPoint(title: 'Community Engagement:', text: AppConfig.tosCommunity()),
+              _BulletPoint(title: 'Security & Fraud Prevention:', text: AppConfig.tosSecurity()),
+              _BulletPoint(title: 'Personalization:', text: AppConfig.tosPersonalize()),
+              _BulletPoint(title: 'Communication:', text: AppConfig.tosComms()),
+              _BulletPoint(title: 'Legal Compliance:', text: AppConfig.tosLegal()),
               const SizedBox(height: 16),
               const Text(
                 'We do not sell your personal information to third parties.',
@@ -208,8 +198,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'If you have questions about this Privacy Policy or your data rights, contact us at:',
                 style: _AppStyles.bodyText,
               ),
-              const _BulletPoint(title: 'Email:', text: 'privacy@patreon-clone.example.com', isLink: true),
-              const _BulletPoint(title: 'Mailing Address:', text: '123 Community Way, San Francisco, CA 94105'),
+              const _BulletPoint(title: 'Email:', text: AppConfig.privacyEmail, isLink: true),
+              const _BulletPoint(title: 'Mailing Address:', text: AppConfig.privacyMailingAddress),
               SizedBox(height: MediaQuery.of(context).padding.bottom)
             ],
           ),

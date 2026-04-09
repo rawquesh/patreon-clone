@@ -24,6 +24,7 @@ const cheerio = require("cheerio");
 const analytics_1 = require("../database/schemas/analytics");
 const memberships_service_1 = require("../memberships/memberships.service");
 const user_1 = require("../database/schemas/user");
+const config_1 = require("../config");
 let PostsService = class PostsService {
     constructor(postModel, userModel, subscriptionModel, postInsightModel, s3Service, membershipsService) {
         this.postModel = postModel;
@@ -65,7 +66,7 @@ let PostsService = class PostsService {
                                 path: '',
                             };
                             const s3Folder = `posts/${postId || 'new'}/content-images`;
-                            const s3Bucket = 'patreon-clone-assets';
+                            const s3Bucket = config_1.business.s3.defaultBucket;
                             const s3Url = await this.s3Service.uploadFile(simulatedFile, s3Folder, s3Bucket);
                             img.attr('src', s3Url);
                         }
@@ -179,7 +180,7 @@ let PostsService = class PostsService {
         let videoInfo = this.extractVideoInfo(videoUrl);
         if (!videoInfo.isValid) {
             const isS3Upload = videoUrl.includes('amazonaws.com/') ||
-                videoUrl.includes('patreon-clone-assets');
+                videoUrl.includes(config_1.business.s3.defaultBucket);
             if (isS3Upload) {
                 videoInfo = {
                     isValid: true,
@@ -232,7 +233,7 @@ let PostsService = class PostsService {
                     isValid: true,
                     platform: 'youtube',
                     videoId,
-                    thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                    thumbnailUrl: `${config_1.branding.video.youtubeThumbnailBase}/${videoId}/maxresdefault.jpg`,
                 };
             }
             else if (url.includes('vimeo.com')) {

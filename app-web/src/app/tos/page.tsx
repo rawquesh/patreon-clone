@@ -1,5 +1,6 @@
 import { Box, Heading, Text, List, Container } from "@chakra-ui/react";
 import React from "react";
+import { branding } from "@/config/branding";
 
 const TermsOfServicePage: React.FC = () => {
   return (
@@ -289,7 +290,7 @@ const TermsOfServicePage: React.FC = () => {
           10. Contact Information
         </Heading>
         <Text mb={6}>
-          For questions about these Terms, contact us at support@patreon-clone.example.com.
+          For questions about these Terms, contact us at {branding.contact.supportEmail}.
         </Text>
       </Box>
     </Container>

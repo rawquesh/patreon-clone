@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Heading, Text, List, Stack, Container } from "@chakra-ui/react";
+import { branding } from "@/config/branding";
 
 const CommunityGuidelinesPage: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ const CommunityGuidelinesPage: React.FC = () => {
 
         <Text>
           If you come across any violations, please report them to{" "}
-          <strong>support@patreon-clone.example.com</strong>.
+          <strong>{branding.contact.supportEmail}</strong>.
         </Text>
 
         <Box>
@@ -308,7 +309,7 @@ const CommunityGuidelinesPage: React.FC = () => {
           </Heading>
           <Text>
             If you witness a violation of these guidelines, please report it to{" "}
-            <strong>support@patreon-clone.example.com</strong>. Our team will review reports and
+            <strong>{branding.contact.supportEmail}</strong>. Our team will review reports and
             take appropriate action.
           </Text>
         </Box>

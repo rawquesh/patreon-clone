@@ -1,5 +1,6 @@
 import { Box, Heading, Text, List, Container } from "@chakra-ui/react";
 import React from "react";
+import { branding } from "@/config/branding";
 
 const PrivacyPolicyPage: React.FC = () => {
 	return (
@@ -327,7 +328,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					</List.Item>
 				</List.Root>
 				<Text mb={6}>
-					To make a request, email <b>privacy@patreon-clone.example.com</b>.
+					To make a request, email <b>{branding.contact.privacyEmail}</b>.
 				</Text>
 
 				<Heading as="h2" size="lg" mt={8} mb={4}>
@@ -357,7 +358,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					contact us at:
 				</Text>
 				<Text mb={1}>
-					📧 <b>Email:</b> privacy@patreon-clone.example.com
+					📧 <b>Email:</b> {branding.contact.privacyEmail}
 				</Text>
 				<Text mb={6}>
 					📍 <b>Mailing Address:</b> 123 Community Way, San Francisco, CA 94105

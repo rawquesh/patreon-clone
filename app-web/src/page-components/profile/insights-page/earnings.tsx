@@ -11,8 +11,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Line, Bar } from "react-chartjs-2";
+import { branding } from "@/config/branding";
 import {
-  Chart as ChartJS,
   LineElement,
   PointElement,
   LinearScale,
@@ -75,7 +75,7 @@ const EarningsTab = () => {
         label: "Total Earnings",
         data: lineChartValues,
         fill: true,
-        borderColor: "#3182ce",
+        borderColor: branding.colors.linkBlue,
         backgroundColor: "rgba(49, 130, 206, 0.2)",
         tension: 0.4,
       },

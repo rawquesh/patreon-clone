@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/backend/common/api_endpoints.dart';
 import 'package:patreon-clone/backend/common/api_service.dart';
 import 'package:patreon-clone/backend/post/post_repository.dart';
@@ -1333,7 +1334,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 // --- Share Dialog (Unchanged) ---
 
 void _sharePost(BuildContext context, String postId) {
-  final shareText = 'Check out this post on Patreon Clone: https://patreon-clone.example.com/post/$postId';
+  final String postUrl = AppConfig.postShareUrl(postId);
+  final shareText = 'Check out this post on ${AppConfig.appName}: $postUrl';
 
   showDialog(
     context: context,
@@ -1356,22 +1358,21 @@ void _sharePost(BuildContext context, String postId) {
                   context: context,
                   icon: FontAwesomeIcons.xTwitter,
                   label: 'Twitter',
-                  shareUrl: 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(shareText)}',
+                  shareUrl: '${AppConfig.twitterShareBase}?text=${Uri.encodeComponent(shareText)}',
                   notInstalledMessage: 'Twitter is not installed.',
                 ),
                 _buildExternalAppButton(
                   context: context,
                   icon: FontAwesomeIcons.facebookF,
                   label: 'Facebook',
-                  shareUrl:
-                      'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent("https://patreon-clone.example.com/post/$postId")}',
+                  shareUrl: '${AppConfig.facebookShareBase}?u=${Uri.encodeComponent(postUrl)}',
                   notInstalledMessage: 'Facebook is not installed.',
                 ),
                 _buildExternalAppButton(
                   context: context,
                   icon: FontAwesomeIcons.whatsapp,
                   label: 'WhatsApp',
-                  shareUrl: 'whatsapp://send?text=${Uri.encodeComponent(shareText)}',
+                  shareUrl: '${AppConfig.whatsappShareBase}://send?text=${Uri.encodeComponent(shareText)}',
                   notInstalledMessage: 'WhatsApp is not installed.',
                 ),
                 _buildShareButton(

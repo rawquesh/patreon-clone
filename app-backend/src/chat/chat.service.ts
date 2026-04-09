@@ -39,6 +39,7 @@ import {
 import { S3Service } from '@/s3/s3.service';
 import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
 import { ChatGateway } from './chat.gateway';
+import { business } from '@/config';
 
 // Define types for populated documents to help with type checking
 type PopulatedMessage = Message & Document & { sender: User & Document };
@@ -786,7 +787,7 @@ export class ChatService {
         const fileUrl = await this.s3Service.uploadFile(
           attachmentFile,
           `chat-attachments/${chatId}`,
-          process.env.AWS_S3_BUCKET_NAME || 'patreon-clone-assets',
+          business.s3.defaultBucket,
         );
         attachment = {
           url: fileUrl,

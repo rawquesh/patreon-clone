@@ -22,6 +22,7 @@ export declare const business: {
         readonly gracePeriodDays: 7;
     };
     readonly s3: {
+        readonly baseUrl: string;
         readonly defaultBucket: string;
         readonly collectionsBucket: string;
         readonly testBucket: string;

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/backend/user/user_repository.dart';
 import 'package:patreon-clone/constants/shared_preference_constants.dart';
 import 'package:patreon-clone/constants/user_constants.dart';
@@ -379,7 +380,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with MySafeState 
           controller: countryController,
           readOnly: true,
           onTap: () {
-            List<String> topJewishPopulationCountries = ['IL', 'US', 'FR', 'CA', 'GB', 'AR', 'RU', 'AU', 'DE', 'BR'];
+            List<String> topJewishPopulationCountries = AppConfig.suggestedCountryCodes;
             showCountryPicker(
               context: context,
               showPhoneCode: false,

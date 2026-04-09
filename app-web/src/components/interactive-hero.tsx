@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { branding, marketing } from "@/config";
 
 const MotionFlex = motion(Flex);
 const MotionImage = motion(Image);
@@ -70,7 +71,7 @@ export function InteractiveHero() {
           >
             <Text
               bg="rgba(29, 112, 191, 0.08)"
-              color="#1D70BF"
+              color={branding.colors.primary}
               fontWeight="600"
               px={4}
               py={2}
@@ -82,13 +83,13 @@ export function InteractiveHero() {
             <Heading
               as="h1"
               fontSize={{ base: "2.5rem", md: "3rem" }}
-              color="#141413"
+              color={branding.colors.textHeader}
               lineHeight="1.2"
             >
               Build a thriving{" "}
               <Box
                 as="span"
-                color="#1D70BF"
+                color={branding.colors.primary}
                 textDecoration="underline"
                 textDecorationColor="rgba(29, 112, 191, 0.2)"
                 textUnderlineOffset="8px"
@@ -97,27 +98,25 @@ export function InteractiveHero() {
               </Box>{" "}
               online
             </Heading>
-            <Text fontSize="lg" color="#5A5954" maxW="550px">
-              Patreon Clone empowers Jewish creators to share their voices, build
-              thriving communities, and generate meaningful connections and
-              sustainable income.
+            <Text fontSize="lg" color={branding.colors.star} maxW="550px">
+              {branding.description}
             </Text>
             <HStack gap={4} pt={4}>
               <Link href={"/auth/login"}>
                 <Button
-                  bg="#1D70BF"
+                  bg={branding.colors.primary}
                   color="white"
-                  _hover={{ bg: "#3283d1" }}
+                  _hover={{ bg: branding.colors.primaryHover }}
                   size="lg"
                 >
-                  Join Patreon Clone
+                  Join {branding.name}
                 </Button>
               </Link>
               <Link href={"/community"}>
                 <Button
                   variant="outline"
-                  borderColor="#1D70BF"
-                  color="#1D70BF"
+                  borderColor={branding.colors.primary}
+                  color={branding.colors.primary}
                   size="lg"
                 >
                   Explore Creators
@@ -127,19 +126,19 @@ export function InteractiveHero() {
             <HStack gap={10} pt={8}>
               <VStack alignItems={"start"}>
                 <Heading textAlign={"left"} size="2xl">
-                  50+
+                  {marketing.heroStats.activeCommunities}
                 </Heading>
                 <Text>Active Communities</Text>
               </VStack>
               <VStack alignItems={"start"}>
                 <Heading textAlign={"left"} size="2xl">
-                  100k+
+                  {marketing.heroStats.communityMembers}
                 </Heading>
                 <Text>Community Members</Text>
               </VStack>
               <VStack alignItems={"start"}>
                 <Heading textAlign={"left"} size="2xl">
-                  $1M+
+                  {marketing.heroStats.generatedRevenue}
                 </Heading>
                 <Text>Generated Revenue</Text>
               </VStack>
@@ -164,14 +163,14 @@ export function InteractiveHero() {
               "& .pattern-1": {
                 width: { base: "150px", md: "300px" },
                 height: { base: "150px", md: "300px" },
-                backgroundColor: "rgba(29, 112, 191, 0.05)",
+                backgroundColor: `${branding.colors.primary}0d`,
                 top: "-100px",
                 right: "-100px",
               },
               "& .pattern-2": {
                 width: { base: "125px", md: "250px" },
                 height: { base: "125px", md: "250px" },
-                backgroundColor: "rgba(171, 84, 55, 0.05)",
+                backgroundColor: `${branding.colors.accent}0d`,
                 bottom: "-80px",
                 left: "-100px",
               },

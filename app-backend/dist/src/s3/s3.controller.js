@@ -16,6 +16,7 @@ exports.S3Controller = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const s3_service_1 = require("./s3.service");
+const config_1 = require("../config");
 class CreateVideoUploadSessionDto {
 }
 class CompleteVideoUploadDto {
@@ -35,7 +36,7 @@ let S3Controller = class S3Controller {
                 fileName,
                 fileType,
                 fileSize,
-                bucket: 'patreon-clone-assets',
+                bucket: config_1.business.s3.defaultBucket,
                 folder: 'videos',
             });
             console.log(result);
@@ -51,7 +52,7 @@ let S3Controller = class S3Controller {
         if (!uploadId || !key || !parts || parts.length === 0) {
             throw new common_1.BadRequestException('uploadId, key, bucket, and parts array are required');
         }
-        const bucket = 'patreon-clone-assets';
+        const bucket = config_1.business.s3.defaultBucket;
         try {
             const videoUrl = await this.s3Service.completeMultipartUpload({
                 uploadId,

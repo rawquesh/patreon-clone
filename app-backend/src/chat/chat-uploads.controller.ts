@@ -13,6 +13,7 @@ import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ChatService } from './chat.service';
+import { business } from '@/config';
 
 @Controller('chat-uploads')
 @UseGuards(AuthGuard('jwt'))
@@ -49,7 +50,7 @@ export class ChatUploadsController {
       const fileUrl = await this.s3Service.uploadFile(
         file,
         `chats/${chatId}/${new Date().toISOString()}-${file.originalname}`,
-        'patreon-clone-assets',
+        business.s3.defaultBucket,
       );
 
       return {

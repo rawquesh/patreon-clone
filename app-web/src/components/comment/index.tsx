@@ -10,6 +10,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import ButtonWithIcon from "@/components/ui/button-with-icon";
 import { Avatar } from "@/components/ui/avatar";
 import { getTimeAgo } from "@/utils/getTimeAgo";
+import { branding } from "@/config/branding";
 
 interface Props {
   user: {
@@ -138,7 +139,7 @@ const Comment: React.FC<Props> = ({
               variant="ghost"
               size="sm"
               icon={liked ? "iconamoon:heart-fill" : "iconamoon:heart"}
-              color={liked ? "#e92145" : "gray.500"}
+              color={liked ? branding.colors.like : "gray.500"}
               iconProps={{
                 height: "30px",
                 fontSize: "30px",

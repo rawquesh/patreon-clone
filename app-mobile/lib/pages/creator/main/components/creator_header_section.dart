@@ -2,6 +2,7 @@ import 'dart:io';
 
 // import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:go_router/go_router.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,7 +98,7 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
       creatorDisplayName = user.displayName;
 
       headline = user.creatorHeadline.isNotEmpty ? user.creatorHeadline : 'Add headline';
-      websiteUrl = 'patreon-clone.example.com/creator/$creatorUsername';
+      websiteUrl = AppConfig.creatorWebsiteUrl(creatorUsername);
       socialLinks = user.socialLinks;
       mySetState();
     }
@@ -467,8 +468,8 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
   }
 
   void _shareProfile() {
-    final shareText = 'Check Out This Creator: https://patreon-clone.example.com/creator/$creatorUsername';
-    final shareUrl = 'https://patreon-clone.example.com/creator/$creatorUsername'; // URL-only for platforms like Facebook
+    final String creatorUrl = AppConfig.creatorShareUrl(creatorUsername);
+    final shareText = 'Check Out This Creator: $creatorUrl';
 
     showDialog(
       context: context,
@@ -497,29 +498,29 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
                   _buildSharingAppButton(
                     icon: FontAwesomeIcons.xTwitter,
                     label: 'Twitter',
-                    shareUrl: 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(shareText)}',
+                    shareUrl: '${AppConfig.twitterShareBase}?text=${Uri.encodeComponent(shareText)}',
                   ),
 
                   // Facebook
                   _buildSharingAppButton(
                     icon: FontAwesomeIcons.facebookF,
                     label: 'Facebook',
-                    shareUrl: 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(shareUrl)}',
+                    shareUrl: '${AppConfig.facebookShareBase}?u=${Uri.encodeComponent(creatorUrl)}',
                   ),
 
                   // WhatsApp
                   _buildSharingAppButton(
                     icon: FontAwesomeIcons.whatsapp,
                     label: 'WhatsApp',
-                    shareUrl: 'https://wa.me/?text=${Uri.encodeComponent(shareText)}',
+                    shareUrl: '${AppConfig.whatsappShareBase}/?text=${Uri.encodeComponent(shareText)}',
                   ),
 
-                  // Instagram (See note below)
+                  // Instagram
                   _buildSimpleAppButton(
                     icon: FontAwesomeIcons.instagram,
                     label: 'Instagram',
                     appScheme: 'instagram://',
-                    webFallbackUrl: 'https://instagram.com',
+                    webFallbackUrl: AppConfig.instagramFallback,
                   ),
                   _buildShareButton(
                     icon: Icons.share,

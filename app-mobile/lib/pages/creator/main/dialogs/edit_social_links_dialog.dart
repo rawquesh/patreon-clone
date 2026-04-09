@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/models/social_link/social_links.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:patreon-clone/utils/my_safe_state.dart';
@@ -28,22 +29,22 @@ class _EditSocialLinksDialogState extends State<EditSocialLinksDialog> with MySa
   bool _isLoading = false;
 
   final List<Map<String, dynamic>> platforms = [
-    {'platform': 'twitter', 'label': 'Twitter', 'icon': FontAwesomeIcons.xTwitter, 'placeholder': 'https://twitter.com/username'},
+    {'platform': 'twitter', 'label': 'Twitter', 'icon': FontAwesomeIcons.xTwitter, 'placeholder': 'https://${AppConfig.socialLinkHintTwitter}'},
     {
       'platform': 'instagram',
       'label': 'Instagram',
       'icon': FontAwesomeIcons.instagram,
-      'placeholder': 'https://instagram.com/username'
+      'placeholder': 'https://${AppConfig.socialLinkHintInstagram}'
     },
-    {'platform': 'tiktok', 'label': 'TikTok', 'icon': FontAwesomeIcons.tiktok, 'placeholder': 'https://tiktok.com/@username'},
+    {'platform': 'tiktok', 'label': 'TikTok', 'icon': FontAwesomeIcons.tiktok, 'placeholder': 'https://${AppConfig.socialLinkHintTiktok}'},
     {
       'platform': 'youtube',
       'label': 'YouTube',
       'icon': FontAwesomeIcons.youtube,
-      'placeholder': 'https://youtube.com/channel/...'
+      'placeholder': 'https://${AppConfig.socialLinkHintYoutube}'
     },
-    {'platform': 'twitch', 'label': 'Twitch', 'icon': FontAwesomeIcons.twitch, 'placeholder': 'https://twitch.tv/username'},
-    {'platform': 'website', 'label': 'Website', 'icon': FontAwesomeIcons.globe, 'placeholder': 'https://yourwebsite.com'},
+    {'platform': 'twitch', 'label': 'Twitch', 'icon': FontAwesomeIcons.twitch, 'placeholder': 'https://${AppConfig.socialLinkHintTwitch}'},
+    {'platform': 'website', 'label': 'Website', 'icon': FontAwesomeIcons.globe, 'placeholder': 'https://${AppConfig.socialLinkHintWebsite}'},
   ];
 
   @override

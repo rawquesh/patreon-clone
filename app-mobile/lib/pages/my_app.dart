@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/backend/audience/audience_provider.dart';
 import 'package:patreon-clone/backend/collections/collection_provider.dart';
@@ -75,7 +76,7 @@ class MainApp extends StatelessWidget {
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
                 routerConfig: AppRouter.router,
-                title: "Patreon Clone",
+                title: AppConfig.appName,
                 theme: appThemeProvider.getThemeData(),
                 builder: (BuildContext context, Widget? child) {
                   final mq = MediaQuery.of(context);

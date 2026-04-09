@@ -4,12 +4,10 @@ import { useAuth } from "@/context/auth.provider";
 import { Box, Flex, Image } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { branding } from "@/config/branding";
 
 export const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
-
-  const primaryColor = "#1962A5";
-  const primaryHoverColor = "#1D70BF";
 
   return (
     <Box maxW={"100vw"} overflow={"hidden"}>
@@ -21,7 +19,7 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
           w={"100%"}
           top={0}
           left={0}
-          bg={"#F7F5ED"}
+          bg={branding.colors.bgWarm}
           gap={4}
           px={6}
           py={4}
@@ -35,10 +33,10 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
             <Link href={"/auth/login"}>
               <Button
                 variant="outline"
-                borderColor={primaryColor}
-                color={primaryColor}
+                borderColor={branding.colors.primaryDark}
+                color={branding.colors.primaryDark}
                 _hover={{
-                  bg: primaryColor,
+                  bg: branding.colors.primaryDark,
                   color: "white",
                 }}
               >
@@ -47,10 +45,10 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
             </Link>
             <Link href={"/auth/login"}>
               <Button
-                bg={primaryColor}
+                bg={branding.colors.primaryDark}
                 color="white"
                 _hover={{
-                  bg: primaryHoverColor,
+                  bg: branding.colors.primary,
                 }}
               >
                 Sign Up
@@ -62,7 +60,7 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
       {!Boolean(user) && <Box h={"72px"} w={"100%"}></Box>}
       <Box
         ml={{ base: 0, lg: Boolean(user) ? "300px" : 0 }}
-        bg={"#F7F5ED"}
+        bg={branding.colors.bgWarm}
         minH={"100vh"}
         mt={{ base: "48px", md: 0 }}
       >

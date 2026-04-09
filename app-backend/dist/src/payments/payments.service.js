@@ -19,6 +19,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const stripe_1 = require("stripe");
 const user_1 = require("../database/schemas/user");
+const config_2 = require("../config");
 let PaymentsService = class PaymentsService {
     constructor(userModel, configService) {
         this.userModel = userModel;
@@ -60,8 +61,8 @@ let PaymentsService = class PaymentsService {
         });
         const accountLink = await this.stripe.accountLinks.create({
             account: account.id,
-            refresh_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/refresh`,
-            return_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/complete`,
+            refresh_url: `${config_2.branding.frontendUrl}/creator/stripe/refresh`,
+            return_url: `${config_2.branding.frontendUrl}/creator/stripe/complete`,
             type: 'account_onboarding',
             collect: 'currently_due',
         });
@@ -98,8 +99,8 @@ let PaymentsService = class PaymentsService {
         }
         const accountLink = await this.stripe.accountLinks.create({
             account: user.stripeConnectAccountId,
-            refresh_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/refresh`,
-            return_url: `${this.configService.get('FRONTEND_URL')}/creator/stripe/complete`,
+            refresh_url: `${config_2.branding.frontendUrl}/creator/stripe/refresh`,
+            return_url: `${config_2.branding.frontendUrl}/creator/stripe/complete`,
             type: 'account_onboarding',
             collect: 'eventually_due',
         });

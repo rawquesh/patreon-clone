@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
+import 'package:patreon-clone/config/index.dart';
 import 'package:patreon-clone/navigation/app_router.dart';
 // import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
 // import 'package:patreon-clone/navigation/navigation_type.dart';
@@ -269,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> with MySafeState {
                 }
               }
 
-              launchExternalUrl("https://forms.gle/c3NHFCMgJZDXaa6n8");
+              launchExternalUrl(AppConfig.featureRequestFormUrl);
             },
             child: _buildOptionItem(
               icon: AppAssets.featureRequestIcon,

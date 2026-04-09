@@ -6,7 +6,6 @@ import { Membership } from '@/database/schemas/membership';
 import { Subscription } from '@/database/schemas/subscription';
 import { PayoutRequest } from '@/database/schemas/payout';
 import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
-import { ConfigService } from '@nestjs/config';
 export declare class MembershipsService {
     private membershipModel;
     private subscriptionModel;
@@ -14,9 +13,8 @@ export declare class MembershipsService {
     private userModel;
     private paymentsService;
     private notificationGenerator;
-    private configService;
     private readonly platformFeePercentage;
-    constructor(membershipModel: Model<Membership>, subscriptionModel: Model<Subscription>, payoutRequestModel: Model<PayoutRequest>, userModel: Model<User>, paymentsService: PaymentsService, notificationGenerator: NotificationGeneratorService, configService: ConfigService);
+    constructor(membershipModel: Model<Membership>, subscriptionModel: Model<Subscription>, payoutRequestModel: Model<PayoutRequest>, userModel: Model<User>, paymentsService: PaymentsService, notificationGenerator: NotificationGeneratorService);
     createMembership(userId: string, createMembershipDto: CreateMembershipWithFileDto): Promise<Membership>;
     updateMembership(userId: string, membershipId: string, updateMembershipDto: UpdateMembershipDto): Promise<Membership>;
     createSubscription(userId: string, membershipId: string, discountInfo?: {

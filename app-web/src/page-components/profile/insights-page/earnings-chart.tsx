@@ -2,8 +2,8 @@
 "use client";
 import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import { branding } from "@/config/branding";
 import {
-  Chart as ChartJS,
   LineElement,
   PointElement,
   LinearScale,
@@ -163,14 +163,14 @@ const EarningsChart: React.FC<EarningsChartProps> = ({
         label: "Daily Earnings",
         data: ensureDataMatches(data, timeLabels),
         fill: true,
-        borderColor: "#3182ce",
+        borderColor: branding.colors.linkBlue,
         backgroundColor: "rgba(49, 130, 206, 0.2)",
         tension: 0.4,
         pointRadius: (ctx: any) => {
           // Make points with data visible
           return ctx.raw > 0 ? 4 : 0;
         },
-        pointBackgroundColor: "#3182ce",
+        pointBackgroundColor: branding.colors.linkBlue,
         pointBorderColor: "#fff",
         pointBorderWidth: 2,
       },
