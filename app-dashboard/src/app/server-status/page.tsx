@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +11,6 @@ import {
   type StatusCheck,
   type ServerStatus,
 } from '@/lib/services/server-status.service';
-import { getAuthToken } from '@/lib/auth';
 import {
   CheckCircle2,
   XCircle,
@@ -223,7 +222,6 @@ export default function ServerStatusPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [visibleCards, setVisibleCards] = useState(0);
-  const hasCheckedAuth = useRef(false);
 
   const {
     register,
@@ -233,16 +231,6 @@ export default function ServerStatusPage() {
     resolver: zodResolver(createAdminSchema),
   });
 
-  useEffect(() => {
-    if (hasCheckedAuth.current) return;
-    hasCheckedAuth.current = true;
-    const token = getAuthToken();
-    if (token) {
-      router.push('/');
-    }
-  }, [router]);
-
-  // Staggered reveal
   useEffect(() => {
     if (!status) return;
     const total = status.checks.length + (status.adminCreationReady && !status.adminExists ? 1 : 0);
@@ -365,7 +353,7 @@ export default function ServerStatusPage() {
         )}
 
         {/* Check Groups */}
-        {status && CHECK_GROUPS.map((group, gi) => {
+        {status && CHECK_GROUPS.map((group) => {
           const groupChecks = status.checks.filter((c) => group.keys.includes(c.name));
           if (groupChecks.length === 0) return null;
 
@@ -400,14 +388,17 @@ export default function ServerStatusPage() {
 
               {/* Cards */}
               <div className="space-y-2">
-                {groupChecks.map((check, ci) => (
-                  <CheckCard
-                    key={check.name}
-                    check={check}
-                    index={gi * 20 + ci}
-                    visible={visibleCards > gi * 20 + ci}
-                  />
-                ))}
+                {groupChecks.map((check) => {
+                  const runningIndex = status.checks.indexOf(check);
+                  return (
+                    <CheckCard
+                      key={check.name}
+                      check={check}
+                      index={runningIndex}
+                      visible={visibleCards > runningIndex}
+                    />
+                  );
+                })}
               </div>
             </div>
           );
