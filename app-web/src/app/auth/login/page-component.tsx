@@ -113,12 +113,10 @@ const LoginPages: React.FC = () => {
           {/* Logo + Brand */}
           <Link href="/">
             <Flex alignItems="center" gap={3} mb={2} cursor="pointer">
-              <Box
-                as="img"
+              <img
                 src="/icons/logo.png"
                 alt="logo"
-                boxSize="44px"
-                borderRadius="12px"
+                style={{ width: "44px", height: "44px", borderRadius: "12px" }}
               />
               <Text
                 fontWeight={700}
