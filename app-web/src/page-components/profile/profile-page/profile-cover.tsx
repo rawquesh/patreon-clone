@@ -146,7 +146,7 @@ const ProfileCover: React.FC<Props> = ({ coverImage }) => {
                     pos={"relative"}
                     bg={"rgb(0,0,0,0.5)"}
                     as="span"
-                    colorScheme="blue"
+                    css={{ background: "var(--gradient-primary)", color: "white" }}
                     disabled={isUploading}
                   >
                     <Icon

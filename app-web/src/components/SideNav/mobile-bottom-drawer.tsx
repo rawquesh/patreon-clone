@@ -37,41 +37,52 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
     <DrawerRoot placement={"bottom"}>
       <DrawerBackdrop />
       <DrawerTrigger
-        display={"flex"}
-        h={"52px"}
-        alignItems={"center"}
-        justifyContent={"start"}
-        w={"100%"}
-        _hover={{ bg: "star.100" }}
+        display="flex"
+        h="52px"
+        alignItems="center"
+        justifyContent="start"
+        w="100%"
+        _hover={{ bg: "primary.50" }}
+        px="20px"
+        transition="all 0.15s ease"
       >
         <Avatar
-          shape={"rounded"}
+          shape="rounded"
           src={
             user?.profilePicture ||
             `https://${branding.assets.assetBucketBase}/profile-pictures/placeholder-male.jpg`
           }
-          h={"40px"}
-          w={"40px"}
+          h="40px"
+          w="40px"
         />
-        <Box textAlign={"left"} ml={"12px"} gap={0}>
-          <Text fontWeight={500} fontSize={"sm"}>
+        <Box textAlign="left" ml="12px" gap={0}>
+          <Text fontWeight={500} fontSize="sm">
             {user?.firstName || "User"}
           </Text>
-          <Text lineHeight={1} color={"star.500"} fontSize={"xs"}>
-            {currentMode}
+          <Text lineHeight={1} color="star.500" fontSize="xs" textTransform="capitalize">
+            {currentMode} mode
           </Text>
         </Box>
       </DrawerTrigger>
-      <DrawerContent px={0} borderTopRadius={"8px"} py={"20px"}>
+      <DrawerContent
+        px={0}
+        borderTopRadius="16px"
+        py="20px"
+        className="glass-card-static"
+        css={{
+          background: "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%)",
+        }}
+      >
         <Stack>
           <Flex
-            css={{
-              "& svg": {
-                color: currentMode === "creator" ? "green.500" : "transparent",
-              },
-            }}
-            justifyContent={"space-between"}
-            alignItems={"center"}
+            justifyContent="space-between"
+            alignItems="center"
+            px="20px"
+            py="8px"
+            borderRadius="10px"
+            _hover={{ bg: "primary.50" }}
+            cursor="pointer"
+            transition="all 0.15s ease"
             onClick={() => handleModeSwitch("creator")}
           >
             <AvatarButton
@@ -80,15 +91,19 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
               mode="creator"
               username={user?.firstName || ""}
             />
-            <Icon height={"32px"} icon={"iconamoon:check-bold"} />
+            {currentMode === "creator" && (
+              <Icon height="20px" icon={"iconamoon:check-bold"} css={{ color: "hsl(211, 71%, 43%)" }} />
+            )}
           </Flex>
           <Flex
-            css={{
-              "& svg": {
-                color: currentMode === "user" ? "green.500" : "transparent",
-              },
-            }}
-            justifyContent={"space-between"}
+            justifyContent="space-between"
+            alignItems="center"
+            px="20px"
+            py="8px"
+            borderRadius="10px"
+            _hover={{ bg: "primary.50" }}
+            cursor="pointer"
+            transition="all 0.15s ease"
             onClick={() => handleModeSwitch("user")}
           >
             <AvatarButton
@@ -100,21 +115,11 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
               }
               mode="user"
             />
-            <Icon height={"32px"} icon={"iconamoon:check-bold"} />
+            {currentMode === "user" && (
+              <Icon height="20px" icon={"iconamoon:check-bold"} css={{ color: "hsl(211, 71%, 43%)" }} />
+            )}
           </Flex>
-          <Separator />
-          {/* <Stack py={"10px"} px={"20px"}>
-            <Text color={"star.600"}>Appearance</Text>
-            <Tabs.Root fitted defaultValue={"light"} variant={"plain"}>
-              <Tabs.List pos={"relative"} bg={"star.100"} rounded={"8px"}>
-                <Tabs.Trigger value="light">Light</Tabs.Trigger>
-                <Tabs.Trigger value="dark">Dark</Tabs.Trigger>
-                <Tabs.Trigger value="system">System</Tabs.Trigger>
-                <Tabs.Indicator bg={"star.200"} rounded={"8px"} />
-              </Tabs.List>
-            </Tabs.Root>
-          </Stack> */}
-          {/* <Separator /> */}
+          <Separator my={3} />
           <For
             each={[
               { title: "News", link: "#" },
@@ -128,15 +133,28 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
           >
             {({ title, link }) => (
               <Link href={link} key={title}>
-                <Text _hover={{ bg: "star.100" }} py={"8px"} px={"20px"}>
+                <Text
+                  _hover={{ bg: "primary.50" }}
+                  py="8px"
+                  px="20px"
+                  fontSize="sm"
+                  transition="all 0.15s ease"
+                >
                   {title}
                 </Text>
               </Link>
             )}
           </For>
-          <Separator />
-          <Box pb={"10px"}>
-            <Text _hover={{ bg: "star.100" }} py={"8px"} px={"20px"}>
+          <Separator my={3} />
+          <Box pb="10px">
+            <Text
+              _hover={{ bg: "red.50", color: "red.500" }}
+              py="8px"
+              px="20px"
+              fontSize="sm"
+              cursor="pointer"
+              transition="all 0.15s ease"
+            >
               Log out
             </Text>
           </Box>

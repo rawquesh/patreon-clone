@@ -33,7 +33,7 @@ interface CreatorStats {
   disclaimer?: string;
   introVideoUrl?: string;
   bio?: string;
-  socialLinks?: { platform: string; url: string; icon?: string }[]; // Icon might be optional from backend
+  socialLinks?: { platform: string; url: string; icon?: string }[];
 }
 
 const AboutPage: React.FC<{
@@ -54,7 +54,6 @@ const AboutPage: React.FC<{
         setStats(data);
       } catch (error) {
         console.error("Error fetching creator stats:", error);
-        // Fallback data for development/demo
         setStats({
           totalMembers: 12500,
           paidMembers: 3200,
@@ -76,6 +75,7 @@ const AboutPage: React.FC<{
   if (loading || creatorLoading) {
     return (
       <Box
+        className="animate-fade-in-up"
         maxW={"648px"}
         pt={6}
         pb={20}
@@ -83,23 +83,40 @@ const AboutPage: React.FC<{
         mx={"auto"}
         textAlign="center"
       >
-        <Spinner size="xl" color="green.500" />
+        <Box
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          border="3px solid hsl(210, 30%, 88%)"
+          borderTopColor="hsl(211, 71%, 43%)"
+          animation="spin 0.8s linear infinite"
+          mx="auto"
+          css={{
+            "@keyframes spin": {
+              "0%": { transform: "rotate(0deg)" },
+              "100%": { transform: "rotate(360deg)" },
+            },
+          }}
+        />
       </Box>
     );
   }
 
   return (
-    <Box maxW={"648px"} pt={6} pb={20} w={"90vw"} mx={"auto"}>
+    <Box
+      className="animate-fade-in-up"
+      maxW={"648px"}
+      pt={6}
+      pb={20}
+      w={"90vw"}
+      mx={"auto"}
+    >
       {/* Creator Details Section */}
-      <Stack
-        direction={{ base: "column", sm: "row" }}
-        gap={4}
-        alignItems="center"
-        mb={6}
-        bg={"white"}
-        shadow={"md"}
-        borderRadius={"12px"}
+      <Box
+        className="glass-card"
+        borderRadius="16px"
         p={"24px"}
+        mb={6}
       >
         <DisplayAboutDetails
           aboutData={{
@@ -108,54 +125,73 @@ const AboutPage: React.FC<{
             socialLinks: stats?.socialLinks,
           }}
         />
-      </Stack>
+      </Box>
 
-      {/* New Disclaimer Section */}
+      {/* Disclaimer Section */}
       {stats?.disclaimer && (
-        <Stack
-          bg={"white"}
-          shadow={"md"}
+        <Box
+          className="glass-card"
           fontSize={"sm"}
-          borderRadius={"12px"}
+          borderRadius="12px"
           p={"24px"}
           mt={6}
         >
-          <Text fontWeight={600}>DISCLAIMER</Text>
-          <Text>{stats.disclaimer}</Text>
-        </Stack>
+          <Text
+            fontWeight={600}
+            mb={2}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
+            DISCLAIMER
+          </Text>
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+            {stats.disclaimer}
+          </Text>
+        </Box>
       )}
 
+      {/* Stats Grid */}
       <Flex
-        bg={"white"}
-        shadow={"md"}
-        fontSize={"sm"}
-        borderRadius={"12px"}
+        className="glass-card"
+        borderRadius="12px"
         p={"24px"}
-        my={6}
+        mt={6}
         justifyContent={"space-evenly"}
         direction={{
           base: "column",
           lg: "row",
         }}
+        gap={6}
       >
-        <StatRoot alignItems={"center"} textAlign={"center"}>
-          <StatLabel>Total members</StatLabel>
-          <StatValueText>
-            {stats?.totalMembers?.toLocaleString() || "0"}
-          </StatValueText>
-        </StatRoot>
-        <StatRoot alignItems={"center"} textAlign={"center"}>
-          <StatLabel>Paid members</StatLabel>
-          <StatValueText>
-            {stats?.paidMembers?.toLocaleString() || "0"}
-          </StatValueText>
-        </StatRoot>
-        <StatRoot alignItems={"center"} textAlign={"center"}>
-          <StatLabel>Posts</StatLabel>
-          <StatValueText>
-            {stats?.totalPosts?.toLocaleString() || "0"}
-          </StatValueText>
-        </StatRoot>
+        {[
+          { label: "Total members", value: stats?.totalMembers },
+          { label: "Paid members", value: stats?.paidMembers },
+          { label: "Posts", value: stats?.totalPosts },
+        ].map((stat) => (
+          <StatRoot key={stat.label} alignItems={"center"} textAlign={"center"}>
+            <StatLabel
+              css={{
+                color: "hsl(215.4, 16.3%, 46.9%)",
+                fontSize: "13px",
+                fontWeight: 500,
+              }}
+            >
+              {stat.label}
+            </StatLabel>
+            <StatValueText
+              css={{
+                color: "hsl(222.2, 47.4%, 11.2%)",
+                fontSize: "28px",
+                fontWeight: 700,
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              {stat.value?.toLocaleString() || "0"}
+            </StatValueText>
+          </StatRoot>
+        ))}
       </Flex>
     </Box>
   );
@@ -166,13 +202,12 @@ export default AboutPage;
 interface AboutData {
   introVideoUrl?: string;
   bio?: string;
-  socialLinks?: { platform: string; url: string; icon?: string }[]; // Icon might be optional from backend
+  socialLinks?: { platform: string; url: string; icon?: string }[];
 }
 
 const DisplayAboutDetails: React.FC<{
   aboutData: AboutData;
 }> = ({ aboutData }) => {
-  // --- Parser Options (Copied from profile page) ---
   const parserOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.type === "tag") {
@@ -182,25 +217,25 @@ const DisplayAboutDetails: React.FC<{
         switch (name) {
           case "h1":
             return (
-              <Heading as="h1" size="xl" my={4}>
+              <Heading as="h1" size="xl" my={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 {reactChildren}
               </Heading>
             );
           case "h2":
             return (
-              <Heading as="h2" size="lg" my={4}>
+              <Heading as="h2" size="lg" my={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 {reactChildren}
               </Heading>
             );
           case "h3":
             return (
-              <Heading as="h3" size="md" my={3}>
+              <Heading as="h3" size="md" my={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 {reactChildren}
               </Heading>
             );
           case "h4":
             return (
-              <Heading as="h4" size="sm" my={2}>
+              <Heading as="h4" size="sm" my={2} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 {reactChildren}
               </Heading>
             );
@@ -210,16 +245,21 @@ const DisplayAboutDetails: React.FC<{
               children[0].type === "tag" &&
               children[0].name === "br"
             ) {
-              return <Box h="1em" />; // Handle empty paragraph with just <br>
+              return <Box h="1em" />;
             }
-            return <Text my={3}>{reactChildren}</Text>;
+            return (
+              <Text my={3} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                {reactChildren}
+              </Text>
+            );
           case "a":
             return (
               <Link
                 href={attribs.href}
-                color="blue.500"
+                css={{ color: "hsl(211, 71%, 43%)" }}
                 target="_blank"
                 rel="noopener noreferrer"
+                _hover={{ textDecoration: "underline" }}
               >
                 {reactChildren}
                 <Box as="span" display="inline-block" ml={1}>
@@ -252,28 +292,31 @@ const DisplayAboutDetails: React.FC<{
               </List.Root>
             );
           case "li":
-            return <ListItem>{reactChildren}</ListItem>;
+            return (
+              <ListItem css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                {reactChildren}
+              </ListItem>
+            );
           case "pre":
-            // Handle syntax highlighting block from PrimeReact editor
             if (attribs.class?.includes("ql-syntax")) {
               return (
                 <Box
                   as="pre"
                   p={4}
                   my={4}
-                  bg="gray.800" // Dark background for code
-                  color="gray.100" // Light text
-                  borderRadius="md"
-                  overflowX="auto"
-                  fontSize="sm" // Smaller font for code
-                  fontFamily="monospace"
-                  css={{ code: { fontFamily: "monospace !important" } }} // Ensure inner code uses monospace
+                  css={{
+                    background: "hsl(222.2, 28%, 12%)",
+                    color: "hsl(210, 40%, 96%)",
+                    borderRadius: "8px",
+                    overflowX: "auto",
+                    fontSize: "13px",
+                    fontFamily: "monospace",
+                  }}
                 >
                   {reactChildren}
                 </Box>
               );
             }
-            // Generic pre tag
             return (
               <Code
                 as="pre"
@@ -283,37 +326,35 @@ const DisplayAboutDetails: React.FC<{
                 whiteSpace="pre-wrap"
                 fontSize="sm"
                 fontFamily="monospace"
-                bg="gray.100"
-                borderRadius="md"
+                css={{ background: "hsl(210, 20%, 96%)", borderRadius: "6px" }}
               >
                 {reactChildren}
               </Code>
             );
 
-          // Basic formatting tags
           case "strong":
           case "b":
             return (
-              <Text as="strong" fontWeight="bold">
+              <Text as="strong" fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 {reactChildren}
               </Text>
             );
           case "em":
           case "i":
             return (
-              <Text as="em" fontStyle="italic">
+              <Text as="em" fontStyle="italic" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 {reactChildren}
               </Text>
             );
           case "u":
             return (
-              <Text as="u" textDecoration="underline">
+              <Text as="u" textDecoration="underline" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 {reactChildren}
               </Text>
             );
           case "s":
             return (
-              <Text as="s" textDecoration="line-through">
+              <Text as="s" textDecoration="line-through" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 {reactChildren}
               </Text>
             );
@@ -321,41 +362,41 @@ const DisplayAboutDetails: React.FC<{
             return (
               <Box
                 as="blockquote"
-                borderLeft="4px solid"
-                borderColor="gray.300"
-                pl={4}
-                my={4}
-                fontStyle="italic"
-                color="gray.600"
+                borderLeft="3px solid"
+                css={{
+                  borderColor: "hsl(211, 71%, 43%)",
+                  pl: "16px",
+                  my: "16px",
+                  fontStyle: "italic",
+                  color: "hsl(215.4, 16.3%, 46.9%)",
+                }}
               >
                 {reactChildren}
               </Box>
             );
           case "br":
-            return <br />; // Explicit line break
+            return <br />;
 
-          // Default: render children without a specific wrapper if tag is unknown/unhandled
           default:
             return <>{reactChildren}</>;
         }
       }
     },
   };
-  // --- End Parser Options ---
 
   const introVideoId = aboutData.introVideoUrl
     ? getYouTubeVideoId(aboutData.introVideoUrl)
     : null;
 
   return (
-    <Stack gap={4} textAlign="left" w="100%">
-      {" "}
-      {/* Ensure stack takes width */}
+    <Stack gap={6} textAlign="left" w="100%">
       {aboutData.introVideoUrl && (
         <Box w="100%">
-          {" "}
-          {/* Ensure box takes width */}
-          <Text fontWeight={600} mb={2}>
+          <Text
+            fontWeight={600}
+            mb={2}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             Intro Video
           </Text>
           {introVideoId ? (
@@ -364,16 +405,15 @@ const DisplayAboutDetails: React.FC<{
                 title="Intro Video"
                 src={`https://www.youtube.com/embed/${introVideoId}`}
                 allowFullScreen
-                style={{ border: 0 }} // Add style to remove potential iframe border
+                style={{ border: 0, borderRadius: "12px" }}
               />
             </AspectRatio>
           ) : (
-            // Fallback to link if not a valid YouTube URL or ID extraction failed
             <Link
               href={aboutData.introVideoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              color="blue.500"
+              css={{ color: "hsl(211, 71%, 43%)" }}
             >
               Watch Video{" "}
               <Icon icon="mdi:external-link" display="inline-block" />
@@ -383,36 +423,42 @@ const DisplayAboutDetails: React.FC<{
       )}
       {aboutData.bio && (
         <Box w="100%">
-          {" "}
-          {/* Ensure box takes width */}
-          <Text fontWeight={600} mb={2}>
+          <Text
+            fontWeight={600}
+            mb={2}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             Bio
           </Text>
-          {/* Render the parsed HTML content for bio */}
           <Box className="about-bio-content">
-            {parse(aboutData.bio || "", parserOptions)}{" "}
-            {/* Added fallback for empty bio */}
+            {parse(aboutData.bio || "", parserOptions)}
           </Box>
         </Box>
       )}
       {aboutData.socialLinks && aboutData.socialLinks.length > 0 && (
         <Box w="100%">
-          {" "}
-          {/* Ensure box takes width */}
-          <Text fontWeight={600} mb={2}>
+          <Text
+            fontWeight={600}
+            mb={2}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             Social Links
           </Text>
-          <Stack gap={2}>
+          <Stack gap={3}>
             {aboutData.socialLinks.map((link) => (
               <Link
                 key={link.platform}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                css={{
+                  color: "hsl(211, 71%, 43%)",
+                  "&:hover": { textDecoration: "underline" },
+                }}
               >
                 <HStack gap={2}>
                   <Icon icon={link.icon || "mdi:link"} fontSize="20px" />
-                  <Text>{link.platform}</Text>
+                  <Text fontWeight={500}>{link.platform}</Text>
                 </HStack>
               </Link>
             ))}
@@ -423,7 +469,6 @@ const DisplayAboutDetails: React.FC<{
   );
 };
 
-// --- Helper function for YouTube URLs (Copied from profile page) ---
 const getYouTubeVideoId = (url: string): string | null => {
   if (!url) return null;
   let videoId: string | null = null;
@@ -435,13 +480,12 @@ const getYouTubeVideoId = (url: string): string | null => {
     ) {
       videoId = urlObj.searchParams.get("v");
     } else if (urlObj.hostname === "youtu.be") {
-      videoId = urlObj.pathname.substring(1); // Remove the leading '/'
+      videoId = urlObj.pathname.substring(1);
     }
   } catch (e) {
     console.error("Invalid URL format for YouTube check:", url, e);
     return null;
   }
-  // Basic check for valid video ID format (alphanumeric, -, _)
   if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
     return videoId;
   }

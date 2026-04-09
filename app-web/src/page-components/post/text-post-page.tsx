@@ -100,7 +100,7 @@ const TextPostPageComponent: React.FC<{
             );
           case "a":
             return (
-              <Link href={attribs.href} color="blue.500" target="_blank">
+              <Link href={attribs.href} css={{ color: "hsl(211, 71%, 43%)" }} target="_blank">
                 {reactChildren}
               </Link>
             );
@@ -137,8 +137,7 @@ const TextPostPageComponent: React.FC<{
                   as="pre"
                   p={4}
                   my={4}
-                  bg="gray.800" // Dark background for code
-                  color="gray.100" // Light text
+                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
                   borderRadius="md"
                   overflowX="auto"
                   fontSize="sm" // Smaller font for code
@@ -168,8 +167,7 @@ const TextPostPageComponent: React.FC<{
                   as="pre"
                   p={4}
                   my={4}
-                  bg="gray.800"
-                  color="gray.100"
+                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
                   borderRadius="md"
                   overflowX="auto"
                   fontSize="sm"
@@ -212,11 +210,11 @@ const TextPostPageComponent: React.FC<{
               <Box
                 as="blockquote"
                 borderLeft="4px solid"
-                borderColor="gray.300"
+                css={{ borderColor: "hsl(210, 30%, 88%)" }}
                 pl={4}
                 my={4}
                 fontStyle="italic"
-                color="gray.600"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
               >
                 {reactChildren}
               </Box>
@@ -253,7 +251,7 @@ const TextPostPageComponent: React.FC<{
           <Attachments attachments={postData.attachments || []} />
 
           {/* Likes and Comments Count */}
-          <Flex my={6} gap={4} borderTop="1px" borderColor="gray.200" pt={4}>
+          <Flex my={6} gap={4} borderTop="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }} pt={4}>
             {" "}
             {/* Add separator */}
             <Suspense>
@@ -287,7 +285,7 @@ const TextPostPageComponent: React.FC<{
             {" "}
             {/* Add ID for scrolling */}
             <Suspense>
-              <PostCommentsSection bg="white" postId={postId} />
+              <PostCommentsSection className="glass-card" postId={postId} />
             </Suspense>
           </Box>
         </Stack>

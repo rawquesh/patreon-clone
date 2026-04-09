@@ -47,7 +47,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
       borderRadius="md"
       overflow="hidden"
       boxShadow="sm"
-      bg="white"
+      className="glass-card"
       flexShrink={0}
       onClick={() => (window.location.href = `/creator/${username}`)}
       cursor="pointer"
@@ -74,14 +74,14 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
             {name}
           </Text>
           {category && (
-            <Badge colorScheme="blue" fontSize="xs" borderRadius="full" px={2}>
+            <Badge fontSize="xs" borderRadius="full" px={2} css={{ background: "var(--gradient-primary)", color: "white" }}>
               {getCategoryDisplayName(category)}
             </Badge>
           )}
         </Flex>
         <Text
           fontSize="sm"
-          color="gray.600"
+          css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
           overflow="hidden"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
@@ -155,7 +155,7 @@ const TopCreatorsCategory: React.FC = () => {
       <Link
         as={NextLink}
         href={`/explore?category=${selectedCategory}`}
-        color="blue.500"
+        css={{ color: "hsl(211, 71%, 43%)" }}
         fontSize="sm"
       >
         <Flex align="center">

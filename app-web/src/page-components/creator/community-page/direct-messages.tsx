@@ -229,7 +229,7 @@ const DirectMessages: React.FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
       </Flex>
     );
   }
@@ -242,7 +242,7 @@ const DirectMessages: React.FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Text color="red.500">Could not load chat.</Text>
+        <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Could not load chat.</Text>
       </Flex>
     );
   }
@@ -259,7 +259,7 @@ const DirectMessages: React.FC = () => {
       flexDirection="column"
       pos="relative"
     >
-      <Box p={4} borderBottomWidth="1px">
+      <Box p={4} borderBottomWidth="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }}>
         <Flex align="center" gap={3}>
           <Avatar
             size="sm"
@@ -267,10 +267,10 @@ const DirectMessages: React.FC = () => {
             name={otherParticipant?.displayName}
           />
           <Box>
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
               {otherParticipant?.displayName || "User"}
             </Text>
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               {otherParticipant?.isCreator ? "Creator" : "Member"}
             </Text>
           </Box>
@@ -297,7 +297,7 @@ const DirectMessages: React.FC = () => {
             width: "6px",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "gray.200",
+            background: "hsl(210, 30%, 88%)",
             borderRadius: "24px",
           },
         }}
@@ -307,8 +307,15 @@ const DirectMessages: React.FC = () => {
           <Flex justify="center" py={2} top={0} zIndex={2}>
             <Button
               size="sm"
-              colorScheme="blue"
-              variant="outline"
+              css={{
+                borderColor: "hsl(211, 71%, 43%)",
+                color: "hsl(211, 71%, 43%)",
+                "&:hover": {
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                  borderColor: "transparent",
+                },
+              }}
               disabled={loadingOlder}
               onClick={handleLoadOlderMessages}
               borderRadius="full"
@@ -330,17 +337,17 @@ const DirectMessages: React.FC = () => {
           {chatItems.map((item) =>
             isDateSeparator(item) ? (
               <Center key={item.key} py={2}>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
                 <Text
                   mx={4}
                   fontSize="xs"
                   fontWeight="medium"
-                  color="gray.500"
+                  css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                   textTransform="uppercase"
                 >
                   {formatDateSeparator(item.date)}
                 </Text>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
               </Center>
             ) : (
               <ChatMessage key={item.id} message={item} />
@@ -358,7 +365,7 @@ const DirectMessages: React.FC = () => {
             justifyContent="center"
             zIndex={10}
           >
-            <Spinner size="xl" color="blue.500" />
+            <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
           </Flex>
         )}
       </Box>
@@ -369,7 +376,8 @@ const DirectMessages: React.FC = () => {
         position="fixed"
         bottom="0"
         w={{ base: "calc(100% - 300px)", lg: "calc(100% - 600px)" }}
-        bg="white"
+        className="glass-card"
+        borderRadius={0}
       >
         <ChatInput isDisabled={loadingInitial} />
       </Box>

@@ -2,10 +2,9 @@
 
 import ButtonWithIcon from "@/components/ui/button-with-icon";
 import {
-  // PopoverBody,
   PopoverContent,
-  // PopoverHeader,
   PopoverRoot,
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { RadioCardItem, RadioCardRoot } from "@/components/ui/radio-card";
 import {
@@ -13,7 +12,6 @@ import {
   Heading,
   IconButton,
   Input,
-  PopoverTrigger,
   Stack,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -57,9 +55,7 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
   const [search, setSearch] = useState<string>("");
   const { data: creator } = useCreator();
 
-  // Handle post type change
   const handlePostTypeChange = (value: string) => {
-    // If "all" is selected, set to undefined
     setPostType(value === "all" ? undefined : value);
   };
 
@@ -78,7 +74,12 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
 
   return (
     <Stack my={6} w={"100%"} maxW={"680px"} mx={"auto"}>
-      <Heading textAlign={"center"} fontSize={"2xl"} fontWeight={600}>
+      <Heading
+        textAlign={"center"}
+        fontSize={"2xl"}
+        fontWeight={600}
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+      >
         Recent posts by {creator?.displayName || "this creator"}
       </Heading>
       <Flex
@@ -87,11 +88,16 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
         mt={4}
         gap={3}
       >
-        <InputGroup>
+        <InputGroup glass>
           <Input
             placeholder="Search posts..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            css={{
+              "& input": {
+                background: "transparent",
+              },
+            }}
           />
         </InputGroup>
 
@@ -105,7 +111,7 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
               {postType ? `Type: ${postType}` : "Post Type"}
             </ButtonWithIcon>
           </PopoverTrigger>
-          <PopoverContent py={"16px"} px={"12px"} bg={"star.50"}>
+          <PopoverContent py={"16px"} px={"12px"}>
             <RadioCardRoot
               value={postType || "all"}
               onChange={(e) => {
@@ -116,7 +122,6 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
               }}
               css={{
                 "& .wrapper": {
-                  // color: "red",
                   display: "flex",
                   flexDirection: "row",
                   gap: "8px",
@@ -215,6 +220,14 @@ const CreatorPostsFilter: React.FC<CreatorPostsFilterProps> = ({
               setTier(undefined);
               setDatePublished(undefined);
               setSearch("");
+            }}
+            css={{
+              borderColor: "hsl(215.4, 16.3%, 46.9% / 0.3)",
+              "&:hover": {
+                background: "hsl(0, 84.2%, 60.2% / 0.08)",
+                borderColor: "hsl(0, 84.2%, 60.2%)",
+                color: "hsl(0, 84.2%, 60.2%)",
+              },
             }}
           >
             <Icon icon={"carbon:close"} />

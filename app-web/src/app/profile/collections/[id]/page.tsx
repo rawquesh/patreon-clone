@@ -22,16 +22,8 @@ import ImagePost from "@/page-components/creator/image-post";
 import VideoPost from "@/page-components/creator/video-post";
 import AudioPost from "@/page-components/creator/audio-post";
 import LinkPost from "@/page-components/creator/link-post";
-// import LinkPost from "@/page-components/creator/link-post"; // LinkPost not used currently
-// import { notFound } from 'next/navigation'; // Keep commented, might need later for collection details
-// Assuming db is not used directly in frontend components based on findings
-// import { db } from '@/lib/db';
 
-interface CollectionPageProps {
-  // Props might be adjusted or removed if not needed for client component
-}
-
-const CollectionPage: React.FC<CollectionPageProps> = () => {
+const CollectionPage: React.FC = () => {
   const params = useParams();
   const collectionId = params.id as string;
 
@@ -40,23 +32,26 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<
-    CollectionWithPostsResponse,
-    Error // Specify Error type for error object
-  >({
+  } = useQuery<CollectionWithPostsResponse, Error>({
     queryKey: ["collection", collectionId],
-    queryFn: () => fetchCollectionWithPosts(collectionId, { limit: 50 }), // Pass limit here or handle pagination
+    queryFn: () => fetchCollectionWithPosts(collectionId, { limit: 50 }),
     enabled: !!collectionId,
   });
 
-  const collectionDetails = collectionData; // Use the whole response for details
+  const collectionDetails = collectionData;
   const posts = collectionData?.posts || [];
-  const creator = collectionData?.creator; // Extract creator info
+  const creator = collectionData?.creator;
 
   if (isLoading) {
     return (
       <Flex justify="center" align="center" minH="50vh">
-        <Spinner size="xl" />
+        <Spinner
+          size="xl"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            borderWidth: "3px",
+          }}
+        />
       </Flex>
     );
   }
@@ -65,20 +60,17 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
     console.error("Error fetching collection:", error);
     return (
       <Flex justify="center" align="center" minH="50vh" p={4}>
-        <Text color="red.500">
+        <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
           {error?.message || "Could not load collection."}
         </Text>
       </Flex>
     );
   }
 
-  // Function to render the correct post component based on type
   const renderPostComponent = (post: Post) => {
     const commonProps = {
       title: post.title,
-      // Use previewText if available, fallback to description
       body: post.previewText || post.description || "",
-      // Use publishDate if available, fallback to createdAt
       timeStamp: post.publishDate || post.createdAt,
       likes: post.likeCount || 0,
       comments: post.commentCount || 0,
@@ -107,37 +99,43 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
             {...commonProps}
             src={post.videoUrl || post.mediaUrls?.[0] || ""}
             thumbnail={post.thumbnailUrl || ""}
-            length={0} // Length not available
+            length={0}
           />
         );
       case "audio":
-        // Assuming mediaUrls might contain audio, or a dedicated field if added
         return (
           <AudioPost
             {...commonProps}
-            src={post.mediaUrls?.[0] || ""} // Placeholder for audio source
+            src={post.mediaUrls?.[0] || ""}
           />
         );
       case "link":
-        // LinkPost requires linkUrl which is not in the current Post type
         return <LinkPost {...commonProps} />;
-
       default:
-        // Fallback for unknown or missing post types
         return (
-          <Box p={4} borderWidth="1px" borderRadius="md">
-            <Text fontWeight="bold">{post.title}</Text>
-            <Text color="gray.500">Unsupported post type: {post.type}</Text>
+          <Box className="glass-card" p={4} borderRadius="12px">
+            <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+              {post.title}
+            </Text>
+            <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+              Unsupported post type: {post.type}
+            </Text>
           </Box>
         );
     }
   };
 
   return (
-    <Box>
+    <Box className="animate-fade-in-up">
       {/* Header Section */}
-      <Flex px={12} py={24} mb={8} borderRadius="md" overflow="hidden">
-        {/* Left Side: Info */}
+      <Box
+        px={12}
+        py={8}
+        mb={8}
+        className="glass-card"
+        borderRadius="20px"
+        overflow="hidden"
+      >
         <Flex
           direction="column"
           justify="center"
@@ -157,6 +155,7 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
                   fontSize="sm"
                   fontWeight="medium"
                   _hover={{ textDecoration: "underline" }}
+                  css={{ color: "hsl(211, 71%, 43%)" }}
                 >
                   {creator.displayName}
                 </Link>
@@ -167,17 +166,22 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
             fontSize={{ base: "2xl", md: "4xl" }}
             fontWeight="bold"
             lineHeight="tight"
+            css={{
+              background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
           >
             {collectionDetails.title}
           </Text>
           {collectionDetails.description && (
-            <Text mt={2} fontSize="md" color="gray.300">
+            <Text mt={2} fontSize="md" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               {collectionDetails.description}
             </Text>
           )}
         </Flex>
 
-        {/* Right Side: Image */}
         {collectionDetails.coverImage && (
           <Box
             flexShrink={0}
@@ -189,18 +193,18 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
               objectFit="cover"
               width="100%"
               height="100%"
-              maxH={{ base: "150px", md: "250px" }} // Constrain image height
+              maxH={{ base: "150px", md: "250px" }}
+              borderRadius="12px"
             />
           </Box>
         )}
-      </Flex>
+      </Box>
 
       {/* Posts Section */}
       <Stack gap={6} maxW="680px" mx="auto" px={{ base: 2, md: 0 }}>
         {posts.length > 0 ? (
           posts.map((post) => (
             <Box key={post.id}>
-              {/* Creator info repetition might be desired or removed depending on final design */}
               {creator && (
                 <Flex align="center" gap={3} mb={3}>
                   <Avatar
@@ -216,25 +220,40 @@ const CollectionPage: React.FC<CollectionPageProps> = () => {
                       passHref
                     >
                       <Link as="div" _hover={{ textDecoration: "underline" }}>
-                        <Text fontWeight="bold">{creator.displayName}</Text>
+                        <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                          {creator.displayName}
+                        </Text>
                       </Link>
                     </NextLink>
-                    <Text fontSize="sm" color={"gray.600"}>
+                    <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       @{creator.creatorUsername}
                     </Text>
                   </Box>
                 </Flex>
               )}
               {renderPostComponent(post)}
-              <Separator mt={6} />
+              <Separator mt={6} css={{ borderColor: "hsl(210, 30%, 88%)" }} />
             </Box>
           ))
         ) : (
-          <Text textAlign="center" fontSize="lg" mt={10} color="gray.500">
-            There are no posts in this collection yet.
-          </Text>
+          <Flex
+            direction="column"
+            align="center"
+            justify="center"
+            minH="200px"
+            className="glass-card"
+            borderRadius="16px"
+            p={8}
+          >
+            <Text
+              textAlign="center"
+              fontSize="lg"
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+            >
+              There are no posts in this collection yet.
+            </Text>
+          </Flex>
         )}
-        {/* TODO: Add pagination controls */}
       </Stack>
     </Box>
   );

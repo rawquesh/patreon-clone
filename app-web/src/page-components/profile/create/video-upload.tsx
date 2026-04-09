@@ -97,8 +97,8 @@ const VideoUpload: React.FC<Props> = ({
             top={2}
             right={2}
             onClick={handleRemove}
-            bg="white"
-            _hover={{ bg: "gray.100" }}
+            className="glass-card"
+            _hover={{ bg: "rgba(255,255,255,0.8)" }}
             zIndex={10}
           >
             Remove
@@ -110,10 +110,10 @@ const VideoUpload: React.FC<Props> = ({
           h="400px"
           borderWidth="1px"
           borderStyle="dashed"
-          borderColor={isDragActive ? "blue.400" : "gray.600"}
+          borderColor={isDragActive ? "hsl(211, 71%, 43%)" : "hsl(215.4, 16.3%, 46.9%)"}
           borderRadius="xl"
           transition="all 0.2s"
-          _hover={{ borderColor: "blue.400" }}
+          _hover={{ borderColor: "hsl(211, 71%, 43%)" }}
           bg="transparent"
           {...getRootProps()}
           cursor="pointer"
@@ -125,12 +125,12 @@ const VideoUpload: React.FC<Props> = ({
                 icon="material-symbols:video-file"
                 width="48"
                 height="48"
-                color="#666"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
               />
-              <Text fontSize={"sm"} color="gray.400" textAlign="center">
+              <Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
                 Drag and drop a video <br /> file to upload
               </Text>
-              <Button size={"xs"} variant="outline">
+              <Button size={"xs"} variant="outline" className="glass-card">
                 Select video file
               </Button>
             </VStack>

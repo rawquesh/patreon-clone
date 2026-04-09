@@ -68,13 +68,13 @@ const FilterModal: React.FC = () => {
 			<ButtonWithIcon variant={"ghost"} onClick={onOpen} icon="ion:filter">
 				Filter
 			</ButtonWithIcon>
-			<DialogContent>
+			<DialogContent className="glass-dialog-content">
 				<DialogHeader
 					alignItems={"center"}
 					display={"flex"}
 					justifyContent={"space-between"}
 				>
-					<Text fontSize={"xl"} fontWeight={600} flex={1}>
+					<Text fontSize={"xl"} fontWeight={600} flex={1} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
 						Filter Posts
 					</Text>
 					<IconButton rounded="999px" variant={"ghost"} onClick={onClose}>
@@ -84,13 +84,13 @@ const FilterModal: React.FC = () => {
 				<Separator mb={2} />
 				<DialogBody>
 					<Stack>
-						<Text fontWeight={600}>Post type</Text>
+						<Text fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Post type</Text>
 					</Stack>
 					<CheckboxGroup
 						css={{
 							'& label[data-state="checked"]': {
-								bg: "gray.800",
-								color: "gray.50",
+								background: "var(--gradient-primary)",
+								color: "white",
 							},
 						}}
 					>
@@ -118,7 +118,7 @@ const FilterModal: React.FC = () => {
 							))}
 						</Flex>
 					</CheckboxGroup>
-					<Text mt={5} fontWeight={600}>
+					<Text mt={5} fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
 						Who can see this post
 					</Text>
 					<RadioGroup mt={3}>
@@ -140,8 +140,8 @@ const FilterModal: React.FC = () => {
 				</DialogBody>
 				<Separator mb={2} />
 				<DialogFooter justifyContent={"space-between"}>
-					<Button variant={"outline"}>Clear all</Button>
-					<Button>Apply</Button>
+					<Button variant={"outline"} className="glass-card">Clear all</Button>
+					<Button className="btn-gradient">Apply</Button>
 				</DialogFooter>
 			</DialogContent>
 		</DialogRoot>

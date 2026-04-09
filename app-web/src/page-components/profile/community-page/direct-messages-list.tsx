@@ -34,10 +34,6 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
         );
 
         if (!otherParticipant) {
-          console.warn(
-            "Could not find other participant for direct message:",
-            chat.id
-          );
           return null;
         }
 
@@ -45,12 +41,21 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
           <Link key={chat.id} href={`${baseUrl}/${chat.id}`}>
             <Box
               p={3}
-              borderRadius="md"
-              bg={isActive ? "blue.50" : "transparent"}
-              _hover={{ bg: isActive ? "blue.50" : "gray.100" }}
+              borderRadius="12px"
               cursor="pointer"
-              borderLeftWidth={isActive ? "3px" : "0"}
-              borderLeftColor="blue.500"
+              css={{
+                background: isActive
+                  ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))"
+                  : "transparent",
+                borderLeft: "3px solid",
+                borderLeftColor: isActive ? "hsl(211, 71%, 43%)" : "transparent",
+                transition: "all 0.15s ease",
+                "&:hover": {
+                  background: isActive
+                    ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))"
+                    : "rgba(255,255,255,0.5)",
+                },
+              }}
             >
               <Flex justify="space-between" align="flex-start" mb={1}>
                 <Flex align="center" gap={2}>
@@ -63,18 +68,26 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
                     src={otherParticipant.profilePicture}
                   />
                   <Box>
-                    <Text fontWeight="medium">
+                    <Text
+                      fontWeight={600}
+                      fontSize="14px"
+                      css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+                    >
                       {otherParticipant.creatorUsername ||
                         otherParticipant.name}
                     </Text>
-                    <Text fontSize="sm" color="gray.600" lineClamp={1}>
-                      {chat.lastMessage?.content.slice(0, 20) ||
+                    <Text
+                      fontSize="12px"
+                      css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+                      lineClamp={1}
+                    >
+                      {chat.lastMessage?.content.slice(0, 25) ||
                         "No messages yet"}
                     </Text>
                   </Box>
                 </Flex>
                 <Box textAlign="right" flexShrink={0}>
-                  <Text fontSize="xs" color="gray.500">
+                  <Text fontSize="11px" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                     {chat.lastMessage?.timestamp
                       ? format(new Date(chat.lastMessage.timestamp), "p")
                       : ""}
@@ -82,12 +95,12 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
                   {chat.unreadCount ? (
                     <Flex justifyContent="flex-end">
                       <Box
-                        bg="blue.500"
+                        css={{ background: "var(--gradient-primary)" }}
                         color="white"
                         borderRadius="full"
                         px={1.5}
                         py={0}
-                        fontSize="xs"
+                        fontSize="10px"
                         lineHeight="tall"
                         mt={1}
                       >
@@ -102,7 +115,10 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
         );
       })}
       {chats.length === 0 && (
-        <Text textAlign="center" color="gray.500" py={4}>
+        <Text
+          textAlign="center"
+          css={{ color: "hsl(215.4, 16.3%, 46.9%)", py: "16px", fontSize: "14px" }}
+        >
           No direct messages
         </Text>
       )}

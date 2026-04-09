@@ -144,16 +144,16 @@ const NewChatModal: React.FC = () => {
       placement={"center"}
       open={open}
     >
-      <Button onClick={onOpen} w="full" mt={4} variant="outline">
+      <Button onClick={onOpen} w="full" mt={4} className="glass-card" variant="outline">
         New chat
       </Button>
-      <DialogContent>
+      <DialogContent className="glass-dialog-content">
         <DialogHeader
           alignItems={"center"}
           display={"flex"}
           justifyContent={"space-between"}
         >
-          <Text fontSize={"xl"} fontWeight={600} flex={1}>
+          <Text fontSize={"xl"} fontWeight={600} flex={1} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             New Chat
           </Text>
           <IconButton
@@ -239,7 +239,7 @@ const NewChatModal: React.FC = () => {
               >
                 {loading ? (
                   <Center py={4}>
-                    <Spinner size="md" color="blue.500" />
+                    <Spinner size="md" css={{ color: "hsl(211, 71%, 43%)" }} />
                   </Center>
                 ) : (
                   <Box
@@ -270,13 +270,13 @@ const NewChatModal: React.FC = () => {
                             justifyContent={"space-between"}
                             border={
                               selectedTier.includes(id)
-                                ? "1px solid #000"
-                                : "none"
+                                ? "2px solid hsl(211, 71%, 43%)"
+                                : "1px solid hsl(210, 30%, 88%)"
                             }
                           >
                             <Stack>
-                              <Text fontSize={"lg"}>{tier.name}</Text>
-                              <Text fontSize={"sm"} color={"gray.500"}>
+                              <Text fontSize={"lg"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{tier.name}</Text>
+                              <Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                                 {Math.max(tier.subscriberCount || 0, 0)} members
                               </Text>
                             </Stack>
@@ -299,7 +299,7 @@ const NewChatModal: React.FC = () => {
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
+          <Button variant="outline" onClick={handleClose} className="glass-card">
             Cancel
           </Button>
           <Button
@@ -308,6 +308,7 @@ const NewChatModal: React.FC = () => {
             disabled={
               !title.trim() || (accessType === "select" && !selectedTier)
             }
+            className="btn-gradient"
           >
             Create Chat
           </Button>

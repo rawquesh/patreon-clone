@@ -40,7 +40,7 @@ const LinkPostPageComponent: React.FC<{
       <Stack gap={0} flexGrow={1}>
         {linkUrl && (
           <Box
-            bg="gray.50"
+            className="glass-card"
             p={4}
             borderRadius="md"
             mb={6}
@@ -48,7 +48,7 @@ const LinkPostPageComponent: React.FC<{
             alignItems="center"
           >
             <Icon icon="clarity:link-solid" style={{ marginRight: "8px" }} />
-            <ChakraLink href={linkUrl} color="blue.500">
+            <ChakraLink href={linkUrl} css={{ color: "hsl(211, 71%, 43%)" }}>
               {linkUrl}
             </ChakraLink>
           </Box>
@@ -68,7 +68,7 @@ const LinkPostPageComponent: React.FC<{
           />
         </Flex>
         <Suspense>
-          <PostCommentsSection bg="white" postId={postId} />
+          <PostCommentsSection className="glass-card" postId={postId} />
         </Suspense>
       </Stack>
       {!postData?.hasAccess && (

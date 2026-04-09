@@ -91,7 +91,7 @@ const SearchComponent: React.FC = () => {
       <form onSubmit={handleSearch}>
         <InputGroup
           startElement={
-            <Icon icon="material-symbols:search" color="gray.500" />
+            <Icon icon="material-symbols:search" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
           }
         >
           <Input
@@ -103,9 +103,9 @@ const SearchComponent: React.FC = () => {
             }}
             onFocus={onOpen}
             borderRadius="full"
-            bg="gray.100"
-            _hover={{ bg: "gray.200" }}
-            _focus={{ bg: "white", boxShadow: "md" }}
+            className="glass-input"
+            _hover={{ background: "rgba(255,255,255,0.9)" }}
+            _focus={{ background: "rgba(255,255,255,0.9)" }}
           />
         </InputGroup>
       </form>
@@ -128,9 +128,9 @@ const SearchComponent: React.FC = () => {
             left="0"
             right="0"
             mt={2}
-            bg="white"
-            boxShadow="lg"
-            borderRadius="md"
+            className="glass-card"
+            boxShadow="0 8px 32px hsl(211, 71%, 43% / 0.12)"
+            borderRadius="12px"
             zIndex="popover"
             maxH="500px"
             overflowY="auto"
@@ -145,15 +145,16 @@ const SearchComponent: React.FC = () => {
                 {searchResults?.creators &&
                   searchResults.creators.length > 0 && (
                     <>
-                      <Text p={3} fontWeight="bold" color="gray.600">
+                      <Text p={3} fontWeight="bold" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                         Creators
                       </Text>
                       {searchResults.creators.map((creator) => (
                         <Box
                           key={creator._id}
                           p={3}
-                          _hover={{ bg: "gray.100" }}
+                          _hover={{ background: "rgba(255,255,255,0.6)" }}
                           cursor="pointer"
+                          transition="all 0.15s ease"
                           onClick={() =>
                             handleCreatorClick(creator.creatorUsername)
                           }
@@ -170,10 +171,10 @@ const SearchComponent: React.FC = () => {
                               objectFit="cover"
                             />
                             <Box>
-                              <Text fontWeight="medium">
+                              <Text fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                                 {creator.displayName}
                               </Text>
-                              <Text fontSize="sm" color="gray.600">
+                              <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                                 Creating {creator.creatorHeadline}
                               </Text>
                             </Box>
@@ -184,7 +185,7 @@ const SearchComponent: React.FC = () => {
                         searchResults.topics.length > 0 && (
                           <Box
                             borderBottom="1px solid"
-                            borderColor="gray.200"
+                            css={{ borderColor: "hsl(210, 30%, 88%)" }}
                             my={2}
                           />
                         )}
@@ -193,15 +194,16 @@ const SearchComponent: React.FC = () => {
 
                 {searchResults?.topics && searchResults.topics.length > 0 && (
                   <>
-                    <Text p={3} fontWeight="bold" color="gray.600">
+                    <Text p={3} fontWeight="bold" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       Topics
                     </Text>
                     {searchResults.topics.map((topic) => (
                       <Box
                         key={topic}
                         p={3}
-                        _hover={{ bg: "gray.100" }}
+                        _hover={{ background: "rgba(255,255,255,0.6)" }}
                         cursor="pointer"
+                        transition="all 0.15s ease"
                         onClick={() => handleTopicClick(topic)}
                       >
                         <Flex align="center" gap={3}>
@@ -209,8 +211,9 @@ const SearchComponent: React.FC = () => {
                             icon="material-symbols:tag"
                             width="20px"
                             height="20px"
+                            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                           />
-                          <Text>{topic}</Text>
+                          <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{topic}</Text>
                         </Flex>
                       </Box>
                     ))}
@@ -221,7 +224,7 @@ const SearchComponent: React.FC = () => {
                   searchResults.creators.length === 0) &&
                   (!searchResults?.topics ||
                     searchResults.topics.length === 0) && (
-                    <Text p={4} textAlign="center" color="gray.500">
+                    <Text p={4} textAlign="center" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       No results found
                     </Text>
                   )}

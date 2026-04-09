@@ -17,15 +17,17 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({ children }) => {
           position="absolute"
           top="-7px"
           right="-7px"
-          bg="blue.500"
-          borderRadius="full"
-          width="18px"
-          height="18px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          zIndex={1}
-          color="white"
+          css={{
+            background: "var(--gradient-primary)",
+            borderRadius: "9999px",
+            width: "18px",
+            height: "18px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+            color: "white",
+          }}
           css={{
             "& #notification-text": {
               color: "white",

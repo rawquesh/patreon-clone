@@ -73,7 +73,7 @@ const Comment: React.FC<Props> = ({
           top="0"
           bottom="0"
           width="1px"
-          bg="gray.200"
+          css={{ background: "hsl(210, 30%, 88%)" }}
           data-comment-connector={`${parentComment}-${commentId}`}
         />
       )}
@@ -83,7 +83,13 @@ const Comment: React.FC<Props> = ({
 
         <Box flex="1">
           <Flex
-            bg={bg === "star" ? "star.100" : "white"}
+            css={{
+              background: bg === "star"
+                ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.06), hsl(335, 27%, 64% / 0.04))"
+                : "rgba(255,255,255,0.7)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.5)",
+            }}
             py={"12px"}
             px={"16px"}
             borderRadius="2xl"
@@ -91,10 +97,10 @@ const Comment: React.FC<Props> = ({
           >
             <Flex justify="space-between" align="center">
               <Flex gap={2} align="center">
-                <Text fontWeight="semibold" color="gray.900">
+                <Text fontWeight="semibold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                   {user.username}
                 </Text>
-                <Text color="gray.500" fontSize="sm">
+                <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="sm">
                   {getTimeAgo(timeStamp)}
                 </Text>
               </Flex>
@@ -130,7 +136,7 @@ const Comment: React.FC<Props> = ({
             </Flex>
 
             {/* Comment Text */}
-            <Text color="gray.900">{comment}</Text>
+            <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{comment}</Text>
           </Flex>
 
           {/* Actions */}
@@ -139,7 +145,7 @@ const Comment: React.FC<Props> = ({
               variant="ghost"
               size="sm"
               icon={liked ? "iconamoon:heart-fill" : "iconamoon:heart"}
-              color={liked ? branding.colors.like : "gray.500"}
+              color={liked ? branding.colors.like : "hsl(215.4, 16.3%, 46.9%)"}
               iconProps={{
                 height: "30px",
                 fontSize: "30px",
@@ -159,8 +165,8 @@ const Comment: React.FC<Props> = ({
                 variant="ghost"
                 size="sm"
                 icon="tabler:arrow-forward"
-                color="gray.500"
-                _hover={{ bg: "transparent", color: "gray.700" }}
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+                _hover={{ bg: "transparent", color: "hsl(222.2, 47.4%, 11.2%)" }}
                 px={0}
                 onClick={onReply}
                 aria-label="Reply"
@@ -172,15 +178,17 @@ const Comment: React.FC<Props> = ({
             {likedByCreator && (
               <Flex
                 align="center"
-                bg="orange.400"
-                borderRadius="full"
-                px={2}
-                py={0.5}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  borderRadius: "9999px",
+                  px: 2,
+                  py: 0.5,
+                }}
               >
-                <Text fontSize="xs" color="white">
+                <Text fontSize="xs" css={{ color: "white" }}>
                   R
                 </Text>
-                <Box as="span" color="white" ml={0.5} fontSize="xs">
+                <Box as="span" css={{ color: "white" }} ml={0.5} fontSize="xs">
                   ♥
                 </Box>
               </Flex>

@@ -7,19 +7,18 @@ import {
   Flex,
   Grid,
   Heading,
-  Image,
-  Tabs,
   Text,
-  Badge,
   Spinner,
   Input,
   Button,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import Image from "next/image";
 import Link from "next/link";
 import CategoriesFilter from "@/components/search/categories-filter";
 import { useSearchResults } from "@/lib/backend-services/search-service";
 import { CreatorCategory } from "@/lib/constants";
+import { Tabs } from "@chakra-ui/react";
 
 interface Creator {
   _id: string;
@@ -108,55 +107,125 @@ export default function SearchPage() {
   };
 
   return (
-    <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
+    <Box
+      className="animate-fade-in-up"
+      maxW="1200px"
+      mx="auto"
+      py={8}
+      px={{ base: 4, md: 6 }}
+      pb="100px"
+    >
+      {/* Search Header */}
       <Box mb={8}>
+        <Box position="relative" mb={6}>
+          <Box
+            position="absolute"
+            w="400px"
+            h="80px"
+            borderRadius="full"
+            css={{
+              background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+              filter: "blur(40px)",
+              top: "-20px",
+              left: "0",
+              pointerEvents: "none",
+            }}
+          />
+          <Heading
+            fontSize="2xl"
+            fontWeight={700}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
+            Search
+          </Heading>
+        </Box>
         <form onSubmit={handleSearch}>
-          <Flex position="relative">
-            <Input
-              placeholder="Search creators, posts, or topics..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              borderRadius="full"
-              bg="gray.100"
-              _hover={{ bg: "gray.200" }}
-              _focus={{ bg: "white", boxShadow: "md" }}
-              fontSize="md"
-              size="lg"
-              pr="4rem"
-            />
-            <Button
-              position="absolute"
-              right="0"
-              top="0"
-              aria-label="Search"
-              variant="ghost"
-              type="submit"
-              borderRadius="full"
-              size="lg"
-              height="100%"
-              zIndex={2}
-            >
-              <Icon icon="material-symbols:search" />
-            </Button>
-          </Flex>
+          <Box
+            className="glass-card"
+            borderRadius="16px"
+            overflow="hidden"
+          >
+            <Flex position="relative">
+              <Input
+                placeholder="Search creators, posts, or topics..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                borderRadius="0"
+                border="none"
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                _focus={{ bg: "transparent", boxShadow: "none" }}
+                fontSize="md"
+                size="lg"
+                pr="4rem"
+                css={{
+                  "& input": {
+                    background: "transparent",
+                  },
+                }}
+              />
+              <Button
+                position="absolute"
+                right="0"
+                top="0"
+                aria-label="Search"
+                variant="ghost"
+                type="submit"
+                size="lg"
+                height="100%"
+                zIndex={2}
+                css={{
+                  color: "hsl(211, 71%, 43%)",
+                  "&:hover": {
+                    background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+                  },
+                }}
+              >
+                <Icon icon="material-symbols:search" width="24px" />
+              </Button>
+            </Flex>
+          </Box>
         </form>
       </Box>
 
       {!query ? (
         <Box textAlign="center" py={10}>
-          <Heading size="lg" mb={4}>
-            Search for creators, posts, and topics
-          </Heading>
-          <Text color="gray.600">
-            Enter a search term above to find what you&apos;re looking for
-          </Text>
+          <Box
+            className="glass-card"
+            p={8}
+            borderRadius="16px"
+            maxW="480px"
+            mx="auto"
+          >
+            <Box
+              w="64px"
+              h="64px"
+              borderRadius="full"
+              mx="auto"
+              mb={4}
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon icon="material-symbols:search" width="32px" height="32px" style={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
+            </Box>
+            <Heading size="lg" mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+              Search for creators, posts, and topics
+            </Heading>
+            <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+              Enter a search term above to find what you&apos;re looking for
+            </Text>
+          </Box>
         </Box>
       ) : (
         <>
-          <Heading size="lg" mb={4}>
+          <Heading size="lg" mb={2} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             Search results for &ldquo;{query}&rdquo;
             {category !== "all" && (
-              <Text as="span" fontSize="md" fontWeight="normal" ml={2}>
+              <Text as="span" fontSize="md" fontWeight="normal" ml={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 in {getCategoryDisplayName(category)}
               </Text>
             )}
@@ -171,43 +240,70 @@ export default function SearchPage() {
 
           {isLoading ? (
             <Flex justify="center" align="center" py={10}>
-              <Spinner size="xl" color="blue.500" />
+              <Box
+                w="48px"
+                h="48px"
+                borderRadius="full"
+                border="3px solid hsl(210, 30%, 88%)"
+                borderTopColor="hsl(211, 71%, 43%)"
+                animation="spin 0.8s linear infinite"
+                css={{
+                  "@keyframes spin": {
+                    "0%": { transform: "rotate(0deg)" },
+                    "100%": { transform: "rotate(360deg)" },
+                  },
+                }}
+              />
             </Flex>
           ) : (
             <Tabs.Root
               defaultValue={activeTab}
               onValueChange={(value) => setActiveTab(value.value)}
             >
-              <Tabs.List>
-                <Flex
-                  borderBottom="1px solid"
-                  borderColor="gray.200"
-                  width="100%"
-                  mb={6}
-                  css={{
-                    "& [aria-selected=true]": {
-                      fontWeight: 600,
-                      color: "blue.500",
-                      borderBottom: "2px solid",
-                      borderColor: "blue.500",
-                    },
-                  }}
-                >
-                  <Tabs.Trigger value="creators" className="tab-trigger">
-                    Creators ({searchResults?.creators?.length || 0})
+              <Tabs.List
+                className="glass-card-static"
+                borderRadius="12px"
+                p={1}
+                gap={1}
+                width="100%"
+                mb={6}
+                css={{
+                  background: "rgba(255,255,255,0.7)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                {["creators", "posts"].map((value) => (
+                  <Tabs.Trigger
+                    key={value}
+                    value={value}
+                    borderRadius="10px"
+                    px={5}
+                    py={2}
+                    fontSize="sm"
+                    fontWeight={500}
+                    textTransform="capitalize"
+                    css={{
+                      color: "hsl(215.4, 16.3%, 46.9%)",
+                      transition: "all 0.15s ease",
+                      "&[data-state=active]": {
+                        background: "var(--gradient-primary)",
+                        color: "white",
+                        fontWeight: 600,
+                        boxShadow: "0 2px 8px hsl(211, 71%, 43% / 0.3)",
+                      },
+                      "&:hover:not([data-state=active])": {
+                        color: "hsl(222.2, 47.4%, 11.2%)",
+                        background: "rgba(255,255,255,0.6)",
+                      },
+                    }}
+                  >
+                    {value} ({value === "creators" ? searchResults?.creators?.length || 0 : searchResults?.posts?.length || 0})
                   </Tabs.Trigger>
-                  <Tabs.Trigger value="posts" className="tab-trigger">
-                    Posts ({searchResults?.posts?.length || 0})
-                  </Tabs.Trigger>
-                  {/* <Tabs.Trigger value="topics" className="tab-trigger">
-                    Topics ({searchResults?.topics?.length || 0})
-                  </Tabs.Trigger> */}
-                </Flex>
+                ))}
               </Tabs.List>
 
               <Tabs.Content value="creators">
-                {searchResults?.creators &&
-                searchResults.creators.length > 0 ? (
+                {searchResults?.creators && searchResults.creators.length > 0 ? (
                   <Grid
                     templateColumns={{
                       base: "1fr",
@@ -223,47 +319,62 @@ export default function SearchPage() {
                         key={creator._id}
                       >
                         <Box
+                          className="glass-card"
                           p={4}
-                          borderRadius="md"
-                          boxShadow="md"
-                          bg="white"
+                          borderRadius="16px"
                           _hover={{
                             transform: "translateY(-4px)",
-                            transition: "transform 0.2s",
-                            boxShadow: "lg",
+                            boxShadow: "0 12px 32px hsl(211, 71%, 43% / 0.15)",
                           }}
+                          transition="all 0.2s ease"
                           height="100%"
                         >
                           <Flex align="center" gap={4}>
-                            <Image
-                              src={
-                                creator.profilePicture ||
-                                "/icons/default-avatar.svg"
-                              }
-                              alt={creator.displayName}
-                              boxSize="60px"
+                            <Box
+                              position="relative"
+                              width="60px"
+                              height="60px"
                               borderRadius="full"
-                              objectFit="cover"
-                            />
+                              overflow="hidden"
+                              flexShrink={0}
+                            >
+                              <Image
+                                src={
+                                  creator.profilePicture ||
+                                  "/icons/default-avatar.svg"
+                                }
+                                alt={creator.displayName}
+                                fill
+                                style={{ objectFit: "cover" }}
+                              />
+                            </Box>
                             <Box>
-                              <Text fontWeight="bold" fontSize="lg">
+                              <Text
+                                fontWeight={700}
+                                fontSize="lg"
+                                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+                              >
                                 {creator.displayName}
                               </Text>
-                              <Text color="gray.600" fontSize="sm">
+                              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontSize: "14px" }}>
                                 Creating {creator.creatorHeadline}
                               </Text>
                               {creator.creatorCategory && (
-                                <Badge
-                                  colorScheme="blue"
+                                <Box
+                                  display="inline-block"
                                   mt={1}
-                                  fontSize="xs"
+                                  px={3}
+                                  py={1}
                                   borderRadius="full"
-                                  px={2}
+                                  fontSize="11px"
+                                  fontWeight={600}
+                                  css={{
+                                    background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                                    color: "white",
+                                  }}
                                 >
-                                  {getCategoryDisplayName(
-                                    creator.creatorCategory
-                                  )}
-                                </Badge>
+                                  {getCategoryDisplayName(creator.creatorCategory)}
+                                </Box>
                               )}
                             </Box>
                           </Flex>
@@ -272,8 +383,10 @@ export default function SearchPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Box textAlign="center" py={10}>
-                    <Text>No creators found matching your search criteria</Text>
+                  <Box className="glass-card" p={8} borderRadius="16px" textAlign="center">
+                    <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                      No creators found matching your search criteria
+                    </Text>
                   </Box>
                 )}
               </Tabs.Content>
@@ -292,64 +405,84 @@ export default function SearchPage() {
                     {searchResults.posts.map((post: Post) => (
                       <Link href={`/post/${post._id}`} key={post._id}>
                         <Box
+                          className="glass-card"
                           p={4}
-                          borderRadius="md"
-                          boxShadow="md"
-                          bg="white"
+                          borderRadius="16px"
                           _hover={{
                             transform: "translateY(-4px)",
-                            transition: "transform 0.2s",
-                            boxShadow: "lg",
+                            boxShadow: "0 12px 32px hsl(211, 71%, 43% / 0.15)",
                           }}
+                          transition="all 0.2s ease"
                           height="100%"
                         >
                           {post.coverImage && (
                             <Box
                               height="160px"
                               mb={4}
-                              borderRadius="md"
+                              borderRadius="12px"
                               overflow="hidden"
+                              position="relative"
                             >
                               <Image
                                 src={post.coverImage}
                                 alt={post.title}
-                                width="100%"
-                                height="100%"
-                                objectFit="cover"
+                                fill
+                                style={{ objectFit: "cover" }}
                               />
                             </Box>
                           )}
-                          <Heading size="md" mb={2}>
+                          <Heading
+                            size="md"
+                            mb={2}
+                            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+                          >
                             {post.title}
                           </Heading>
-                          <Text color="gray.600" mb={3}>
+                          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontSize: "14px", mb: "12px" }}>
                             {truncateText(post.content)}
                           </Text>
                           <Flex justify="space-between" align="center">
                             <Flex align="center" gap={2}>
-                              <Image
-                                src={
-                                  post.creator.profilePicture ||
-                                  "/icons/default-avatar.svg"
-                                }
-                                alt={post.creator.displayName}
-                                boxSize="30px"
+                              <Box
+                                position="relative"
+                                width="30px"
+                                height="30px"
                                 borderRadius="full"
-                                objectFit="cover"
-                              />
-                              <Text fontSize="sm" fontWeight="medium">
+                                overflow="hidden"
+                              >
+                                <Image
+                                  src={
+                                    post.creator.profilePicture ||
+                                    "/icons/default-avatar.svg"
+                                  }
+                                  alt={post.creator.displayName}
+                                  fill
+                                  style={{ objectFit: "cover" }}
+                                />
+                              </Box>
+                              <Text
+                                fontSize="sm"
+                                fontWeight={600}
+                                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+                              >
                                 {post.creator.displayName}
                               </Text>
                             </Flex>
                             {post.categories && post.categories.length > 0 && (
-                              <Badge
-                                colorScheme="blue"
-                                fontSize="xs"
-                                borderRadius="full"
+                              <Box
+                                display="inline-block"
                                 px={2}
+                                py={1}
+                                borderRadius="full"
+                                fontSize="11px"
+                                fontWeight={500}
+                                css={{
+                                  background: "hsl(210, 20%, 94%)",
+                                  color: "hsl(215.4, 16.3%, 46.9%)",
+                                }}
                               >
                                 {post.categories[0]}
-                              </Badge>
+                              </Box>
                             )}
                           </Flex>
                         </Box>
@@ -357,65 +490,10 @@ export default function SearchPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Box textAlign="center" py={10}>
-                    <Text>No posts found matching your search criteria</Text>
-                  </Box>
-                )}
-              </Tabs.Content>
-
-              <Tabs.Content value="topics">
-                {searchResults?.topics && searchResults.topics.length > 0 ? (
-                  <Grid
-                    templateColumns={{
-                      base: "1fr",
-                      md: "repeat(2, 1fr)",
-                      lg: "repeat(3, 1fr)",
-                    }}
-                    gap={6}
-                    mt={6}
-                  >
-                    {searchResults.topics.map((topic: any) => (
-                      <Link href={`/topic/${topic._id}`} key={topic._id}>
-                        <Box
-                          p={4}
-                          borderRadius="md"
-                          boxShadow="md"
-                          bg="white"
-                          _hover={{
-                            transform: "translateY(-4px)",
-                            transition: "transform 0.2s",
-                            boxShadow: "lg",
-                          }}
-                          height="100%"
-                        >
-                          <Heading size="md" mb={2}>
-                            {topic.title}
-                          </Heading>
-                          <Text color="gray.600" mb={3}>
-                            {truncateText(topic.description)}
-                          </Text>
-                          <Flex justify="space-between" align="center">
-                            <Text fontSize="sm" color="gray.500">
-                              {topic.postCount} posts
-                            </Text>
-                            {topic.category && (
-                              <Badge
-                                colorScheme="blue"
-                                fontSize="xs"
-                                borderRadius="full"
-                                px={2}
-                              >
-                                {topic.category}
-                              </Badge>
-                            )}
-                          </Flex>
-                        </Box>
-                      </Link>
-                    ))}
-                  </Grid>
-                ) : (
-                  <Box textAlign="center" py={10}>
-                    <Text>No topics found matching your search criteria</Text>
+                  <Box className="glass-card" p={8} borderRadius="16px" textAlign="center">
+                    <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                      No posts found matching your search criteria
+                    </Text>
                   </Box>
                 )}
               </Tabs.Content>
@@ -423,20 +501,6 @@ export default function SearchPage() {
           )}
         </>
       )}
-
-      <style jsx global>{`
-        .tab-trigger {
-          padding: 1rem 1.5rem;
-          cursor: pointer;
-          font-size: 1rem;
-          border-bottom: 2px solid transparent;
-          transition: all 0.2s;
-        }
-
-        .tab-trigger:hover {
-          color: #3182ce;
-        }
-      `}</style>
     </Box>
   );
 }

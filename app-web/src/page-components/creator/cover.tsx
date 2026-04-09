@@ -4,7 +4,7 @@ import React from "react";
 
 const Cover: React.FC<{ src: string }> = ({ src }) => {
   return (
-    <AspectRatio ratio={4 / 1}>
+    <AspectRatio ratio={4 / 1} overflow="hidden" borderRadius="0">
       <Image layout="fill" src={src} alt="profile-cover" />
     </AspectRatio>
   );

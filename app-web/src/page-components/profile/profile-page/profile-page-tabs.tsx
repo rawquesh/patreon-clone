@@ -16,39 +16,57 @@ const ProfilePageTabs: React.FC = () => {
   tab = ["home", "collection", "membership", "about"].includes(tab || "")
     ? tab
     : "home";
+
   return (
     <Tabs.Root
       onValueChange={(t) => {
         router.push(`/profile?tab=${t.value}`);
       }}
       defaultValue={tab}
-      mt={6}
+      mt={8}
     >
-      <Tabs.List>
+      <Tabs.List
+        className="glass-card-static"
+        borderRadius="12px"
+        p={1}
+        gap={1}
+        mx="auto"
+        maxW="fit-content"
+        css={{
+          background: "rgba(255,255,255,0.7)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
         <Tabs.Indicator height={0} />
-        <Flex
-          css={{
-            "& [aria-selected=true]": {
-              fontWeight: 600,
-              bgColor: "transparant",
-              border: "none",
-              boxShadow: "none",
-            },
-          }}
-          mx={"auto"}
-        >
-          <Tabs.Trigger color={"green.800"} value="home">
-            Home
-          </Tabs.Trigger>
-          <Tabs.Trigger color={"green.800"} value="collection">
-            Collection
-          </Tabs.Trigger>
-          <Tabs.Trigger color={"green.800"} value="membership">
-            Membership
-          </Tabs.Trigger>
-          <Tabs.Trigger color={"green.800"} value="about">
-            About
-          </Tabs.Trigger>
+        <Flex mx="auto">
+          {["home", "collection", "membership", "about"].map((value) => (
+            <Tabs.Trigger
+              key={value}
+              value={value}
+              borderRadius="10px"
+              px={5}
+              py={2}
+              fontSize="sm"
+              fontWeight={500}
+              textTransform="capitalize"
+              css={{
+                color: "hsl(215.4, 16.3%, 46.9%)",
+                transition: "all 0.15s ease",
+                "&[data-state=active]": {
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                  fontWeight: 600,
+                  boxShadow: "0 2px 8px hsl(211, 71%, 43% / 0.3)",
+                },
+                "&:hover:not([data-state=active])": {
+                  color: "hsl(222.2, 47.4%, 11.2%)",
+                  background: "rgba(255,255,255,0.6)",
+                },
+              }}
+            >
+              {value}
+            </Tabs.Trigger>
+          ))}
         </Flex>
       </Tabs.List>
       <Tabs.Content value="home">
@@ -60,7 +78,7 @@ const ProfilePageTabs: React.FC = () => {
       <Tabs.Content value="membership">
         <MembershipPage />
       </Tabs.Content>
-      <Tabs.Content pb={"100px"} value="about">
+      <Tabs.Content pb="100px" value="about">
         <AboutPage creatorUsername={user?.creatorUsername || ""} />
       </Tabs.Content>
     </Tabs.Root>

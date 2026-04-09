@@ -326,6 +326,7 @@ const CreateAudioPost: React.FC<AudioPostProps> = ({
                   isSubmitting
                 }
                 variant={"outline"}
+                className="glass-card"
               >
                 Save as draft
               </Button>
@@ -339,6 +340,7 @@ const CreateAudioPost: React.FC<AudioPostProps> = ({
                 (!audioFile && !existingAudioUrl) ||
                 isSubmitting
               }
+              className="btn-gradient"
             >
               {isEditMode ? "Update" : "Save"}
             </Button>

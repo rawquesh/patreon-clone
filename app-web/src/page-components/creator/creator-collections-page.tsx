@@ -58,7 +58,7 @@ const CollectionsPage: React.FC<{ creatorId: string }> = ({ creatorId }) => {
         p={"24px"}
         textAlign="center"
       >
-        <Spinner size="xl" color="green.500" />
+        <Spinner size="xl" css={{ color: "hsl(142, 76%, 36%)" }} />
       </Box>
     );
   }
@@ -72,8 +72,8 @@ const CollectionsPage: React.FC<{ creatorId: string }> = ({ creatorId }) => {
         p={"24px"}
       >
         <Stack textAlign={"center"} mt={6} alignItems={"center"}>
-          <Box w={"fit"} bg={"star.100"} p={4} borderRadius={"999px"}>
-            <Icon height={"36px"} icon={"solar:playlist-bold"} />
+          <Box w={"fit"} css={{ background: "hsl(211, 71%, 43% / 0.1)" }} p={4} borderRadius={"999px"}>
+            <Icon height={"36px"} css={{ color: "hsl(211, 71%, 43%)" }} icon={"solar:playlist-bold"} />
           </Box>
           <Text fontSize={"sm"} fontWeight={600}>
             {creator?.displayName || "This creator"} hasn&apos;t created any
@@ -108,10 +108,8 @@ const CollectionsPage: React.FC<{ creatorId: string }> = ({ creatorId }) => {
         {(collectionsData.collections || []).map((collection) => (
           <Box
             key={collection.id}
-            bg="white"
-            borderRadius="md"
+            className="glass-card"
             overflow="hidden"
-            shadow="md"
             cursor="pointer"
             onClick={() => navigateToCollection(collection.id)}
             transition="transform 0.2s"
@@ -131,10 +129,10 @@ const CollectionsPage: React.FC<{ creatorId: string }> = ({ creatorId }) => {
               <Text fontWeight="bold" mb={1}>
                 {collection.name || collection.title}
               </Text>
-              <Text fontSize="sm" color="gray.600" lineClamp={2}>
+              <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} lineClamp={2}>
                 {collection.description}
               </Text>
-              <Text fontSize="xs" mt={2} color="gray.500">
+              <Text fontSize="xs" mt={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 {collection.postCount} posts
               </Text>
             </Box>

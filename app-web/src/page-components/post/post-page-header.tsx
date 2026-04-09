@@ -29,7 +29,7 @@ export const PostPageHeader: React.FC<{
         align="center"
         pb={4}
         borderBottom={"1px solid"}
-        borderColor={"gray.200"}
+        borderColor={"rgba(255,255,255,0.5)"}
         gap={3}
       >
         <Avatar
@@ -42,10 +42,12 @@ export const PostPageHeader: React.FC<{
         <Box>
           <NextLink href={`/creator/${username}`} passHref>
             <Link as="div" _hover={{ textDecoration: "underline" }}>
-              <Text fontWeight="bold">{displayName}</Text>
+              <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                {displayName}
+              </Text>
             </Link>
           </NextLink>
-          <Text fontSize="sm" color={"gray.600"}>
+          <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             @{username}
           </Text>
         </Box>
@@ -54,12 +56,18 @@ export const PostPageHeader: React.FC<{
         <Box flexGrow={1} w={{ base: "100%", lg: "calc(100% - 320px - 32px)" }}>
           <Stack gap={0}>
             <Flex justifyContent={"space-between"} alignItems={"center"}>
-              <Heading as="h1" size="xl" mb={2} wordBreak="break-word">
+              <Heading
+                as="h1"
+                size="xl"
+                mb={2}
+                wordBreak="break-word"
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+              >
                 {title}
               </Heading>
               <ShareButton postId={postId} />
             </Flex>
-            <Text mb={6} fontSize="sm" color="gray.600">
+            <Text mb={6} fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               {getTimeAgo(formattedDate)}
             </Text>
           </Stack>

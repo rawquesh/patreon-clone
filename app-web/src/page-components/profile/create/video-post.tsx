@@ -307,9 +307,65 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
                 }
               }}
             >
-              <Tabs.List mb={4}>
-                <Tabs.Trigger value="url">Video URL</Tabs.Trigger>
-                <Tabs.Trigger value="upload">Upload Video</Tabs.Trigger>
+              <Tabs.List
+                mb={4}
+                className="glass-card-static"
+                borderRadius="12px"
+                p={1}
+                gap={1}
+                css={{
+                  background: "rgba(255,255,255,0.7)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <Tabs.Trigger
+                  value="url"
+                  borderRadius="10px"
+                  px={5}
+                  py={2}
+                  fontSize="sm"
+                  fontWeight={500}
+                  css={{
+                    color: "hsl(215.4, 16.3%, 46.9%)",
+                    transition: "all 0.15s ease",
+                    "&[data-state=active]": {
+                      background: "var(--gradient-primary)",
+                      color: "white",
+                      fontWeight: 600,
+                      boxShadow: "0 2px 8px hsl(211, 71%, 43% / 0.3)",
+                    },
+                    "&:hover:not([data-state=active])": {
+                      color: "hsl(222.2, 47.4%, 11.2%)",
+                      background: "rgba(255,255,255,0.6)",
+                    },
+                  }}
+                >
+                  Video URL
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  value="upload"
+                  borderRadius="10px"
+                  px={5}
+                  py={2}
+                  fontSize="sm"
+                  fontWeight={500}
+                  css={{
+                    color: "hsl(215.4, 16.3%, 46.9%)",
+                    transition: "all 0.15s ease",
+                    "&[data-state=active]": {
+                      background: "var(--gradient-primary)",
+                      color: "white",
+                      fontWeight: 600,
+                      boxShadow: "0 2px 8px hsl(211, 71%, 43% / 0.3)",
+                    },
+                    "&:hover:not([data-state=active])": {
+                      color: "hsl(222.2, 47.4%, 11.2%)",
+                      background: "rgba(255,255,255,0.6)",
+                    },
+                  }}
+                >
+                  Upload Video
+                </Tabs.Trigger>
               </Tabs.List>
               <Tabs.Content value="url">
                 <YouTubePlayer
@@ -399,21 +455,19 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
             onRemoveExistingAttachment={handleRemoveExistingAttachment}
           />
           {isUploading && uploadProgress !== null && (
-            <Box mt={4} p={4} bg="gray.50" borderRadius="md">
+            <Box mt={4} p={4} className="glass-card" borderRadius="12px">
               <Stack gap={2}>
-                <Text fontSize="sm" fontWeight={600}>
+                <Text fontSize="sm" fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                   Uploading video to S3...
                 </Text>
                 <Progress.Root value={uploadProgress}>
-                  <Progress.Track bg="gray.200">
+                  <Progress.Track css={{ background: "hsl(210, 30%, 88%)" }}>
                     <Progress.Range
-                      bg="blue.500"
-                      w={`${uploadProgress}%`}
-                      transition="width 0.3s ease"
+                      css={{ background: "var(--gradient-primary)", width: `${uploadProgress}%`, transition: "width 0.3s ease" }}
                     />
                   </Progress.Track>
                 </Progress.Root>
-                <Text fontSize="sm" color="gray.600" textAlign="center">
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
                   {uploadProgress}% uploaded
                 </Text>
               </Stack>
@@ -435,6 +489,7 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
                   isUploading
                 }
                 variant={"outline"}
+              className="glass-card"
               >
                 Save as draft
               </Button>
@@ -450,6 +505,7 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
                 isSubmitting ||
                 isUploading
               }
+            className="btn-gradient"
             >
               {isUploading
                 ? `Uploading... ${uploadProgress || 0}%`

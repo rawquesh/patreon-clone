@@ -59,7 +59,7 @@ const Collection: React.FC = () => {
       {isLoading ? (
         <Text textAlign="center">Loading collections...</Text>
       ) : error ? (
-        <Text textAlign="center" color="red.500">
+        <Text textAlign="center" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
           Error loading collections
         </Text>
       ) : hasCollections ? (
@@ -84,8 +84,8 @@ const Collection: React.FC = () => {
         </Grid>
       ) : (
         <Stack textAlign={"center"} mt={6} alignItems={"center"}>
-          <Box w={"fit"} bg={"star.100"} p={4} borderRadius={"999px"}>
-            <Icon height={"36px"} icon={"solar:playlist-bold"} />
+          <Box w={"fit"} css={{ background: "hsl(211, 71%, 43% / 0.1)" }} p={4} borderRadius={"999px"}>
+            <Icon height={"36px"} css={{ color: "hsl(211, 71%, 43%)" }} icon={"solar:playlist-bold"} />
           </Box>
           <Text fontSize={"sm"} fontWeight={600}>
             No collections yet

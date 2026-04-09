@@ -6,7 +6,6 @@ import {
   Flex,
   Stack,
   Text,
-  Spinner,
   Button,
   Center,
 } from "@chakra-ui/react";
@@ -18,56 +17,44 @@ import { useAuth } from "@/context/auth.provider";
 import { Avatar } from "@/components/ui/avatar";
 import { ChatMessage as ChatMessageType } from "@/lib/backend-services/chat-service";
 
-// Interface for date separator
 interface DateSeparator {
   type: "date";
   date: string;
   key: string;
 }
 
-// Type for items in the messages list (either a message or date separator)
 type ChatItem = ChatMessageType | DateSeparator;
 
-// Helper function to check if an item is a date separator
 const isDateSeparator = (item: ChatItem): item is DateSeparator => {
   return (item as DateSeparator).type === "date";
 };
 
-// Function to format date display
 const formatDateSeparator = (date: string): string => {
-  if (date === "today") {
-    return "Today";
-  } else if (date === "yesterday") {
-    return "Yesterday";
-  } else {
-    // Format YYYY-MM-DD to a more readable date
-    try {
-      const dateObj = new Date(date);
-      return dateObj.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    } catch {
-      return date;
-    }
+  if (date === "today") return "Today";
+  if (date === "yesterday") return "Yesterday";
+  try {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return date;
   }
 };
 
-// Function to get timestamp from date string for sorting
 const getDateSortValue = (date: string): number => {
-  if (date === "today") {
-    return Date.now();
-  } else if (date === "yesterday") {
+  if (date === "today") return Date.now();
+  if (date === "yesterday") {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     return yesterday.getTime();
-  } else {
-    try {
-      return new Date(date).getTime();
-    } catch {
-      return 0;
-    }
+  }
+  try {
+    return new Date(date).getTime();
+  } catch {
+    return 0;
   }
 };
 
@@ -108,13 +95,11 @@ const DirectMessages: React.FC = () => {
   }, [chatId, loadChat]);
 
   useEffect(() => {
-    // Only scroll to bottom for new messages, not when loading older ones
     if (
       messages.length > prevMessagesLengthRef.current &&
       !isLoadingOldMessages &&
       (!isLoading || loadingInitial)
     ) {
-      console.log("[DirectMessages] Scrolling to bottom for new messages");
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
     prevMessagesLengthRef.current = messages.length;
@@ -126,7 +111,6 @@ const DirectMessages: React.FC = () => {
     }
   }, [messages, currentChat, markMessagesAsRead]);
 
-  // Function to handle loading older messages
   const handleLoadOlderMessages = async () => {
     if (!hasMoreMessages || loadingOlder) return;
 
@@ -136,14 +120,11 @@ const DirectMessages: React.FC = () => {
     const oldScrollHeight = container?.scrollHeight || 0;
 
     try {
-      console.log("[DirectMessages] Loading older messages via button click");
       await loadMoreMessages();
 
-      // After messages are loaded, maintain scroll position
       if (container) {
         requestAnimationFrame(() => {
           const newScrollHeight = container.scrollHeight;
-          // Set scroll position to maintain the same view (new content appears above)
           container.scrollTop = newScrollHeight - oldScrollHeight;
         });
       }
@@ -151,24 +132,18 @@ const DirectMessages: React.FC = () => {
       console.error("Error loading older messages:", error);
     } finally {
       setLoadingOlder(false);
-      // Reset the loading old messages flag after a small delay to prevent immediate scroll
       setTimeout(() => {
         setIsLoadingOldMessages(false);
       }, 300);
     }
   };
 
-  // Create a combined list of messages and date separators
   const chatItems = React.useMemo(() => {
     if (!messages.length) return [];
 
     const items: ChatItem[] = [];
-    const datesSeen = new Set<string>();
-
-    // Sort messages by date & prepare groups
     const dateGrouppedMessages: Record<string, ChatMessageType[]> = {};
 
-    // Group messages by their dateGroup
     messages.forEach((msg) => {
       const dateGroup = msg.dateGroup || "unknown";
       if (!dateGrouppedMessages[dateGroup]) {
@@ -177,7 +152,6 @@ const DirectMessages: React.FC = () => {
       dateGrouppedMessages[dateGroup].push(msg);
     });
 
-    // Sort each group of messages by timestamp (oldest to newest within each date)
     Object.keys(dateGrouppedMessages).forEach((date) => {
       dateGrouppedMessages[date].sort(
         (a, b) =>
@@ -185,24 +159,12 @@ const DirectMessages: React.FC = () => {
       );
     });
 
-    // Sort dates chronologically (oldest to newest)
     const sortedDates = Object.keys(dateGrouppedMessages).sort((a, b) => {
       return getDateSortValue(a) - getDateSortValue(b);
     });
 
-    // Create the list with date separators and messages
     for (const date of sortedDates) {
-      // Add date separator if we haven't seen this date yet
-      if (!datesSeen.has(date)) {
-        items.push({
-          type: "date",
-          date,
-          key: `date-${date}`,
-        });
-        datesSeen.add(date);
-      }
-
-      // Add all messages for this date
+      items.push({ type: "date", date, key: `date-${date}` });
       items.push(...dateGrouppedMessages[date]);
     }
 
@@ -217,7 +179,11 @@ const DirectMessages: React.FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Text>Select a conversation to start messaging</Text>
+        <Box className="glass-card" p={8} borderRadius="16px" textAlign="center">
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+            Select a conversation to start messaging
+          </Text>
+        </Box>
       </Flex>
     );
   }
@@ -230,7 +196,20 @@ const DirectMessages: React.FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Spinner size="xl" color="blue.500" />
+        <Box
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          border="3px solid hsl(210, 30%, 88%)"
+          borderTopColor="hsl(211, 71%, 43%)"
+          animation="spin 0.8s linear infinite"
+          css={{
+            "@keyframes spin": {
+              "0%": { transform: "rotate(0deg)" },
+              "100%": { transform: "rotate(360deg)" },
+            },
+          }}
+        />
       </Flex>
     );
   }
@@ -243,12 +222,15 @@ const DirectMessages: React.FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Text color="red.500">Could not load chat.</Text>
+        <Box className="glass-card" p={6} borderRadius="12px" textAlign="center">
+          <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
+            Could not load chat.
+          </Text>
+        </Box>
       </Flex>
     );
   }
 
-  // Determine the other participant
   const otherParticipant = currentChat.participants.find(
     (p) => p.id !== user?._id
   );
@@ -260,7 +242,12 @@ const DirectMessages: React.FC = () => {
       flexDirection="column"
       pos="relative"
     >
-      <Box p={4} borderBottomWidth="1px">
+      <Box
+        p={4}
+        borderBottomWidth="1px"
+        className="glass-card-static"
+        css={{ borderColor: "hsl(210, 30%, 88%)" }}
+      >
         <Flex align="center" gap={3}>
           <Avatar
             size="sm"
@@ -268,10 +255,14 @@ const DirectMessages: React.FC = () => {
             name={otherParticipant?.displayName}
           />
           <Box>
-            <Text fontSize="lg" fontWeight="bold">
+            <Text
+              fontSize="lg"
+              fontWeight={700}
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+            >
               {otherParticipant?.displayName || "User"}
             </Text>
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               {otherParticipant?.isCreator ? "Creator" : "Member"}
             </Text>
           </Box>
@@ -283,7 +274,7 @@ const DirectMessages: React.FC = () => {
         position="fixed"
         w={{
           base: "calc(100% - 300px)",
-          lg: "calc(100% - 600px)",
+          lg: "calc(100% - 580px)",
         }}
         zIndex={1000}
         bottom={73}
@@ -291,33 +282,42 @@ const DirectMessages: React.FC = () => {
         overflow={"scroll"}
         ref={messagesContainerRef}
         css={{
-          "&::-webkit-scrollbar": {
-            width: "4px",
-          },
-          "&::-webkit-scrollbar-track": {
-            width: "6px",
-          },
+          "&::-webkit-scrollbar": { width: "4px" },
+          "&::-webkit-scrollbar-track": { width: "6px" },
           "&::-webkit-scrollbar-thumb": {
-            background: "gray.200",
+            background: "hsl(210, 20%, 88%)",
             borderRadius: "24px",
           },
         }}
       >
-        {/* Load Older Messages Button */}
         {hasMoreMessages && (
           <Flex justify="center" py={2} top={0} zIndex={2}>
             <Button
               size="sm"
-              colorScheme="blue"
               variant="outline"
               disabled={loadingOlder}
               onClick={handleLoadOlderMessages}
               borderRadius="full"
               px={6}
+              className="btn-gradient-ghost"
             >
               {loadingOlder ? (
                 <Flex alignItems="center">
-                  <Spinner size="xs" mr={2} />
+                  <Box
+                    w="12px"
+                    h="12px"
+                    borderRadius="full"
+                    border="2px solid hsl(210, 30%, 88%)"
+                    borderTopColor="hsl(211, 71%, 43%)"
+                    animation="spin 0.8s linear infinite"
+                    mr={2}
+                    css={{
+                      "@keyframes spin": {
+                        "0%": { transform: "rotate(0deg)" },
+                        "100%": { transform: "rotate(360deg)" },
+                      },
+                    }}
+                  />
                   Loading...
                 </Flex>
               ) : (
@@ -331,17 +331,17 @@ const DirectMessages: React.FC = () => {
           {chatItems.map((item) =>
             isDateSeparator(item) ? (
               <Center key={item.key} py={2}>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
                 <Text
                   mx={4}
-                  fontSize="xs"
-                  fontWeight="medium"
-                  color="gray.500"
+                  fontSize="11px"
+                  fontWeight={600}
+                  css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                   textTransform="uppercase"
                 >
                   {formatDateSeparator(item.date)}
                 </Text>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
               </Center>
             ) : (
               <ChatMessage
@@ -364,7 +364,20 @@ const DirectMessages: React.FC = () => {
             justifyContent="center"
             zIndex={10}
           >
-            <Spinner size="xl" color="blue.500" />
+            <Box
+              w="48px"
+              h="48px"
+              borderRadius="full"
+              border="3px solid hsl(210, 30%, 88%)"
+              borderTopColor="hsl(211, 71%, 43%)"
+              animation="spin 0.8s linear infinite"
+              css={{
+                "@keyframes spin": {
+                  "0%": { transform: "rotate(0deg)" },
+                  "100%": { transform: "rotate(360deg)" },
+                },
+              }}
+            />
           </Flex>
         )}
       </Box>
@@ -374,8 +387,12 @@ const DirectMessages: React.FC = () => {
         borderTopWidth="1px"
         position="fixed"
         bottom="0"
-        w={{ base: "calc(100% - 300px)", lg: "calc(100% - 600px)" }}
-        bg="white"
+        w={{ base: "calc(100% - 300px)", lg: "calc(100% - 580px)" }}
+        css={{
+          background: "rgba(255,255,255,0.85)",
+          backdropFilter: "blur(12px)",
+          borderColor: "hsl(210, 30%, 88%)",
+        }}
       >
         <ChatInput onSendMessage={sendMessage} isDisabled={loadingInitial} />
       </Box>

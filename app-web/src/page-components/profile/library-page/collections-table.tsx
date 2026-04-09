@@ -35,15 +35,19 @@ const CollectionsTable: React.FC = () => {
 	if (isLoading) {
 		return (
 			<Text textAlign="center" py={8}>
-				Loading collections...
+				<Box className="glass-card" p={6} borderRadius="12px">
+					<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Loading collections...</Text>
+				</Box>
 			</Text>
 		);
 	}
 
 	if (error) {
 		return (
-			<Text textAlign="center" color="red.500" py={8}>
-				Error loading collections
+			<Text textAlign="center" py={8}>
+				<Box className="glass-card" p={6} borderRadius="12px">
+					<Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Error loading collections</Text>
+				</Box>
 			</Text>
 		);
 	}
@@ -55,25 +59,40 @@ const CollectionsTable: React.FC = () => {
 
 	if (!collections || collections.length === 0) {
 		return (
-			<Box w="100%" borderRadius="6px" p="24px">
-				<Stack textAlign="center" mt={6} alignItems="center">
-					<Box w="fit" bg="star.100" p={4} borderRadius="999px">
-						<Icon height="36px" icon="solar:playlist-bold" />
+			<Box w="100%" className="glass-card" borderRadius="16px" p={8}>
+				<Stack textAlign="center" mt={6} alignItems="center" gap={4}>
+					<Box
+						w="64px"
+						h="64px"
+						borderRadius="full"
+						css={{
+							background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Icon height="32px" icon="solar:playlist-bold" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
 					</Box>
-					<Text fontSize="sm" fontWeight={600}>
+					<Text
+						fontSize="sm"
+						fontWeight={600}
+						css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+					>
 						No collections yet
 					</Text>
-					<Text maxW="400px" fontSize="sm">
+					<Text
+						maxW="400px"
+						fontSize="14px"
+						css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+					>
 						Collections is an improved way to organize your posts and it helps
 						your members explore all your great work.
 					</Text>
 					<ButtonWithIcon
-						mt={4}
+						mt={2}
 						icon="ic:round-plus"
-						borderRadius="28px"
-						bgColor="star.100"
-						color="star.800"
-						_hover={{ bgColor: "star.200" }}
+						className="btn-gradient"
 						onClick={() => {
 							window.location.href = "/profile?tab=collection";
 						}}
@@ -86,13 +105,18 @@ const CollectionsTable: React.FC = () => {
 	}
 
 	return (
-		<Box w="100%" overflowX="auto">
+		<Box w="100%">
 			<Flex justify="space-between" align="center" mb={4}>
-				<Text fontSize="xl" fontWeight={600}>
+				<Text
+					fontSize="lg"
+					fontWeight={700}
+					css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+				>
 					Your Collections
 				</Text>
 				<ButtonWithIcon
 					icon="ic:round-plus"
+					className="btn-gradient"
 					onClick={() => {
 						window.location.href = "/profile?tab=collection";
 					}}
@@ -101,41 +125,74 @@ const CollectionsTable: React.FC = () => {
 				</ButtonWithIcon>
 			</Flex>
 
-			<Table.Root borderRadius="lg" overflow="hidden" boxShadow="md">
+			<Table.Root className="glass-card" borderRadius="16px" overflow="hidden">
 				<Table.Header>
-					<Table.Row bg="white">
-						<Table.ColumnHeader w="40%">Collection</Table.ColumnHeader>
-						<Table.ColumnHeader>Created</Table.ColumnHeader>
-						<Table.ColumnHeader>Posts</Table.ColumnHeader>
-						<Table.ColumnHeader>Status</Table.ColumnHeader>
+					<Table.Row bg="transparent">
+						<Table.ColumnHeader w="40%" css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Collection</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Created</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Posts</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Status</Table.ColumnHeader>
 						<Table.ColumnHeader></Table.ColumnHeader>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
 					{collections.map((collection) => (
-						<Table.Row key={collection._id} bg="white">
+						<Table.Row
+							key={collection._id}
+							className="glass-card"
+							css={{
+								"&:hover": {
+									background: "hsl(210, 20%, 96%) !important",
+								},
+							}}
+						>
 							<Table.Cell>
 								<Stack>
-									<Text fontSize="sm" fontWeight={600}>
+									<Text
+										fontSize="14px"
+										fontWeight={600}
+										css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+									>
 										{collection.title}
 									</Text>
 									{collection.description && (
-										<Text fontSize="xs" color="star.600" lineClamp={2}>
+										<Text
+											fontSize="12px"
+											lineClamp={2}
+											css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+										>
 											{collection.description}
 										</Text>
 									)}
 								</Stack>
 							</Table.Cell>
 							<Table.Cell>
-								<Text fontSize="xs">{formatDate(collection.createdAt)}</Text>
+								<Text fontSize="12px" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+									{formatDate(collection.createdAt)}
+								</Text>
 							</Table.Cell>
 							<Table.Cell>
-								<Text fontSize="sm">{collection.postCount}</Text>
+								<Text fontSize="14px" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+									{collection.postCount}
+								</Text>
 							</Table.Cell>
 							<Table.Cell>
-								<Badge colorPalette="green">
+								<Box
+									display="inline-block"
+									px={3}
+									py={1}
+									borderRadius="full"
+									fontSize="11px"
+									fontWeight={600}
+									css={{
+										background: collection.postCount > 0
+											? "linear-gradient(135deg, hsl(142, 76%, 36%), hsl(142, 76%, 30%))"
+											: "hsl(215.4, 16.3%, 90%)",
+										color: collection.postCount > 0 ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+									}}
+								>
 									{collection.postCount > 0 ? "Published" : "Empty"}
-								</Badge>
+								</Box>
 							</Table.Cell>
 							<Table.Cell>
 								<CollectionActionsMenu collection={collection} />

@@ -297,6 +297,7 @@ const CreateLinkPost: React.FC<LinkPostProps> = ({
                 loading={isSubmitting}
                 disabled={!title.trim() || !linkUrl.trim() || isSubmitting}
                 variant={"outline"}
+                className="glass-card"
               >
                 Save as draft
               </Button>
@@ -306,6 +307,7 @@ const CreateLinkPost: React.FC<LinkPostProps> = ({
               onClick={() => handleSubmit()}
               loading={isSubmitting}
               disabled={!title.trim() || !linkUrl.trim() || isSubmitting}
+              className="btn-gradient"
             >
               {isEditMode ? "Update" : "Save"}
             </Button>

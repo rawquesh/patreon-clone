@@ -34,8 +34,8 @@ const Attachments: React.FC<AttachmentsProps> = ({ attachments }) => {
   };
 
   return (
-    <Stack gap={2} mt={4} borderTop="1px" borderColor="gray.200" pt={4}>
-      <Text fontWeight="bold" fontSize="md" color="gray.700">
+    <Stack gap={2} mt={4} borderTop="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }} pt={4}>
+      <Text fontWeight="bold" fontSize="md" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
         Attachments
       </Text>
       {attachments.map((attachment) => (
@@ -44,17 +44,17 @@ const Attachments: React.FC<AttachmentsProps> = ({ attachments }) => {
           align="center"
           p={2}
           borderRadius="md"
-          _hover={{ bg: "gray.100", cursor: "pointer" }}
+          _hover={{ bg: "rgba(255,255,255,0.6)", cursor: "pointer" }}
           onClick={() => handleAttachmentClick(attachment)}
           as="button"
           textAlign="left"
           w="full"
           transition="background-color 0.2s"
         >
-          <Icon as={FiPaperclip} mr={3} color="gray.500" boxSize={5} />
+          <Icon as={FiPaperclip} mr={3} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} boxSize={5} />
           <Text
             fontSize="sm"
-            color="blue.600"
+            css={{ color: "hsl(211, 71%, 43%)" }}
             _hover={{ textDecoration: "underline" }}
           >
             {attachment.fileName}

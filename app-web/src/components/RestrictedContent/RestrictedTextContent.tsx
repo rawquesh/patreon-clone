@@ -28,7 +28,7 @@ const RestrictedTextContent: React.FC<RestrictedTextContentProps> = ({
         {text.substring(0, 150)}
         {text.length > 150 && "..."}
       </Text>
-      <Text mt={4} color="gray.500" fontStyle="italic">
+      <Text mt={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontStyle="italic">
         Subscribe to read the full post
       </Text>
     </Box>

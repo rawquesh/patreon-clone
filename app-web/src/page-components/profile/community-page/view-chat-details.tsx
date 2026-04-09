@@ -16,28 +16,41 @@ const ViewChatDetails: React.FC = () => {
   return (
     <DrawerRoot closeOnEscape closeOnInteractOutside placement={"end"}>
       <DrawerTrigger cursor={"pointer"}>
-        <Text fontSize={"xs"} color={"gray.600"}>
+        <Text
+          fontSize={"xs"}
+          css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+        >
           View chat details
         </Text>
       </DrawerTrigger>
       <DrawerBackdrop />
       <DrawerContent>
         <DrawerHeader>
-          <Text>Chat details</Text>
+          <Text
+            fontWeight={600}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
+            Chat details
+          </Text>
           <DrawerCloseTrigger />
         </DrawerHeader>
         <Separator />
         <DrawerBody>
-          <Text fontWeight={500}>Memmbers</Text>
+          <Text
+            fontWeight={500}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
+            Members
+          </Text>
           <Stack gap={4} my={4}>
             <Flex gap={4} alignItems={"center"}>
               <Avatar
-                src={
-                  branding.assets.placeholderProfilePicture
-                }
+                src={branding.assets.placeholderProfilePicture}
                 size={"2xl"}
               />
-              <Text>User 1</Text>
+              <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}>
+                User 1
+              </Text>
             </Flex>
             <Flex gap={4} alignItems={"center"}>
               <Avatar
@@ -46,7 +59,9 @@ const ViewChatDetails: React.FC = () => {
                 }
                 size={"2xl"}
               />
-              <Text>User 2</Text>
+              <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}>
+                User 2
+              </Text>
             </Flex>
           </Stack>
         </DrawerBody>

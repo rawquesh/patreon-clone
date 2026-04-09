@@ -38,53 +38,54 @@ const CategoriesFilterMarketing: React.FC<CategoriesFilterProps> = ({
       }}
     >
       <Flex gap={3} px={1} width="max-content" minWidth="100%">
-        {categories.map((category) => (
-          <Flex
-            key={category.value}
-            bg={
-              selectedCategories.includes(category.value)
-                ? "gray.800"
-                : "gray.100"
-            }
-            color={
-              selectedCategories.includes(category.value) ? "white" : "gray.800"
-            }
-            px={4}
-            py={2}
-            rounded="full"
-            minW="auto"
-            whiteSpace="nowrap"
-            cursor="pointer"
-            as="button"
-            _hover={{
-              bg: selectedCategories.includes(category.value)
-                ? "gray.700"
-                : "gray.200",
-            }}
-            onClick={() => onCategoriesChange(category.value)}
-            alignItems="center"
-            justifyContent="center"
-            fontSize="sm"
-            fontWeight={
-              selectedCategories.includes(category.value) ? "medium" : "normal"
-            }
-            transition="all 0.2s"
-            boxShadow={
-              selectedCategories.includes(category.value) ? "sm" : "none"
-            }
-            flexShrink={0}
-          >
-            <Text>{category.label}</Text>
-            {selectedCategories.includes(category.value) && (
-              <Icon
-                icon="lets-icons:close-round-fill"
-                width="16px"
-                height="16px"
-                style={{ marginLeft: "6px" }}
-              />
-            )}
-          </Flex>
-        ))}
+        {categories.map((category) => {
+          const isSelected = selectedCategories.includes(category.value);
+          return (
+            <Flex
+              key={category.value}
+              px={4}
+              py={2}
+              rounded="full"
+              minW="auto"
+              whiteSpace="nowrap"
+              cursor="pointer"
+              as="button"
+              onClick={() => onCategoriesChange(category.value)}
+              alignItems="center"
+              justifyContent="center"
+              fontSize="sm"
+              fontWeight={isSelected ? "medium" : "normal"}
+              transition="all 0.2s"
+              flexShrink={0}
+              css={{
+                background: isSelected
+                  ? "var(--gradient-primary)"
+                  : "var(--glass-bg)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                color: isSelected ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+                border: "1px solid var(--glass-border)",
+                boxShadow: isSelected
+                  ? "var(--glow-primary)"
+                  : "var(--glass-shadow)",
+                "&:hover": {
+                  transform: "translateY(-1px)",
+                  boxShadow: "var(--glass-shadow-hover)",
+                },
+              }}
+            >
+              <Text>{category.label}</Text>
+              {isSelected && (
+                <Icon
+                  icon="lets-icons:close-round-fill"
+                  width="16px"
+                  height="16px"
+                  style={{ marginLeft: "6px" }}
+                />
+              )}
+            </Flex>
+          );
+        })}
       </Flex>
     </Flex>
   );

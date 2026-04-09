@@ -249,13 +249,13 @@ const MembershipPage: React.FC = () => {
 
       <Stack gap={4}>
         {(membershipsData?.memberships || []).map((tier) => (
-          <Box key={tier._id} p={6} bg="white" borderRadius="lg" boxShadow="sm">
+          <Box key={tier._id} p={6} className="glass-card" borderRadius="lg" boxShadow="sm">
             <Flex justifyContent="space-between" alignItems="start">
               <Stack>
                 <Text fontSize="xl" fontWeight="600">
                   {tier.name}
                 </Text>
-                <Text color="gray.600">
+                <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   ${tier.monthlyRate} / month · {tier.subscriberCount} members
                 </Text>
               </Stack>
@@ -282,7 +282,7 @@ const MembershipPage: React.FC = () => {
         {/* <DialogTrigger asChild>
           <Button as={"div"}>Edit Membership Tier</Button>
         </DialogTrigger> */}
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Edit Membership Tier</DialogHeader>
           <CloseButton
             position="absolute"

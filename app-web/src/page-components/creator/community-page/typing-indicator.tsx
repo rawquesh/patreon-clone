@@ -36,14 +36,14 @@ const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users }) => {
 			/>
 
 			<Box
-				bg="gray.100"
+				css={{ background: "hsl(210, 30%, 88%)" }}
 				px={3}
 				py={2}
 				borderRadius="md"
 				display="inline-flex"
 				alignItems="center"
 			>
-				<Text fontSize="xs" fontStyle="italic" mr={2}>
+				<Text fontSize="xs" fontStyle="italic" mr={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
 					{getTypingMessage()}
 				</Text>
 
@@ -54,7 +54,7 @@ const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users }) => {
 							w="6px"
 							h="6px"
 							borderRadius="full"
-							bg="gray.400"
+							css={{ background: "hsl(215.4, 16.3%, 46.9%)" }}
 							animation={`bounce 1.4s ease infinite ${i * 0.2}s`}
 						/>
 					))}

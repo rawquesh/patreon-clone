@@ -117,7 +117,7 @@ const CreateCollectionForm: React.FC<Props> = ({ onClose, open, onSubmit }) => {
 
   return (
     <DialogRoot open={open}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="glass-dialog-content max-w-md">
         <DialogHeader>
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontSize="2xl" fontWeight="bold">
@@ -157,13 +157,13 @@ const CreateCollectionForm: React.FC<Props> = ({ onClose, open, onSubmit }) => {
                 <Stack
                   alignItems="center"
                   borderRadius="md"
-                  bg="gray.100"
+                  className="glass-card"
                   p={6}
                   gap={2}
                 >
                   <Icon icon="mdi:image" fontSize={24} />
                   <Text>Recommended size</Text>
-                  <Text color="gray.500" fontSize="sm">
+                  <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="sm">
                     1024x1024px. JPG, JPEG, PNG, or GIF. Max 2 GB.
                   </Text>
                   <Button
@@ -203,7 +203,7 @@ const CreateCollectionForm: React.FC<Props> = ({ onClose, open, onSubmit }) => {
                   onChange={(e) => setDescription(e.target.value)}
                   maxLength={180}
                 />
-                <Text fontSize="sm" color="gray.500" alignSelf="flex-end">
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} alignSelf="flex-end">
                   {description.length} / 180
                 </Text>
               </Stack>
@@ -219,7 +219,7 @@ const CreateCollectionForm: React.FC<Props> = ({ onClose, open, onSubmit }) => {
                 Cancel
               </Button>
               <Button
-                colorScheme="gray"
+                className="btn-gradient"
                 onClick={handleSubmit}
                 disabled={!title.trim()}
               >

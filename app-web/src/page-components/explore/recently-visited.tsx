@@ -22,12 +22,15 @@ const RecentlyVisitedCard: React.FC<RecentlyVisitedCardProps> = ({
 }) => {
   return (
     <Box
-      minWidth="240px"
-      borderRadius="md"
+      minWidth="200px"
+      borderRadius="12px"
       p={3}
-      bg="gray.100"
-      _hover={{ bg: "gray.200" }}
-      transition="all 0.2s"
+      className="glass-card"
+      _hover={{
+        transform: "translateY(-2px)",
+        boxShadow: "0 8px 24px rgba(29, 112, 191, 0.12)",
+      }}
+      transition="all 0.2s ease"
       cursor="pointer"
       flexShrink={0}
       onClick={() => (window.location.href = `/creator/${username}`)}
@@ -35,11 +38,12 @@ const RecentlyVisitedCard: React.FC<RecentlyVisitedCardProps> = ({
       <Flex direction="row" align="center">
         <Box
           position="relative"
-          width="50px"
-          height="50px"
+          width="48px"
+          height="48px"
           borderRadius="full"
           overflow="hidden"
           mr={3}
+          flexShrink={0}
         >
           <Image
             src={image || "/placeholder-avatar.png"}
@@ -50,15 +54,17 @@ const RecentlyVisitedCard: React.FC<RecentlyVisitedCardProps> = ({
         </Box>
         <Box>
           <Text
-            fontWeight="bold"
+            fontWeight={600}
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
             width="100%"
+            fontSize="sm"
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
           >
             {name}
           </Text>
-          <Text fontSize="sm" color="gray.500">
+          <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {formatDistanceToNow(new Date(lastVisited), { addSuffix: true })}
           </Text>
         </Box>
@@ -84,15 +90,23 @@ const RecentlyVisited: React.FC = () => {
 
   const titleComponent = (
     <Flex justify="space-between" align="center" width="100%">
-      <Heading as="h2" size="md">
+      <Heading
+        as="h2"
+        size="md"
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+      >
         Recently visited
       </Heading>
       <Link
         as={NextLink}
         href="/explore/creators?key=recently-visited"
-        color="blue.500"
         fontSize="sm"
-      ></Link>
+        fontWeight={500}
+        css={{
+          color: "hsl(211, 71%, 43%)",
+          "&:hover": { textDecoration: "underline" },
+        }}
+      />
     </Flex>
   );
 

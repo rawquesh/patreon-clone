@@ -80,7 +80,10 @@ const RestrictedContentWrapper: React.FC<RestrictedContentWrapperProps> = ({
             width="48px"
             height="48px"
             borderRadius="full"
-            bg="gray.100"
+            css={{
+              background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+              backdropFilter: "blur(8px)",
+            }}
             alignItems="center"
             justifyContent="center"
             margin="0 auto"
@@ -88,18 +91,18 @@ const RestrictedContentWrapper: React.FC<RestrictedContentWrapperProps> = ({
             <Lock size={24} />
           </Flex>
 
-          <Text fontWeight="bold" fontSize="xl">
+          <Text fontWeight="bold" fontSize="xl" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             {getContentTypeMessage(contentType, title)}
           </Text>
 
-          <Text color="gray.600">
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {creatorName
               ? `Subscribe to ${creatorName} to access this and all other exclusive ${contentType} content.`
               : `Subscribe to access this and all other exclusive ${contentType} content.`}
           </Text>
 
           <Button
-            colorScheme="blue"
+            className="btn-gradient"
             onClick={handleSubscribeClick}
             size="lg"
             mt={2}

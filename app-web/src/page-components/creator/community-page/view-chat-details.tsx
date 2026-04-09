@@ -30,7 +30,7 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
       <DrawerTrigger asChild>
         <Text
           fontSize="xs"
-          color="gray.600"
+          css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
           cursor="pointer"
           _hover={{ textDecoration: "underline" }}
         >
@@ -40,7 +40,7 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
       <DrawerBackdrop />
       <DrawerContent>
         <DrawerHeader>
-          <Text fontSize="lg" fontWeight="bold">
+          <Text fontSize="lg" fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             {chat.title}
           </Text>
           <DrawerCloseTrigger asChild>
@@ -54,13 +54,13 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
           <Stack gap={6}>
             {chat.description && (
               <Stack gap={2}>
-                <Text fontWeight="bold">Description</Text>
-                <Text fontSize="sm">{chat.description}</Text>
+                <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Description</Text>
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>{chat.description}</Text>
               </Stack>
             )}
 
             <Stack gap={2}>
-              <Text fontWeight="bold">Created by</Text>
+              <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Created by</Text>
               <Flex gap={4} alignItems="center">
                 <Avatar
                   src={chat.creator.profilePicture}
@@ -68,7 +68,7 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
                   name={chat.creator.displayName}
                 />
                 <Stack gap={1}>
-                  <Text>{chat.creator.displayName}</Text>
+                  <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{chat.creator.displayName}</Text>
                   {/* <Badge colorScheme="blue" variant="solid">
                     Creator
                   </Badge> */}
@@ -77,7 +77,7 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
             </Stack>
 
             <Stack gap={2}>
-              <Text fontWeight="bold">
+              <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 Members ({chat.participants.length})
               </Text>
               {chat.participants.map((participant) => (
@@ -87,7 +87,8 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
                   alignItems="center"
                   p={2}
                   borderRadius="md"
-                  _hover={{ bg: "gray.50" }}
+                  _hover={{ bg: "rgba(255,255,255,0.6)" }}
+                  transition="all 0.15s ease"
                 >
                   <Avatar
                     src={participant.profilePicture}
@@ -95,7 +96,7 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
                     name={participant.displayName}
                   />
                   <Stack gap={1}>
-                    <Text>{participant.displayName}</Text>
+                    <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{participant.displayName}</Text>
                     {/* {participant.isCreator && (
                       <Badge colorScheme="blue" variant="solid">
                         Creator
@@ -108,8 +109,8 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
 
             {chat.type === "group" && (
               <Stack gap={2}>
-                <Text fontWeight="bold">Access Type</Text>
-                <Text fontSize="sm" textTransform="capitalize">
+                <Text fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Access Type</Text>
+                <Text fontSize="sm" textTransform="capitalize" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   {chat.accessType === "all" && "All members"}
                   {chat.accessType === "paid" && "Paid members only"}
                   {chat.accessType === "select" && "Selected tiers only"}
@@ -119,12 +120,19 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
                   chat.accessTiers &&
                   chat.accessTiers.length > 0 && (
                     <Stack gap={1}>
-                      <Text fontSize="sm" fontWeight="medium">
+                      <Text fontSize="sm" fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                         Available to:
                       </Text>
                       <Flex gap={2} flexWrap="wrap">
                         {chat.accessTiers.map((tier) => (
-                          <Badge key={tier} colorScheme="green" variant="solid">
+                          <Badge key={tier} css={{
+                            background: "var(--gradient-primary)",
+                            color: "white",
+                            borderRadius: "9999px",
+                            px: 2,
+                            py: 0.5,
+                            fontSize: "xs",
+                          }}>
                             {tier}
                           </Badge>
                         ))}
@@ -141,7 +149,13 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
             <Stack width="100%" gap={3}>
               {isCreator ? (
                 <Button
-                  colorScheme="red"
+                  css={{
+                    background: "hsl(0, 84.2%, 60.2%)",
+                    color: "white",
+                    "&:hover": {
+                      background: "hsl(0, 78%, 52%)",
+                    },
+                  }}
                   onClick={() => {
                     toaster.create({
                       title: "Not available",
@@ -155,7 +169,13 @@ const ViewChatDetails: React.FC<ViewChatDetailsProps> = ({ chat }) => {
                 </Button>
               ) : (
                 <Button
-                  colorScheme="red"
+                  css={{
+                    background: "hsl(0, 84.2%, 60.2%)",
+                    color: "white",
+                    "&:hover": {
+                      background: "hsl(0, 78%, 52%)",
+                    },
+                  }}
                   onClick={() => {
                     toaster.create({
                       title: "Not available",

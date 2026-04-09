@@ -102,7 +102,7 @@ const ImageUpload: React.FC<Props> = ({
 							<Button
 								size="sm"
 								variant="ghost"
-								color="blue.400"
+								css={{ color: "hsl(211, 71%, 43%)" }}
 								onClick={() => {
 									console.log("Add captions");
 								}}
@@ -112,7 +112,7 @@ const ImageUpload: React.FC<Props> = ({
 							<Button
 								size="sm"
 								variant="ghost"
-								color="red.400"
+								css={{ color: "hsl(0, 84.2%, 60.2%)" }}
 								onClick={removeAll}
 							>
 								Remove all
@@ -191,11 +191,11 @@ const ImageUpload: React.FC<Props> = ({
 					{...getRootProps()}
 					borderWidth="1px"
 					borderStyle="dashed"
-					borderColor={isDragActive ? "blue.400" : "gray.600"}
+					borderColor={isDragActive ? "hsl(211, 71%, 43%)" : "hsl(215.4, 16.3%, 46.9%)"}
 					borderRadius="xl"
 					h={images.length > 0 || existingImages.length > 0 ? "200px" : "300px"}
 					transition="all 0.2s"
-					_hover={{ borderColor: "blue.400" }}
+					_hover={{ borderColor: "hsl(211, 71%, 43%)" }}
 					cursor="pointer"
 				>
 					<input {...getInputProps()} />
@@ -205,9 +205,9 @@ const ImageUpload: React.FC<Props> = ({
 								icon="material-symbols:add-photo-alternate"
 								width="48"
 								height="48"
-								color="#666"
+								css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
 							/>
-							<Text fontSize="sm" color="gray.400" textAlign="center">
+							<Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
 								Add Images
 							</Text>
 						</VStack>

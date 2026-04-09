@@ -101,8 +101,8 @@ const LinkInput: React.FC<Props> = ({ onUrlChange, initialUrl = "" }) => {
 				<Box bg={"white"} borderRadius="xl" p={4} position="relative">
 					<Flex justify="space-between" align="center">
 						<Box>
-							<Text fontWeight="semibold">{preview.title}</Text>
-							<Text color="gray.400" fontSize="sm">
+							<Text fontWeight="semibold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{preview.title}</Text>
+							<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="sm">
 								{preview.url}
 							</Text>
 						</Box>

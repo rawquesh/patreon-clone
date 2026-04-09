@@ -81,7 +81,7 @@ const ImagePostPageComponent: React.FC<{
           />
         </Flex>
         <Suspense>
-          <PostCommentsSection bg="white" postId={postId} />
+          <PostCommentsSection className="glass-card" postId={postId} />
         </Suspense>
       </Stack>
       {!postData?.hasAccess && (

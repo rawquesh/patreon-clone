@@ -48,7 +48,6 @@ const PricingCard: React.FC<Props> = ({
             type: "success",
             duration: 5000,
           });
-          // router.push(`/creator/${creatorId}`);
         },
         onError: (error: any) => {
           toaster.create({
@@ -66,32 +65,32 @@ const PricingCard: React.FC<Props> = ({
 
   return (
     <Box
+      className={featured ? "glass-card border-gradient" : "glass-card"}
       w={{ base: "100%", md: "300px" }}
       maxW={"300px"}
       mx={"auto"}
-      bg={"white"}
-      shadow={"md"}
       overflow={"hidden"}
-      rounded={"12px"}
       color={"star.800"}
       mb={4}
       position="relative"
       minW={"300px"}
-      border={featured ? "2px solid" : "none"}
-      borderColor={"green.500"}
     >
       {featured && (
         <Box
           position="absolute"
           top={0}
           right={0}
-          bg="green.700"
+          css={{
+            background: "var(--gradient-primary)",
+          }}
           color="white"
-          px={2}
-          py={1}
+          px={3}
+          py={1.5}
           fontSize="xs"
+          fontWeight={700}
           zIndex={2}
-          borderBottomLeftRadius="md"
+          borderBottomLeftRadius="10px"
+          letterSpacing="0.02em"
         >
           Featured
         </Box>
@@ -108,38 +107,58 @@ const PricingCard: React.FC<Props> = ({
           w={"full"}
           position={"relative"}
         >
-          <Image alt={title} layout="fill" src={image} />
+          <Image alt={title} fill src={image} style={{ objectFit: "cover" }} />
         </Box>
       )}
-      <Stack gap={0} px={"16px"} py={"24px"}>
-        <Text fontSize={"xl"} fontWeight={600}>
+      <Stack gap={0} px={"20px"} py={"24px"}>
+        <Text
+          fontSize={"xl"}
+          fontWeight={700}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
           {title}
         </Text>
         <Stack direction="row" mt={3} gap={4} align="baseline">
-          <Text fontSize={"sm"} color={"star.600"}>
-            <Strong color={"star.800"} fontSize={"3xl"}>
+          <Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+            <Strong
+              css={{
+                color: "hsl(222.2, 47.4%, 11.2%)",
+                fontSize: "30px",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
               ${pricePerMonth}
             </Strong>
             /month
           </Text>
-          {/* {pricePerYear && (
-            <Text fontSize={"xs"} color={"star.600"}>
-              ${pricePerYear}/year
-            </Text>
-          )} */}
         </Stack>
         <Button
           disabled={soldOut || isProcessing}
-          my={2}
+          my={3}
           onClick={handleSubscribe}
+          className="btn-gradient"
         >
           {soldOut ? "Sold out" : "Join"}
         </Button>
         {limited &&
           (soldOut ? (
-            <Text textAlign={"center"}>Limited spaces - SOLD OUT</Text>
+            <Text
+              textAlign={"center"}
+              fontSize="12px"
+              css={{ color: "hsl(0, 84.2%, 60.2%)" }}
+            >
+              Limited spaces - SOLD OUT
+            </Text>
           ) : (
-            <Text textAlign={"center"}>
+            <Text
+              textAlign={"center"}
+              fontSize="12px"
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+            >
               Limited spaces - {seatsLeft} remaining
             </Text>
           ))}
@@ -150,6 +169,10 @@ const PricingCard: React.FC<Props> = ({
           my={3}
           dangerouslySetInnerHTML={{
             __html: typeof description === "string" ? description : "",
+          }}
+          css={{
+            "& p": { color: "hsl(215.4, 16.3%, 46.9%)" },
+            "& ul": { color: "hsl(215.4, 16.3%, 46.9%)" },
           }}
         />
       </Stack>

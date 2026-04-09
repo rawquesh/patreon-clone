@@ -33,7 +33,11 @@ const RestrictedAudioContent: React.FC<RestrictedAudioContentProps> = ({
       position="relative"
       borderRadius="md"
       overflow="hidden"
-      bg="gray.100"
+      css={{
+        background: "rgba(255,255,255,0.5)",
+        backdropFilter: "blur(8px)",
+        border: "1px solid rgba(255,255,255,0.5)",
+      }}
       p={4}
     >
       <Flex align="center">
@@ -59,28 +63,30 @@ const RestrictedAudioContent: React.FC<RestrictedAudioContentProps> = ({
             width="80px"
             height="80px"
             borderRadius="md"
-            bg="gray.200"
+            css={{
+              background: "hsl(210, 30%, 88%)",
+            }}
             alignItems="center"
             justifyContent="center"
             flexShrink={0}
             mr={4}
           >
-            <Icon as={Music} boxSize={8} color="gray.500" />
+            <Icon as={Music} boxSize={8} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
           </Flex>
         )}
 
         <Box flex="1">
-          <Text fontWeight="bold" lineClamp={2}>
+          <Text fontWeight="bold" lineClamp={2} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             {title || "Audio content"}
           </Text>
 
           {duration && (
-            <Text fontSize="sm" color="gray.600" mt={1}>
+            <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} mt={1}>
               Duration: {formattedDuration}
             </Text>
           )}
 
-          <Text mt={2} fontSize="sm" fontWeight="medium" color="blue.600">
+          <Text mt={2} fontSize="sm" fontWeight="medium" css={{ color: "hsl(211, 71%, 43%)" }}>
             Subscribe to listen
           </Text>
         </Box>
@@ -89,7 +95,7 @@ const RestrictedAudioContent: React.FC<RestrictedAudioContentProps> = ({
       {/* Audio player preview (disabled) */}
       <Box
         mt={4}
-        bg="gray.200"
+        css={{ background: "hsl(210, 30%, 88%)" }}
         height="24px"
         borderRadius="full"
         position="relative"
@@ -100,7 +106,7 @@ const RestrictedAudioContent: React.FC<RestrictedAudioContentProps> = ({
           top={0}
           width="30%"
           height="100%"
-          bg="gray.400"
+          css={{ background: "hsl(215.4, 16.3%, 60%)" }}
           borderRadius="full"
         />
       </Box>

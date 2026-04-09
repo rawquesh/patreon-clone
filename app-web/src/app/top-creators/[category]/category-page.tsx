@@ -14,7 +14,6 @@ type Props = {
 };
 
 const CategoryPage = ({ category: categoryId }: Props) => {
-  // Find the category object from the hardcoded list using the ID
   const categoryObject = React.useMemo(
     () =>
       categoryId === "ALL"
@@ -31,36 +30,51 @@ const CategoryPage = ({ category: categoryId }: Props) => {
   const queryFn =
     categoryId === "ALL" ? useTopCreators : useTopCreatorsByCategory;
 
-  // Use the hook to fetch creators, enable only if categoryName is valid
   const { data: creators, isLoading, isError } = queryFn(categoryName || "");
 
-  // Handle invalid category ID before loading/error states
   if (!categoryObject) {
     return (
       <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
-        <Heading as="h1" mb={6}>
+        <Heading
+          as="h1"
+          mb={6}
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           Category Not Found
         </Heading>
-        <Text>The category ID {categoryId} is not valid.</Text>
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          The category ID {categoryId} is not valid.
+        </Text>
       </Box>
     );
   }
 
-  // Handle Loading state
   if (isLoading) {
     return (
-      <Box mx="auto" py={20} textAlign="center">
-        <Spinner size="xl" />
-        <Text mt={4}>Loading creators...</Text>
+      <Box mx="auto" py={20} textAlign="center" className="animate-fade-in-up">
+        <Spinner
+          size="xl"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            borderWidth: "3px",
+          }}
+        />
+        <Text mt={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          Loading creators...
+        </Text>
       </Box>
     );
   }
 
-  // Handle Error state - Simplified
   if (isError) {
     return (
       <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
-        <Text color="red.500">
+        <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
           Error: Could not load creators for this category.
         </Text>
       </Box>
@@ -68,12 +82,29 @@ const CategoryPage = ({ category: categoryId }: Props) => {
   }
 
   return (
-    <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
-      <Heading as="h1" mb={6}>
+    <Box
+      maxW="1200px"
+      mx="auto"
+      py={8}
+      px={{ base: 4, md: 6 }}
+      className="animate-fade-in-up"
+    >
+      <Heading
+        as="h1"
+        mb={6}
+        css={{
+          background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
         Top Creators in {categoryName}
       </Heading>
       {!creators || creators.length === 0 ? (
-        <Text>No creators found in this category yet.</Text>
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          No creators found in this category yet.
+        </Text>
       ) : (
         <Grid
           templateColumns={{

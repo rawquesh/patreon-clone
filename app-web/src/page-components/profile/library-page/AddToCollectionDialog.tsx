@@ -117,26 +117,21 @@ const AddToCollectionDialogComponent: React.FC<AddToCollectionDialogProps> = ({
 
   return (
     <DialogRoot open={isOpen} onOpenChange={(v) => !v.open && onClose()}>
-      <DialogContent>
-        <DialogHeader>Add to Collection</DialogHeader>
+      <DialogContent className="glass-dialog-content">
+        <DialogHeader css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Add to Collection</DialogHeader>
         <DialogBody>
           {isLoadingCollections ? (
             <Flex justify="center" align="center" h="100px">
-              <Spinner />
+              <Spinner css={{ color: "hsl(211, 71%, 43%)" }} />
             </Flex>
           ) : isError ? (
-            <Text color="red.500">
+            <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
               Error loading collections: {error?.message || "Unknown error"}
             </Text>
           ) : collections.length === 0 ? (
-            <Text>You haven&apos;t created any collections yet.</Text>
+            <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>You haven&apos;t created any collections yet.</Text>
           ) : (
             <CheckboxGroup
-              // value={selectedCollections}
-              // onChange={(e) => {
-              //   console.log(e.target.value);
-              // }}
-              // Cast onChange handler to any to suppress persistent linter error
               value={selectedCollections}
             >
               <Stack gap={3}>
@@ -145,9 +140,6 @@ const AddToCollectionDialogComponent: React.FC<AddToCollectionDialogProps> = ({
                     label={collection.title}
                     key={collection._id}
                     value={collection._id}
-                    // checked={selectedCollections.includes(collection._id)}
-                    // defaultChecked={true}
-
                     onChange={(e) => {
                       setSelectedCollections((pre) => {
                         //@ts-ignore
@@ -158,11 +150,11 @@ const AddToCollectionDialogComponent: React.FC<AddToCollectionDialogProps> = ({
                       });
                     }}
                   >
-                    <Text border={"2px solid red"} fontWeight="medium">
+                    <Text fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       {collection.title}
                     </Text>
                     {collection.description && (
-                      <Text fontSize="sm" color="gray.500">
+                      <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                         {collection.description}
                       </Text>
                     )}
@@ -177,16 +169,17 @@ const AddToCollectionDialogComponent: React.FC<AddToCollectionDialogProps> = ({
             variant="outline"
             onClick={onClose}
             disabled={mutation.isPending}
+            className="glass-card"
           >
             Cancel
           </Button>
           <Button
-            colorPalette="green"
             onClick={handleSubmit}
             loading={mutation.isPending}
             disabled={
               isLoadingCollections || isError || collections.length === 0
             }
+            className="btn-gradient"
           >
             Save
           </Button>

@@ -16,7 +16,17 @@ export const DrawerContent = React.forwardRef<
   return (
     <Portal disabled={!portalled} container={portalRef}>
       <ChakraDrawer.Positioner padding={offset}>
-        <ChakraDrawer.Content ref={ref} {...rest} asChild={false}>
+        <ChakraDrawer.Content
+          ref={ref}
+          {...rest}
+          asChild={false}
+          className="glass-card"
+          borderRadius="16px 0 0 16px"
+          css={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%)",
+            backdropFilter: "blur(24px)",
+          }}
+        >
           {children}
         </ChakraDrawer.Content>
       </ChakraDrawer.Positioner>
@@ -31,8 +41,8 @@ export const DrawerCloseTrigger = React.forwardRef<
   return (
     <ChakraDrawer.CloseTrigger
       position="absolute"
-      top="2"
-      insetEnd="2"
+      top="3"
+      insetEnd="3"
       {...props}
       asChild
     >

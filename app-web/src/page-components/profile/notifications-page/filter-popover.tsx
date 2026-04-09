@@ -83,7 +83,7 @@ const FilterPopover: React.FC = () => {
 						}}
 						cursor={"pointer"}
 						as={"button"}
-						color="blue.600"
+						css={{ color: "hsl(211, 71%, 43%)" }}
 					>
 						Clear
 					</Text>
@@ -111,7 +111,7 @@ const FilterPopover: React.FC = () => {
 					<Text
 						mt={4}
 						textAlign="center"
-						color="blue.600"
+						css={{ color: "hsl(211, 71%, 43%)" }}
 						fontWeight="semibold"
 						cursor="pointer"
 						onClick={applyFilters}

@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/context/auth.provider";
-import { Center, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Center, Flex, Spinner, Text, VStack, Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
@@ -54,29 +54,56 @@ export default function StripeOnboardingHandler() {
 	if (isLoadingUser) {
 		return (
 			<Center h="100vh">
-				<Spinner size="xl" color="blue.500" />
+				<Spinner
+					size="xl"
+					css={{
+						color: "hsl(211, 71%, 43%)",
+						borderWidth: "3px",
+					}}
+				/>
 			</Center>
 		);
 	}
 
 	return (
-		<Flex direction="column" h="100vh" justify="center" align="center">
+		<Flex direction="column" h="100vh" justify="center" align="center" className="animate-fade-in-up">
 			{isProcessing ? (
 				<VStack gap={6}>
-					<Spinner size="xl" color="blue.500" borderWidth="4px" />
-					<Text fontSize="xl">Finalizing your creator account...</Text>
+					<Box className="glass-card" p={8} borderRadius="20px" css={{ boxShadow: "var(--glow-primary)" }}>
+						<Spinner
+							size="xl"
+							css={{
+								color: "hsl(211, 71%, 43%)",
+								borderWidth: "4px",
+								"& .chakra-spinner__track": {
+									borderColor: "hsl(211, 71%, 43% / 0.1)",
+								},
+							}}
+						/>
+					</Box>
+					<Text fontSize="xl" fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+						Finalizing your creator account...
+					</Text>
 				</VStack>
 			) : error ? (
 				<VStack gap={6}>
-					<Text color="red.500" fontSize="xl">
-						{error}
-					</Text>
-					<Text>Please try again or contact support.</Text>
+					<Box className="glass-card" p={8} borderRadius="20px">
+						<Text css={{ color: "hsl(0, 84.2%, 60.2%)" }} fontSize="xl" fontWeight={500}>
+							{error}
+						</Text>
+						<Text mt={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+							Please try again or contact support.
+						</Text>
+					</Box>
 				</VStack>
 			) : (
 				<VStack gap={6}>
-					<Text fontSize="xl">Redirecting to your profile...</Text>
-					<Spinner size="md" color="blue.500" />
+					<Box className="glass-card" p={8} borderRadius="20px">
+						<Text fontSize="xl" fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+							Redirecting to your profile...
+						</Text>
+						<Spinner mt={4} size="md" css={{ color: "hsl(211, 71%, 43%)" }} />
+					</Box>
 				</VStack>
 			)}
 		</Flex>

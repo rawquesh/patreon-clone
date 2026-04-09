@@ -1,9 +1,8 @@
 "use client";
 import { useAuth } from "@/context/auth.provider";
-import { Center, Spinner, Text } from "@chakra-ui/react";
+import { Box, Center, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-// import api from "@/lib/api";
 
 export default function StripeComplete() {
   const { user } = useAuth();
@@ -11,24 +10,36 @@ export default function StripeComplete() {
 
   useEffect(() => {
     router.push("/profile");
-    // const completeOnboarding = async () => {
-    // 	try {
-    // 		await api.post("/users/stripe-onboarding/complete");
-    // 	} catch (error) {
-    // 		console.error("Failed to complete onboarding:", error);
-    // 		router.push("/onboarding/creator");
-    // 	}
-    // };
-
-    // if (user?.stripeConnectAccountId) {
-    // 	completeOnboarding();
-    // }
   }, [user, router]);
 
   return (
     <Center h="100vh" flexDirection="column" gap={4}>
-      <Spinner size="xl" color="blue.500" borderWidth="4px" />
-      <Text fontSize="lg">Completing your setup...</Text>
+      <VStack
+        className="glass-card"
+        p={8}
+        borderRadius="20px"
+        gap={4}
+        align="center"
+        css={{ boxShadow: "var(--glow-primary)" }}
+      >
+        <Spinner
+          size="xl"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            borderWidth: "4px",
+            "& .chakra-spinner__track": {
+              borderColor: "hsl(211, 71%, 43% / 0.1)",
+            },
+          }}
+        />
+        <Text
+          fontSize="lg"
+          fontWeight={500}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
+          Completing your setup...
+        </Text>
+      </VStack>
     </Center>
   );
 }

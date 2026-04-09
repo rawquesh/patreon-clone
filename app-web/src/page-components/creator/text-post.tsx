@@ -1,9 +1,9 @@
 import React from "react";
 import { getTimeAgo } from "@/utils/getTimeAgo";
-import { Flex, Stack, Text, Box, Heading } from "@chakra-ui/react"; // Added Heading
+import { Flex, Stack, Text, Box, Heading } from "@chakra-ui/react";
 import PostLike from "./post-like";
 import PostComments from "./post-comments";
-import RichTextPreview from "./RichTextPreview"; // Import the new component
+import RichTextPreview from "./RichTextPreview";
 import { ShareButton } from "./share-button";
 import Link from "next/link";
 import { UpgradeModal } from "@/components/upgrade-modal";
@@ -45,11 +45,12 @@ const TextPost: React.FC<Props> = ({
     <Link href={`/post/${postId}`}>
       <Heading
         as="h2"
-        size="lg"
+        size="md"
         fontWeight={600}
-        cursor={"pointer"}
+        cursor="pointer"
         _hover={!locked ? { textDecoration: "underline" } : {}}
         mb={1}
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
       >
         {title}
       </Heading>
@@ -58,28 +59,21 @@ const TextPost: React.FC<Props> = ({
 
   return (
     <Stack
-      borderRadius={"12px"}
-      bg="white"
-      shadow={"md"}
-      w={"100%"}
-      p={{ base: "16px", md: "24px" }}
+      className="glass-card"
+      w="100%"
+      p={{ base: "16px", md: "20px" }}
       gap={3}
+      borderRadius="16px"
     >
       {header}
-      <Text fontSize={"xs"} color={"gray.500"}>
+      <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
         {getTimeAgo(timeStamp)}
       </Text>
 
       {hasAccess ? (
         <Box mt={4} position="relative">
-          <Box
-            maxH="100px"
-            overflow="hidden"
-            // filter="blur(2px)"
-            pointerEvents="none"
-          >
+          <Box maxH="100px" overflow="hidden" pointerEvents="none">
             <RichTextPreview
-              // htmlContent={body}
               htmlContent={previewText!}
               postId={postId}
               maxHeight="100px"
@@ -103,9 +97,15 @@ const TextPost: React.FC<Props> = ({
                     router.push(`/auth/login`);
                   }
                 }}
-                w={"fit"}
+                w="fit"
                 icon="tabler:lock-filled"
                 size="sm"
+                css={{
+                  background: "var(--gradient-primary)",
+                  borderRadius: "10px",
+                  fontWeight: 600,
+                  marginTop: "8px",
+                }}
               >
                 Join to unlock
               </ButtonWithIcon>
@@ -115,13 +115,12 @@ const TextPost: React.FC<Props> = ({
       )}
 
       <Flex
-        color={"gray.600"}
         mt={locked ? 6 : 2}
         pt={3}
-        borderTop="1px"
-        borderColor="gray.100"
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        borderTopWidth="1px"
+        borderColor="hsl(210, 30%, 88%)"
+        justifyContent="space-between"
+        alignItems="center"
       >
         <Flex gap={4}>
           <PostLike likes={likes} postId={postId} />

@@ -1,6 +1,5 @@
-// import { Switch } from "@/components/ui/switch";
 "use client";
-import { Heading, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import Carousel from "@/components/ui/carousel";
 import CreatorPostsFilter from "./creator-posts-filter";
@@ -18,12 +17,7 @@ import LinkPost from "./link-post";
 import { Element } from "react-scroll";
 import { useSubscription } from "@/context/subscription.provider";
 import { useAuth } from "@/context/auth.provider";
-// import "react-multi-carousel/lib/styles.css";
-// import Carousel, {
-// 	ButtonGroupProps,
-// 	ResponsiveType,
-// } from "react-multi-carousel";
-//
+
 const HomePage: React.FC<{
   creatorId: string;
   creatorUsername: string;
@@ -92,7 +86,7 @@ const HomePage: React.FC<{
   );
 
   return (
-    <Stack my={4} pb={"600px"} alignItems={"center"}>
+    <Stack my={4} pb={"600px"} alignItems={"center"} className="animate-fade-in-up">
       {shouldShowMemberships && (
         <Element id="memberships" name="memberships">
           <Heading
@@ -100,12 +94,27 @@ const HomePage: React.FC<{
             textAlign={"center"}
             mb={6}
             fontWeight={600}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
           >
             Choose your membership
           </Heading>
 
           {membershipsLoading ? (
-            <Spinner size="xl" color="green.500" />
+            <Box
+              w="48px"
+              h="48px"
+              borderRadius="full"
+              border="3px solid hsl(210, 30%, 88%)"
+              borderTopColor="hsl(211, 71%, 43%)"
+              animation="spin 0.8s linear infinite"
+              mx="auto"
+              css={{
+                "@keyframes spin": {
+                  "0%": { transform: "rotate(0deg)" },
+                  "100%": { transform: "rotate(360deg)" },
+                },
+              }}
+            />
           ) : paidMembershipCards.length > 0 ? (
             <Carousel
               cards={paidMembershipCards.map((membership) => (
@@ -125,7 +134,10 @@ const HomePage: React.FC<{
               ))}
             />
           ) : (
-            <Text textAlign="center" color="gray.500">
+            <Text
+              textAlign="center"
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+            >
               No paid membership options available yet.
             </Text>
           )}
@@ -136,7 +148,22 @@ const HomePage: React.FC<{
 
       <Stack gap={6} maxW="680px" w={"100%"}>
         {postsLoading ? (
-          <Spinner size="lg" alignSelf="center" my={10} />
+          <Box
+            w="48px"
+            h="48px"
+            borderRadius="full"
+            border="3px solid hsl(210, 30%, 88%)"
+            borderTopColor="hsl(211, 71%, 43%)"
+            animation="spin 0.8s linear infinite"
+            mx="auto"
+            my={10}
+            css={{
+              "@keyframes spin": {
+                "0%": { transform: "rotate(0deg)" },
+                "100%": { transform: "rotate(360deg)" },
+              },
+            }}
+          />
         ) : posts.length > 0 ? (
           posts.map((post) => {
             const commonProps = {
@@ -157,10 +184,7 @@ const HomePage: React.FC<{
             };
             switch (post.type) {
               case "text":
-                return (
-                  <TextPost key={post._id} {...commonProps} />
-                  // <>hello</>
-                );
+                return <TextPost key={post._id} {...commonProps} />;
               case "image":
                 return (
                   <ImagePost
@@ -196,10 +220,22 @@ const HomePage: React.FC<{
             }
           })
         ) : (
-          <Text textAlign="center" fontSize="lg" mt={10}>
-            No posts found. {creator?.displayName || "This creator"} hasn&apos;t
-            shared any content yet.
-          </Text>
+          <Box
+            className="glass-card"
+            p={8}
+            borderRadius="16px"
+            textAlign="center"
+          >
+            <Text
+              textAlign="center"
+              fontSize="lg"
+              mt={10}
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+            >
+              No posts found. {creator?.displayName || "This creator"} hasn&apos;t
+              shared any content yet.
+            </Text>
+          </Box>
         )}
       </Stack>
     </Stack>

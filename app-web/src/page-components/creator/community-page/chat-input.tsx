@@ -79,7 +79,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ isDisabled }) => {
       }}
       p={4}
       zIndex={1000}
-      bg={branding.colors.bgWarm}
+      className="glass-card"
+      borderRadius={0}
+      css={{
+        backdropFilter: "blur(12px)",
+        background: "rgba(255,255,255,0.85)",
+      }}
     >
       <Stack gap={4}>
         {previewUrl && (
@@ -138,7 +143,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ isDisabled }) => {
           />
           <IconButton
             aria-label="Send message"
-            colorScheme="blue"
+            css={{
+              background: "var(--gradient-primary)",
+              "&:hover": {
+                boxShadow: "0 0 16px hsl(211, 71%, 43% / 0.3)",
+              },
+            }}
             disabled={
               isDisabled || isSending || (!message.trim() && !selectedImage)
             }

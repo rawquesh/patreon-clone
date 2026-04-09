@@ -50,18 +50,18 @@ const NotificationsPage: React.FC = () => {
 
       {isLoading && notifications.length === 0 ? (
         <Center py={10}>
-          <Spinner size="xl" color="blue.500" />
+          <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
         </Center>
       ) : error ? (
         <Center py={10}>
-          <Text color="red.500">Error loading notifications</Text>
+          <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Error loading notifications</Text>
         </Center>
       ) : notifications.length === 0 ? (
         <Center py={10} flexDirection="column" gap={4}>
-          <Text color="gray.500" fontSize="lg">
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="lg">
             No notifications yet
           </Text>
-          <Text color="gray.400">
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {"When you get notifications, they'll appear here"}
           </Text>
         </Center>

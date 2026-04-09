@@ -71,7 +71,7 @@ const PublishPageBanner: React.FC = () => {
         left={{ base: 0, lg: "300px" }}
         right={0}
         zIndex={100}
-        bg="blue.700"
+        css={{ background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))" }}
         color="white"
         px={4}
         py={3}
@@ -101,7 +101,7 @@ const PublishPageBanner: React.FC = () => {
         open={isDialogOpen}
         onOpenChange={(v) => setIsDialogOpen(v.open)}
       >
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Publish Your Creator Page</DialogHeader>
           <DialogBody>
             <Text mb={4}>
@@ -120,10 +120,11 @@ const PublishPageBanner: React.FC = () => {
             </Checkbox>
           </DialogBody>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="ghost" onClick={() => setIsDialogOpen(false)} className="glass-card">
               Cancel
             </Button>
             <Button
+              className="btn-gradient"
               onClick={handlePublish}
               loading={isPublishing}
               disabled={!acceptTerms || isPublishing}

@@ -16,7 +16,25 @@ export const SelectTrigger = React.forwardRef<
   const { children, clearable, ...rest } = props
   return (
     <ChakraSelect.Control {...rest}>
-      <ChakraSelect.Trigger ref={ref}>{children}</ChakraSelect.Trigger>
+      <ChakraSelect.Trigger
+        ref={ref}
+        css={{
+          borderRadius: "10px",
+          border: "1px solid hsl(210, 30%, 88%)",
+          background: "rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(8px)",
+          transition: "all 0.15s ease",
+          "&:hover": {
+            borderColor: "hsl(211, 71%, 43%)",
+          },
+          "&:focus-within": {
+            borderColor: "hsl(211, 71%, 43%)",
+            boxShadow: "0 0 0 3px hsl(211, 71%, 43% / 0.1), 0 0 20px hsl(211, 71%, 43% / 0.2)",
+          },
+        }}
+      >
+        {children}
+      </ChakraSelect.Trigger>
       <ChakraSelect.IndicatorGroup>
         {clearable && <SelectClearTrigger />}
         <ChakraSelect.Indicator />
@@ -55,7 +73,19 @@ export const SelectContent = React.forwardRef<
   return (
     <Portal disabled={!portalled} container={portalRef}>
       <ChakraSelect.Positioner>
-        <ChakraSelect.Content {...rest} ref={ref} />
+        <ChakraSelect.Content
+          {...rest}
+          ref={ref}
+          className="glass-menu"
+          borderRadius="12px"
+          overflow="hidden"
+          css={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%)",
+            backdropFilter: "blur(16px)",
+            minW: "180px",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+          }}
+        />
       </ChakraSelect.Positioner>
     </Portal>
   )

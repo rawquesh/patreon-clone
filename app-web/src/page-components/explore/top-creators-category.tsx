@@ -69,7 +69,7 @@ const TopCreatorsCategory: React.FC<{ category: string; id: string }> = ({
             md: "-8px",
             lg: "-8px",
           },
-          gridAutoFlow: "column",
+          gridAutoFlow: "Column",
           gridAutoColumns: {
             base: "max(230px, 48.7805% - 6.14634px)",
             sm: "max(230px, 25% - 12px)",
@@ -89,13 +89,14 @@ const TopCreatorsCategory: React.FC<{ category: string; id: string }> = ({
               alignItems={"end"}
             >
               <Stack gap={0}>
-                <Text fontSize={"sm"} color={"star.600"}>
+                <Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   Top creators in
                 </Text>
                 <Heading
                   transform={"translateY(-2px)"}
                   fontSize={"xl"}
                   fontWeight={600}
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                 >
                   {displayCategory}
                 </Heading>
@@ -103,6 +104,7 @@ const TopCreatorsCategory: React.FC<{ category: string; id: string }> = ({
               <Icon
                 width={"24px"}
                 icon={"material-symbols:chevron-right-rounded"}
+                css={{ color: "hsl(211, 71%, 43%)" }}
               />
             </Flex>
           </Link>

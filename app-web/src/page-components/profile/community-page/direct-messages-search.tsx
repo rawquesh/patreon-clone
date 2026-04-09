@@ -7,7 +7,7 @@ import DirectMessagesFilterPopover from "./direct-messagees-filter-popover";
 const DirectMessagesSearch: React.FC = () => {
 	return (
 		<Flex gap={3} alignItems={"center"}>
-			<InputGroup w={"100%"} startElement={<SearchIcon />}>
+			<InputGroup glass startElement={<SearchIcon />}>
 				<Input placeholder="Search or start conversation" />
 			</InputGroup>
 			<DirectMessagesFilterPopover />

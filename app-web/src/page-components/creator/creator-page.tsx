@@ -48,7 +48,7 @@ const CreatorPage: React.FC = () => {
   if (creatorLoading || subscriptionLoading) {
     return (
       <Center h="100vh">
-        <Spinner size="xl" color="green.500" />
+        <Spinner size="xl" css={{ color: "hsl(142, 76%, 36%)" }} />
       </Center>
     );
   }

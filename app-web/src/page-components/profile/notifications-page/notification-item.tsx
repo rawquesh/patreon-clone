@@ -120,14 +120,14 @@ const NotificationItem: React.FC<Props> = ({ notification }) => {
     <Flex
       my={2}
       gap={4}
-      bg={notification.isRead ? "white" : "blue.50"}
+      bg={notification.isRead ? "rgba(255,255,255,0.72)" : "hsl(211, 71%, 43% / 0.08)"}
       borderRadius={"12px"}
       px={"24px"}
       py={"16px"}
       justifyContent={"start"}
       // onClick={handleClick}
       // cursor="pointer"
-      _hover={{ bg: notification.isRead ? "gray.50" : "blue.100" }}
+      _hover={{ bg: notification.isRead ? "rgba(255,255,255,0.5)" : "hsl(211, 71%, 43% / 0.12)" }}
       position="relative"
       cursor={notification.link ? "pointer" : "auto"}
       onClick={() => {
@@ -147,7 +147,7 @@ const NotificationItem: React.FC<Props> = ({ notification }) => {
           {getTimeAgo(notification.createdAt)}
         </Text>
         {notification.comment && (
-          <Box mt={2} p={2} bg="gray.50" borderRadius="md">
+          <Box mt={2} p={2} css={{ background: "hsl(210, 30%, 88%)" }} borderRadius="md">
             <Text fontSize="xs" fontStyle="italic">
               {notification.comment.content}
             </Text>

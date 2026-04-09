@@ -64,7 +64,7 @@ const GiftTableMenuPopover: React.FC<Props> = ({ gift, onGiftChange }) => {
 				<PopoverTrigger onClick={onOpen}>
 					<Flex
 						_hover={{
-							bg: "gray.100",
+							bg: "rgba(255,255,255,0.6)",
 						}}
 						w={"40px"}
 						h={"40px"}
@@ -76,7 +76,7 @@ const GiftTableMenuPopover: React.FC<Props> = ({ gift, onGiftChange }) => {
 						<Icon icon={"ix:more-menu"} />
 					</Flex>
 				</PopoverTrigger>
-				<PopoverContent w={"150px"}>
+				<PopoverContent w={"150px"} className="glass-card">
 					<PopoverBody overflow={"hidden"} p={0}>
 						<Flex direction={"column"}>
 							<GiftModal
@@ -89,13 +89,13 @@ const GiftTableMenuPopover: React.FC<Props> = ({ gift, onGiftChange }) => {
 							/>
 							<Flex
 								_hover={{
-									bg: "red.100",
+									css: { background: "hsl(0, 84.2%, 60.2% / 0.15)" },
 								}}
 								gap={4}
 								px={4}
 								py={2}
 								cursor={"pointer"}
-								color={"red.700"}
+								css={{ color: "hsl(0, 84.2%, 60.2%)" }}
 								borderBottomRadius={"8px"}
 								onClick={() => {
 									setIsDeleteDialogOpen(true);
@@ -114,7 +114,7 @@ const GiftTableMenuPopover: React.FC<Props> = ({ gift, onGiftChange }) => {
 				open={isDeleteDialogOpen}
 				onOpenChange={(v) => setIsDeleteDialogOpen(v.open)}
 			>
-				<DialogContent>
+				<DialogContent className="glass-dialog-content">
 					<DialogHeader>Delete Post</DialogHeader>
 					<DialogBody>
 						<Text>
@@ -130,7 +130,7 @@ const GiftTableMenuPopover: React.FC<Props> = ({ gift, onGiftChange }) => {
 							Cancel
 						</Button>
 						<Button
-							colorPalette="red"
+							css={{ background: "hsl(0, 84.2%, 60.2%)", color: "white" }}
 							onClick={handleDelete}
 							loading={isDeleting}
 						>

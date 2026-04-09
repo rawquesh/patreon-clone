@@ -44,7 +44,7 @@ export const StatValueText = React.forwardRef<
 export const StatUpTrend = React.forwardRef<HTMLDivElement, BadgeProps>(
   function StatUpTrend(props, ref) {
     return (
-      <Badge colorPalette="green" gap="0" {...props} ref={ref}>
+      <Badge gap="0" css={{ background: "hsl(142, 76%, 36%)", color: "white" }} {...props} ref={ref}>
         <ChakraStat.UpIndicator />
         {props.children}
       </Badge>
@@ -55,7 +55,7 @@ export const StatUpTrend = React.forwardRef<HTMLDivElement, BadgeProps>(
 export const StatDownTrend = React.forwardRef<HTMLDivElement, BadgeProps>(
   function StatDownTrend(props, ref) {
     return (
-      <Badge colorPalette="red" gap="0" {...props} ref={ref}>
+      <Badge gap="0" css={{ background: "hsl(0, 84.2%, 60.2%)", color: "white" }} {...props} ref={ref}>
         <ChakraStat.DownIndicator />
         {props.children}
       </Badge>

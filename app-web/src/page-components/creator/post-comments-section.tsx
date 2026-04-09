@@ -128,7 +128,7 @@ const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
           }
         />
       )}
-      <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" bg="white">
+      <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" className="glass-input">
         <Input
           placeholder="Join the conversation..."
           border="none"

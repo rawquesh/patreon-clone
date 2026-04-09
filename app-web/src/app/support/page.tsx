@@ -49,8 +49,6 @@ const SupportPage: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
-    // Get access key from environment variable or use a placeholder
-    // Users need to get their access key from https://web3forms.com/
     const accessKey = branding.services.web3FormsAccessKey;
 
     if (!accessKey) {
@@ -88,7 +86,6 @@ const SupportPage: React.FC = () => {
           type: "success",
           message: "Thank you for contacting us! We'll get back to you soon.",
         });
-        // Reset form
         setFormData({
           firstName: "",
           lastName: "",
@@ -114,24 +111,34 @@ const SupportPage: React.FC = () => {
   };
 
   return (
-    <Box color={branding.colors.star} bg="white">
+    <Box css={{ background: "var(--app-bg)" }}>
       <MarketingHeader />
 
-      <Box as="section" bg="white" pt={{ base: "5rem", md: "8rem" }} pb={20}>
+      <Box
+        as="section"
+        pt={{ base: "5rem", md: "8rem" }}
+        pb={20}
+        className="page-header"
+      >
         <Box maxW="3xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
-          <Box maxW="2xl" mx="auto">
+          <Box maxW="2xl" mx="auto" className="animate-fade-in-up">
             <Heading
               as="h1"
               fontSize="4xl"
               fontWeight="bold"
-              color={branding.colors.textHeader}
-              mb="4"
               textAlign="center"
+              mb="4"
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
               Contact Support
             </Heading>
             <Text
-              color={branding.colors.star}
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
               fontSize="lg"
               mb="8"
               textAlign="center"
@@ -142,27 +149,19 @@ const SupportPage: React.FC = () => {
               we&apos;ll get back to you as soon as possible.
             </Text>
 
-            <Box
-              bg="white"
-              boxShadow="md"
-              borderRadius="12px"
-              p={8}
-              border="1px"
-              borderColor={branding.colors.border}
-            >
+            <Box className="glass-card" p={8} borderRadius="20px">
               <form onSubmit={handleSubmit}>
                 <VStack gap={6} align="stretch">
-                  {/* First Name and Last Name in a row */}
                   <Box
                     display="grid"
                     gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                     gap={4}
                   >
-                    <Field.Root>
+                    <Box>
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
-                        color={branding.colors.textHeader}
+                        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                       >
                         First Name
                       </Field.Label>
@@ -171,20 +170,16 @@ const SupportPage: React.FC = () => {
                         value={formData.firstName}
                         onChange={handleChange}
                         placeholder="John"
-                        bg="gray.50"
+                        className="glass-input"
                         required
-                        _focus={{
-                          bg: "white",
-                          borderColor: branding.colors.primary,
-                        }}
                       />
-                    </Field.Root>
+                    </Box>
 
-                    <Field.Root>
+                    <Box>
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
-                        color={branding.colors.textHeader}
+                        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                       >
                         Last Name
                       </Field.Label>
@@ -193,19 +188,14 @@ const SupportPage: React.FC = () => {
                         value={formData.lastName}
                         onChange={handleChange}
                         placeholder="Doe"
-                        bg="gray.50"
+                        className="glass-input"
                         required
-                        _focus={{
-                          bg: "white",
-                          borderColor: branding.colors.primary,
-                        }}
                       />
-                    </Field.Root>
+                    </Box>
                   </Box>
 
-                  {/* Email */}
-                  <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
+                  <Box>
+                    <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Email Address
                     </Field.Label>
                     <Input
@@ -214,18 +204,13 @@ const SupportPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john.doe@example.com"
-                      bg="gray.50"
+                      className="glass-input"
                       required
-                      _focus={{
-                        bg: "white",
-                        borderColor: branding.colors.primary,
-                      }}
                     />
-                  </Field.Root>
+                  </Box>
 
-                  {/* Phone Number */}
-                  <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
+                  <Box>
+                    <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Phone Number
                     </Field.Label>
                     <Input
@@ -234,18 +219,13 @@ const SupportPage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+1 (555) 123-4567"
-                      bg="gray.50"
+                      className="glass-input"
                       required
-                      _focus={{
-                        bg: "white",
-                        borderColor: branding.colors.primary,
-                      }}
                     />
-                  </Field.Root>
+                  </Box>
 
-                  {/* Message */}
-                  <Field.Root>
-                    <Field.Label fontSize="sm" fontWeight="600" color={branding.colors.textHeader}>
+                  <Box>
+                    <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Message
                     </Field.Label>
                     <Textarea
@@ -254,49 +234,38 @@ const SupportPage: React.FC = () => {
                       onChange={handleChange}
                       placeholder="Tell us how we can help you..."
                       rows={6}
-                      bg="gray.50"
+                      className="glass-input"
                       required
                       resize="vertical"
-                      _focus={{
-                        bg: "white",
-                        borderColor: branding.colors.primary,
-                      }}
                     />
-                  </Field.Root>
+                  </Box>
 
-                  {/* Status Message */}
                   {submitStatus.type && (
                     <Box
                       p={4}
-                      borderRadius="md"
-                      bg={
-                        submitStatus.type === "success"
-                          ? branding.colors.green
-                          : "#FED7D7"
-                      }
-                      color={
-                        submitStatus.type === "success"
-                          ? branding.colors.greenDark
-                          : "#C53030"
-                      }
+                      borderRadius="12px"
+                      css={{
+                        background: submitStatus.type === "success"
+                          ? "linear-gradient(135deg, hsl(160, 60%, 45% / 0.1), hsl(160, 60%, 45% / 0.05))"
+                          : "linear-gradient(135deg, hsl(0, 78%, 52% / 0.1), hsl(0, 78%, 52% / 0.05))",
+                        border: `1px solid ${submitStatus.type === "success" ? "hsl(160, 60%, 45% / 0.2)" : "hsl(0, 78%, 52% / 0.2)"}`,
+                      }}
                     >
-                      <Text fontSize="sm" fontWeight="500">
+                      <Text fontSize="sm" fontWeight="500" css={{ color: submitStatus.type === "success" ? "hsl(160, 60%, 45%)" : "hsl(0, 78%, 52%)" }}>
                         {submitStatus.message}
                       </Text>
                     </Box>
                   )}
 
-                  {/* Submit Button */}
                   <Button
                     type="submit"
                     w="full"
                     size="lg"
-                    bg={branding.colors.primary}
-                    color="white"
-                    _hover={{ bg: branding.colors.primaryHover }}
+                    className="btn-gradient"
                     loading={isSubmitting}
                     loadingText="Sending..."
                     disabled={isSubmitting}
+                    css={{ fontWeight: 600 }}
                   >
                     Send Message
                   </Button>
@@ -304,11 +273,10 @@ const SupportPage: React.FC = () => {
               </form>
             </Box>
 
-            {/* Additional Contact Info */}
             <Box mt={8} textAlign="center">
-              <Text color={branding.colors.star} fontSize="sm">
+              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="sm">
                 You can also reach us directly at{" "}
-                <Text as="span" fontWeight="600" color={branding.colors.primary}>
+                <Text as="span" fontWeight="600" css={{ color: "hsl(211, 71%, 43%)" }}>
                   {branding.contact.supportEmail}
                 </Text>
               </Text>

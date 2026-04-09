@@ -214,9 +214,9 @@ const SimpleVideoPlayer: React.FC<SimpleVideoPlayerProps> = ({
           >
             <Slider.Control cursor="pointer">
               <Slider.Track bg="rgba(255,255,255,0.3)">
-                <Slider.Range bg="blue.500" />
+                <Slider.Range css={{ background: "var(--gradient-primary)" }} />
               </Slider.Track>
-              <Slider.Thumb index={0} boxSize="3" borderColor="blue.500" />
+              <Slider.Thumb index={0} boxSize="3" css={{ borderColor: "hsl(211, 71%, 43%)" }} />
             </Slider.Control>
           </Slider.Root>
 
@@ -259,12 +259,12 @@ const SimpleVideoPlayer: React.FC<SimpleVideoPlayerProps> = ({
                 >
                   <Slider.Control cursor="pointer">
                     <Slider.Track bg="rgba(255,255,255,0.3)">
-                      <Slider.Range bg="blue.500" />
+                      <Slider.Range css={{ background: "var(--gradient-primary)" }} />
                     </Slider.Track>
                     <Slider.Thumb
                       index={0}
                       boxSize="3"
-                      borderColor="blue.500"
+                      css={{ borderColor: "hsl(211, 71%, 43%)" }}
                     />
                   </Slider.Control>
                 </Slider.Root>

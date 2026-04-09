@@ -40,7 +40,6 @@ interface Props {
 }
 
 const LinkPost: React.FC<Props> = ({
-  // body,
   comments,
   likes,
   linkUrl,
@@ -54,8 +53,6 @@ const LinkPost: React.FC<Props> = ({
   tierAccess,
   hasAccess,
 }) => {
-  // console.log()
-  console.log(linkUrl);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -65,50 +62,58 @@ const LinkPost: React.FC<Props> = ({
     }
   };
 
-  const header = (
-    <Link href={`/post/${postId}`}>
-      <Heading fontSize={"2xl"} fontWeight={600}>
-        {title}
-      </Heading>
-    </Link>
-  );
-
   return (
     <Stack
-      borderRadius={"12px"}
-      overflow={"hidden"}
-      bg="white"
-      shadow={"md"}
-      w={"100%"}
+      className="glass-card"
+      w="100%"
+      borderRadius="16px"
+      overflow="hidden"
     >
-      <Stack p="24px">
-        {header}
-        <Text fontSize={"sm"} color={"star.600"}>
+      <Stack p="20px">
+        <Link href={`/post/${postId}`}>
+          <Heading fontSize="lg" fontWeight={600} cursor="pointer" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            {title}
+          </Heading>
+        </Link>
+        <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           {getTimeAgo(timeStamp)}
         </Text>
 
         {hasAccess ? (
           <Box
-            bg="gray.50"
+            className="glass-surface"
             p={4}
-            borderRadius="md"
-            mb={6}
+            borderRadius="10px"
+            mb={4}
             display="flex"
             alignItems="center"
           >
-            <Icon icon="clarity:link-solid" style={{ marginRight: "8px" }} />
-            <ChakraLink href={linkUrl} color="blue.500">
+            <Icon
+              icon="clarity:link-solid"
+              style={{ marginRight: "8px", color: "hsl(211, 71%, 43%)" }}
+            />
+            <ChakraLink
+              href={linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              fontSize="sm"
+              css={{
+                color: "hsl(211, 71%, 43%)",
+                fontWeight: 500,
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
               {linkUrl}
             </ChakraLink>
           </Box>
         ) : (
           <Box
-            borderRadius="8px"
-            bg="gray.100"
+            borderRadius="10px"
+            className="glass-surface"
             p={4}
             textAlign="center"
             position="relative"
-            mb={6}
+            mb={4}
           >
             {isSubscribed ? (
               <UpgradeModal tierAccess={tierAccess} />
@@ -120,8 +125,13 @@ const LinkPost: React.FC<Props> = ({
                       router.push(`/auth/login`);
                     }
                   }}
-                  w={"fit"}
+                  w="fit"
                   icon="tabler:lock-filled"
+                  css={{
+                    background: "var(--gradient-primary)",
+                    borderRadius: "10px",
+                    fontWeight: 600,
+                  }}
                 >
                   Join to unlock link
                 </ButtonWithIcon>
@@ -130,22 +140,12 @@ const LinkPost: React.FC<Props> = ({
           </Box>
         )}
 
-        {/* {!locked && body && (
-          <Text mb={4} onClick={handlePostClick} cursor="pointer">
-            {body}
-          </Text>
-        )} */}
         {(previewText || description) && (
-          <Text mb={4} onClick={handlePostClick} cursor="pointer">
+          <Text mb={4} onClick={handlePostClick} cursor="pointer" fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {previewText || description}
           </Text>
         )}
-        <Flex
-          color={"star.600"}
-          mt={3}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
+        <Flex mt={3} justifyContent="space-between" alignItems="center">
           <Flex gap={4}>
             <PostLike likes={likes} liked={false} postId={postId} />
             <PostComments commentsCount={comments} postId={postId} />
@@ -157,10 +157,7 @@ const LinkPost: React.FC<Props> = ({
                 containerProps={{ cursor: "pointer" }}
                 icon="tabler:lock-filled"
                 text="Locked"
-                textProps={{
-                  lineHeight: 1.7,
-                  ml: "1px",
-                }}
+                textProps={{ lineHeight: 1.7, ml: "1px" }}
               />
             )}
           </Flex>

@@ -72,25 +72,25 @@ const AudioUpload: React.FC<Props> = ({
 					h="300px"
 					borderWidth="1px"
 					borderStyle="dashed"
-					borderColor={isDragActive ? "blue.400" : "gray.600"}
+					borderColor={isDragActive ? "hsl(211, 71%, 43%)" : "hsl(215.4, 16.3%, 46.9%)"}
 					borderRadius="xl"
 					transition="all 0.2s"
-					_hover={{ borderColor: "blue.400" }}
+					_hover={{ borderColor: "hsl(211, 71%, 43%)" }}
 					bg="transparent"
 				>
 					{uploadProgress !== null ? (
 						<Center h="full">
 							<VStack gap={4} maxW="400px" w="full" px={4}>
 								<Progress.Root value={uploadProgress}>
-									<Progress.Track bg="gray.700">
+									<Progress.Track css={{ background: "hsl(222.2, 47.4%, 11.2%)" }}>
 										<Progress.Range
-											bg="blue.400"
+											css={{ background: "var(--gradient-primary)" }}
 											w={`${uploadProgress}%`}
 											transition="width 0.2s"
 										/>
 									</Progress.Track>
 								</Progress.Root>
-								<Text color="gray.400">Uploading {uploadProgress}%</Text>
+								<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Uploading {uploadProgress}%</Text>
 							</VStack>
 						</Center>
 					) : (
@@ -101,9 +101,9 @@ const AudioUpload: React.FC<Props> = ({
 									icon="material-symbols:mic"
 									width="48"
 									height="48"
-									color="#666"
+									css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
 								/>
-								<Text fontSize={"sm"} color="gray.400" textAlign="center">
+								<Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
 									Drag and drop an audio <br /> file to upload
 								</Text>
 								<Button size={"xs"} variant="outline">

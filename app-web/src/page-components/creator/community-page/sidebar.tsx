@@ -69,7 +69,7 @@ const SidebarComponent: FC<SidebarProps> = ({ page, mode }) => {
   return (
     <Box
       w="300px"
-      bg={"white"}
+      className="glass-card"
       position={"fixed"}
       top={0}
       left={{ base: 0, lg: "300px" }}
@@ -78,8 +78,17 @@ const SidebarComponent: FC<SidebarProps> = ({ page, mode }) => {
       px={4}
       pt={4}
       display={{ base: "none", md: "block" }}
+      borderRadius={0}
+      css={{
+        borderRight: "1px solid var(--glass-border)",
+      }}
     >
-      <Heading fontSize="2xl" fontWeight="bold" mb={4}>
+      <Heading
+        fontSize="2xl"
+        fontWeight="bold"
+        mb={4}
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+      >
         Messages
       </Heading>
       <HStack
@@ -91,11 +100,14 @@ const SidebarComponent: FC<SidebarProps> = ({ page, mode }) => {
             fontSize: "sm",
             fontWeight: 600,
             position: "relative",
+            transition: "all 0.15s ease",
             '&[data-active="true"]': {
-              bg: "gray.200",
+              background: "var(--gradient-primary)",
+              color: "white",
             },
-            "&:hover": {
-              bg: "gray.100",
+            "&:hover:not([data-active='true'])": {
+              background: "rgba(255,255,255,0.6)",
+              color: "hsl(222.2, 47.4%, 11.2%)",
             },
           },
         }}
@@ -109,8 +121,13 @@ const SidebarComponent: FC<SidebarProps> = ({ page, mode }) => {
               position="absolute"
               top="-5px"
               right="-5px"
-              colorPalette="blue"
               borderRadius="full"
+              css={{
+                background: "var(--gradient-primary)",
+                color: "white",
+                fontSize: "10px",
+                padding: "2px 6px",
+              }}
             >
               {groupUnreadCount}
             </Badge>
@@ -126,8 +143,13 @@ const SidebarComponent: FC<SidebarProps> = ({ page, mode }) => {
               position="absolute"
               top="-5px"
               right="-5px"
-              colorPalette="blue"
               borderRadius="full"
+              css={{
+                background: "var(--gradient-primary)",
+                color: "white",
+                fontSize: "10px",
+                padding: "2px 6px",
+              }}
             >
               {directUnreadCount}
             </Badge>

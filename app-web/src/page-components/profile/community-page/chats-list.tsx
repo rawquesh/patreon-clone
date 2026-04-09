@@ -45,13 +45,21 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
           <Link key={chat.id} href={`${baseUrl}/${chat.id}`}>
             <Box
               p={3}
-              borderRadius="md"
-              // _hover={{ bg: "gray.50" }}
+              borderRadius="12px"
               cursor="pointer"
-              bg={isActive ? "blue.50" : "transparent"}
-              _hover={{ bg: isActive ? "blue.50" : "gray.100" }}
-              borderLeftWidth={isActive ? "3px" : "0"}
-              borderLeftColor="blue.500"
+              css={{
+                background: isActive
+                  ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))"
+                  : "transparent",
+                borderLeft: "3px solid",
+                borderLeftColor: isActive ? "hsl(211, 71%, 43%)" : "transparent",
+                transition: "all 0.15s ease",
+                "&:hover": {
+                  background: isActive
+                    ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))"
+                    : "rgba(255,255,255,0.5)",
+                },
+              }}
             >
               <Flex justify="space-between" align="flex-start" mb={1}>
                 <Flex align="center" gap={2}>
@@ -61,32 +69,28 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
                     src={chat.creator.profilePicture}
                   />
                   <Box>
-                    <Text fontWeight="medium">{chat.title}</Text>
-                    <Text fontSize="sm" color="gray.600">
-                      {chat.lastMessage?.content.slice(0, 20) ||
+                    <Text
+                      fontWeight={600}
+                      fontSize="14px"
+                      css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+                    >
+                      {chat.title}
+                    </Text>
+                    <Text
+                      fontSize="12px"
+                      css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+                    >
+                      {chat.lastMessage?.content.slice(0, 25) ||
                         "No messages yet"}
                     </Text>
                   </Box>
                 </Flex>
-                <Box textAlign="right">
-                  <Text fontSize="xs" color="gray.500">
+                <Box textAlign="right" flexShrink={0}>
+                  <Text fontSize="11px" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                     {chat.lastMessage?.timestamp
                       ? format(new Date(chat.lastMessage.timestamp), "h:mm a")
                       : ""}
                   </Text>
-                  {/* {chat.unreadCount ? (
-                    <Box
-                      bg="blue.500"
-                      color="white"
-                      borderRadius="full"
-                      px={2}
-                      py={0.5}
-                      fontSize="xs"
-                      mt={1}
-                    >
-                      {chat.unreadCount}
-                    </Box>
-                  ) : null} */}
                 </Box>
               </Flex>
             </Box>
@@ -94,7 +98,10 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
         );
       })}
       {chats.length === 0 && (
-        <Text textAlign="center" color="gray.500" py={4}>
+        <Text
+          textAlign="center"
+          css={{ color: "hsl(215.4, 16.3%, 46.9%)", py: "16px", fontSize: "14px" }}
+        >
           No chats available
         </Text>
       )}

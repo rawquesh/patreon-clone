@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/context/auth.provider";
-import { Input, Stack, Text, NativeSelect } from "@chakra-ui/react";
+import { Input, Stack, Text, NativeSelect, Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { Gender } from "@/types/auth";
@@ -62,56 +62,80 @@ const CompleteAccountPage: React.FC = () => {
   };
 
   return (
-    <Stack
+    <Box
+      className="glass-card"
       minW={"300px"}
       maxW={"350px"}
       mx={"auto"}
-      h={"100vh"}
       alignItems={"center"}
       justifyContent={"center"}
       gap={4}
+      p={8}
+      borderRadius="20px"
     >
-      <Text fontSize={"2xl"} fontWeight={600} textAlign={"center"}>
+      <Text
+        fontSize={"2xl"}
+        fontWeight={600}
+        textAlign={"center"}
+        css={{
+          background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
         Complete your account
       </Text>
 
-      <Text color={"gray.800"} fontSize={"md"} textAlign={"center"}>
+      <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize={"md"} textAlign={"center"}>
         Signing up as {email}
       </Text>
 
       <Stack w={"100%"} gap={6}>
         <Stack gap={2}>
-          <Text fontWeight={500}>First Name</Text>
+          <Text fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            First Name
+          </Text>
           <InputGroup w={"100%"}>
             <Input
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="First Name"
-              border="1px solid"
+              className="glass-input"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
             />
           </InputGroup>
         </Stack>
 
         <Stack gap={2}>
-          <Text fontWeight={500}>Last Name</Text>
+          <Text fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            Last Name
+          </Text>
           <InputGroup w={"100%"}>
             <Input
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Last Name"
-              border="1px solid"
+              className="glass-input"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
             />
           </InputGroup>
         </Stack>
 
         <Stack gap={2}>
-          <Text fontWeight={500}>Gender</Text>
+          <Text fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            Gender
+          </Text>
           <NativeSelect.Root>
             <NativeSelect.Field
-              border="1px solid"
-              borderColor="inherit"
+              className="glass-input"
               value={gender || ""}
               onChange={(e) => setGender(e.currentTarget.value as Gender)}
+              css={{
+                color: "hsl(222.2, 47.4%, 11.2%)",
+                fontWeight: 500,
+                borderColor: "var(--glass-border)",
+              }}
             >
               <option value="" disabled>
                 Select Gender
@@ -125,16 +149,20 @@ const CompleteAccountPage: React.FC = () => {
         </Stack>
 
         <Stack gap={2}>
-          <Text fontWeight={500}>Create a password</Text>
+          <Text fontWeight={500} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            Create a password
+          </Text>
           <InputGroup w={"100%"}>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              className="glass-input"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
             />
           </InputGroup>
-          <Text color={"gray.400"} fontSize={"sm"}>
+          <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize={"sm"}>
             Passwords need to have at least 8 characters.
           </Text>
         </Stack>
@@ -150,11 +178,13 @@ const CompleteAccountPage: React.FC = () => {
           w={"100%"}
           onClick={handleContinue}
           loading={registerWithEmail.isPending}
+          className="btn-gradient"
+          css={{ fontWeight: 600 }}
         >
           Continue
         </Button>
       </Stack>
-    </Stack>
+    </Box>
   );
 };
 

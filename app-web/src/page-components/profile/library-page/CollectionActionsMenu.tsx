@@ -134,14 +134,14 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
         <MenuContent>
           <MenuItem
             onClick={() => setIsEditModalOpen(true)}
-            color={"blue.600"}
+            css={{ color: "hsl(211, 71%, 43%)" }}
             value="edit"
           >
             Edit Collection
           </MenuItem>
           <MenuItem
             onClick={() => setIsDeleteModalOpen(true)}
-            color={"red.600"}
+            css={{ color: "hsl(0, 84.2%, 60.2%)" }}
             value="delete"
           >
             Delete Collection
@@ -153,7 +153,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
         open={isDeleteModalOpen}
         onOpenChange={(v) => setIsDeleteModalOpen(v.open)}
       >
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Delete Collection</DialogHeader>
           <DialogBody>
             <Text>
@@ -168,7 +168,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
               Cancel
             </Button>
             <Button
-              colorPalette="red"
+              css={{ background: "hsl(0, 84.2%, 60.2%)", color: "white" }}
               onClick={handleDelete}
               loading={isDeleting}
             >
@@ -182,7 +182,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
         open={isEditModalOpen}
         onOpenChange={(v) => setIsEditModalOpen(v.open)}
       >
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Edit Collection</DialogHeader>
           <DialogBody>
             <Stack gap={6}>
@@ -217,7 +217,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
                   maxLength={180}
                 />
                 <Flex justifyContent="flex-end" mt={1}>
-                  <Text fontSize="xs" color="gray.500">
+                  <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                     {description.length}/180
                   </Text>
                 </Flex>

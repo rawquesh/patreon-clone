@@ -82,7 +82,7 @@ const RevenueCalculator: React.FC = () => {
       overflow="hidden"
       variant="outline"
     >
-      <Card.Header bg={branding.colors.duneLight} borderBottomWidth="1px" borderColor="gray.200">
+      <Card.Header className="glass-card-static" borderBottomWidth="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }}>
         <Heading size="lg" fontWeight="bold" color={branding.colors.textHeader}>
           Revenue Calculator
         </Heading>
@@ -133,11 +133,10 @@ const RevenueCalculator: React.FC = () => {
               step={10}
               onValueChange={handleSubscriberSliderChange}
               mb={2}
-              colorScheme="orange"
             >
               <Slider.Control>
-                <Slider.Track bg="orange.100">
-                  <Slider.Range bg={branding.colors.accent} />
+                <Slider.Track css={{ background: "hsl(35, 92%, 50% / 0.2)" }}>
+                  <Slider.Range css={{ background: "var(--gradient-primary)" }} />
                 </Slider.Track>
                 <Slider.Thumb index={0} boxSize={4} />
               </Slider.Control>
@@ -165,7 +164,7 @@ const RevenueCalculator: React.FC = () => {
                 <InputGroup width="85px">
                   {/* <InputLeftElement
                     pointerEvents="none"
-                    color="gray.500"
+                    css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                     fontSize="sm"
                     children="$"
                     height="100%" // Make sure element fills height
@@ -207,11 +206,10 @@ const RevenueCalculator: React.FC = () => {
               step={1}
               onValueChange={handlePriceSliderChange}
               mb={2}
-              colorScheme="orange"
             >
               <Slider.Control>
-                <Slider.Track bg="orange.100">
-                  <Slider.Range bg={branding.colors.accent} />
+                <Slider.Track css={{ background: "hsl(35, 92%, 50% / 0.2)" }}>
+                  <Slider.Range css={{ background: "var(--gradient-primary)" }} />
                 </Slider.Track>
                 <Slider.Thumb index={0} boxSize={4} />
               </Slider.Control>
@@ -226,14 +224,14 @@ const RevenueCalculator: React.FC = () => {
           </Box>
 
           {/* Results Section (remains the same) */}
-          <Box bg={branding.colors.bgLight} p={6} borderRadius="lg" mt={6}>
+          <Box className="glass-card" p={6} borderRadius="lg" mt={6}>
             <VStack gap={4} align="stretch">
               <Flex
                 justify="space-between"
                 align="center"
                 pb={3}
                 borderBottomWidth="1px"
-                borderColor="gray.300"
+                borderColor="hsl(210, 30%, 88%)"
               >
                 <Heading size="md" fontWeight="semibold" color={branding.colors.textHeader}>
                   Monthly Earnings
@@ -252,13 +250,13 @@ const RevenueCalculator: React.FC = () => {
                 </Flex>
                 <Flex justify="space-between">
                   <Text color={branding.colors.star}>{branding.name} Fee ({branding.platform.feePercentage}%)</Text>
-                  <Text fontWeight="medium" color="red.600">
+                  <Text fontWeight="medium" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
                     -{formatCurrency(platformFee)}
                   </Text>
                 </Flex>
                 <Flex justify="space-between">
                   <Text color={branding.colors.star}>Processing Fee (2.9% + $0.30/sub)</Text>
-                  <Text fontWeight="medium" color="red.600">
+                  <Text fontWeight="medium" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
                     -{formatCurrency(processingFee)}
                   </Text>
                 </Flex>

@@ -230,7 +230,7 @@ export const EditInput: React.FC<InputProps> = ({
     <Flex gap={3} alignItems="flex-start">
       <Avatar src={avatarUrl} size="sm" />
       <Box flex="1">
-        <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" bg="white">
+        <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" className="glass-input">
           <Input
             ref={inputRef}
             value={text}
@@ -250,14 +250,14 @@ export const EditInput: React.FC<InputProps> = ({
           />
         </Box>
         <Flex justify="space-between" mt={2}>
-          <Button variant="ghost" size="sm" onClick={onCancel} color="gray.700">
+          <Button variant="ghost" size="sm" onClick={onCancel} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             Cancel
           </Button>
           <Button
             variant="solid"
             size="sm"
             onClick={handleSubmit}
-            colorScheme="gray"
+            className="btn-gradient"
             disabled={!text.trim()}
           >
             Save
@@ -292,7 +292,7 @@ export const ReplyInput: React.FC<InputProps & { replyingTo: string }> = ({
     <Flex gap={3} alignItems="flex-start">
       <Avatar src={avatarUrl} size="sm" />
       <Box flex="1">
-        <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" bg="white">
+        <Box borderWidth="1px" borderRadius="2xl" overflow="hidden" className="glass-input">
           <Input
             ref={inputRef}
             value={text}
@@ -312,7 +312,7 @@ export const ReplyInput: React.FC<InputProps & { replyingTo: string }> = ({
           />
         </Box>
         <Flex justify="flex-start" mt={2}>
-          <Button variant="ghost" size="sm" onClick={onCancel} color="gray.700">
+          <Button variant="ghost" size="sm" onClick={onCancel} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             Cancel
           </Button>
         </Flex>

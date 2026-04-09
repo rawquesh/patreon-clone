@@ -58,7 +58,9 @@ const DiscountsTable: React.FC = () => {
 	if (isLoading) {
 		return (
 			<Box py={10} textAlign="center">
-				<Text>Loading discounts...</Text>
+				<Box className="glass-card" p={6} borderRadius="12px">
+					<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Loading discounts...</Text>
+				</Box>
 			</Box>
 		);
 	}
@@ -66,8 +68,10 @@ const DiscountsTable: React.FC = () => {
 	if (error) {
 		return (
 			<Box py={10} textAlign="center">
-				<Text color="red.500">Error loading discounts.</Text>
-				<Text>Please try again later.</Text>
+				<Box className="glass-card" p={6} borderRadius="12px">
+					<Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Error loading discounts.</Text>
+					<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontSize: "13px", mt: "4px" }}>Please try again later.</Text>
+				</Box>
 			</Box>
 		);
 	}
@@ -77,53 +81,76 @@ const DiscountsTable: React.FC = () => {
 	const formatDate = (dateString: string) => {
 		try {
 			return format(new Date(dateString), "MMM d, yyyy");
-		} catch (e) {
-			console.log(e);
+		} catch {
 			return "Invalid date";
 		}
 	};
 
 	const rows = discounts.map((item: IDiscount) => (
-		<Table.Row bg={"white"} key={item.id}>
+		<Table.Row
+			bg={"white"}
+			key={item.id}
+			css={{
+				"&:hover": {
+					background: "hsl(210, 20%, 96%) !important",
+				},
+			}}
+		>
 			<Table.Cell>
 				<Stack>
-					<Flex gap={2}>
-						<Text fontSize={"xs"} fontWeight={600}>
+					<Flex gap={2} alignItems="center">
+						<Text fontSize={"13px"} fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
 							{item.title}
 						</Text>
-						<Tag
-							size={"sm"}
-							startElement={<Icon icon={"ic:baseline-discount"} />}
+						<Box
+							px={2}
+							py={0.5}
+							borderRadius="full"
+							fontSize="11px"
+							fontWeight={600}
+							css={{
+								background: "var(--gradient-primary)",
+								color: "white",
+							}}
 						>
 							{item.code}
-						</Tag>
+						</Box>
 					</Flex>
-					<Flex color={"star.600"} fontSize={"xs"} gap={2}>
+					<Flex fontSize={"12px"} gap={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
 						<Text>
 							{item.description || `${item.discountNumber}% off first month`}{" "}
-							&#xb7;
+							&middot;
 						</Text>
 						<Text textTransform={"capitalize"}>{item.applicableTo} tiers</Text>
 					</Flex>
 				</Stack>
 			</Table.Cell>
 			<Table.Cell>
-				<Badge
-					colorPalette={
-						item.status === DiscountStatus.ACTIVE ? "green" : "gray"
-					}
+				<Box
+					display="inline-block"
+					px={3}
+					py={1}
+					borderRadius="full"
+					fontSize="11px"
+					fontWeight={600}
+					css={{
+						background: item.status === DiscountStatus.ACTIVE
+							? "linear-gradient(135deg, hsl(142, 76%, 36%), hsl(142, 76%, 30%))"
+							: "hsl(215.4, 16.3%, 90%)",
+						color: item.status === DiscountStatus.ACTIVE ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+					}}
 				>
 					{item.status}
-				</Badge>
+				</Box>
 			</Table.Cell>
 			<Table.Cell>
-				<Text fontSize={"xs"}>{formatDate(item.startDate)}</Text>
+				<Text fontSize={"12px"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>{formatDate(item.startDate)}</Text>
 			</Table.Cell>
 			<Table.Cell>
-				<Text fontSize={"xs"}>{formatDate(item.endDate)}</Text>
+				<Text fontSize={"12px"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>{formatDate(item.endDate)}</Text>
 			</Table.Cell>
 			<Table.Cell>
-				<Text fontSize={"xs"}>{item.redeemed}</Text>
+				<Text fontSize={"12px"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>{item.redeemed}</Text>
 			</Table.Cell>
 			<Table.Cell>
 				<Flex>
@@ -131,6 +158,13 @@ const DiscountsTable: React.FC = () => {
 						variant={"ghost"}
 						onClick={() => handleCopyCode(item.code)}
 						aria-label="Copy code"
+						css={{
+							color: copyingCode === item.code ? "hsl(142, 76%, 36%)" : "hsl(215.4, 16.3%, 46.9%)",
+							"&:hover": {
+								background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+								color: "hsl(211, 71%, 43%)",
+							},
+						}}
 					>
 						<Icon
 							icon={copyingCode === item.code ? "mdi:check" : "solar:copy-bold"}
@@ -148,18 +182,17 @@ const DiscountsTable: React.FC = () => {
 	return (
 		<Box>
 			<Table.Root
-				borderRadius={"lg"}
+				className="glass-card"
 				overflow={"hidden"}
-				boxShadow={"md"}
-				bg={"white"}
+				borderRadius="16px"
 			>
 				<Table.Header>
-					<Table.Row bg={"white"}>
-						<Table.ColumnHeader w={"40%"}>Name</Table.ColumnHeader>
-						<Table.ColumnHeader>Status</Table.ColumnHeader>
-						<Table.ColumnHeader>Begins</Table.ColumnHeader>
-						<Table.ColumnHeader>Ends</Table.ColumnHeader>
-						<Table.ColumnHeader>Redeemed</Table.ColumnHeader>
+					<Table.Row bg={"transparent"}>
+						<Table.ColumnHeader w={"40%"} css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Name</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Status</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Begins</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Ends</Table.ColumnHeader>
+						<Table.ColumnHeader css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 600, fontSize: "12px" }}>Redeemed</Table.ColumnHeader>
 						<Table.ColumnHeader>
 							<DiscountModal mode="create" onSaveCallback={onDiscountChange} />
 						</Table.ColumnHeader>
@@ -174,17 +207,30 @@ const DiscountsTable: React.FC = () => {
 								<Stack
 									alignItems={"center"}
 									justifyContent={"center"}
-									minH={"350px"}
+									minH={"200px"}
 									textAlign={"center"}
 									gap={3}
 								>
-									<Box bg={"star.100"} p={3} rounded={"999px"}>
-										<Icon width={"36px"} icon={"ic:baseline-discount"} />
+									<Box
+										w="64px"
+										h="64px"
+										borderRadius="full"
+										mx="auto"
+										css={{
+											background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))",
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "center",
+										}}
+									>
+										<Icon width="28px" height="28px" icon={"ic:baseline-discount"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
 									</Box>
-									<Text fontSize={"xl"} fontWeight={600}>
+									<Text fontSize="lg" fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
 										No discounts yet
 									</Text>
-									<Text>When you add a discount, it&apos;ll show up here</Text>
+									<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontSize: "14px" }}>
+										When you add a discount, it&apos;ll show up here
+									</Text>
 									<DiscountModal
 										mode="create"
 										onSaveCallback={onDiscountChange}

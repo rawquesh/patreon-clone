@@ -121,12 +121,12 @@ const TableCellMenu: React.FC<{
             <Icon icon={"mi:options-horizontal"} />
           </IconButton>
         </MenuTrigger>
-        <MenuContent>
+        <MenuContent className="glass-card">
           <MenuItem
             onClick={() => {
               router.push(`/post/${postId}`);
             }}
-            color={"blue.600"}
+            css={{ color: "hsl(211, 71%, 43%)" }}
             value="view"
           >
             View Post
@@ -137,14 +137,14 @@ const TableCellMenu: React.FC<{
                 postType.toLowerCase() === "picture" ? "image" : postType;
               router.push(`/profile/posts/${pt}/${postId}`);
             }}
-            color={"blue.600"}
+            css={{ color: "hsl(211, 71%, 43%)" }}
             value="edit"
           >
             Edit Post
           </MenuItem>
           <MenuItem
             onClick={onCollectionDialogOpen}
-            color={"blue.600"}
+            css={{ color: "hsl(211, 71%, 43%)" }}
             value="add-to-collection"
           >
             Add to Collection
@@ -153,7 +153,7 @@ const TableCellMenu: React.FC<{
             onClick={() => {
               setIsStatusModalOpen(true);
             }}
-            color={"blue.600"}
+            css={{ color: "hsl(211, 71%, 43%)" }}
             value="status-change"
           >
             {status === "published" ? "Unpublish" : "Publish"}
@@ -162,7 +162,7 @@ const TableCellMenu: React.FC<{
             onClick={() => {
               setIsDeleteModalOpen(true);
             }}
-            color={"red.600"}
+            css={{ color: "hsl(0, 84.2%, 60.2%)" }}
             value="delete"
           >
             Delete Post
@@ -183,10 +183,10 @@ const TableCellMenu: React.FC<{
         open={isDeleteModalOpen}
         onOpenChange={(v) => setIsDeleteModalOpen(v.open)}
       >
-        <DialogContent>
-          <DialogHeader>Delete Post</DialogHeader>
+        <DialogContent className="glass-dialog-content">
+          <DialogHeader css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Delete Post</DialogHeader>
           <DialogBody>
-            <Text>
+            <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               Are you sure you want to delete this post? This action cannot be
               undone.
             </Text>
@@ -195,13 +195,18 @@ const TableCellMenu: React.FC<{
             <Button
               variant="outline"
               onClick={() => setIsDeleteModalOpen(false)}
+              className="glass-card"
             >
               Cancel
             </Button>
             <Button
-              colorPalette="red"
               onClick={handleDelete}
               loading={isDeleting}
+              css={{
+                background: "hsl(0, 84.2%, 60.2%)",
+                color: "white",
+                "&:hover": { background: "hsl(0, 78%, 52%)" },
+              }}
             >
               Delete
             </Button>
@@ -213,12 +218,12 @@ const TableCellMenu: React.FC<{
         open={isStatusModalOpen}
         onOpenChange={(v) => setIsStatusModalOpen(v.open)}
       >
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="glass-dialog-content">
+          <DialogHeader css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             {status === "published" ? "Unpublish Post" : "Publish Post"}
           </DialogHeader>
           <DialogBody>
-            <Text>
+            <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               {status === "published"
                 ? "Are you sure you want to unpublish this post? It will no longer be visible to your audience."
                 : "Are you sure you want to publish this post? It will be visible to your audience based on tier access."}
@@ -228,13 +233,14 @@ const TableCellMenu: React.FC<{
             <Button
               variant="outline"
               onClick={() => setIsStatusModalOpen(false)}
+              className="glass-card"
             >
               Cancel
             </Button>
             <Button
-              colorPalette={"green"}
               onClick={handleStatusChange}
               loading={isChangingStatus}
+              className="btn-gradient"
             >
               {status === "published" ? "Unpublish" : "Publish"}
             </Button>

@@ -23,11 +23,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <ChakraButton
-        rounded={"8px"}
+        rounded="10px"
         disabled={loading || disabled}
         ref={ref}
         {...rest}
-        colorPalette={colorPalette || "blue"}
+        colorPalette={colorPalette || "primary"}
+        css={{
+          fontWeight: 600,
+          letterSpacing: "-0.01em",
+          transition: "all 0.15s ease",
+        }}
       >
         {loading && !loadingText ? (
           <>

@@ -46,7 +46,6 @@ interface Props {
 }
 
 const ImagePost: React.FC<Props> = ({
-  // body,
   comments,
   likes,
   timeStamp,
@@ -70,16 +69,17 @@ const ImagePost: React.FC<Props> = ({
   const swiperRef = useRef(null);
 
   return (
-    <Stack borderRadius={"12px"} bg="white" shadow={"md"} w={"100%"} p="24px">
+    <Stack className="glass-card" w="100%" p="20px" borderRadius="16px">
       <Heading
-        fontSize={"2xl"}
+        fontSize="lg"
         fontWeight={600}
         onClick={handlePostClick}
-        cursor={"pointer"}
+        cursor="pointer"
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
       >
         {title}
       </Heading>
-      <Text fontSize={"sm"} color={"star.600"}>
+      <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
         {getTimeAgo(timeStamp)}
       </Text>
 
@@ -104,14 +104,14 @@ const ImagePost: React.FC<Props> = ({
                   slidesPerView={1}
                   pagination={{ clickable: true }}
                   loop={true}
-                  style={{ borderRadius: "8px", marginBottom: "1rem" }}
+                  style={{ borderRadius: "12px", marginBottom: "1rem" }}
                 >
                   {images?.map((imgUrl, index) => (
                     <SwiperSlide key={index} onClick={handlePostClick}>
                       <Image
                         src={imgUrl}
                         alt={`${title} image ${index + 1}`}
-                        borderRadius="8px"
+                        borderRadius="12px"
                         objectFit="cover"
                         width="100%"
                         height="300px"
@@ -121,7 +121,6 @@ const ImagePost: React.FC<Props> = ({
                 </Swiper>
                 <IconButton
                   aria-label="Previous slide"
-                  // icon={}
                   position="absolute"
                   left="-1.5rem"
                   top="50%"
@@ -131,23 +130,13 @@ const ImagePost: React.FC<Props> = ({
                   boxShadow="md"
                   //@ts-ignore
                   onClick={() => swiperRef.current?.slidePrev()}
-                  bg="white"
-                  color="gray.800"
-                  _hover={{ bg: "gray.100" }}
+                  className="glass-card"
                   size="sm"
-                  css={{
-                    "& svg": {
-                      width: 6,
-                      height: 6,
-                    },
-                  }}
                 >
-                  {/* <ChevronLeftIcon w={6} h={6} /> */}
                   <Icon icon={"ic:round-chevron-left"} />
                 </IconButton>
                 <IconButton
                   aria-label="Next slide"
-                  // icon={}
                   position="absolute"
                   right="-1.5rem"
                   top="50%"
@@ -157,18 +146,9 @@ const ImagePost: React.FC<Props> = ({
                   boxShadow="md"
                   //@ts-ignore
                   onClick={() => swiperRef.current?.slideNext()}
-                  bg="white"
-                  color="gray.800"
-                  _hover={{ bg: "gray.100" }}
+                  className="glass-card"
                   size="sm"
-                  css={{
-                    "& svg": {
-                      width: 6,
-                      height: 6,
-                    },
-                  }}
                 >
-                  {/* <ChevronRightIcon w={6} h={6} /> */}
                   <Icon icon={"ic:round-chevron-right"} />
                 </IconButton>
               </>
@@ -176,7 +156,7 @@ const ImagePost: React.FC<Props> = ({
               <Image
                 src={images[0]}
                 alt={title || ""}
-                borderRadius="8px"
+                borderRadius="12px"
                 objectFit="cover"
                 width="100%"
                 height="300px"
@@ -188,7 +168,7 @@ const ImagePost: React.FC<Props> = ({
           <Image
             src={image}
             alt={title || ""}
-            borderRadius="8px"
+            borderRadius="12px"
             objectFit="cover"
             width="100%"
             height="300px"
@@ -197,50 +177,56 @@ const ImagePost: React.FC<Props> = ({
         )}
 
         {!hasAccess && (
-          <>
-            <Flex
-              position="absolute"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              borderRadius="8px"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {isSubscribed ? (
-                <UpgradeModal tierAccess={tierAccess} />
-              ) : (
-                <ScrollLink to="memberships" smooth>
-                  <ButtonWithIcon
-                    w={"fit"}
-                    icon="tabler:lock-filled"
-                    onClick={() => {
-                      if (!user) {
-                        router.push(`/auth/login`);
-                      }
-                    }}
-                  >
-                    Join to unlock
-                  </ButtonWithIcon>
-                </ScrollLink>
-              )}
-            </Flex>
-          </>
+          <Flex
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            borderRadius="12px"
+            alignItems="center"
+            justifyContent="center"
+            css={{
+              background: "rgba(0,0,0,0.3)",
+              backdropFilter: "blur(2px)",
+            }}
+          >
+            {isSubscribed ? (
+              <UpgradeModal tierAccess={tierAccess} />
+            ) : (
+              <ScrollLink to="memberships" smooth>
+                <ButtonWithIcon
+                  w="fit"
+                  icon="tabler:lock-filled"
+                  onClick={() => {
+                    if (!user) {
+                      router.push(`/auth/login`);
+                    }
+                  }}
+                  css={{
+                    background: "var(--gradient-primary)",
+                    borderRadius: "10px",
+                    fontWeight: 600,
+                  }}
+                >
+                  Join to unlock
+                </ButtonWithIcon>
+              </ScrollLink>
+            )}
+          </Flex>
         )}
       </Box>
 
       {(previewText || description) && (
-        <Text mb={4} onClick={handlePostClick} cursor="pointer">
+        <Text mb={4} onClick={handlePostClick} cursor="pointer" fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           {previewText || description}
         </Text>
       )}
 
       <Flex
-        color={"star.600"}
         mt={3}
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        justifyContent="space-between"
+        alignItems="center"
       >
         <Flex gap={4}>
           <PostLike likes={likes} liked={false} postId={postId} />

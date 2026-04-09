@@ -30,7 +30,6 @@ import api from "@/lib/api";
 import { CreatorCategory, ContentVisibility } from "@/typings/IUser";
 
 const SettingsPage: React.FC = () => {
-  // Get user from context
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const {
@@ -42,9 +41,8 @@ const SettingsPage: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [isUpdatingCategory, setIsUpdatingCategory] = useState(false); // State for category update loading
+  const [isUpdatingCategory, setIsUpdatingCategory] = useState(false);
 
-  // Mutation for updating content visibility
   const updateContentVisibility = useMutation({
     mutationFn: async (newVisibility: ContentVisibility) => {
       await api.put("/users/creator/content-visibility", {
@@ -58,7 +56,6 @@ const SettingsPage: React.FC = () => {
         type: "success",
         duration: 3000,
       });
-      // Invalidate user query to refetch updated data
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error: any) => {
@@ -73,10 +70,8 @@ const SettingsPage: React.FC = () => {
     },
   });
 
-  // --- Mutation for updating creator category ---
   const updateCategory = useMutation({
     mutationFn: async (newCategory: CreatorCategory) => {
-      // Assume endpoint is PUT /users/creator/category
       await api.put("/users/creator/category", { category: newCategory });
     },
     onMutate: () => {
@@ -89,7 +84,7 @@ const SettingsPage: React.FC = () => {
         type: "success",
         duration: 3000,
       });
-      queryClient.invalidateQueries({ queryKey: ["user"] }); // Invalidate user query
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error: any) => {
       toaster.create({
@@ -104,7 +99,6 @@ const SettingsPage: React.FC = () => {
       setIsUpdatingCategory(false);
     },
   });
-  // --- End category mutation ---
 
   const handleVisibilityChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -113,16 +107,13 @@ const SettingsPage: React.FC = () => {
     updateContentVisibility.mutate(newValue);
   };
 
-  // --- Handler for category change ---
   const handleCategoryChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const newCategory = event.target.value as CreatorCategory;
     updateCategory.mutate(newCategory);
   };
-  // --- End category handler ---
 
-  // Mutation for changing password (using state for loading)
   const changePasswordMutation = useMutation({
     mutationFn: async (passwords: any) => {
       await api.post("/users/reset-password", passwords);
@@ -188,20 +179,28 @@ const SettingsPage: React.FC = () => {
 
   return (
     <Box pt={"56px"} maxW={"648px"} pb={"56px"} w={"90vw"} mx={"auto"}>
-      <Heading mb={6} fontSize={"xl"} fontWeight={600}>
+      <Heading
+        mb={6}
+        fontSize={"xl"}
+        fontWeight={600}
+        css={{
+          background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
         Settings
       </Heading>
 
-      {/* Account Settings Section */}
-      <Stack mb={6} bg="white" borderRadius="lg" p={6} gap={2}>
-        <Text fontSize={"sm"} fontWeight={600}>
+      <Stack mb={6} className="glass-card" borderRadius="16px" p={6} gap={2}>
+        <Text fontSize={"sm"} fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Account
         </Text>
         <Field>
           <FieldLabel
             fontSize="sm"
-            color="gray.600"
-            _dark={{ color: "gray.400" }}
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
           >
             Content Visibility
           </FieldLabel>
@@ -210,6 +209,8 @@ const SettingsPage: React.FC = () => {
               value={user?.contentVisibleTo || ContentVisibility.BOTH}
               onChange={handleVisibilityChange}
               placeholder="Select content visibility"
+              className="glass-input"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
             >
               <option value={ContentVisibility.BOTH}>
                 Everyone - Visible to all users
@@ -224,12 +225,10 @@ const SettingsPage: React.FC = () => {
           </NativeSelect.Root>
         </Field>
 
-        {/* --- Creator Category Field --- */}
         <Field>
           <FieldLabel
             fontSize="sm"
-            color="gray.600"
-            _dark={{ color: "gray.400" }}
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
           >
             Creator Category
           </FieldLabel>
@@ -238,6 +237,8 @@ const SettingsPage: React.FC = () => {
               value={user?.creatorCategory || ""}
               onChange={handleCategoryChange}
               placeholder="Select your creator category"
+              className="glass-input"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
             >
               {Object.values(CreatorCategory).map((cat) => (
                 <option key={cat} value={cat}>
@@ -247,11 +248,9 @@ const SettingsPage: React.FC = () => {
             </NativeSelect.Field>
           </NativeSelect.Root>
         </Field>
-        {/* --- End Creator Category Field --- */}
 
         <DialogRoot
           open={isPasswordDialogOpen}
-          // onOpenChange={setIsPasswordDialogOpen}
         >
           <DialogTrigger asChild>
             <Button
@@ -260,52 +259,89 @@ const SettingsPage: React.FC = () => {
               size="sm"
               mt={2}
               w="fit-content"
+              className="glass-card"
+              css={{
+                fontWeight: 600,
+                color: "hsl(211, 71%, 43%)",
+                borderColor: "hsl(211, 71%, 43% / 0.3)",
+                "&:hover": {
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                  borderColor: "transparent",
+                },
+              }}
             >
               Change Password
             </Button>
           </DialogTrigger>
 
-          <DialogContent px={6} py={4}>
+          <DialogContent
+            className="glass-dialog-content"
+            px={6}
+            py={4}
+            css={{ borderRadius: "20px" }}
+          >
             <DialogHeader>
-              <DialogTitle>Change Password</DialogTitle>
+              <DialogTitle css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                Change Password
+              </DialogTitle>
               <DialogCloseTrigger onClick={onPasswordDialogClose} />
             </DialogHeader>
             <Stack gap={4} py={4}>
               <Field required>
-                <FieldLabel fontSize="sm">Old Password</FieldLabel>
+                <FieldLabel fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                  Old Password
+                </FieldLabel>
                 <Input
                   type="password"
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                   placeholder="Enter your current password"
+                  className="glass-input"
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
                 />
               </Field>
               <Field required>
-                <FieldLabel fontSize="sm">New Password</FieldLabel>
+                <FieldLabel fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                  New Password
+                </FieldLabel>
                 <Input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Enter your new password"
+                  className="glass-input"
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
                 />
               </Field>
               <Field required>
-                <FieldLabel fontSize="sm">Confirm New Password</FieldLabel>
+                <FieldLabel fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                  Confirm New Password
+                </FieldLabel>
                 <Input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your new password"
+                  className="glass-input"
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
                 />
               </Field>
             </Stack>
             <DialogFooter>
-              <Button variant="ghost" onClick={onPasswordDialogClose}>
+              <Button
+                variant="ghost"
+                onClick={onPasswordDialogClose}
+                className="glass-card"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+              >
                 Cancel
               </Button>
               <Button
                 onClick={handleChangePassword}
                 loading={isChangingPassword}
+                className="btn-gradient"
+                css={{ fontWeight: 600 }}
               >
                 Save Changes
               </Button>
@@ -314,8 +350,7 @@ const SettingsPage: React.FC = () => {
         </DialogRoot>
       </Stack>
 
-      {/* Existing Notification Settings */}
-      <Text mb={2} fontSize={"sm"} fontWeight={600}>
+      <Text mb={2} fontSize={"sm"} fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
         Notifications
       </Text>
       <NotificationSettings />

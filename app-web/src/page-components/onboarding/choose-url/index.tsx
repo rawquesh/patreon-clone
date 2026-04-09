@@ -8,12 +8,12 @@ import {
   Text,
   Box,
   Flex,
+  NativeSelect,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback } from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
-import { NativeSelect } from "@chakra-ui/react";
 import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import Link from "next/link";
@@ -137,7 +137,6 @@ const OnboardingForm: React.FC = () => {
         ...(gender ? { gender } : {}),
       });
 
-      // window.location.href = stripeOnboardingUrl;
       window.localStorage.setItem("userMode", "creator");
       window.location.href = "/profile";
     } catch (error: any) {
@@ -167,7 +166,7 @@ const OnboardingForm: React.FC = () => {
         <Icon
           fontSize={"1rem"}
           icon="icon-park-solid:check-one"
-          color="green.600"
+          color="hsl(160, 60%, 45%)"
         />
       );
     }
@@ -177,7 +176,7 @@ const OnboardingForm: React.FC = () => {
         <Icon
           fontSize={"1rem"}
           icon="emojione:cross-mark-button"
-          color="red.600"
+          color="hsl(0, 78%, 52%)"
         />
       );
     }
@@ -188,28 +187,35 @@ const OnboardingForm: React.FC = () => {
   return (
     <Stack gap={6}>
       <Stack gap={4}>
-        <Text fontSize={"2xl"} fontWeight={"bold"} as={"h1"}>
+        <Text
+          fontSize={"2xl"}
+          fontWeight={"bold"}
+          as={"h1"}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
           Choose your URL
         </Text>
         <Group w={"100%"}>
           <InputElement>
-            <Text fontWeight={500}>{branding.urls.frontend}/</Text>
+            <Text fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+              {branding.urls.frontend}/
+            </Text>
           </InputElement>
           <Input
             w={"100%"}
             rounded={"8px"}
-            bg={{ base: "gray.100", _dark: "gray.500" }}
-            outlineColor={"star.400"}
+            className="glass-input"
+            outlineColor={"hsl(211, 71%, 43%)"}
             variant={"outline"}
             placeholder={"Your creator name"}
             pl={"105px"}
-            color={"gray.800"}
             fontWeight={500}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
           />
           <InputElement
-            color={isUsernameAvailable ? "green.600" : "red.600"}
+            css={{ color: isUsernameAvailable ? "hsl(160, 60%, 45%)" : "hsl(0, 78%, 52%)" }}
             placement={"end"}
           >
             {getUsernameIcon()}
@@ -218,7 +224,7 @@ const OnboardingForm: React.FC = () => {
       </Stack>
 
       <Stack gap={4}>
-        <Text fontSize={"xl"} fontWeight={"bold"}>
+        <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Gender
         </Text>
         <NativeSelect.Root>
@@ -226,6 +232,12 @@ const OnboardingForm: React.FC = () => {
             value={gender}
             onChange={(e) => setGender(e.target.value as Gender)}
             placeholder="Select your gender"
+            className="glass-input"
+            css={{
+              color: "hsl(222.2, 47.4%, 11.2%)",
+              fontWeight: 500,
+              borderColor: "var(--glass-border)",
+            }}
           >
             <option value={Gender.MALE}>Male</option>
             <option value={Gender.FEMALE}>Female</option>
@@ -235,7 +247,7 @@ const OnboardingForm: React.FC = () => {
       </Stack>
 
       <Stack gap={4}>
-        <Text fontSize={"xl"} fontWeight={"bold"}>
+        <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Content Visibility
         </Text>
         <NativeSelect.Root>
@@ -245,6 +257,12 @@ const OnboardingForm: React.FC = () => {
               setContentVisibleTo(e.target.value as ContentVisibility)
             }
             placeholder="Select content visibility"
+            className="glass-input"
+            css={{
+              color: "hsl(222.2, 47.4%, 11.2%)",
+              fontWeight: 500,
+              borderColor: "var(--glass-border)",
+            }}
           >
             <option value={ContentVisibility.BOTH}>
               Everyone - Visible to all users
@@ -260,7 +278,7 @@ const OnboardingForm: React.FC = () => {
       </Stack>
 
       <Stack gap={4}>
-        <Text fontSize={"xl"} fontWeight={"bold"}>
+        <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Creator Category
         </Text>
         <NativeSelect.Root>
@@ -268,6 +286,12 @@ const OnboardingForm: React.FC = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value as CreatorCategory)}
             placeholder="Select creator category"
+            className="glass-input"
+            css={{
+              color: "hsl(222.2, 47.4%, 11.2%)",
+              fontWeight: 500,
+              borderColor: "var(--glass-border)",
+            }}
           >
             {Object.values(CreatorCategory).map((cat) => (
               <option key={cat} value={cat}>
@@ -285,22 +309,22 @@ const OnboardingForm: React.FC = () => {
           cursor="pointer"
         >
           <Box
+            mr="10px"
+            mt="2px"
             css={{
               "& svg": {
-                color: agreedToTerms ? "blue.500" : "gray.500",
+                color: agreedToTerms ? "hsl(211, 71%, 43%)" : "hsl(215.4, 16.3%, 46.9%)",
                 fontSize: "20px",
               },
             }}
-            mr="10px"
-            mt="2px"
           >
             <Icon
               icon={agreedToTerms ? "bxs:checkbox-checked" : "bx:checkbox"}
-              color={agreedToTerms ? "blue.500" : "gray.500"}
+              color={agreedToTerms ? "hsl(211, 71%, 43%)" : "hsl(215.4, 16.3%, 46.9%)"}
               fontSize="20px"
             />
           </Box>
-          <Text fontSize="sm">
+          <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             By creating an account and checking this box, you are providing your
             written agreement with, and consent to, (1) the {branding.name} Privacy
             Policy, which covers your use of the {branding.name} website and apps and can
@@ -309,7 +333,7 @@ const OnboardingForm: React.FC = () => {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "blue", textDecoration: "underline" }}
+                css={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
               >
                 Privacy Policy
               </a>
@@ -320,7 +344,7 @@ const OnboardingForm: React.FC = () => {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "blue", textDecoration: "underline" }}
+                css={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
               >
                 Terms Of Service
               </a>
@@ -333,7 +357,7 @@ const OnboardingForm: React.FC = () => {
       <Stack gap={3} mt={4}>
         <Button
           h={"42px"}
-          borderColor={"black"}
+          className="btn-gradient"
           w={"100%"}
           onClick={handleSubmit}
           loading={isLoading}
@@ -346,6 +370,7 @@ const OnboardingForm: React.FC = () => {
             !gender ||
             !agreedToTerms
           }
+          css={{ fontWeight: 600 }}
         >
           Continue
         </Button>
@@ -354,6 +379,11 @@ const OnboardingForm: React.FC = () => {
           onClick={() => router.back()}
           variant={"ghost"}
           w={"100%"}
+          className="glass-card"
+          css={{
+            color: "hsl(215.4, 16.3%, 46.9%)",
+            borderColor: "var(--glass-border)",
+          }}
         >
           Back
         </Button>

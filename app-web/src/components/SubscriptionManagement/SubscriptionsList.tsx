@@ -62,15 +62,14 @@ const SubscriptionsList: React.FC = () => {
       </Heading>
 
       <Tabs.Root
-        colorScheme="blue"
         onValueChange={(e) => handleTabChange(e.value)}
         defaultValue="active"
         mb={6}
       >
-        <Tabs.List>
-          <Tabs.Trigger value="active">Active</Tabs.Trigger>
-          <Tabs.Trigger value="cancelled">Cancelled</Tabs.Trigger>
-          <Tabs.Trigger value="all">All</Tabs.Trigger>
+        <Tabs.List className="glass-card-static" css={{ padding: "4px" }}>
+          <Tabs.Trigger value="active" css={{ "&[data-state=active]": { background: "var(--gradient-primary)", color: "white", borderRadius: "full" }, "&[data-state=inactive]": { color: "hsl(215.4, 16.3%, 46.9%)", borderRadius: "full" } }}>Active</Tabs.Trigger>
+          <Tabs.Trigger value="cancelled" css={{ "&[data-state=active]": { background: "var(--gradient-primary)", color: "white", borderRadius: "full" }, "&[data-state=inactive]": { color: "hsl(215.4, 16.3%, 46.9%)", borderRadius: "full" } }}>Cancelled</Tabs.Trigger>
+          <Tabs.Trigger value="all" css={{ "&[data-state=active]": { background: "var(--gradient-primary)", color: "white", borderRadius: "full" }, "&[data-state=inactive]": { color: "hsl(215.4, 16.3%, 46.9%)", borderRadius: "full" } }}>All</Tabs.Trigger>
         </Tabs.List>
 
         <Tabs.Content value="active">
@@ -151,14 +150,14 @@ const SubscriptionsContent: React.FC<SubscriptionsContentProps> = ({
   if (isLoading) {
     return (
       <Flex justify="center" align="center" minH="200px">
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
       </Flex>
     );
   }
 
   if (isError) {
     return (
-      <Box textAlign="center" p={8} bg="red.50" borderRadius="md">
+      <Box textAlign="center" p={8} css={{ background: "hsl(0, 84.2%, 60.2% / 0.1)", borderRadius: "8px" }}>
         <Text mb={4}>There was an error loading your subscriptions.</Text>
         <Button onClick={onRetry}>Try Again</Button>
       </Box>
@@ -173,14 +172,14 @@ const SubscriptionsContent: React.FC<SubscriptionsContentProps> = ({
         p={8}
         borderWidth="1px"
         borderRadius="lg"
-        bg="gray.50"
+        className="glass-card"
       >
         <Stack gap={4} align="center">
           <Heading size="md">{message.title}</Heading>
           <Text>{message.description}</Text>
           <Button
-            colorScheme="blue"
             onClick={() => (window.location.href = message.buttonLink)}
+            className="btn-gradient"
           >
             {message.buttonText}
           </Button>

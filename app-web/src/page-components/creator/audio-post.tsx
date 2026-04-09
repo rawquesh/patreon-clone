@@ -15,6 +15,7 @@ import { Link as ScrollLink } from "react-scroll";
 import { TierAccess } from "@/typings/ITierAccess";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { useAuth } from "@/context/auth.provider";
+
 interface Props {
   src: string;
   locked: boolean;
@@ -49,38 +50,28 @@ const AudioPost: React.FC<Props> = ({
   const { user } = useAuth();
 
   const handlePostClick = () => {
-    console.log("postId", postId);
     if (!locked) {
       router.push(`/post/${postId}`);
     }
   };
 
-  const header = (
-    <Link href={`/post/${postId}`}>
-      <Text fontSize={"2xl"} fontWeight={600}>
-        {title}
-      </Text>
-    </Link>
-  );
-
   return (
     <Stack
-      borderRadius={"12px"}
-      overflow={"hidden"}
-      bg="white"
-      shadow={"md"}
-      w={"100%"}
+      className="glass-card"
+      w="100%"
+      borderRadius="16px"
+      overflow="hidden"
     >
-      {/* <Suspense></Suspense> */}
       {hasAccess && <CustomAudioPlayer src={src} />}
-      <Stack p="24px">
-        <Heading fontSize={"2xl"} fontWeight={600}>
-          {header}
-        </Heading>
-        <Text fontSize={"sm"} color={"star.600"}>
+      <Stack p="20px">
+        <Link href={`/post/${postId}`}>
+          <Heading fontSize="lg" fontWeight={600} cursor="pointer" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            {title}
+          </Heading>
+        </Link>
+        <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           {getTimeAgo(timeStamp)}
         </Text>
-        {/* {description && <Text>{description}</Text>} */}
         <Box mb={4}>
           {!hasAccess ? (
             <>
@@ -91,12 +82,17 @@ const AudioPost: React.FC<Props> = ({
                   <ButtonWithIcon
                     mt={4}
                     mb={2}
-                    w={"fit"}
+                    w="fit"
                     icon="tabler:lock-filled"
                     onClick={() => {
                       if (!user) {
                         router.push(`/auth/login`);
                       }
+                    }}
+                    css={{
+                      background: "var(--gradient-primary)",
+                      borderRadius: "10px",
+                      fontWeight: 600,
                     }}
                   >
                     Join to unlock
@@ -104,49 +100,26 @@ const AudioPost: React.FC<Props> = ({
                 </ScrollLink>
               )}
             </>
-          ) : (
-            <Box
-              as="audio"
-              // controls
-              // src={src}
-              width="100%"
-              borderRadius="8px"
-              onClick={(e) => e.stopPropagation()}
-            />
-          )}
+          ) : null}
         </Box>
         {(previewText || description) && (
-          <Text mb={4} onClick={handlePostClick} cursor="pointer">
+          <Text mb={4} onClick={handlePostClick} cursor="pointer" fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {previewText || description}
           </Text>
         )}
-        {/* {!locked && body && (
-          <Text mb={4} onClick={handlePostClick} cursor="pointer">
-            {body}
-          </Text>
-        )} */}
-        <Flex
-          color={"star.600"}
-          mt={3}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
+        <Flex mt={3} justifyContent="space-between" alignItems="center">
           <Flex gap={4}>
             <PostLike likes={likes} liked={false} postId={postId} />
             <PostComments commentsCount={comments} postId={postId} />
           </Flex>
           <Flex gap={4}>
             <ShareButton postId={postId} />
-
             {locked && (
               <IconText
                 containerProps={{ cursor: "pointer" }}
                 icon="tabler:lock-filled"
                 text="Locked"
-                textProps={{
-                  lineHeight: 1.7,
-                  ml: "1px",
-                }}
+                textProps={{ lineHeight: 1.7, ml: "1px" }}
               />
             )}
           </Flex>

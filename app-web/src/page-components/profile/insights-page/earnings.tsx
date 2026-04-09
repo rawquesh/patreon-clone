@@ -5,13 +5,11 @@ import {
   Flex,
   Text,
   Grid,
-  Spinner,
   Stat,
   StatHelpText,
   VStack,
 } from "@chakra-ui/react";
 import { Line, Bar } from "react-chartjs-2";
-import { branding } from "@/config/branding";
 import {
   Chart,
   LineElement,
@@ -76,8 +74,8 @@ const EarningsTab = () => {
         label: "Total Earnings",
         data: lineChartValues,
         fill: true,
-        borderColor: branding.colors.linkBlue,
-        backgroundColor: "rgba(49, 130, 206, 0.2)",
+        borderColor: "hsl(211, 71%, 43%)",
+        backgroundColor: "rgba(29, 112, 191, 0.15)",
         tension: 0.4,
       },
     ],
@@ -90,8 +88,6 @@ const EarningsTab = () => {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           label: (context) => `$${context.raw.toLocaleString()}`,
         },
       },
@@ -113,8 +109,8 @@ const EarningsTab = () => {
       {
         label: "Earnings by Tier",
         data: insightsData?.tierBreakdown.map((tier) => tier.amount) || [],
-        backgroundColor: "rgba(66, 153, 225, 0.6)",
-        borderColor: "rgba(66, 153, 225, 1)",
+        backgroundColor: "rgba(29, 112, 191, 0.6)",
+        borderColor: "hsl(211, 71%, 43%)",
         borderWidth: 1,
         borderRadius: 4,
       },
@@ -128,8 +124,6 @@ const EarningsTab = () => {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           label: (context) => `$${context.raw.toLocaleString()}`,
         },
       },
@@ -148,7 +142,20 @@ const EarningsTab = () => {
   if (isLoading) {
     return (
       <Flex justify="center" align="center" my={10}>
-        <Spinner size="xl" color="blue.500" />
+        <Box
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          border="3px solid hsl(210, 30%, 88%)"
+          borderTopColor="hsl(211, 71%, 43%)"
+          animation="spin 0.8s linear infinite"
+          css={{
+            "@keyframes spin": {
+              "0%": { transform: "rotate(0deg)" },
+              "100%": { transform: "rotate(360deg)" },
+            },
+          }}
+        />
       </Flex>
     );
   }
@@ -156,9 +163,11 @@ const EarningsTab = () => {
   if (error || !insightsData) {
     return (
       <Box textAlign="center" my={10}>
-        <Text fontSize="lg" color="red.500">
-          Failed to load earnings insights
-        </Text>
+        <Box className="glass-card" p={6} borderRadius="12px">
+          <Text fontSize="lg" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
+            Failed to load earnings insights
+          </Text>
+        </Box>
       </Box>
     );
   }
@@ -176,9 +185,16 @@ const EarningsTab = () => {
 
   return (
     <Box>
-      <Flex justifyContent="space-between" alignItems="center" marginBottom="6">
-        <NativeSelectRoot w={"fit-content"} size="sm">
-          <NativeSelectField value={timeRange} onChange={handleTimeRangeChange}>
+      <Flex justifyContent="space-between" alignItems="center" mb={6}>
+        <NativeSelectRoot w={"fit-content"} size="sm" className="glass-card" borderRadius="10px" overflow="hidden">
+          <NativeSelectField
+            value={timeRange}
+            onChange={handleTimeRangeChange}
+            css={{
+              background: "rgba(255,255,255,0.7)",
+              backdropFilter: "blur(12px)",
+            }}
+          >
             <option value={TimeRange.SEVEN_DAYS}>Past 7 days</option>
             <option value={TimeRange.THIRTY_DAYS}>Past 30 days</option>
             <option value={TimeRange.NINETY_DAYS}>Past 90 days</option>
@@ -186,28 +202,36 @@ const EarningsTab = () => {
             <option value={TimeRange.ONE_YEAR}>Past year</option>
           </NativeSelectField>
         </NativeSelectRoot>
-        <Text fontSize="sm" color="gray.500">
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Last updated at {new Date().toLocaleTimeString()}
         </Text>
       </Flex>
 
-      <Box boxShadow={"md"} p={4} bg={"white"} rounded={"8px"}>
-        <Stat.Root>
-          <Stat.Label>
-            Total Earnings ({getTimeRangeLabel(timeRange)})
-          </Stat.Label>
-          <Stat.ValueText>
-            ${insightsData.totalEarnings.toLocaleString()}
-          </Stat.ValueText>
-        </Stat.Root>
-        <Box height="300px" mt={4}>
+      <Box className="glass-card" p={6} borderRadius="16px" mb={6}>
+        <Text fontSize="sm" fontWeight={500} mb={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          Total Earnings ({getTimeRangeLabel(timeRange)})
+        </Text>
+        <Text
+          fontSize="4xl"
+          fontWeight={800}
+          mb={4}
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          ${insightsData.totalEarnings.toLocaleString()}
+        </Text>
+        <Box height="300px">
           <Line data={lineChartData} options={lineChartOptions} />
         </Box>
       </Box>
 
-      <Grid templateColumns={{ base: "1fr", lg: "3fr 2fr" }} gap={6} mt={8}>
-        <Box p={4} boxShadow={"md"} bg={"white"} rounded={"8px"}>
-          <Text fontSize="lg" fontWeight="bold" mb={4}>
+      <Grid templateColumns={{ base: "1fr", lg: "3fr 2fr" }} gap={6}>
+        <Box className="glass-card" p={6} borderRadius="16px">
+          <Text fontSize="md" fontWeight={700} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             Earnings by Tier
           </Text>
           <Box height="300px">
@@ -215,24 +239,53 @@ const EarningsTab = () => {
           </Box>
         </Box>
 
-        <Box p={4} boxShadow={"md"} bg={"white"} rounded={"8px"}>
-          <Text fontSize="lg" fontWeight="bold" mb={4}>
+        <Box className="glass-card" p={6} borderRadius="16px">
+          <Text fontSize="md" fontWeight={700} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             Payouts
           </Text>
-          <VStack gap={4} align="stretch">
-            <Stat.Root>
-              <Stat.Label>Available for payout</Stat.Label>
-              <Stat.ValueText color="green.500">
+          <VStack gap={6} align="stretch">
+            <Box
+              p={4}
+              borderRadius="12px"
+              css={{
+                background: "rgba(255,255,255,0.6)",
+                border: "1px solid rgba(255,255,255,0.5)",
+              }}
+            >
+              <Text fontSize="sm" fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                Available for payout
+              </Text>
+              <Text
+                fontSize="2xl"
+                fontWeight={700}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 ${insightsData.availablePayout.toLocaleString()}
-              </Stat.ValueText>
-            </Stat.Root>
-            <Stat.Root>
-              <Stat.Label>Pending balance</Stat.Label>
-              <Stat.ValueText color="gray.500">
+              </Text>
+            </Box>
+            <Box
+              p={4}
+              borderRadius="12px"
+              css={{
+                background: "rgba(255,255,255,0.6)",
+                border: "1px solid rgba(255,255,255,0.5)",
+              }}
+            >
+              <Text fontSize="sm" fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                Pending balance
+              </Text>
+              <Text fontSize="2xl" fontWeight={700} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 ${insightsData.pendingBalance.toLocaleString()}
-              </Stat.ValueText>
-              <StatHelpText>Will be available in 7-14 days</StatHelpText>
-            </Stat.Root>
+              </Text>
+              <Text fontSize="12px" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                Will be available in 7-14 days
+              </Text>
+            </Box>
           </VStack>
         </Box>
       </Grid>

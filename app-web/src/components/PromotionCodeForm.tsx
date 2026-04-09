@@ -82,11 +82,11 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
       : 0;
 
   return (
-    <Box p={4} borderRadius="md" borderWidth="1px" borderColor="gray.200">
+    <Box p={4} borderRadius="12px" className="glass-card">
       {!isValidated ? (
         <form onSubmit={handleValidate}>
           <Stack gap={4}>
-            <Text fontWeight="medium">Do you have a promotional code?</Text>
+            <Text fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Do you have a promotional code?</Text>
 
             <>
               {/* <FormLabel htmlFor="promoCode">Enter your code</FormLabel> */}
@@ -99,14 +99,14 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
                   mr={2}
                   disabled={validateMutation.isPending}
                 />
-                <Button type="submit" loading={validateMutation.isPending}>
+                <Button type="submit" loading={validateMutation.isPending} className="btn-gradient">
                   Apply
                 </Button>
               </Flex>
             </>
 
             {validationResult && !validationResult.isValid && (
-              <Text color="red.500" fontSize="sm">
+              <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }} fontSize="sm">
                 {validationResult.message || "Invalid promotion code"}
               </Text>
             )}
@@ -115,26 +115,28 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
       ) : (
         <Stack gap={4}>
           <Flex justifyContent="space-between" alignItems="center">
-            <Text fontWeight="medium">Promotion applied:</Text>
+            <Text fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Promotion applied:</Text>
             <Button size="sm" variant="ghost" onClick={handleReset}>
               Remove
             </Button>
           </Flex>
 
           <Box
-            bg="green.50"
-            p={3}
-            borderRadius="md"
-            borderWidth="1px"
-            borderColor="green.200"
+            css={{
+              background: "linear-gradient(135deg, hsl(142, 76%, 36%) / 0.1, hsl(142, 76%, 30%) / 0.08)",
+              p: 3,
+              borderRadius: "8px",
+              borderWidth: "1px",
+              borderColor: "hsl(142, 76%, 36%)",
+            }}
           >
             <Stack gap={1}>
-              <Text fontWeight="bold" color="green.600">
+              <Text fontWeight="bold" css={{ color: "hsl(142, 76%, 36%)" }}>
                 {validationResult?.promotion?.title || "Discount"}
               </Text>
 
               {validationResult?.promotion?.description && (
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   {validationResult.promotion.description}
                 </Text>
               )}
@@ -143,7 +145,7 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
                 <Text fontSize="sm" fontWeight="medium">
                   Original price:
                 </Text>
-                <Text fontSize="sm" textDecoration="line-through">
+                <Text fontSize="sm" textDecoration="line-through" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   ${originalPrice.toFixed(2)}
                 </Text>
               </Flex>
@@ -152,13 +154,13 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
                 <Text fontSize="sm" fontWeight="medium">
                   Discounted price:
                 </Text>
-                <Text fontSize="sm" fontWeight="bold" color="green.600">
+                <Text fontSize="sm" fontWeight="bold" css={{ color: "hsl(142, 76%, 36%)" }}>
                   ${validationResult?.discountedPrice?.toFixed(2) || "0.00"}
                 </Text>
               </Flex>
 
               {savingsPercentage > 0 && (
-                <Text fontSize="sm" fontWeight="bold" color="green.600" mt={1}>
+                <Text fontSize="sm" fontWeight="bold" css={{ color: "hsl(142, 76%, 36%)" }} mt={1}>
                   You save {savingsPercentage}%
                 </Text>
               )}
@@ -166,7 +168,11 @@ const PromotionCodeForm: React.FC<PromotionCodeFormProps> = ({
           </Box>
 
           <Button
-            colorScheme="green"
+            css={{
+              background: "linear-gradient(135deg, hsl(142, 76%, 36%), hsl(142, 76%, 30%))",
+              color: "white",
+              "&:hover": { opacity: 0.9 },
+            }}
             onClick={handleRedeem}
             loading={redeemMutation.isPending}
           >

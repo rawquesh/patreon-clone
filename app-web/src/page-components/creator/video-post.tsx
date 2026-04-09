@@ -7,9 +7,6 @@ import IconText from "@/components/ui/icon-text";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
-// import { Icon } from "@iconify/react/dist/iconify.js";
-// import { formatTime } from "@/utils/formatTime";
-// import VideoPlayer from "@/components/video-player";
 import Link from "next/link";
 import PostLike from "./post-like";
 import PostComments from "./post-comments";
@@ -41,19 +38,12 @@ interface Props {
   isSubscribed: boolean;
 }
 
-// Function to check if a URL is a YouTube link and extract video ID
 const isYoutubeUrl = (url: string): boolean => {
   const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
   return youtubeRegex.test(url);
 };
 
 const getYoutubeVideoId = (url: string): string | null => {
-  // YouTube URLs can be in various formats:
-  // - youtu.be/VIDEO_ID
-  // - youtube.com/watch?v=VIDEO_ID
-  // - youtube.com/embed/VIDEO_ID
-
-  let videoId = null;
   const youtubeShortRegex = /youtu\.be\/([^\/\?&]+)/;
   const youtubeWatchRegex = /youtube\.com\/watch\?v=([^\/\?&]+)/;
   const youtubeEmbedRegex = /youtube\.com\/embed\/([^\/\?&]+)/;
@@ -62,16 +52,14 @@ const getYoutubeVideoId = (url: string): string | null => {
   const watchMatch = url.match(youtubeWatchRegex);
   const embedMatch = url.match(youtubeEmbedRegex);
 
-  if (shortMatch) videoId = shortMatch[1];
-  else if (watchMatch) videoId = watchMatch[1];
-  else if (embedMatch) videoId = embedMatch[1];
-
-  return videoId;
+  if (shortMatch) return shortMatch[1];
+  if (watchMatch) return watchMatch[1];
+  if (embedMatch) return embedMatch[1];
+  return null;
 };
 
 const VideoPost: React.FC<Props> = ({
   comments,
-  // length,
   likes,
   src,
   thumbnail,
@@ -94,50 +82,43 @@ const VideoPost: React.FC<Props> = ({
     : isYoutube
     ? getYoutubeVideoId(src)
     : null;
+
   const handlePostClick = () => {
     if (!locked) {
       router.push(`/post/${postId}`);
     }
   };
 
-  const header = (
-    <Link href={`/post/${postId}`}>
-      <Text fontSize={"2xl"} fontWeight={600}>
-        {title}
-      </Text>
-    </Link>
-  );
-
-  // YouTube embedded player component
   const YouTubeEmbed = ({ videoId }: { videoId: string }) => (
     <Box
       as="iframe"
-      // @ts-ignore
       src={`https://www.youtube.com/embed/${videoId}`}
       width="100%"
       height="100%"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
       border="0"
-      // borderBlock={"2px solid red"}
+      css={{ borderRadius: "12px" }}
     />
   );
+
   return (
     <Stack
-      borderRadius={"12px"}
-      overflow={"hidden"}
-      bg="white"
-      shadow={"md"}
-      w={"100%"}
+      borderRadius="16px"
+      overflow="hidden"
+      className="glass-card"
+      w="100%"
     >
       <Box
-        h={"365px"}
-        w={"100%"}
-        display={"flex"}
-        alignItems={"end"}
-        pos={"relative"}
+        h="365px"
+        w="100%"
+        display="flex"
+        alignItems="end"
+        pos="relative"
         onClick={locked ? undefined : handlePostClick}
         cursor={locked ? "default" : "pointer"}
+        borderRadius="16px 16px 0 0"
+        overflow="hidden"
       >
         {hasAccess ? (
           src ? (
@@ -153,96 +134,41 @@ const VideoPost: React.FC<Props> = ({
           )
         ) : (
           <>
-            {isYoutube ? (
-              <>
-                <Box
-                  pos={"absolute"}
-                  w={"100%"}
-                  h={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  gap={3}
-                  zIndex={1000}
-                  bg={"rgba(0, 0, 0, 0.1)"}
-                >
-                  <Icon width={60} icon={"logos:youtube-icon"} />
-                  <Text color="white" fontSize="md" fontWeight={500}>
-                    Subscribe to watch this video
-                  </Text>
-                </Box>
-                <Image src={thumbnail} alt="title" layout="fill" />
-              </>
-            ) : (
-              <Box
-                width="100%"
-                height="100%"
-                position="relative"
-                bg="black"
-                borderRadius="md"
-                overflow="hidden"
-              >
-                <Image
-                  src={thumbnail}
-                  alt="title"
-                  layout="fill"
-                  style={{ objectFit: "cover", opacity: 0.3 }}
-                />
-                <Box
-                  pos={"absolute"}
-                  w={"100%"}
-                  h={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  gap={3}
-                  zIndex={1000}
-                >
-                  <Icon
-                    width={60}
-                    height={60}
-                    icon={"tabler:lock-filled"}
-                    style={{ color: "white" }}
-                  />
-                  <Text color="white" fontSize="md" fontWeight={500}>
-                    Subscribe to watch this video
-                  </Text>
-                </Box>
-              </Box>
-            )}
+            <Box
+              pos="absolute"
+              w="100%"
+              h="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={3}
+              zIndex={1000}
+              css={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)" }}
+            >
+              <Icon width={60} icon={"tabler:lock-filled"} css={{ color: "white" }} />
+              <Text color="white" fontSize="md" fontWeight={500}>
+                Subscribe to watch this video
+              </Text>
+            </Box>
+            <Image src={thumbnail} alt={title} layout="fill" />
           </>
         )}
       </Box>
-      <Stack p="24px">
-        <Heading fontSize={"2xl"} fontWeight={600}>
-          {header}
-        </Heading>
-        <Text fontSize={"sm"} color={"star.600"}>
+      <Stack p="20px">
+        <Link href={`/post/${postId}`}>
+          <Heading fontSize="lg" fontWeight={600} cursor="pointer" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            {title}
+          </Heading>
+        </Link>
+        <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           {getTimeAgo(timeStamp)}
         </Text>
-        {/* {description && <Text>{description}</Text>} */}
-        {/* <Text
-          fontSize={"sm"}
-          lineClamp={2}
-          onClick={handlePostClick}
-          cursor="pointer"
-        >
-          {body}
-        </Text> */}
         {(previewText || description) && (
-          <Text mb={4} onClick={handlePostClick} cursor="pointer">
+          <Text mb={4} onClick={handlePostClick} cursor="pointer" fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             {previewText || description}
           </Text>
         )}
-        {/* {locked && (
-          <ScrollLink to="memberships" smooth>
-            <ButtonWithIcon mt={4} w={"fit"} icon="tabler:lock-filled">
-              Join to unlock
-            </ButtonWithIcon>
-          </ScrollLink>
-        )} */}
         {!hasAccess && (
           <>
             {isSubscribed ? (
@@ -252,12 +178,17 @@ const VideoPost: React.FC<Props> = ({
                 <ButtonWithIcon
                   mt={4}
                   mb={2}
-                  w={"fit"}
+                  w="fit"
                   icon="tabler:lock-filled"
                   onClick={() => {
                     if (!user) {
                       router.push(`/auth/login`);
                     }
+                  }}
+                  css={{
+                    background: "var(--gradient-primary)",
+                    borderRadius: "10px",
+                    fontWeight: 600,
                   }}
                 >
                   Join to unlock
@@ -266,12 +197,7 @@ const VideoPost: React.FC<Props> = ({
             )}
           </>
         )}
-        <Flex
-          color={"star.600"}
-          mt={3}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
+        <Flex mt={3} justifyContent="space-between" alignItems="center">
           <Flex gap={4}>
             <PostLike likes={likes} liked={false} postId={postId} />
             <PostComments commentsCount={comments} postId={postId} />
@@ -283,10 +209,7 @@ const VideoPost: React.FC<Props> = ({
                 containerProps={{ cursor: "pointer" }}
                 icon="tabler:lock-filled"
                 text="Locked"
-                textProps={{
-                  lineHeight: 1.7,
-                  ml: "1px",
-                }}
+                textProps={{ lineHeight: 1.7, ml: "1px" }}
               />
             )}
           </Flex>

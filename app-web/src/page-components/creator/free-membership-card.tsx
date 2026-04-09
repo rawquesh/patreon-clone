@@ -62,7 +62,7 @@ const FreeMembershipCard: React.FC<Props> = ({ creatorId, creatorName }) => {
             /month
           </Text>
         </Stack>
-        <Button my={2} onClick={handleJoinClick} colorScheme="green">
+        <Button my={2} onClick={handleJoinClick} className="btn-gradient">
           Join for free
         </Button>
 

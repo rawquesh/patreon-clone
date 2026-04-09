@@ -17,10 +17,10 @@ export default function RootLayout({
     <>
       <SideNav mode="user" />
       <Box
-        ml={{ base: 0, md: "300px" }}
-        // bg={"#F7F5ED"}
+        ml={{ base: 0, lg: "280px" }}
+        className="bg-gradient-overlay"
         minH={"100vh"}
-        mt={{ base: "48px", md: 0 }}
+        mt={{ base: "48px", lg: 0 }}
       >
         {children}
       </Box>

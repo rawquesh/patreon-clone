@@ -66,10 +66,10 @@ const Attachments: React.FC<Props> = ({
 				<Text
 					cursor={"pointer"}
 					fontWeight={600}
-					color={"blue.700"}
+					css={{ color: "hsl(211, 71%, 43%)" }}
 					as={"button"}
 					_hover={{
-						color: "blue.500",
+						css: { color: "hsl(211, 71%, 43%)", opacity: 0.8 },
 					}}
 					onClick={() => {
 						handleUpload();
@@ -106,7 +106,7 @@ const Attachments: React.FC<Props> = ({
 					<Text fontSize={"sm"} transform={"translateY(2px)"}>
 						{attachment.fileName}
 						{attachment.fileSize && (
-							<Text as="span" ml={2} color="gray.500">
+							<Text as="span" ml={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
 								({formatFileSize(attachment.fileSize)})
 							</Text>
 						)}
@@ -147,7 +147,7 @@ const Attachments: React.FC<Props> = ({
 					<Icon icon={"mdi:file"} width={"24px"} fontSize={"36px"} />
 					<Text fontSize={"sm"} transform={"translateY(2px)"}>
 						{file.name}
-						<Text as="span" ml={2} color="gray.500">
+						<Text as="span" ml={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
 							({file.size})
 						</Text>
 					</Text>
@@ -166,7 +166,7 @@ const Attachments: React.FC<Props> = ({
 			))}
 
 			{existingAttachments.length === 0 && files.length === 0 && (
-				<Text fontSize="sm" color="gray.500" mt={2}>
+				<Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} mt={2}>
 					{'No attachments yet. Click "Upload" to add files.'}
 				</Text>
 			)}

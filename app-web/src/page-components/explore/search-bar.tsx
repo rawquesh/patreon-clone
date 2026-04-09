@@ -88,8 +88,12 @@ const SearchComponent: React.FC = () => {
       <form onSubmit={handleSearch}>
         <Flex justify="center" align="center">
           <InputGroup
+            glass
             startElement={
-              <Icon icon="material-symbols:search" style={{ color: "gray" }} />
+              <Icon
+                icon="material-symbols:search"
+                style={{ color: "hsl(215.4, 16.3%, 46.9%)", width: "20px", height: "20px" }}
+              />
             }
             w={{ base: "100%", lg: "40%" }}
             mx="auto"
@@ -99,10 +103,24 @@ const SearchComponent: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={onOpen}
-              borderRadius="full"
-              bg="gray.100"
-              _hover={{ bg: "gray.200" }}
-              _focus={{ bg: "white", boxShadow: "md" }}
+              borderRadius="9999px"
+              h="48px"
+              css={{
+                background: "rgba(255, 255, 255, 0.7)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.5)",
+                fontSize: "0.9rem",
+                transition: "all 0.2s ease",
+                "&:focus": {
+                  background: "rgba(255, 255, 255, 0.9)",
+                  borderColor: "hsl(211, 71%, 43%)",
+                  boxShadow: "0 0 0 3px hsl(211, 71%, 43% / 0.1), 0 0 20px hsl(211, 71%, 43% / 0.2)",
+                  outline: "none",
+                },
+                "&::placeholder": {
+                  color: "hsl(215.4, 16.3%, 46.9%)",
+                },
+              }}
             />
           </InputGroup>
         </Flex>
@@ -116,8 +134,11 @@ const SearchComponent: React.FC = () => {
             left={0}
             right={0}
             bottom={0}
-            bg="rgba(0, 0, 0, 0.3)"
-            zIndex={100}
+            css={{
+              background: "rgba(0, 0, 0, 0.25)",
+              backdropFilter: "blur(4px)",
+              zIndex: 100,
+            }}
             onClick={onClose}
           />
           <Box
@@ -126,32 +147,34 @@ const SearchComponent: React.FC = () => {
             left={0}
             right={0}
             mt={2}
-            bg="white"
-            boxShadow="lg"
-            borderRadius="md"
+            className="glass-card"
+            borderRadius="16px"
             zIndex={101}
             maxH="500px"
             overflowY="auto"
             onClick={(e) => e.stopPropagation()}
+            p={2}
           >
             {isLoading ? (
               <Flex justify="center" p={4}>
-                <Text>Loading...</Text>
+                <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Loading...</Text>
               </Flex>
             ) : (
               <Stack gap={0}>
                 {searchResults?.creators &&
                   searchResults.creators.length > 0 && (
                     <>
-                      <Text p={3} fontWeight="bold" color="gray.600">
+                      <Text p={3} fontWeight={600} fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                         Creators
                       </Text>
                       {searchResults.creators.map((creator) => (
                         <Box
                           key={creator._id}
                           p={3}
-                          _hover={{ bg: "gray.100" }}
+                          borderRadius="10px"
                           cursor="pointer"
+                          transition="all 0.15s ease"
+                          _hover={{ bg: "primary.50" }}
                           onClick={() =>
                             handleCreatorClick(creator.creatorUsername)
                           }
@@ -168,47 +191,47 @@ const SearchComponent: React.FC = () => {
                               objectFit="cover"
                             />
                             <Box>
-                              <Text fontWeight="medium">
+                              <Text fontWeight={600} fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                                 {creator.creatorUsername}
                               </Text>
-                              <Text fontSize="sm" color="gray.600">
+                              <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                                 {creator.creatorHeadline}
                               </Text>
                             </Box>
                           </Flex>
                         </Box>
                       ))}
-                      {searchResults.topics &&
-                        searchResults.topics.length > 0 && (
-                          <Box
-                            borderBottom="1px solid"
-                            borderColor="gray.200"
-                            my={2}
-                          />
-                        )}
+                      {searchResults.topics && searchResults.topics.length > 0 && (
+                        <Box
+                          borderBottom="1px solid"
+                          borderColor="hsl(210, 30%, 88%)"
+                          my={2}
+                        />
+                      )}
                     </>
                   )}
 
                 {searchResults?.topics && searchResults.topics.length > 0 && (
                   <>
-                    <Text p={3} fontWeight="bold" color="gray.600">
+                    <Text p={3} fontWeight={600} fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                       Topics
                     </Text>
                     {searchResults.topics.map((topic) => (
                       <Box
                         key={topic}
                         p={3}
-                        _hover={{ bg: "gray.100" }}
+                        borderRadius="10px"
                         cursor="pointer"
+                        transition="all 0.15s ease"
+                        _hover={{ bg: "primary.50" }}
                         onClick={() => handleTopicClick(topic)}
                       >
                         <Flex align="center" gap={3}>
                           <Icon
                             icon="material-symbols:tag"
-                            width="20"
-                            height="20"
+                            style={{ color: "hsl(211, 71%, 43%)", width: "18px", height: "18px" }}
                           />
-                          <Text>{topic}</Text>
+                          <Text fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{topic}</Text>
                         </Flex>
                       </Box>
                     ))}
@@ -219,7 +242,7 @@ const SearchComponent: React.FC = () => {
                   searchResults.creators.length === 0) &&
                   (!searchResults?.topics ||
                     searchResults.topics.length === 0) && (
-                    <Text p={4} textAlign="center" color="gray.500">
+                    <Text p={4} textAlign="center" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       No results found
                     </Text>
                   )}

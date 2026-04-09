@@ -2,7 +2,6 @@
 import {
   // Kbd,
   Table,
-  Badge,
   Flex,
   Spinner,
   Text,
@@ -63,7 +62,7 @@ const AudienceTable: React.FC<{
   if (isLoading) {
     return (
       <Flex justify="center" align="center" py={12}>
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
       </Flex>
     );
   }
@@ -71,7 +70,7 @@ const AudienceTable: React.FC<{
   if (error) {
     return (
       <Flex justify="center" align="center" py={12} direction="column" gap={4}>
-        <Text color="red.500" fontSize="lg">
+        <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }} fontSize="lg">
           Error loading audience data
         </Text>
         <Button onClick={() => window.location.reload()}>Try Again</Button>
@@ -82,7 +81,7 @@ const AudienceTable: React.FC<{
   if (!members || members.length === 0) {
     return (
       <Flex justify="center" align="center" py={12} direction="column" gap={4}>
-        <Text color="gray.500" fontSize="lg">
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="lg">
           No members found with the current filters
         </Text>
         <Button variant="outline" onClick={() => window.location.reload()}>
@@ -98,7 +97,7 @@ const AudienceTable: React.FC<{
     <Table.Row
       key={member.id}
       data-selected={selectedMembers.includes(member.id) ? "" : undefined}
-      bg={"white"}
+      className="glass-card"
     >
       <Table.Cell w={"min"}>
         <Checkbox
@@ -121,12 +120,26 @@ const AudienceTable: React.FC<{
       )}
       {columns.includes("status") && (
         <Table.Cell>
-          <Badge
-            colorPalette={getMemberStatusColor(member.status)}
-            variant="subtle"
+          <Box
+            as="span"
+            display="inline-block"
+            px={2}
+            py={0.5}
+            borderRadius="full"
+            fontSize="xs"
+            fontWeight="medium"
+            css={
+              member.status === "Active"
+                ? { background: "hsl(142, 76%, 36%)", color: "white" }
+                : member.status === "Inactive"
+                ? { background: "hsl(35, 92%, 50%)", color: "white" }
+                : member.status === "Cancelled"
+                ? { background: "hsl(0, 84.2%, 60.2%)", color: "white" }
+                : { background: "hsl(215.4, 16.3%, 46.9%)", color: "white" }
+            }
           >
             {member.status}
-          </Badge>
+          </Box>
         </Table.Cell>
       )}
       {columns.includes("joinDate") && (
@@ -139,7 +152,7 @@ const AudienceTable: React.FC<{
     <Box>
       <Table.Root overflow={"hidden"} boxShadow={"md"} borderRadius={"lg"}>
         <Table.Header>
-          <Table.Row bg={"white"}>
+          <Table.Row className="glass-card-static">
             <Table.ColumnHeader w="6">
               <Checkbox
                 top="1"

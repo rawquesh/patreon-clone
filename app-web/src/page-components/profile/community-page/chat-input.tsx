@@ -85,7 +85,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isDisabled }) => {
     return () => {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
-        console.log("Revoked preview URL:", previewUrl);
       }
     };
   }, [previewUrl]);
@@ -97,7 +96,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isDisabled }) => {
           <Image
             src={previewUrl}
             alt="Selected image preview"
-            borderRadius="md"
+            borderRadius="12px"
             maxH="150px"
             objectFit="contain"
           />
@@ -108,7 +107,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isDisabled }) => {
             size="sm"
             borderRadius="full"
             aria-label="Remove image"
-            colorScheme="red"
+            css={{
+              background: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(8px)",
+              "&:hover": {
+                background: "hsl(0, 84.2%, 60.2%)",
+                color: "white",
+              },
+            }}
             onClick={() => {
               setSelectedFile(null);
               setPreviewUrl(null);
@@ -122,46 +128,68 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isDisabled }) => {
         </Box>
       )}
 
-      <Flex gap={2}>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-          accept="image/*"
-          disabled={isDisabled || isSubmitting}
-        />
-        <IconButton
-          aria-label="Attach file"
-          variant="ghost"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isDisabled || isSubmitting}
-        >
-          <Icon icon={"material-symbols:image-outline-rounded"} />
-        </IconButton>
+      <Box
+        className="glass-card"
+        borderRadius="16px"
+        p={2}
+      >
+        <Flex gap={2} align="center">
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+            accept="image/*"
+            disabled={isDisabled || isSubmitting}
+          />
+          <IconButton
+            aria-label="Attach file"
+            variant="ghost"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isDisabled || isSubmitting}
+            css={{
+              color: "hsl(215.4, 16.3%, 46.9%)",
+              "&:hover": {
+                color: "hsl(211, 71%, 43%)",
+                background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.08))",
+              },
+            }}
+          >
+            <Icon icon={"material-symbols:image-outline-rounded"} />
+          </IconButton>
 
-        <Textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
-          resize="none"
-          disabled={isDisabled || isSubmitting}
-          rows={1}
-          flex={1}
-        />
-        <ButtonWithIcon
-          colorScheme="blue"
-          loading={isSubmitting}
-          onClick={handleSubmit}
-          icon="material-symbols-light:send-rounded"
-          disabled={
-            isDisabled || isSubmitting || (!message.trim() && !selectedFile)
-          }
-        >
-          Send
-        </ButtonWithIcon>
-      </Flex>
+          <Textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="Type a message..."
+            resize="none"
+            disabled={isDisabled || isSubmitting}
+            rows={1}
+            flex={1}
+            border="none"
+            bg="transparent"
+            _focus={{ boxShadow: "none", border: "none" }}
+            css={{
+              "& textarea": {
+                background: "transparent",
+                padding: "8px",
+              },
+            }}
+          />
+          <ButtonWithIcon
+            className="btn-gradient"
+            loading={isSubmitting}
+            onClick={handleSubmit}
+            icon="material-symbols-light:send-rounded"
+            disabled={
+              isDisabled || isSubmitting || (!message.trim() && !selectedFile)
+            }
+          >
+            Send
+          </ButtonWithIcon>
+        </Flex>
+      </Box>
     </Stack>
   );
 };

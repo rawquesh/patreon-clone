@@ -24,7 +24,6 @@ export default function Layout({ children }: LayoutProps) {
   const primaryHoverColor = branding.colors.primary;
   const textHeaderColor = branding.colors.textHeader;
   const textSubheaderColor = branding.colors.star;
-  const borderColor = branding.colors.border;
   const bgColor = branding.colors.bgLight;
 
   return (
@@ -36,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
     >
       {/* <Global styles={fontStyles} /> */}
 
-      <Box as="header" bg="white" borderBottom="1px" borderColor={borderColor}>
+      <Box as="header" className="glass-card-static" borderBottom="1px" css={{ borderColor: "var(--glass-border)" }}>
         <Box maxW="7xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
           <Flex justify="space-between" h="16" align="center">
             <Flex

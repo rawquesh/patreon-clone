@@ -20,47 +20,38 @@ const NavPopover: React.FC<Props> = () => {
       <PopoverTrigger>
         <Flex
           _hover={{
-            bg: "gray.100",
+            bg: "primary.50",
           }}
-          w={"40px"}
-          h={"40px"}
-          borderRadius={"999px"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          cursor={"pointer"}
+          w="40px"
+          h="40px"
+          borderRadius="10px"
+          justifyContent="center"
+          alignItems="center"
+          cursor="pointer"
+          transition="all 0.15s ease"
+          css={{
+            "&:hover": {
+              background: "rgba(29, 112, 191, 0.06)",
+            },
+          }}
         >
           <Icon icon={"qlementine-icons:menu-dots-16"} />
         </Flex>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent
+        className="glass-menu"
+        borderRadius="12px"
+        overflow="hidden"
+        w="260px"
+      >
         <PopoverBody padding={0}>
           <Stack>
-            {/* <Stack p={"20px"}>
-							<Text color={"star.600"}>Appearance</Text>
-							<Tabs.Root fitted defaultValue={"light"} variant={"plain"}>
-								<Tabs.List pos={"relative"} bg={"star.100"} rounded={"8px"}>
-									<Tabs.Trigger value="light">Light</Tabs.Trigger>
-									<Tabs.Trigger value="dark">Dark</Tabs.Trigger>
-									<Tabs.Trigger value="system">System</Tabs.Trigger>
-									<Tabs.Indicator bg={"star.200"} rounded={"8px"} />
-								</Tabs.List>
-							</Tabs.Root>
-						</Stack> */}
-            <Separator />
             <For
               each={[
                 {
                   title: "News (coming soon)",
                   link: "#",
                 },
-                // {
-                // 	title: "Creator Hub",
-                // 	link: "#",
-                // },
-                // {
-                //   title: "Help Center & FAQ",
-                //   link: "#",
-                // },
                 {
                   title: "Feature Requests",
                   link: "https://docs.google.com/forms/d/e/1FAIpQLSfMySU7JoNG-stwmFVSBIcockr0-7nw1P1vlymSJe8hfsF6Ag/viewform",
@@ -83,10 +74,12 @@ const NavPopover: React.FC<Props> = () => {
                 <Link href={link} key={title}>
                   <Text
                     _hover={{
-                      bg: "star.100",
+                      bg: "primary.50",
                     }}
-                    py={"8px"}
-                    px={"20px"}
+                    py="8px"
+                    px="16px"
+                    fontSize="sm"
+                    transition="all 0.15s ease"
                   >
                     {title}
                   </Text>
@@ -94,13 +87,17 @@ const NavPopover: React.FC<Props> = () => {
               )}
             </For>
             <Separator />
-            <Box pb={"10px"}>
+            <Box pb="10px">
               <Text
                 _hover={{
-                  bg: "star.100",
+                  bg: "red.50",
+                  color: "red.500",
                 }}
-                py={"8px"}
-                px={"20px"}
+                py="8px"
+                px="16px"
+                fontSize="sm"
+                cursor="pointer"
+                transition="all 0.15s ease"
                 onClick={() => {
                   logout();
                 }}

@@ -18,8 +18,8 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
   if (chats.length === 0) {
     return (
       <VStack my={4} align="center" justify="center" gap={4} py={8}>
-        <Text color="gray.500">No chats yet</Text>
-        <Text fontSize="sm" color="gray.400" textAlign="center">
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>No chats yet</Text>
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
           Group chats created by the creator will appear here
         </Text>
       </VStack>
@@ -37,11 +37,15 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
             <HStack
               p={3}
               borderRadius="md"
-              bg={isActive ? "blue.50" : "transparent"}
-              _hover={{ bg: isActive ? "blue.50" : "gray.100" }}
+              className="glass-card"
+              _hover={{ transform: "translateX(2px)", boxShadow: "0 4px 16px hsl(211, 71%, 43% / 0.1)" }}
               cursor="pointer"
               borderLeftWidth={isActive ? "3px" : "0"}
-              borderLeftColor="blue.500"
+              borderLeftColor="hsl(211, 71%, 43%)"
+              transition="all 0.15s ease"
+              css={{
+                background: isActive ? "linear-gradient(135deg, hsl(211, 71%, 43% / 0.06), hsl(335, 27%, 64% / 0.04))" : "rgba(255,255,255,0.5)",
+              }}
             >
               <Avatar
                 name={chat.title}
@@ -51,30 +55,33 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
               />
               <Stack flex={1} gap={1}>
                 <HStack justify="space-between">
-                  <Text fontSize={"sm"} fontWeight="medium" lineClamp={1}>
+                  <Text fontSize={"sm"} fontWeight="medium" lineClamp={1} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                     {chat.title}
                   </Text>
                   {chat.lastMessage && (
-                    <Text fontSize="xs" color="gray.500">
+                    <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       {getTimeAgo(chat.lastMessage.timestamp)}
                     </Text>
                   )}
                 </HStack>
-                <Text fontSize={"xs"} color="gray.600" lineClamp={1}>
+                <Text fontSize={"xs"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} lineClamp={1}>
                   {chat.lastMessage
                     ? `${chat.lastMessage.content.slice(0, 20)}`
                     : "No messages yet"}
                 </Text>
                 <HStack>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                     {chat.creator.name}
                   </Text>
                   {chat.unreadCount > 0 && (
                     <Badge
-                      colorPalette="blue"
-                      borderRadius="full"
-                      px={2}
-                      fontSize="xs"
+                      css={{
+                        background: "var(--gradient-primary)",
+                        color: "white",
+                        borderRadius: "9999px",
+                        px: 2,
+                        fontSize: "xs",
+                      }}
                     >
                       {chat.unreadCount}
                     </Badge>

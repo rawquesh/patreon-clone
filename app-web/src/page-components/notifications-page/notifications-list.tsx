@@ -12,10 +12,14 @@ const NotificationsList: React.FC = () => {
   const notificationsSorted = sortByRelativeDate(notifications, "timeStamp");
 
   return (
-    <Stack gap={12} my={8}>
+    <Stack gap={8} my={8}>
       {notificationsSorted["today"]?.length > 0 && (
         <Stack>
-          <Text fontSize="lg" fontWeight="bold">
+          <Text
+            fontSize="md"
+            fontWeight={700}
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "11px" }}
+          >
             Today
           </Text>
           {notificationsSorted["today"].map((notification) => (
@@ -29,7 +33,11 @@ const NotificationsList: React.FC = () => {
 
       {notificationsSorted["earlier"]?.length > 0 && (
         <Stack>
-          <Text fontSize="lg" fontWeight="bold">
+          <Text
+            fontSize="md"
+            fontWeight={700}
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "11px" }}
+          >
             Earlier
           </Text>
           {notificationsSorted["earlier"].map((notification) => (
@@ -46,6 +54,7 @@ const NotificationsList: React.FC = () => {
           variant="outline"
           loading={isLoading}
           onClick={() => fetchMoreNotifications()}
+          className="btn-gradient-ghost"
         >
           Load more
         </Button>

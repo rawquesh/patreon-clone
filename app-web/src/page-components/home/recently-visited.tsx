@@ -26,7 +26,7 @@ const RecentlyVisitedCard: React.FC<RecentlyVisitedCardProps> = ({
       minWidth="240px"
       borderRadius="md"
       p={3}
-      _hover={{ bg: "gray.50" }}
+      _hover={{ bg: "rgba(255,255,255,0.6)" }}
       transition="all 0.2s"
       cursor="pointer"
       flexShrink={0}
@@ -58,7 +58,7 @@ const RecentlyVisitedCard: React.FC<RecentlyVisitedCardProps> = ({
         >
           {name}
         </Text>
-        <Text fontSize="sm" color="gray.500" textAlign="center">
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
           {formatDistanceToNow(new Date(lastVisited), { addSuffix: true })}
         </Text>
       </Flex>
@@ -86,7 +86,7 @@ const RecentlyVisited: React.FC = () => {
       <Heading as="h2" size="md">
         Recently visited
       </Heading>
-      <Link as={NextLink} href="/explore" color="blue.500" fontSize="sm">
+      <Link as={NextLink} href="/explore" css={{ color: "hsl(211, 71%, 43%)" }} fontSize="sm">
         <Flex align="center">
           See all
           <ChevronRightIcon ml={1} />

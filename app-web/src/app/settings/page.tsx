@@ -7,6 +7,7 @@ import {
   Flex,
   Skeleton,
   Heading,
+  Text,
 } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import {
@@ -22,7 +23,6 @@ import { useAuth } from "@/context/auth.provider";
 import { countries } from "countries-list";
 import { toaster } from "@/components/ui/toaster";
 
-// Define GenderPreference Enum
 enum GenderPreference {
   MALE = "male",
   FEMALE = "female",
@@ -138,158 +138,165 @@ export default function ProfileForm() {
   return (
     <Box
       maxW="container.md"
-      bg={"white"}
-      boxShadow={"md"}
-      borderRadius={"12px"}
       mx="auto"
       py={8}
       px={4}
+      className="animate-fade-in-up"
     >
-      <Heading fontSize="2xl" fontWeight="bold" mb={6}>
-        Profile information
-      </Heading>
+      <Box className="glass-card" p={8} borderRadius="20px">
+        <Heading
+          fontSize="2xl"
+          fontWeight="bold"
+          mb={6}
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Profile information
+        </Heading>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Fieldset.Root size="lg" invalid={isInvalid}>
-          <Fieldset.Content>
-            <Field>
-              <Flex
-                alignItems={"center"}
-                position="relative"
-                width="fit-content"
-                gap={4}
-              >
-                {isLoadingUser ? (
-                  <Skeleton h={"44px"} w={"44px"} borderRadius={"999px"} />
-                ) : (
-                  <Avatar
-                    size="lg"
-                    src={photoUrl}
-                    name={photoUrl ? undefined : "G"}
-                    bg="blue.500"
-                    color="white"
-                  />
-                )}
-                <Button
-                  size="sm"
-                  colorPalette={"blue"}
-                  onClick={() =>
-                    document.getElementById("photo-upload")?.click()
-                  }
-                  disabled={isLoadingUser}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Fieldset.Root size="lg" invalid={isInvalid}>
+            <Fieldset.Content>
+              <Field>
+                <Flex
+                  alignItems={"center"}
+                  position="relative"
+                  width="fit-content"
+                  gap={4}
                 >
-                  Upload photo
-                </Button>
+                  {isLoadingUser ? (
+                    <Skeleton h={"44px"} w={"44px"} borderRadius={"999px"} />
+                  ) : (
+                    <Avatar
+                      size="lg"
+                      src={photoUrl}
+                      name={photoUrl ? undefined : "G"}
+                      css={{
+                        background: "var(--gradient-primary)",
+                        color: "white",
+                      }}
+                    />
+                  )}
+                  <Button
+                    size="sm"
+                    className="btn-gradient"
+                    onClick={() =>
+                      document.getElementById("photo-upload")?.click()
+                    }
+                    disabled={isLoadingUser}
+                  >
+                    Upload photo
+                  </Button>
+                  <Input
+                    id="photo-upload"
+                    type="file"
+                    accept="image/*"
+                    display="none"
+                    onChange={handlePhotoUpload}
+                  />
+                </Flex>
+              </Field>
+
+              <Field label="Display name" invalid={!!errors.displayName}>
                 <Input
-                  id="photo-upload"
-                  type="file"
-                  accept="image/*"
-                  display="none"
-                  onChange={handlePhotoUpload}
+                  {...register("displayName")}
+                  placeholder="Enter your display name"
+                  className="glass-input"
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
                 />
-              </Flex>
-            </Field>
+                <Fieldset.ErrorText>
+                  {errors.displayName?.message}
+                </Fieldset.ErrorText>
+              </Field>
 
-            <Field
-              label="Display name"
-              invalid={!!errors.displayName}
-              // _invalid={errors.displayName?.message}
-            >
-              <Input
-                {...register("displayName")}
-                placeholder="Enter your display name"
-              />
-              <Fieldset.ErrorText>
-                {errors.displayName?.message}
-              </Fieldset.ErrorText>
-            </Field>
-
-            <Field
-              label="Email"
-              invalid={!!errors.email}
-              // errorMessage={}
-            >
-              <Input
-                {...register("email")}
-                type="email"
-                placeholder="Enter your email"
-                disabled
-              />
-              <Fieldset.ErrorText>{errors.email?.message}</Fieldset.ErrorText>
-            </Field>
-
-            <Field
-              label="Country of Residence"
-              invalid={!!errors.countryOfResidence}
-              // errorMessage={}
-            >
-              <NativeSelectRoot>
-                <NativeSelectField
-                  {...register("countryOfResidence")}
-                  placeholder="Please select a country..."
-                  items={countryOptions}
+              <Field label="Email" invalid={!!errors.email}>
+                <Input
+                  {...register("email")}
+                  type="email"
+                  placeholder="Enter your email"
+                  disabled
+                  className="glass-input"
+                  css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontWeight: 500 }}
                 />
-              </NativeSelectRoot>
-              <Fieldset.ErrorText>
-                {errors.countryOfResidence?.message}
-              </Fieldset.ErrorText>
-            </Field>
-            <Field label="Gender" invalid={!!errors.gender}>
-              <NativeSelectRoot>
-                <NativeSelectField
-                  {...register("gender")}
-                  placeholder="Select gender..."
-                  items={[
-                    { label: "Male", value: "male" },
-                    { label: "Female", value: "female" },
-                    { label: "Other", value: "other" },
-                  ]}
-                />
-              </NativeSelectRoot>
-              <Fieldset.ErrorText>{errors.gender?.message}</Fieldset.ErrorText>
-            </Field>
+                <Fieldset.ErrorText>{errors.email?.message}</Fieldset.ErrorText>
+              </Field>
 
-            <Field
-              label="Content Gender Preference"
-              invalid={!!errors.genderPreference}
-            >
-              <NativeSelectRoot>
-                <NativeSelectField
-                  {...register("genderPreference")}
-                  placeholder="Select gender preference..."
-                  items={[
-                    {
-                      label: "Show Both Male and Female",
-                      value: GenderPreference.BOTH,
-                    },
-                    { label: "Show Male Only", value: GenderPreference.MALE },
-                    {
-                      label: "Show Female Only",
-                      value: GenderPreference.FEMALE,
-                    },
-                  ]}
-                />
-              </NativeSelectRoot>
-              <Fieldset.ErrorText>
-                {errors.genderPreference?.message}
-              </Fieldset.ErrorText>
-            </Field>
+              <Field label="Country of Residence" invalid={!!errors.countryOfResidence}>
+                <NativeSelectRoot>
+                  <NativeSelectField
+                    {...register("countryOfResidence")}
+                    placeholder="Please select a country..."
+                    items={countryOptions}
+                    className="glass-input"
+                    css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
+                  />
+                </NativeSelectRoot>
+                <Fieldset.ErrorText>
+                  {errors.countryOfResidence?.message}
+                </Fieldset.ErrorText>
+              </Field>
+              <Field label="Gender" invalid={!!errors.gender}>
+                <NativeSelectRoot>
+                  <NativeSelectField
+                    {...register("gender")}
+                    placeholder="Select gender..."
+                    items={[
+                      { label: "Male", value: "male" },
+                      { label: "Female", value: "female" },
+                      { label: "Other", value: "other" },
+                    ]}
+                    className="glass-input"
+                    css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
+                  />
+                </NativeSelectRoot>
+                <Fieldset.ErrorText>{errors.gender?.message}</Fieldset.ErrorText>
+              </Field>
 
-            <Button
-              type="submit"
-              colorScheme="blue"
-              loading={isSubmitting}
-              mt={4}
-              colorPalette={"blue"}
-              w={"fit"}
-            >
-              Save Changes
-            </Button>
-          </Fieldset.Content>
+              <Field label="Content Gender Preference" invalid={!!errors.genderPreference}>
+                <NativeSelectRoot>
+                  <NativeSelectField
+                    {...register("genderPreference")}
+                    placeholder="Select gender preference..."
+                    items={[
+                      {
+                        label: "Show Both Male and Female",
+                        value: GenderPreference.BOTH,
+                      },
+                      { label: "Show Male Only", value: GenderPreference.MALE },
+                      {
+                        label: "Show Female Only",
+                        value: GenderPreference.FEMALE,
+                      },
+                    ]}
+                    className="glass-input"
+                    css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 500 }}
+                  />
+                </NativeSelectRoot>
+                <Fieldset.ErrorText>
+                  {errors.genderPreference?.message}
+                </Fieldset.ErrorText>
+              </Field>
 
-          {formError && <Fieldset.ErrorText>{formError}</Fieldset.ErrorText>}
-        </Fieldset.Root>
-      </form>
+              <Button
+                type="submit"
+                className="btn-gradient"
+                loading={isSubmitting}
+                mt={4}
+                w={"fit"}
+                css={{ fontWeight: 600 }}
+              >
+                Save Changes
+              </Button>
+            </Fieldset.Content>
+
+            {formError && <Fieldset.ErrorText>{formError}</Fieldset.ErrorText>}
+          </Fieldset.Root>
+        </form>
+      </Box>
     </Box>
   );
 }

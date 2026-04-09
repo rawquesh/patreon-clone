@@ -15,7 +15,17 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
     return (
       <Portal disabled={!portalled} container={portalRef}>
         <ChakraMenu.Positioner>
-          <ChakraMenu.Content ref={ref} {...rest} />
+          <ChakraMenu.Content
+            ref={ref}
+            {...rest}
+            className="glass-menu"
+            borderRadius="12px"
+            overflow="hidden"
+            css={{
+              background: "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%)",
+              minW: "200px",
+            }}
+          />
         </ChakraMenu.Positioner>
       </Portal>
     )

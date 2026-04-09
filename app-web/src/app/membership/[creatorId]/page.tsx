@@ -37,24 +37,22 @@ const FreeMembershipCard: React.FC<FreeMembershipCardProps> = ({
       w={{ base: "100%", md: "317px" }}
       maxW={"350px"}
       mx={"auto"}
-      bg={"white"}
-      shadow={"md"}
       overflow={"hidden"}
-      rounded={"12px"}
-      color={"star.800"}
+      rounded={"16px"}
       mb={4}
       position="relative"
-      border={`2px solid ${branding.colors.success}`}
+      className="glass-card border-gradient"
     >
       <Box
         position="absolute"
         top={0}
         right={0}
-        bg={branding.colors.success}
+        css={{ background: "var(--gradient-primary)" }}
         color="white"
-        px={2}
-        py={1}
+        px={3}
+        py={1.5}
         fontSize="xs"
+        fontWeight={600}
         zIndex={2}
         borderBottomLeftRadius="md"
       >
@@ -62,16 +60,25 @@ const FreeMembershipCard: React.FC<FreeMembershipCardProps> = ({
       </Box>
 
       <Stack gap={0} px={"16px"} py={"24px"}>
-        <Text fontSize={"xl"} fontWeight={600}>
+        <Text
+          fontSize={"xl"}
+          fontWeight={600}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
           Free Membership
         </Text>
         <Stack direction="row" gap={4} align="baseline">
-          <Text fontSize={"sm"} color={"star.600"}>
+          <Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             <Text
               as="span"
-              color={"star.800"}
               fontSize={"3xl"}
               fontWeight={600}
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
               $0
             </Text>
@@ -81,35 +88,42 @@ const FreeMembershipCard: React.FC<FreeMembershipCardProps> = ({
         <Button
           my={2}
           onClick={onJoinClick}
-          colorScheme="green"
           loading={isLoading}
+          className="btn-gradient"
+          css={{ fontWeight: 600 }}
         >
           Join for free
         </Button>
 
         <Box fontSize={"sm"} letterSpacing={"wide"} my={3}>
-          <Text mb={2}>
+          <Text mb={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             Join {creatorName}&apos;s community for free and get:
           </Text>
           <Stack gap={2}>
-            <Text display="flex" alignItems="center">
-              <Box as="span" mr={2}>
-                ✓
-              </Box>
-              Access to public posts
-            </Text>
-            <Text display="flex" alignItems="center">
-              <Box as="span" mr={2}>
-                ✓
-              </Box>
-              Join the community
-            </Text>
-            <Text display="flex" alignItems="center">
-              <Box as="span" mr={2}>
-                ✓
-              </Box>
-              Get notified of new content
-            </Text>
+            {[
+              "Access to public posts",
+              "Join the community",
+              "Get notified of new content",
+            ].map((item) => (
+              <Text
+                key={item}
+                display="flex"
+                alignItems="center"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+              >
+                <Box
+                  as="span"
+                  mr={2}
+                  css={{
+                    color: "hsl(160, 60%, 45%)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  ✓
+                </Box>
+                {item}
+              </Text>
+            ))}
           </Stack>
         </Box>
       </Stack>
@@ -129,7 +143,6 @@ const MembershipPage: React.FC = () => {
     useCreatorMemberships(creatorId);
   const freeSubscribeMutation = useSubscribeToFreeMembership();
 
-  // Redirect to creator page if user is already subscribed
   useEffect(() => {
     if (subscriptionData?.isSubscribed) {
       router.push(`/creator/${creatorId}`);
@@ -137,11 +150,6 @@ const MembershipPage: React.FC = () => {
   }, [creatorId, subscriptionData, router]);
 
   const handleJoinFree = () => {
-    // First check if there's an existing free membership tier
-    // const freeMembership = memberships.find(
-    //   (m) => m.monthlyRate === 0 || m.monthlyPrice === 0
-    // );
-
     freeSubscribeMutation.mutate(creatorId, {
       onSuccess: () => {
         router.push(`/creator/${creatorId}`);
@@ -149,7 +157,6 @@ const MembershipPage: React.FC = () => {
     });
   };
 
-  // Format membership data for PricingCard components
   const membershipCards = memberships.map((membership) => ({
     image: membership.coverImage || "/images/pricing-cards/default.jpg",
     title: membership.name,
@@ -166,7 +173,13 @@ const MembershipPage: React.FC = () => {
   if (creatorLoading || membershipsLoading || subscriptionLoading) {
     return (
       <Center h="calc(100vh - 80px)">
-        <Spinner size="xl" color="green.500" />
+        <Spinner
+          size="xl"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            borderWidth: "3px",
+          }}
+        />
       </Center>
     );
   }
@@ -174,19 +187,31 @@ const MembershipPage: React.FC = () => {
   if (!creator) {
     return (
       <Center h="calc(100vh - 80px)">
-        <Text>Creator not found</Text>
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Creator not found</Text>
       </Center>
     );
   }
 
   return (
-    <Box maxW="1200px" mx="auto" px={4} py={8}>
+    <Box maxW="1200px" mx="auto" px={4} py={8} className="animate-fade-in-up">
       <Stack gap={8} align="center">
         <Stack textAlign="center" gap={2} maxW="700px">
-          <Heading fontSize="3xl" fontWeight={700}>
+          <Heading
+            fontSize="3xl"
+            fontWeight={700}
+            css={{
+              background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             Join {creator.displayName}&apos;s Community
           </Heading>
-          <Text fontSize="md" color="gray.600">
+          <Text
+            fontSize="md"
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+          >
             {creator.creatorHeadline ||
               "Unlock exclusive content and join a growing community."}
           </Text>
@@ -198,7 +223,6 @@ const MembershipPage: React.FC = () => {
           w="full"
           justifyItems="center"
         >
-          {/* Free membership option */}
           <FreeMembershipCard
             creatorId={creatorId}
             creatorName={creator.displayName}
@@ -206,7 +230,6 @@ const MembershipPage: React.FC = () => {
             isLoading={freeSubscribeMutation.isPending}
           />
 
-          {/* Paid membership options */}
           {membershipCards.length > 0 ? (
             membershipCards.map((membership) => (
               <PricingCard key={membership.membershipId} {...membership} />
@@ -215,11 +238,11 @@ const MembershipPage: React.FC = () => {
             <Box
               textAlign="center"
               p={4}
-              bg="gray.50"
-              borderRadius="md"
+              className="glass-card"
+              borderRadius="16px"
               gridColumn={{ md: "span 2" }}
             >
-              <Text color="gray.500" my={2}>
+              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} my={2}>
                 No paid membership options available yet.
               </Text>
             </Box>

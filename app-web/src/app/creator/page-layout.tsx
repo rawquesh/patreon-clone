@@ -1,7 +1,7 @@
 "use client";
 import SideNav from "@/components/SideNav";
 import { useAuth } from "@/context/auth.provider";
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { branding } from "@/config/branding";
@@ -10,34 +10,73 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
 
   return (
-    <Box maxW={"100vw"} overflow={"hidden"}>
+    <Box maxW="100vw" overflow="hidden">
       {Boolean(user) && <SideNav mode="user" />}
-      {/* {!Boolean(user) && <} */}
       {!Boolean(user) && (
         <Flex
-          pos={"fixed"}
-          w={"100%"}
+          pos="fixed"
+          w="100%"
           top={0}
           left={0}
-          bg={branding.colors.bgWarm}
+          className="glass-card-static"
+          css={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 100%)",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "1px",
+              background: "var(--glass-border)",
+            },
+          }}
           gap={4}
           px={6}
-          py={4}
+          py={3}
           zIndex={10000}
-          // border={"2px solid red"}
         >
-          {/* <Logo /> */}
-          <Image src="/icons/logo.png" h={"36px"} alt="logo" />
+          <Flex alignItems="center" gap={2}>
+            <Box
+              w="32px"
+              h="32px"
+              borderRadius="8px"
+              background="var(--gradient-primary)"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexShrink={0}
+            >
+              <Image src="/icons/logo.png" alt="logo" boxSize="20px" />
+            </Box>
+            <Heading
+              size="lg"
+              fontWeight={700}
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                fontSize: "1.1rem",
+              }}
+            >
+              {branding.name}
+            </Heading>
+          </Flex>
 
-          <Flex ml={"auto"} gap={4}>
+          <Flex ml="auto" gap={3}>
             <Link href={"/auth/login"}>
               <Button
+                size="sm"
                 variant="outline"
-                borderColor={branding.colors.primaryDark}
-                color={branding.colors.primaryDark}
-                _hover={{
-                  bg: branding.colors.primaryDark,
-                  color: "white",
+                css={{
+                  borderColor: "hsl(211, 71%, 43%)",
+                  color: "hsl(211, 71%, 43%)",
+                  borderRadius: "10px",
+                  fontWeight: 600,
+                  "&:hover": {
+                    background: "hsl(211, 71%, 43% / 0.05)",
+                  },
                 }}
               >
                 Login
@@ -45,10 +84,11 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
             </Link>
             <Link href={"/auth/login"}>
               <Button
-                bg={branding.colors.primaryDark}
-                color="white"
-                _hover={{
-                  bg: branding.colors.primary,
+                size="sm"
+                css={{
+                  background: "var(--gradient-primary)",
+                  borderRadius: "10px",
+                  fontWeight: 600,
                 }}
               >
                 Sign Up
@@ -57,12 +97,12 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
           </Flex>
         </Flex>
       )}
-      {!Boolean(user) && <Box h={"72px"} w={"100%"}></Box>}
+      {!Boolean(user) && <Box h="64px" w="100%" />}
       <Box
-        ml={{ base: 0, lg: Boolean(user) ? "300px" : 0 }}
-        bg={branding.colors.bgWarm}
-        minH={"100vh"}
-        mt={{ base: "48px", md: 0 }}
+        ml={{ base: 0, lg: Boolean(user) ? "280px" : 0 }}
+        className="bg-gradient-overlay"
+        minH="100vh"
+        mt={{ base: "48px", lg: 0 }}
       >
         {children}
       </Box>

@@ -131,6 +131,7 @@ const DirectMessagesSearch: React.FC = () => {
                 setShowResults(true);
               }
             }}
+            className="glass-input"
           />
         </InputGroup>
         {/* <DirectMessagesFilterPopover /> */}
@@ -143,9 +144,9 @@ const DirectMessagesSearch: React.FC = () => {
           left={0}
           right={0}
           mt={2}
-          bg="white"
-          boxShadow="md"
-          borderRadius="md"
+          className="glass-card"
+          boxShadow="0 8px 32px hsl(211, 71%, 43% / 0.12)"
+          borderRadius="12px"
           maxH="300px"
           overflowY="auto"
           zIndex={10}
@@ -161,11 +162,11 @@ const DirectMessagesSearch: React.FC = () => {
                   key={subscriber.subscriberId}
                   p={3}
                   alignItems="center"
-                  _hover={{ bg: "gray.50" }}
+                  _hover={{ bg: "rgba(255,255,255,0.6)" }}
                   cursor="pointer"
                   onClick={() => handleStartChat(subscriber)}
                   borderBottomWidth="1px"
-                  borderColor="gray.100"
+                  css={{ borderColor: "hsl(210, 30%, 88%)" }}
                 >
                   <Avatar
                     size="sm"
@@ -174,10 +175,10 @@ const DirectMessagesSearch: React.FC = () => {
                     mr={3}
                   />
                   <Box>
-                    <Text fontWeight="medium">
+                    <Text fontWeight="medium" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       {subscriber.firstName} {subscriber.lastName}
                     </Text>
-                    <Text fontSize="sm" color="gray.600">
+                    <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       {subscriber.membershipTier}
                     </Text>
                   </Box>
@@ -185,7 +186,7 @@ const DirectMessagesSearch: React.FC = () => {
               ))}
             </Flex>
           ) : searchQuery.length > 0 ? (
-            <Text p={4} textAlign="center" color="gray.500">
+            <Text p={4} textAlign="center" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
               No subscribers found
             </Text>
           ) : null}

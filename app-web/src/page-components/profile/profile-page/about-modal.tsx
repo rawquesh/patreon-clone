@@ -132,7 +132,7 @@ const AboutModal: React.FC<AboutModalProps> = ({
       open={isOpen}
       size={"xl"}
     >
-      <DialogContent>
+      <DialogContent className="glass-dialog-content">
         <DialogHeader
           alignItems={"center"}
           display={"flex"}
@@ -178,13 +178,13 @@ const AboutModal: React.FC<AboutModalProps> = ({
                   content: { className: "surface-ground" },
                 }}
               />
-              <Text fontSize="xs" color="gray.500" textAlign="right">
+              <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="right">
                 {bioContentLength} / 500 Characters
               </Text>
             </Field>
             <Box>
               <Text fontWeight={600}>Social Links</Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 Help people find you wherever you are. Connect your other
                 accounts to show them on your page.
               </Text>

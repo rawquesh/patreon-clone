@@ -65,7 +65,6 @@ const MembershipCheckoutPage: React.FC = () => {
             type: "success",
             duration: 5000,
           });
-          // router.push(`/creator/${creatorId}`);
         },
         onError: (error: any) => {
           toaster.create({
@@ -81,7 +80,6 @@ const MembershipCheckoutPage: React.FC = () => {
     );
   };
 
-  // Format price consistently
   const getMonthlyPrice = (mem: IMembership | undefined): number => {
     if (!mem) return 0;
     return mem.monthlyRate || mem.monthlyPrice || 0;
@@ -90,7 +88,13 @@ const MembershipCheckoutPage: React.FC = () => {
   if (membershipLoading || creatorLoading) {
     return (
       <Center h="calc(100vh - 80px)">
-        <Spinner size="xl" color="green.500" />
+        <Spinner
+          size="xl"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            borderWidth: "3px",
+          }}
+        />
       </Center>
     );
   }
@@ -98,28 +102,50 @@ const MembershipCheckoutPage: React.FC = () => {
   if (!membership || !creator) {
     return (
       <Center h="calc(100vh - 80px)">
-        <Text>Membership or creator not found</Text>
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          Membership or creator not found
+        </Text>
       </Center>
     );
   }
 
-  // Safely get seats left value
   const seatsLeft = membership.seatsLeft || 0;
 
   return (
-    <Box maxW="768px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
-      <Heading as="h1" mb={6} fontSize="2xl" textAlign="center">
+    <Box
+      maxW="768px"
+      mx="auto"
+      py={8}
+      px={{ base: 4, md: 6 }}
+      className="animate-fade-in-up"
+    >
+      <Heading
+        as="h1"
+        mb={6}
+        fontSize="2xl"
+        textAlign="center"
+        css={{
+          background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
         Complete your subscription
       </Heading>
 
       <Flex
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: "column", lg: "row" }}
         gap={8}
         align="flex-start"
       >
-        {/* Membership details */}
         <Box flex="1">
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden" mb={4}>
+          <Box
+            className="glass-card"
+            borderRadius="16px"
+            overflow="hidden"
+            mb={4}
+          >
             {membership.coverImage && (
               <Image
                 src={membership.coverImage}
@@ -131,22 +157,29 @@ const MembershipCheckoutPage: React.FC = () => {
             )}
 
             <Box p={4}>
-              <Heading as="h2" size="md" mb={2}>
+              <Heading
+                as="h2"
+                size="md"
+                mb={2}
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+              >
                 {membership.name}
               </Heading>
 
-              <Text mb={3} color="gray.600">
+              <Text mb={3} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 by {creator.displayName}
               </Text>
 
-              <Text mb={4} fontSize="sm">
+              <Text mb={4} fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 {membership.description}
               </Text>
 
               {membership.isLimited && (
                 <Text
                   fontSize="sm"
-                  color={seatsLeft > 5 ? "green.500" : "orange.500"}
+                  css={{
+                    color: seatsLeft > 5 ? "hsl(160, 60%, 45%)" : "hsl(38, 92%, 50%)",
+                  }}
                 >
                   Limited membership - {seatsLeft} spots remaining
                 </Text>
@@ -155,38 +188,61 @@ const MembershipCheckoutPage: React.FC = () => {
           </Box>
         </Box>
 
-        {/* Order summary */}
         <Box
           flex="1"
-          borderWidth="1px"
-          borderRadius="lg"
-          p={4}
+          className="glass-card"
+          borderRadius="16px"
+          p={6}
           position="sticky"
           top="20px"
         >
-          <Heading as="h3" size="md" mb={4}>
+          <Heading
+            as="h3"
+            size="md"
+            mb={4}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             Order Summary
           </Heading>
 
           <Stack gap={3}>
             <Flex justify="space-between">
-              <Text>{membership.name} Membership</Text>
-              <Text>${getMonthlyPrice(membership)}/month</Text>
+              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                {membership.name} Membership
+              </Text>
+              <Text
+                fontWeight={600}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                ${getMonthlyPrice(membership)}/month
+              </Text>
             </Flex>
 
-            {/* Trial period is conditional and might not be available */}
             {membership.isTrial && (
-              <Flex justify="space-between" color="green.500">
+              <Flex justify="space-between" css={{ color: "hsl(160, 60%, 45%)" }}>
                 <Text>Free trial period</Text>
                 <Text>{membership.trialDurationDays || 7} days</Text>
               </Flex>
             )}
 
-            <Separator />
+            <Separator css={{ borderColor: "hsl(215.4, 16.3%, 46.9% / 0.15)" }} />
 
             <Flex justify="space-between" fontWeight="bold">
-              <Text>Total billed now</Text>
-              <Text>
+              <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Total billed now</Text>
+              <Text
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  fontWeight: "bold",
+                }}
+              >
                 {membership.isTrial
                   ? "$0.00"
                   : `$${getMonthlyPrice(membership).toFixed(2)}`}
@@ -194,7 +250,7 @@ const MembershipCheckoutPage: React.FC = () => {
             </Flex>
 
             {membership.isTrial && (
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 After your trial ends, you&apos;ll be charged $
                 {getMonthlyPrice(membership).toFixed(2)}/month unless you
                 cancel.
@@ -202,12 +258,13 @@ const MembershipCheckoutPage: React.FC = () => {
             )}
 
             <ChakraButton
-              colorScheme="green"
               size="lg"
               mt={4}
               onClick={handleSubscribe}
               _loading={{ opacity: 0.8 }}
               disabled={isProcessing}
+              className="btn-gradient"
+              css={{ fontWeight: 600 }}
             >
               {isProcessing
                 ? "Processing..."
@@ -216,7 +273,12 @@ const MembershipCheckoutPage: React.FC = () => {
                 : "Subscribe Now"}
             </ChakraButton>
 
-            <Text fontSize="xs" color="gray.500" textAlign="center" mt={2}>
+            <Text
+              fontSize="xs"
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+              textAlign="center"
+              mt={2}
+            >
               By subscribing, you agree to our Terms of Service and Privacy
               Policy
             </Text>

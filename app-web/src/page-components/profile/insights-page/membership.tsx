@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
-import { branding } from "@/config/branding";
 import {
   Chart,
   BarElement,
@@ -69,8 +68,8 @@ const MembershipsTab = () => {
       {
         label: "New Members",
         data: chartValues,
-        borderColor: branding.colors.linkBlue,
-        backgroundColor: "rgba(49, 130, 206, 0.5)",
+        borderColor: "hsl(211, 71%, 43%)",
+        backgroundColor: "rgba(29, 112, 191, 0.5)",
         borderRadius: 4,
       },
     ],
@@ -110,7 +109,20 @@ const MembershipsTab = () => {
   if (isLoading) {
     return (
       <Flex justify="center" align="center" my={10}>
-        <Spinner size="xl" color="blue.500" />
+        <Box
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          border="3px solid hsl(210, 30%, 88%)"
+          borderTopColor="hsl(211, 71%, 43%)"
+          animation="spin 0.8s linear infinite"
+          css={{
+            "@keyframes spin": {
+              "0%": { transform: "rotate(0deg)" },
+              "100%": { transform: "rotate(360deg)" },
+            },
+          }}
+        />
       </Flex>
     );
   }
@@ -118,9 +130,11 @@ const MembershipsTab = () => {
   if (error || !insightsData) {
     return (
       <Box textAlign="center" my={10}>
-        <Text fontSize="lg" color="red.500">
-          Failed to load membership insights. Please try again later.
-        </Text>
+        <Box className="glass-card" p={6} borderRadius="12px">
+          <Text fontSize="lg" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
+            Failed to load membership insights. Please try again later.
+          </Text>
+        </Box>
       </Box>
     );
   }
@@ -132,31 +146,44 @@ const MembershipsTab = () => {
 
   return (
     <Box>
-      <Flex justifyContent="space-between" alignItems="center" marginBottom="6">
+      <Flex justifyContent="space-between" alignItems="center" mb={6}>
         <HStack>
-          <NativeSelectRoot size="sm">
+          <NativeSelectRoot size="sm" className="glass-card" borderRadius="10px" overflow="hidden">
             <NativeSelectField
               value={timeRange}
               onChange={handleTimeRangeChange}
+              css={{
+                background: "rgba(255,255,255,0.7)",
+                backdropFilter: "blur(12px)",
+              }}
             >
               <option value={TimeRange.SEVEN_DAYS}>Past 7 days</option>
               <option value={TimeRange.THIRTY_DAYS}>Past 30 days</option>
               <option value={TimeRange.NINETY_DAYS}>Past 90 days</option>
               <option value={TimeRange.ONE_EIGHTY_DAYS}>Past 180 days</option>
-              {/* <option value={TimeRange.ONE_YEAR}>Past year</option> */}
             </NativeSelectField>
           </NativeSelectRoot>
         </HStack>
-        <Text fontSize="sm" color="gray.500">
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Last updated at {new Date().toLocaleTimeString()}
         </Text>
       </Flex>
 
-      <Box p={4} boxShadow={"md"} bg={"white"} rounded={"8px"}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+      <Box className="glass-card" p={6} borderRadius="16px" mb={6}>
+        <Text fontSize="sm" fontWeight={500} mb={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           New Members
         </Text>
-        <Text fontSize="4xl" fontWeight="bold" mb={4}>
+        <Text
+          fontSize="4xl"
+          fontWeight={800}
+          mb={4}
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {totalNewMembers}
         </Text>
         <Box height="300px">
@@ -164,16 +191,37 @@ const MembershipsTab = () => {
         </Box>
       </Box>
 
-      <Box mt={8} p={4} boxShadow={"md"} bg={"white"} rounded={"8px"}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+      <Box className="glass-card" p={6} borderRadius="16px">
+        <Text fontSize="md" fontWeight={700} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           New Members by Tier
         </Text>
-        <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
+        <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={4}>
           {insightsData.tiers.map((tier: Tier) => (
-            <Stat.Root key={tier.name} p={4} bg="gray.50" borderRadius="md">
-              <Stat.Label>{tier.name}</Stat.Label>
-              <Stat.ValueText>{tier.count}</Stat.ValueText>
-            </Stat.Root>
+            <Box
+              key={tier.name}
+              p={4}
+              borderRadius="12px"
+              css={{
+                background: "rgba(255,255,255,0.6)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.5)",
+              }}
+            >
+              <Stat.Root>
+                <Stat.Label css={{ color: "hsl(215.4, 16.3%, 46.9%)", fontSize: "13px" }}>
+                  {tier.name}
+                </Stat.Label>
+                <Stat.ValueText
+                  css={{
+                    color: "hsl(222.2, 47.4%, 11.2%)",
+                    fontSize: "24px",
+                    fontWeight: 700,
+                  }}
+                >
+                  {tier.count}
+                </Stat.ValueText>
+              </Stat.Root>
+            </Box>
           ))}
         </Grid>
       </Box>

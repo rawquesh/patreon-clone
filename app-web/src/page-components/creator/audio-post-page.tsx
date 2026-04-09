@@ -54,7 +54,7 @@ const AudioPostPageComponent: React.FC = () => {
           />
         </Flex>
         <Suspense>
-          <PostCommentsSection postId="123" bg="white" />
+          <PostCommentsSection postId="123" className="glass-card" />
         </Suspense>
       </Stack>
       <PostPageCreatorInfo

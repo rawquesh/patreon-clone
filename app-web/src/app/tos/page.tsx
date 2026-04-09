@@ -4,26 +4,42 @@ import { branding } from "@/config/branding";
 
 const TermsOfServicePage: React.FC = () => {
   return (
-    <Box maxW="800px" mx="auto" py={12} px={{ base: 4, md: 6 }}>
-      <Box>
-        <Heading as="h1" size="xl" mb={6}>
+    <Box
+      maxW="800px"
+      mx="auto"
+      py={12}
+      px={{ base: 4, md: 6 }}
+      className="animate-fade-in-up"
+    >
+      <Box className="glass-card" p={8} borderRadius="20px" css={{ marginBottom: "24px" }}>
+        <Heading
+          as="h1"
+          size="xl"
+          mb={6}
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {branding.name} Terms of Service
         </Heading>
-        <Text mb={4} fontStyle="italic">
+        <Text mb={4} fontStyle="italic" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Effective Date: {branding.legal.effectiveDate}
         </Text>
-        <Text mb={6}>
+        <Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           {branding.name} is a platform that empowers content creators to build, engage, and monetize their communities. By using {branding.name}, you agree to these Terms of Service (&ldquo;Terms&rdquo;), which govern your access to and use of our platform, website, and related services (&ldquo;Services&rdquo;).
         </Text>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           1. Account Creation & Responsibilities
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           1.1 Eligibility:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             You must be at least {branding.legal.minimumAge} years old to create an account. If you are
             under {branding.legal.minimumCreatorAge}, you may only use {branding.name} with parental or guardian
@@ -35,10 +51,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           1.2 Account Security:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             You are responsible for maintaining the confidentiality of your
             account credentials.
@@ -49,10 +65,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           1.3 Account Termination:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             You may delete your account at any time through your settings.
           </List.Item>
@@ -62,34 +78,36 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           2. User Types & Access Levels
         </Heading>
-        <Text mb={4}>{branding.name} has three primary user types:</Text>
-        <List.Root mb={4} gap={2}>
+        <Text mb={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          {branding.name} has three primary user types:
+        </Text>
+        <List.Root mb={4} gap={2} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
-            <Text fontWeight="bold" as="span">
+            <Text fontWeight="bold" as="span" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
               Members:
             </Text>{" "}
             Users who follow and support creators by subscribing to their
             content.
           </List.Item>
           <List.Item>
-            <Text fontWeight="bold" as="span">
+            <Text fontWeight="bold" as="span" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
               Creators:
             </Text>{" "}
             Users who share content and monetize their communities through
             subscriptions.
           </List.Item>
           <List.Item>
-            <Text fontWeight="bold" as="span">
+            <Text fontWeight="bold" as="span" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
               Community Managers:
             </Text>{" "}
             Additional users designated by creators to help manage their
             communities.
           </List.Item>
         </List.Root>
-        <Text mb={6}>
+        <Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Each user type has different access permissions. Members can
           subscribe, comment, and engage with content. Creators can upload
           content, set subscription tiers, and manage their communities.
@@ -97,14 +115,14 @@ const TermsOfServicePage: React.FC = () => {
           cannot remove the creator from their own account.
         </Text>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           3. Subscriptions & Payments
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           3.1 Payments:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Members pay for subscriptions on a monthly or annual basis.
           </List.Item>
@@ -115,19 +133,19 @@ const TermsOfServicePage: React.FC = () => {
           <List.Item>Subscription payments are billed in advance.</List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           3.2 Platform Fees:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             {branding.name} {branding.platform.feeDescription}. Fee details are available on our pricing page.
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           3.3 Refunds & Cancellations:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Subscription fees are non-refundable, except where required by law.
           </List.Item>
@@ -137,14 +155,14 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           4. Content Guidelines
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           4.1 Creator Content Rights:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Creators retain full ownership of their content but grant {branding.name} a
             non-exclusive license to host, display, and distribute it within the
@@ -152,10 +170,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           4.2 Community Standards:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Content that is illegal, abusive, hateful, or violates intellectual
             property rights is prohibited.
@@ -166,14 +184,14 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           5. Messaging & Engagement Features
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           5.1 Messaging:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Creators can send group messages to their subscribers.
           </List.Item>
@@ -187,10 +205,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           5.2 Likes & Comments:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Free members can like and comment on public posts.
           </List.Item>
@@ -203,14 +221,14 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           6. Platform Role & Liability
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           6.1 {branding.name}&apos;s Role:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             {branding.name} {branding.platform.roleDescription}.
           </List.Item>
@@ -220,10 +238,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           6.2 Limitation of Liability:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             {branding.name} is provided on an &ldquo;as is&rdquo; basis. We are not responsible for service interruptions, loss of earnings, or data breaches.
           </List.Item>
@@ -233,10 +251,10 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           7. Taxes & Compliance
         </Heading>
-        <List.Root mb={6} gap={1}>
+        <List.Root mb={6} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Creators are responsible for reporting and paying applicable taxes
             on their earnings.
@@ -246,14 +264,14 @@ const TermsOfServicePage: React.FC = () => {
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           8. Dispute Resolution
         </Heading>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           8.1 Arbitration:
         </Heading>
-        <List.Root mb={4} gap={1}>
+        <List.Root mb={4} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             Any disputes will be resolved through binding arbitration in
             {branding.legal.jurisdiction}.
@@ -261,30 +279,31 @@ const TermsOfServicePage: React.FC = () => {
           <List.Item>Users waive the right to class action lawsuits.</List.Item>
         </List.Root>
 
-        <Heading as="h3" size="md" mt={6} mb={3}>
+        <Heading as="h3" size="md" mt={6} mb={3} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           8.2 Governing Law:
         </Heading>
-        <List.Root mb={6} gap={1}>
+        <List.Root mb={6} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             These Terms are governed by the laws of {branding.legal.governingLaw}.
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           9. Changes to Terms
         </Heading>
-        <List.Root mb={6} gap={1}>
+        <List.Root mb={6} gap={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           <List.Item>
             {branding.name} may update these Terms from time to time. Significant
             changes will be communicated through the platform.
           </List.Item>
         </List.Root>
 
-        <Heading as="h2" size="lg" mt={8} mb={4}>
+        <Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           10. Contact Information
         </Heading>
-        <Text mb={6}>
-          For questions about these Terms, contact us at {branding.contact.supportEmail}.
+        <Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+          For questions about these Terms, contact us at{" "}
+          <b css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</b>.
         </Text>
       </Box>
     </Box>

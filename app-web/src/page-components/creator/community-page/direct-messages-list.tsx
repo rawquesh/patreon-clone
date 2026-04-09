@@ -20,8 +20,8 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
   if (chats.length === 0) {
     return (
       <VStack my={4} align="center" justify="center" gap={4} py={8}>
-        <Text color="gray.500">No direct messages yet</Text>
-        <Text fontSize="sm" color="gray.400" textAlign="center">
+        <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>No direct messages yet</Text>
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
           Messages between you and the creator will appear here
         </Text>
       </VStack>
@@ -49,11 +49,11 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
             <HStack
               p={3}
               borderRadius="md"
-              bg={isActive ? "blue.50" : "transparent"}
-              _hover={{ bg: isActive ? "blue.50" : "gray.100" }}
+              bg={isActive ? "hsl(211, 71%, 43% / 0.08)" : "transparent"}
+              _hover={{ bg: "rgba(255,255,255,0.6)" }}
               cursor="pointer"
               borderLeftWidth={isActive ? "3px" : "0"}
-              borderLeftColor="blue.500"
+              borderLeftColor="hsl(211, 71%, 43%)"
             >
               <Avatar
                 name={otherParticipant.name}
@@ -68,29 +68,29 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ chats }) => {
                       {otherParticipant.name}
                     </Text>
                     {isCreatorChat && (
-                      <Badge size="xs" colorPalette="blue">
+                      <Badge size="xs" css={{ background: "var(--gradient-primary)", color: "white" }}>
                         Creator
                       </Badge>
                     )}
                   </HStack>
                   {chat.lastMessage && (
-                    <Text fontSize="xs" color="gray.500">
+                    <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                       {getTimeAgo(chat.lastMessage.timestamp)}
                     </Text>
                   )}
                 </HStack>
-                <Text fontSize={"xs"} color="gray.600" lineClamp={1}>
+                <Text fontSize={"xs"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} lineClamp={1}>
                   {chat.lastMessage
                     ? chat.lastMessage.content.slice(0, 20)
                     : "No messages yet"}
                 </Text>
                 <HStack>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="xs" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                     {chat.lastMessage ? chat.lastMessage.sender : ""}
                   </Text>
                   {chat.unreadCount > 0 && (
                     <Badge
-                      colorPalette="blue"
+                      css={{ background: "var(--gradient-primary)", color: "white" }}
                       borderRadius="full"
                       px={2}
                       fontSize="xs"

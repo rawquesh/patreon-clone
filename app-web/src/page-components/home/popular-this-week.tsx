@@ -37,7 +37,7 @@ const PopularCreatorCard: React.FC<PopularCreatorCardProps> = ({
       minWidth="300px"
       p={3}
       borderRadius="md"
-      _hover={{ bg: "gray.50" }}
+      _hover={{ bg: "rgba(255,255,255,0.6)" }}
       transition="all 0.2s"
       cursor="pointer"
       flexShrink={0}
@@ -72,7 +72,7 @@ const PopularCreatorCard: React.FC<PopularCreatorCardProps> = ({
             </Text>
             {category && (
               <Badge
-                colorScheme="blue"
+                css={{ background: "var(--gradient-primary)", color: "white" }}
                 fontSize="xs"
                 borderRadius="full"
                 px={2}
@@ -83,7 +83,7 @@ const PopularCreatorCard: React.FC<PopularCreatorCardProps> = ({
           </Flex>
           <Text
             fontSize="sm"
-            color="gray.600"
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
@@ -112,7 +112,7 @@ const PopularThisWeek: React.FC = () => {
       <Heading as="h2" size="md">
         Popular this week
       </Heading>
-      <Link as={NextLink} href="/explore" color="blue.500" fontSize="sm">
+      <Link as={NextLink} href="/explore" css={{ color: "hsl(211, 71%, 43%)" }} fontSize="sm">
         <Flex align="center">
           See all
           <ChevronRightIcon ml={1} />

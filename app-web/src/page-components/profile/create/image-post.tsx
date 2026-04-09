@@ -310,6 +310,7 @@ const CreateImagePost: React.FC<ImagePostProps> = ({
                   isSubmitting
                 }
                 variant={"outline"}
+                className="glass-card"
               >
                 Save as draft
               </Button>
@@ -323,6 +324,7 @@ const CreateImagePost: React.FC<ImagePostProps> = ({
                 (imageFiles.length === 0 && existingImages.length === 0) ||
                 isSubmitting
               }
+              className="btn-gradient"
             >
               {isEditMode ? "Update" : "Save"}
             </Button>

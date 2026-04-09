@@ -100,7 +100,7 @@ const CreateCollection: React.FC<{
   };
 
   return (
-    <Stack bg={"white"} maxW={"224px"} borderRadius={"12px"} p={"12px"} gap={3}>
+    <Stack className="glass-card" maxW={"224px"} borderRadius={"12px"} p={"12px"} gap={3}>
       <Flex gap={2} alignItems="center">
         <Icon icon={"tdesign:collection-filled"} fontSize="16px" />
         <Text fontSize={"sm"} fontWeight={600}>
@@ -111,7 +111,7 @@ const CreateCollection: React.FC<{
         {isLoading ? (
           <Spinner size="sm" />
         ) : error ? (
-          <Text color="red.500" fontSize="xs">
+          <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }} fontSize="xs">
             {error}
           </Text>
         ) : (

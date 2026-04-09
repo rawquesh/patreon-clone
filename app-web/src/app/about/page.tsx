@@ -30,53 +30,60 @@ const AboutPage: React.FC = () => {
       icon: <Users size={24} />,
       title: marketing.aboutPage.values[0].title,
       description: marketing.aboutPage.values[0].description,
-      bgColor: branding.colors.lightBlue,
-      iconColor: branding.colors.primaryDark,
+      bgColor: "hsl(211, 71%, 43% / 0.1)",
+      iconColor: "hsl(211, 71%, 43%)",
     },
     {
       icon: <Heart size={24} />,
       title: marketing.aboutPage.values[1].title,
       description: marketing.aboutPage.values[1].description,
-      bgColor: branding.colors.desertLight,
-      iconColor: branding.colors.accent,
+      bgColor: "hsl(335, 27%, 64% / 0.1)",
+      iconColor: "hsl(335, 27%, 64%)",
     },
     {
       icon: <Shield size={24} />,
       title: marketing.aboutPage.values[2].title,
       description: marketing.aboutPage.values[2].description,
-      bgColor: branding.colors.greenLight,
-      iconColor: branding.colors.greenDark,
+      bgColor: "hsl(160, 60%, 45% / 0.1)",
+      iconColor: "hsl(160, 60%, 45%)",
     },
     {
       icon: <Clock size={24} />,
       title: marketing.aboutPage.values[3].title,
       description: marketing.aboutPage.values[3].description,
-      bgColor: branding.colors.grayTan,
-      iconColor: branding.colors.star,
+      bgColor: "hsl(215.4, 16.3%, 46.9% / 0.1)",
+      iconColor: "hsl(215.4, 16.3%, 46.9%)",
     },
   ];
 
   return (
     <HomeLayout currentPageName="About">
-      <Box bg="white">
+      <Box css={{ background: "var(--app-bg)" }}>
         {/* Hero Section */}
-        <Box as="section" py="20" bg={branding.colors.duneLight}>
+        <Box
+          as="section"
+          py="20"
+          css={{
+            background: "rgba(255,255,255,0.5)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
           <Box maxW="7xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
             <Box maxW="3xl">
               <Heading
                 as="h1"
                 fontSize="4xl"
                 fontWeight="bold"
-                color={branding.colors.textHeader}
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                 mb="6"
               >
                 {marketing.aboutPage.missionHeading}
               </Heading>
-              <Text color={branding.colors.star} fontSize="xl" mb="8">
+              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="xl" mb="8">
                 {branding.name} {marketing.aboutPage.missionTextFull}
               </Text>
               <Link href={"/pricing"}>
-                <Button bg={branding.colors.primaryDark} color="white" _hover={{ bg: branding.colors.primary }}>
+                <Button className="btn-gradient" _hover={{ transform: "translateY(-1px)" }}>
                   <ChevronRight size={16} />
                   <Text>Start Creating</Text>
                 </Button>
@@ -98,12 +105,12 @@ const AboutPage: React.FC = () => {
                   as="h2"
                   fontSize="3xl"
                   fontWeight="bold"
-                  color={branding.colors.textHeader}
+                  css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                   mb="6"
                 >
                   {marketing.aboutPage.ourStoryHeading}
                 </Heading>
-                <Stack gap={4} color={branding.colors.star}>
+                <Stack gap={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   <Text>
                     {branding.name} {marketing.aboutPage.storyIntro} platform that addresses the needs of creators {marketing.aboutPage.storyMid}. We recognized that existing creator platforms were not designed with these needs in mind.
                   </Text>
@@ -116,7 +123,13 @@ const AboutPage: React.FC = () => {
                 </Stack>
               </GridItem>
               <GridItem>
-                <Box borderRadius="lg" overflow="hidden" boxShadow="xl">
+                <Box
+                  borderRadius="lg"
+                  overflow="hidden"
+                  css={{
+                    boxShadow: "0 20px 60px hsl(211, 71%, 43% / 0.15)",
+                  }}
+                >
                   <Image
                     src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2389&q=80"
                     alt={marketing.aboutPage.altText}
@@ -131,19 +144,31 @@ const AboutPage: React.FC = () => {
         </Box>
 
         {/* Our Values */}
-        <Box as="section" py="20" bg={branding.colors.bgLight}>
+        <Box
+          as="section"
+          py="20"
+          css={{
+            background: "rgba(255,255,255,0.5)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
           <Box maxW="7xl" mx="auto" px={{ base: 4, sm: 6, lg: 8 }}>
             <VStack textAlign="center" mb="16">
               <Heading
                 as="h2"
                 fontSize="3xl"
                 fontWeight="bold"
-                color={branding.colors.textHeader}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
                 mb="4"
               >
                 {marketing.aboutPage.ourValuesHeading}
               </Heading>
-              <Text color={branding.colors.star} fontSize="lg" maxW="3xl" mx="auto">
+              <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="lg" maxW="3xl" mx="auto">
                 {marketing.aboutPage.valuesIntro} {marketing.aboutPage.valuesFull}
               </Text>
             </VStack>
@@ -159,12 +184,15 @@ const AboutPage: React.FC = () => {
               {values.map((value, idx) => (
                 <GridItem
                   key={idx}
-                  bg="white"
+                  className="glass-card hover-lift"
                   p={8}
-                  borderRadius="lg"
-                  boxShadow="md"
+                  borderRadius="16px"
                 >
-                  <Circle size="14" bg={value.bgColor} mb={6}>
+                  <Circle
+                    size="14"
+                    css={{ background: value.bgColor }}
+                    mb={6}
+                  >
                     {React.cloneElement(value.icon as React.ReactElement, {
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       //@ts-ignore
@@ -175,12 +203,14 @@ const AboutPage: React.FC = () => {
                     as="h3"
                     fontSize="xl"
                     fontWeight="bold"
-                    color={branding.colors.textHeader}
+                    css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                     mb="3"
                   >
                     {value.title}
                   </Heading>
-                  <Text color={branding.colors.star}>{value.description}</Text>
+                  <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    {value.description}
+                  </Text>
                 </GridItem>
               ))}
             </Grid>
@@ -188,24 +218,35 @@ const AboutPage: React.FC = () => {
         </Box>
 
         {/* CTA Section */}
-        <Box as="section" py="20" bg={branding.colors.primary} color="white">
+        <Box
+          as="section"
+          py="20"
+          css={{ background: "var(--gradient-primary)" }}
+          color="white"
+        >
           <Box
             maxW="7xl"
             mx="auto"
             px={{ base: 4, sm: 6, lg: 8 }}
             textAlign="center"
           >
-            <Heading as="h2" fontSize="3xl" fontWeight="bold" mb="6">
+            <Heading as="h2" fontSize="3xl" fontWeight="bold" mb="6" color="white">
               {marketing.aboutPage.joinHeading}
             </Heading>
-            <Text color={branding.colors.lightBlue} fontSize="xl" mb="8" maxW="2xl" mx="auto">
+            <Text css={{ color: "rgba(255,255,255,0.85)" }} fontSize="xl" mb="8" maxW="2xl" mx="auto">
               {marketing.aboutPage.ctaText} {marketing.aboutPage.ctaFull}
             </Text>
             <Link href={"/pricing"}>
               <Button
-                bg="white"
-                color={branding.colors.primaryDark}
-                _hover={{ bg: branding.colors.desertLight, color: branding.colors.accent }}
+                className="glass-card"
+                css={{
+                  color: "hsl(211, 71%, 43%)",
+                  fontWeight: 600,
+                  _hover: {
+                    background: "rgba(255,255,255,0.9)",
+                    transform: "translateY(-1px)",
+                  },
+                }}
               >
                 {marketing.aboutPage.getStartedCta}
               </Button>

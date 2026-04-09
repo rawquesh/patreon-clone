@@ -22,8 +22,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 			<Box
 				borderRadius="12px"
 				overflow="hidden"
-				bg="white"
-				boxShadow="md"
+				className="glass-card"
 				transition="transform 0.2s"
 				_hover={{ transform: "translateY(-4px)" }}
 			>

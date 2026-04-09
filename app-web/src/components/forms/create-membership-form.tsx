@@ -143,7 +143,7 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
           <Stack
             alignItems="center"
             borderRadius="md"
-            bg="gray.100"
+            className="glass-card"
             p={6}
             gap={2}
             pos="relative"
@@ -174,8 +174,8 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
             ) : (
               <>
                 <Icon icon="mdi:image" fontSize={24} />
-                <Text>Recommended size: 460 by 200 pixels</Text>
-                <Text color="gray.500" fontSize="sm">
+                <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>Recommended size: 460 by 200 pixels</Text>
+                <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} fontSize="sm">
                   JPG, JPEG, PNG, or GIF. Max 2MB.
                 </Text>
                 <Input
@@ -186,7 +186,7 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
                   onChange={handleImageChange}
                 />
                 <label htmlFor="cover-upload">
-                  <Button as="span" size="sm">
+                  <Button as="span" size="sm" className="btn-gradient">
                     Select image
                   </Button>
                 </label>
@@ -233,7 +233,7 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
 
         <Flex gap={4} justifyContent="flex-end">
           {onCancel && (
-            <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
+            <Button variant="ghost" onClick={onCancel} disabled={isLoading} className="glass-card">
               Cancel
             </Button>
           )}
@@ -242,6 +242,7 @@ export const CreateMembershipForm: React.FC<CreateMembershipFormProps> = ({
             type="submit"
             loading={isLoading}
             loadingText={isLoading ? "Saving..." : undefined} // Show dynamic loading text
+            className="btn-gradient"
           >
             {submitButtonText}
           </Button>

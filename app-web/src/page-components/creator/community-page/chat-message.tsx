@@ -44,13 +44,20 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
         />
       )}
       <Stack
-        bg={isCurrentUser ? "blue.500" : "blue.100"}
-        color={isCurrentUser ? "star.50" : "inherit"}
-        rounded={"12px"}
-        px={"14px"}
-        py={"12px"}
-        maxW={"350px"}
-        alignSelf={isCurrentUser ? "flex-end" : "flex-start"}
+        css={{
+          background: isCurrentUser
+            ? "var(--gradient-primary)"
+            : "rgba(255,255,255,0.8)",
+          backdropFilter: isCurrentUser ? "none" : "blur(8px)",
+          border: isCurrentUser ? "none" : "1px solid rgba(255,255,255,0.5)",
+          color: isCurrentUser ? "white" : "hsl(222.2, 47.4%, 11.2%)",
+          borderRadius: "12px",
+          px: "14px",
+          py: "12px",
+          maxW: "350px",
+          alignSelf: isCurrentUser ? "flex-end" : "flex-start",
+          boxShadow: isCurrentUser ? "0 4px 12px hsl(211, 71%, 43% / 0.3)" : "none",
+        }}
       >
         <Flex alignItems={"baseline"} gap={2}>
           <Text fontSize={"sm"} fontWeight={500}>
@@ -61,10 +68,10 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
               Creator
             </Badge>
           )} */}
-          <Text fontSize={"xs"} color={isCurrentUser ? "gray.300" : "gray.600"}>
+          <Text fontSize={"xs"} css={{ color: isCurrentUser ? "rgba(255,255,255,0.7)" : "hsl(215.4, 16.3%, 46.9%)" }}>
             &#183;
           </Text>
-          <Text fontSize={"xs"} color={isCurrentUser ? "gray.300" : "gray.600"}>
+          <Text fontSize={"xs"} css={{ color: isCurrentUser ? "rgba(255,255,255,0.7)" : "hsl(215.4, 16.3%, 46.9%)" }}>
             {getTimeAgo(message.createdAt)}
           </Text>
         </Flex>
@@ -109,7 +116,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
         )}
 
         {user && message.readBy.includes(user._id) && isCurrentUser && (
-          <Text fontSize={"xs"} color={"gray.300"} textAlign="right">
+          <Text fontSize={"xs"} css={{ color: "rgba(255,255,255,0.7)" }} textAlign="right">
             Read
           </Text>
         )}

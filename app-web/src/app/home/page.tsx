@@ -7,7 +7,7 @@ import {
   Separator,
   Flex,
   Heading,
-  Link,
+  Link as ChakraLink,
   Spinner,
   Stack,
   Text,
@@ -25,7 +25,6 @@ import { homeAPI } from "@/lib/backend-services/home-service";
 import { useSubscription } from "@/context/subscription.provider";
 import { branding } from "@/config/branding";
 
-// Interface for creator data from posts
 interface Creator {
   id: string;
   displayName: string;
@@ -33,7 +32,6 @@ interface Creator {
   profilePicture?: string;
 }
 
-// Interface for post data
 interface Post {
   _id: string;
   title: string;
@@ -60,7 +58,7 @@ const PostItem = React.memo(({ post }: { post: any }) => {
   );
 
   const creator = post.creator;
-  console.log({ post });
+
   const commonProps = {
     title: post.title,
     body: post.textContent || "",
@@ -94,7 +92,7 @@ const PostItem = React.memo(({ post }: { post: any }) => {
         <VideoPost
           {...commonProps}
           src={post.videoUrl || post.mediaUrls?.[0] || ""}
-          thumbnail={post.thumnail || post.thumbnailUrl}
+          thumbnail={post.thumbnail || post.thumbnailUrl}
           length={0}
         />
       );
@@ -117,28 +115,32 @@ const PostItem = React.memo(({ post }: { post: any }) => {
   }
 
   return (
-    <Stack gap={4} mb={6}>
-      <Flex align="center" gap={3}>
-        <Avatar
-          src={creator.profilePicture}
-          shape="rounded"
-          w="40px"
-          h="40px"
-        />
-        <Box>
-          <NextLink href={`/creator/${creator.username}`} passHref>
-            <Link as="div" _hover={{ textDecoration: "underline" }}>
-              <Text fontWeight="bold">{creator.displayName}</Text>
-            </Link>
-          </NextLink>
-          <Text fontSize="sm" color={"gray.600"}>
-            @{creator.username}
-          </Text>
-        </Box>
-      </Flex>
-      {postComponent}
-      <Separator />
-    </Stack>
+    <Box className="glass-card" p={5} borderRadius="16px">
+      <Stack gap={4}>
+        <Flex align="center" gap={3}>
+          <Avatar
+            src={creator.profilePicture}
+            shape="rounded"
+            w="40px"
+            h="40px"
+          />
+          <Box>
+            <NextLink href={`/creator/${creator.username}`} passHref>
+              <ChakraLink as="div" _hover={{ textDecoration: "underline" }}>
+                <Text fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                  {creator.displayName}
+                </Text>
+              </ChakraLink>
+            </NextLink>
+            <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+              @{creator.username}
+            </Text>
+          </Box>
+        </Flex>
+        {postComponent}
+        <Separator css={{ borderColor: "hsl(210, 30%, 88%)" }} />
+      </Stack>
+    </Box>
   );
 });
 
@@ -154,7 +156,6 @@ const HomePage: React.FC = () => {
   const { data, isLoading, isError } = useSubscribedFeed(page, limit);
   const postsRef = useRef<Record<string, boolean>>({});
 
-  // Initial data load
   useEffect(() => {
     if (allPosts.length > 0) return;
 
@@ -170,7 +171,6 @@ const HomePage: React.FC = () => {
     }
   }, [data, page, allPosts.length]);
 
-  // Use a direct API call for loading more posts instead of refetch
   const loadMore = useCallback(async () => {
     if (!hasMorePages || isLoadingMore) return;
 
@@ -178,27 +178,19 @@ const HomePage: React.FC = () => {
       setIsLoadingMore(true);
       const nextPage = page + 1;
 
-      // Make direct API call for next page
       const result = await homeAPI.getSubscribedFeed(nextPage, limit);
 
       if (result.posts) {
-        // Filter out duplicates
         const newPosts = result.posts.filter(
           (post) => !postsRef.current[post._id]
         );
 
-        // Update post tracking
         newPosts.forEach((post) => {
           postsRef.current[post._id] = true;
         });
 
-        // Append new posts without re-rendering existing ones
         setAllPosts((prev) => [...prev, ...newPosts]);
-
-        // Update page state
         setPage(nextPage);
-
-        // Check if more pages exist
         setHasMorePages(
           result.pagination && nextPage < result.pagination.totalPages
         );
@@ -213,7 +205,7 @@ const HomePage: React.FC = () => {
   if (authLoading) {
     return (
       <Flex justify="center" align="center" height="100%" minH="50vh">
-        <Spinner size="xl" />
+        <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
       </Flex>
     );
   }
@@ -221,8 +213,10 @@ const HomePage: React.FC = () => {
   if (!user) {
     return (
       <Box p={6} maxW="1200px" mx="auto">
-        <Heading mb={6}>{branding.name}</Heading>
-        <Text fontSize="lg">
+        <Heading mb={6} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+          {branding.name}
+        </Heading>
+        <Text fontSize="lg" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Sign in to see posts from creators you follow.
         </Text>
       </Box>
@@ -230,24 +224,50 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <Box p={{ base: 4, md: 6 }} maxW="1200px" mx="auto">
-      <Heading fontSize="xl" fontWeight="bold" mb={6}>
-        Latest
-      </Heading>
+    <Box className="animate-fade-in-up" p={{ base: 4, md: 6 }} maxW="1200px" mx="auto">
+      {/* Page Header */}
+      <Box mb={6} position="relative">
+        <Box
+          position="absolute"
+          w="300px"
+          h="60px"
+          borderRadius="full"
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+            filter: "blur(40px)",
+            top: "-10px",
+            left: "0",
+            pointerEvents: "none",
+          }}
+        />
+        <Heading
+          fontSize="xl"
+          fontWeight={700}
+          mb={1}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
+          Latest
+        </Heading>
+        <Box
+          h="1px"
+          background="linear-gradient(90deg, transparent, hsl(210, 30%, 88%), transparent)"
+        />
+      </Box>
 
       {isLoading && page === 1 ? (
         <Flex justify="center" align="center" height="200px">
-          <Spinner size="xl" />
+          <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
         </Flex>
       ) : isError ? (
-        <Text textAlign="center" color="red.500">
+        <Text textAlign="center" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
           There was an error loading your feed. Please try again later.
         </Text>
       ) : allPosts.length > 0 ? (
-        <Box maxW="680px" mx="auto">
-          {/* This maps each post to its own component with a stable key */}
+        <Box maxW="680px" mx="auto" className="stagger-children">
           {allPosts.map((post) => (
-            <PostItem key={post._id} post={post} />
+            <Box key={post._id} mb={4}>
+              <PostItem post={post} />
+            </Box>
           ))}
 
           {hasMorePages && (
@@ -257,6 +277,7 @@ const HomePage: React.FC = () => {
                 loading={isLoadingMore}
                 variant="outline"
                 disabled={isLoadingMore}
+                size="sm"
               >
                 {isLoadingMore ? "Loading..." : "Load More"}
               </Button>
@@ -270,17 +291,35 @@ const HomePage: React.FC = () => {
           justify="center"
           minH="300px"
           p={6}
-          bg="white"
-          borderRadius="lg"
-          boxShadow="sm"
+          className="glass-card"
+          borderRadius="16px"
         >
-          <Text fontSize="xl" fontWeight="medium" mb={4}>
+          <Text
+            fontSize="xl"
+            fontWeight={600}
+            mb={4}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             Your feed is empty
           </Text>
-          <Text textAlign="center">
+          <Text
+            textAlign="center"
+            css={{ color: "hsl(215.4, 16.3%, 46.9%)", maxW: "400px" }}
+          >
             Follow some creators to see their posts here, or explore the
             community to find new content.
           </Text>
+          <Button
+            mt={4}
+            css={{
+              background: "var(--gradient-primary)",
+              borderRadius: "10px",
+              fontWeight: 600,
+            }}
+            onClick={() => window.location.href = "/explore"}
+          >
+            Explore Creators
+          </Button>
         </Flex>
       )}
     </Box>

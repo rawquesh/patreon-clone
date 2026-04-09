@@ -58,26 +58,34 @@ const FilterPopover: React.FC = () => {
       <PopoverTrigger>
         <Button
           as={"div"}
-          // icon={<Filter size={18} />}
           variant="ghost"
           size="sm"
+          css={{
+            color: "hsl(211, 71%, 43%)",
+            fontWeight: 500,
+            "&:hover": {
+              background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+            },
+          }}
         >
           Filter
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="300px">
+      <PopoverContent w="300px" className="glass-menu">
         <PopoverArrow />
         <PopoverCloseTrigger />
-        <PopoverHeader fontWeight="semibold">
+        <PopoverHeader
+          fontWeight={600}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
           Filter notifications
         </PopoverHeader>
         <PopoverBody>
-          <Text mb={4} fontSize="sm" color="gray.600">
+          <Text mb={4} fontSize="13px" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             Notification types
           </Text>
           <Box overflow="auto" maxH="200px">
             <CheckboxGroup
-              colorScheme="blue"
               value={selectedTypes}
               onChange={(values) =>
                 setSelectedTypes(values as unknown as string[])
@@ -85,7 +93,13 @@ const FilterPopover: React.FC = () => {
             >
               <Stack>
                 {Object.entries(notificationTypeLabels).map(([type, label]) => (
-                  <Checkbox key={type} value={type}>
+                  <Checkbox
+                    key={type}
+                    value={type}
+                    css={{
+                      color: "hsl(222.2, 47.4%, 11.2%)",
+                    }}
+                  >
                     {label}
                   </Checkbox>
                 ))}
@@ -95,10 +109,19 @@ const FilterPopover: React.FC = () => {
         </PopoverBody>
         <PopoverFooter>
           <Flex justifyContent="space-between">
-            <Button size="sm" variant="ghost" onClick={handleClearFilter}>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleClearFilter}
+              css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+            >
               Clear
             </Button>
-            <Button size="sm" colorScheme="blue" onClick={handleApplyFilter}>
+            <Button
+              size="sm"
+              className="btn-gradient"
+              onClick={handleApplyFilter}
+            >
               Apply
             </Button>
           </Flex>

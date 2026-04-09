@@ -43,7 +43,7 @@ const AudioPostPageComponent: React.FC<{
     >
       <Stack gap={0} flexGrow={1}>
         {audioSrc && (
-          <Box bg="gray.50" p={4} borderRadius="md" mb={6} width="100%">
+          <Box className="glass-card" p={4} borderRadius="md" mb={6} width="100%">
             {/* <audio
               controls
               src={audioSrc}
@@ -67,7 +67,7 @@ const AudioPostPageComponent: React.FC<{
           />
         </Flex>
         <Suspense>
-          <PostCommentsSection bg="white" postId={postId} />
+          <PostCommentsSection className="glass-card" postId={postId} />
         </Suspense>
       </Stack>
       {/* Conditionally render Creator Info based on postData.hasAccess */}

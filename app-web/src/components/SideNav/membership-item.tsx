@@ -10,49 +10,32 @@ const MembershipItem: React.FC<{
   imageUrl?: string;
 }> = ({ link, title, imageUrl }) => {
   const isActive = false;
+
   return (
     <Link href={link}>
       <Flex
-        color={{
-          base: isActive ? "black" : "star.400",
-        }}
-        bg={{ base: isActive ? "star.100" : "white" }}
-        css={{
-          "& p": {
-            base: {
-              color: isActive ? "black" : "star.500",
-            },
-          },
-        }}
+        color={isActive ? "primary.500" : "star.500"}
+        bg={isActive ? "primary.50" : "transparent"}
+        borderRadius="8px"
+        px="12px"
+        py="8px"
+        gap="10px"
+        alignItems="center"
         _hover={{
-          base: {
-            bg: "star.100",
-            color: "black",
-            "& p": {
-              color: "black",
-            },
-          },
-          _dark: {
-            bg: "star.700",
-          },
+          bg: "rgba(0,0,0,0.03)",
+          color: "hsl(222.2, 47.4%, 11.2%)",
         }}
-        borderRadius={"8px"}
-        px={"15px"}
-        // mb={2}
-        py={"10px"}
-        gap={"12px"}
-        alignItems={"center"}
+        transition="all 0.15s ease"
       >
         <Avatar
-          size={"xs"}
-          shape={"rounded"}
+          size="xs"
+          shape="rounded"
           src={
             imageUrl ||
             `https://${branding.assets.assetBucketBase}/profile-pictures/placeholder-male.jpg`
           }
         />
-
-        <Text fontSize={"sm"} fontWeight={600}>
+        <Text fontSize="sm" fontWeight={500} css={{ color: "inherit" }}>
           {title}
         </Text>
       </Flex>

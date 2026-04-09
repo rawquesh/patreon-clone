@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Center,
-  CheckboxGroup,
   IconButton,
   Input,
   Stack,
@@ -28,11 +27,11 @@ import {
   RadioCardRoot,
 } from "@/components/ui/radio-card";
 import { CheckboxCard } from "@/components/ui/checkbox-card";
+import { CheckboxGroup } from "@chakra-ui/react";
 
 const NewChatModal: React.FC = () => {
   const { open, onOpen, onClose } = useDisclosure();
   const [selected, setSelected] = React.useState<string>("all");
-  console.log({ selected });
 
   return (
     <DialogRoot
@@ -40,7 +39,13 @@ const NewChatModal: React.FC = () => {
       placement={"center"}
       open={open}
     >
-      <Button onClick={onOpen} w="full" mt={4} variant="outline">
+      <Button
+        onClick={onOpen}
+        w="full"
+        mt={4}
+        variant="outline"
+        className="btn-gradient-ghost"
+      >
         New chat
       </Button>
       <DialogContent>
@@ -49,10 +54,26 @@ const NewChatModal: React.FC = () => {
           display={"flex"}
           justifyContent={"space-between"}
         >
-          <Text fontSize={"xl"} fontWeight={600} flex={1}>
+          <Text
+            fontSize={"xl"}
+            fontWeight={600}
+            flex={1}
+            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+          >
             New Chat
           </Text>
-          <IconButton rounded="999px" variant={"ghost"} onClick={onClose}>
+          <IconButton
+            rounded="999px"
+            variant={"ghost"}
+            onClick={onClose}
+            css={{
+              color: "hsl(215.4, 16.3%, 46.9%)",
+              "&:hover": {
+                background: "hsl(0, 84.2%, 60.2% / 0.08)",
+                color: "hsl(0, 84.2%, 60.2%)",
+              },
+            }}
+          >
             <Icon icon={"ic:round-close"} />
           </IconButton>
         </DialogHeader>
@@ -74,65 +95,47 @@ const NewChatModal: React.FC = () => {
               onChange={(e) =>
                 setSelected((e.target as unknown as { value: string }).value)
               }
-              css={{
-                '& [data-state="checked"]': {
-                  border: "none",
-                },
-                "& label": {
-                  border: "none",
-                  boxShadow: "none",
-                },
-              }}
             >
-              <RadioCardLabel>Who can access this chat?</RadioCardLabel>
+              <RadioCardLabel
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontWeight: 600 }}
+              >
+                Who can access this chat?
+              </RadioCardLabel>
               <RadioCardItem
-                border={"none"}
                 label="All members"
                 value="all"
                 wrapperClassname="w-full"
-              ></RadioCardItem>
+              />
               <RadioCardItem
-                border={"none"}
                 label="Paid members only"
                 value="paid"
                 wrapperClassname="w-full"
-              ></RadioCardItem>
+              />
               <RadioCardItem
-                border={"none"}
                 label="Select tier"
                 value="select"
                 wrapperClassname="w-full"
-              ></RadioCardItem>
+              />
             </RadioCardRoot>
             {selected === "select" && (
               <Field
-                css={{
-                  '& [data-state="checked"]': {
-                    border: "none",
-                  },
-                  "& label": {
-                    border: "none",
-                  },
-                }}
                 label="Select which tier can access this chat"
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
               >
                 <CheckboxGroup defaultValue={["free", "premium"]} w={"full"}>
                   <CheckboxCard
-                    border={"none"}
                     w={"full"}
                     label="Free"
                     description="Your free members | 100 members"
                     value="free"
                   />
                   <CheckboxCard
-                    border={"none"}
                     w={"full"}
                     label="test"
                     description="Your test members | 10 members"
                     value="test"
                   />
                   <CheckboxCard
-                    border={"none"}
                     w={"full"}
                     label="Premium"
                     description="Your premium members | 20 members"
@@ -144,8 +147,10 @@ const NewChatModal: React.FC = () => {
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <Button variant="outline">Cancel</Button>
-          <Button>Create</Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button className="btn-gradient">Create</Button>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>

@@ -61,16 +61,16 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     router.push(`/creator/${subscription.creator._id}`);
   };
 
-  const getStatusColor = (status: SubscriptionStatus) => {
+  const getStatusStyles = (status: SubscriptionStatus) => {
     switch (status) {
       case "active":
-        return "green";
+        return { background: "hsl(142, 76%, 36%)", color: "white" };
       case "cancelled":
-        return "orange";
+        return { background: "hsl(35, 92%, 50%)", color: "white" };
       case "expired":
-        return "red";
+        return { background: "hsl(0, 84.2%, 60.2%)", color: "white" };
       default:
-        return "gray";
+        return { background: "hsl(215.4, 16.3%, 46.9%)", color: "white" };
     }
   };
 
@@ -85,10 +85,8 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   return (
     <>
       <Box
-        borderWidth="1px"
-        borderRadius="lg"
+        className="glass-card"
         overflow="hidden"
-        bg="white"
         transition="transform 0.2s"
         _hover={{ transform: "translateY(-4px)", boxShadow: "md" }}
       >
@@ -97,7 +95,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           {/* Cover Image */}
           <Box
             height="120px"
-            bg="gray.100"
+            css={{ background: "hsl(210, 30%, 88%)" }}
             backgroundImage={`url(${coverImage})`}
             backgroundSize="cover"
             backgroundPosition="center"
@@ -110,9 +108,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
             right="8px"
             borderRadius="full"
             px="2"
-            colorScheme={getStatusColor(
-              subscription.status as SubscriptionStatus
-            )}
+            css={getStatusStyles(subscription.status as SubscriptionStatus)}
           >
             {subscription.status}
           </Badge>
@@ -133,7 +129,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                 </Button>
               </Menu.Trigger>
               <Menu.Positioner>
-                <Menu.Content>
+                <Menu.Content className="glass-card">
                   <Menu.Item value="view-creator" onClick={handleViewCreator}>
                     View Creator Page
                   </Menu.Item>
@@ -141,7 +137,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                     <Menu.Item
                       value="cancel-subscription"
                       onClick={openCancelDialog}
-                      color="red.500"
+                      css={{ color: "hsl(0, 84.2%, 60.2%)" }}
                     >
                       Cancel Subscription
                     </Menu.Item>
@@ -173,7 +169,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             <Heading size="md">{membershipName}</Heading>
 
-            <Text fontSize="lg" fontWeight="bold" color="gray.700">
+            <Text fontSize="lg" fontWeight="bold" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
               ${subscription.monthlyRate}/month
             </Text>
 
@@ -181,7 +177,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             {/* Dates */}
             <Flex justifyContent="space-between">
-              <Text fontSize="sm" color="gray.600">
+              <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 Started:
               </Text>
               <Text fontSize="sm" fontWeight="medium">
@@ -191,7 +187,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             {isActive && (
               <Flex justifyContent="space-between">
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   Next billing:
                 </Text>
                 <Text fontSize="sm" fontWeight="medium">
@@ -202,7 +198,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             {/* {subscription.canceledAt && (
               <Flex justifyContent="space-between">
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                   Cancelled:
                 </Text>
                 <Text fontSize="sm" fontWeight="medium">
@@ -219,6 +215,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
               w="full"
               variant="outline"
               onClick={handleViewCreator}
+              className="glass-card"
             >
               Go to Content
             </Button>
@@ -230,7 +227,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
       <DialogRoot open={isCancelDialogOpen}>
         <DialogBackdrop />
         {/* <DialogPositioner> */}
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Cancel Subscription</DialogHeader>
           {/* <DialogCloseButton /> */}
           <DialogBody>
@@ -245,11 +242,11 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           </DialogBody>
 
           <DialogFooter>
-            <Button variant="ghost" mr={3} onClick={closeCancelDialog}>
+            <Button variant="ghost" mr={3} onClick={closeCancelDialog} className="glass-card">
               Keep Subscription
             </Button>
             <Button
-              colorScheme="red"
+              css={{ background: "hsl(0, 84.2%, 60.2%)", color: "white" }}
               onClick={handleCancel}
               loading={cancelMutation.isPending}
             >

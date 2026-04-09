@@ -23,17 +23,17 @@ const TableControlBar = () => {
 
 	return (
 		<Flex
-			bg="white"
+			className="glass-card"
 			py={3}
 			px={4}
-			borderRadius="lg"
-			boxShadow="md"
+			borderRadius="16px"
 			mb={4}
 			justifyContent="space-between"
 			flexWrap={{ base: "wrap", md: "nowrap" }}
 			gap={3}
 		>
 			<InputGroup
+				glass
 				startElement={<Icon icon="material-symbols:search" />}
 				maxW={{ base: "100%", md: "260px" }}
 			>
@@ -104,6 +104,14 @@ const TableControlBar = () => {
 							sortOrder: SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC,
 						})
 					}
+					variant="outline"
+					css={{
+						borderColor: "hsl(215.4, 16.3%, 46.9% / 0.3)",
+						"&:hover": {
+							background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.06))",
+							color: "hsl(211, 71%, 43%)",
+						},
+					}}
 				>
 					<Icon icon="material-symbols:sort" />
 				</IconButton>

@@ -75,7 +75,7 @@ const DiscountTableMenuPopover: React.FC<Props> = ({
             <Icon icon={"ix:more-menu"} />
           </IconButton>
         </PopoverTrigger>
-        <PopoverContent zIndex={10} w={"150px"}>
+        <PopoverContent zIndex={10} w={"150px"} className="glass-card">
           <PopoverBody overflow={"hidden"} p={0}>
             <Flex direction={"column"}>
               <DiscountModal
@@ -85,13 +85,13 @@ const DiscountTableMenuPopover: React.FC<Props> = ({
               />
               <Flex
                 _hover={{
-                  bg: "red.100",
+                  css: { background: "hsl(0, 84.2%, 60.2% / 0.15)" },
                 }}
                 gap={4}
                 px={4}
                 py={2}
                 cursor={"pointer"}
-                color={"red.700"}
+                css={{ color: "hsl(0, 84.2%, 60.2%)" }}
                 borderBottomRadius={"8px"}
                 onClick={() => {
                   setIsDeleteDialogOpen(true);
@@ -109,7 +109,7 @@ const DiscountTableMenuPopover: React.FC<Props> = ({
         open={isDeleteDialogOpen}
         onOpenChange={(v) => setIsDeleteDialogOpen(v.open)}
       >
-        <DialogContent>
+        <DialogContent className="glass-dialog-content">
           <DialogHeader>Delete Post</DialogHeader>
           <DialogBody>
             <Text>
@@ -125,7 +125,7 @@ const DiscountTableMenuPopover: React.FC<Props> = ({
               Cancel
             </Button>
             <Button
-              colorPalette="red"
+              css={{ background: "hsl(0, 84.2%, 60.2%)", color: "white" }}
               onClick={handleDelete}
               loading={isDeleting}
             >

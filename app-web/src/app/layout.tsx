@@ -48,7 +48,9 @@ export default function RootLayout({
                 <ChatProvider>
                   <NotificationsProvider>
                     <SubscriptionProvider>
-                      <div className="light">{children}</div>
+                      <div className="bg-gradient-overlay" style={{ minHeight: "100vh" }}>
+                        {children}
+                      </div>
                     </SubscriptionProvider>
                   </NotificationsProvider>
                 </ChatProvider>

@@ -71,32 +71,45 @@ export function EarningsCalculator() {
       <HStack justify="center" mb={8}>
         <Button
           onClick={() => setIsAnnual(false)}
-          bg={!isAnnual ? branding.colors.primary : branding.colors.bgWarm}
-          color={!isAnnual ? "white" : branding.colors.star}
-          borderRadius="full"
-          boxShadow={!isAnnual ? "0 4px 12px rgba(29, 112, 191, 0.25)" : "none"}
-          _hover={{ bg: !isAnnual ? branding.colors.primaryHover : "rgba(29, 112, 191, 0.1)" }}
+          className={!isAnnual ? "btn-gradient" : "glass-card"}
+          css={{
+            borderRadius: "full",
+            fontWeight: 600,
+            px: 6,
+            py: 5,
+            color: !isAnnual ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+            boxShadow: !isAnnual ? "var(--glow-primary)" : "none",
+          }}
         >
           Monthly Billing
         </Button>
         <Button
           onClick={() => setIsAnnual(true)}
-          bg={isAnnual ? branding.colors.primary : branding.colors.bgWarm}
-          color={isAnnual ? "white" : branding.colors.star}
-          borderRadius="full"
-          boxShadow={isAnnual ? "0 4px 12px rgba(29, 112, 191, 0.25)" : "none"}
-          _hover={{ bg: isAnnual ? branding.colors.primaryHover : "rgba(29, 112, 191, 0.1)" }}
+          className={isAnnual ? "btn-gradient" : "glass-card"}
+          css={{
+            borderRadius: "full",
+            fontWeight: 600,
+            px: 6,
+            py: 5,
+            color: isAnnual ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+            boxShadow: isAnnual ? "var(--glow-primary)" : "none",
+          }}
         >
           Annual Billing
         </Button>
       </HStack>
       <Box
-        bg="white"
+        className="glass-card"
         borderRadius="16px"
-        boxShadow="0 10px 40px rgba(0,0,0,0.08)"
         p={{ base: 6, md: 12 }}
       >
-        <Heading as="h3" size="lg" textAlign="center" mb={8}>
+        <Heading
+          as="h3"
+          size="lg"
+          textAlign="center"
+          mb={8}
+          css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+        >
           Earnings Calculator
         </Heading>
         <Flex
@@ -106,8 +119,18 @@ export function EarningsCalculator() {
           <VStack flex={1.2} gap={8} align="stretch">
             <Box>
               <Flex justify="space-between" mb={2}>
-                <Text fontWeight="600">Membership Fee</Text>
-                <Text color={branding.colors.primary} fontWeight="bold">
+                <Text fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                  Membership Fee
+                </Text>
+                <Text
+                  css={{
+                    fontWeight: "bold",
+                    background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
                   ${fee}
                 </Text>
               </Flex>
@@ -119,8 +142,8 @@ export function EarningsCalculator() {
                 onValueChange={(e) => setFee(e.value[0])}
               >
                 <Slider.Control>
-                  <Slider.Track bg="gray.200">
-                    <Slider.Range bg={branding.colors.primary} />
+                  <Slider.Track css={{ background: "hsl(210, 30%, 88%)" }}>
+                    <Slider.Range bg="hsl(211, 71%, 43%)" />
                   </Slider.Track>
                   <Slider.Thumb index={0} boxSize={6} />
                 </Slider.Control>
@@ -131,8 +154,15 @@ export function EarningsCalculator() {
                     key={p}
                     size="sm"
                     borderRadius="full"
-                    variant={fee === p ? "solid" : "outline"}
-                    colorScheme={fee === p ? "blue" : "gray"}
+                    className={fee === p ? "btn-gradient" : "glass-card"}
+                    css={{
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      px: 3,
+                      py: 4,
+                      color: fee === p ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+                      boxShadow: fee === p ? "var(--glow-primary)" : "none",
+                    }}
                     onClick={() => setFee(p)}
                   >
                     ${p}
@@ -142,8 +172,18 @@ export function EarningsCalculator() {
             </Box>
             <Box>
               <Flex justify="space-between" mb={2}>
-                <Text fontWeight="600">Number of Members</Text>
-                <Text color={branding.colors.primary} fontWeight="bold">
+                <Text fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                  Number of Members
+                </Text>
+                <Text
+                  css={{
+                    fontWeight: "bold",
+                    background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
                   {members.toLocaleString()}
                 </Text>
               </Flex>
@@ -155,8 +195,8 @@ export function EarningsCalculator() {
                 onValueChange={(e) => setMembers(e.value[0])}
               >
                 <Slider.Control>
-                  <Slider.Track bg="gray.200">
-                    <Slider.Range bg={branding.colors.primary} />
+                  <Slider.Track css={{ background: "hsl(210, 30%, 88%)" }}>
+                    <Slider.Range bg="hsl(211, 71%, 43%)" />
                   </Slider.Track>
                   <Slider.Thumb index={0} boxSize={6} />
                 </Slider.Control>
@@ -167,8 +207,15 @@ export function EarningsCalculator() {
                     key={p}
                     size="sm"
                     borderRadius="full"
-                    variant={members === p ? "solid" : "outline"}
-                    colorScheme={members === p ? "blue" : "gray"}
+                    className={members === p ? "btn-gradient" : "glass-card"}
+                    css={{
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      px: 3,
+                      py: 4,
+                      color: members === p ? "white" : "hsl(215.4, 16.3%, 46.9%)",
+                      boxShadow: members === p ? "var(--glow-primary)" : "none",
+                    }}
                     onClick={() => setMembers(p)}
                   >
                     {p.toLocaleString()}
@@ -179,49 +226,68 @@ export function EarningsCalculator() {
           </VStack>
           <VStack
             flex={1}
-            bg={branding.colors.bgWarm}
+            className="glass-card"
             p={8}
-            borderRadius="12px"
+            borderRadius="16px"
             align="stretch"
             justify="space-between"
+            css={{ gap: 0 }}
           >
             <Box>
-              <Heading textAlign="center" fontWeight="600" fontSize="lg">
+              <Heading
+                textAlign="center"
+                fontWeight="600"
+                fontSize="lg"
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+              >
                 Your Estimated {isAnnual ? "Equivalent" : ""} Monthly Earnings
               </Heading>
               <Heading
                 as="h4"
                 size="2xl"
                 textAlign="center"
-                color={branding.colors.primary}
-                my={2}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  margin: "8px 0",
+                }}
               >
                 ${earnings.net.toLocaleString()}
               </Heading>
               <VStack
-                bg="white"
+                className="glass-surface"
                 p={4}
-                borderRadius="md"
+                borderRadius="12px"
                 mt={4}
                 gap={3}
-                divideY="1px"
-                borderColor="gray.100"
+                css={{
+                  border: "1px solid var(--glass-border)",
+                  background: "rgba(255,255,255,0.5)",
+                }}
               >
                 <Flex w="full" justify="space-between">
-                  <Text fontSize="sm">Total Revenue</Text>
-                  <Text fontWeight="bold" fontSize="sm">
+                  <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    Total Revenue
+                  </Text>
+                  <Text fontWeight="bold" fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                     ${earnings.revenue.toLocaleString()}
                   </Text>
                 </Flex>
                 <Flex w="full" justify="space-between" pt={3}>
-                  <Text fontSize="sm">{branding.name} Platform Fee ({branding.platform.feePercentage}%)</Text>
-                  <Text fontWeight="bold" fontSize="sm">
+                  <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    {branding.name} Platform Fee ({branding.platform.feePercentage}%)
+                  </Text>
+                  <Text fontWeight="bold" fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                     -${earnings.platformFee.toLocaleString()}
                   </Text>
                 </Flex>
                 <Flex w="full" justify="space-between" pt={3}>
-                  <Text fontSize="sm">Payment Processing</Text>
-                  <Text fontWeight="bold" fontSize="sm">
+                  <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    Payment Processing
+                  </Text>
+                  <Text fontWeight="bold" fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                     -${earnings.processingFee.toLocaleString()}
                   </Text>
                 </Flex>
@@ -229,20 +295,32 @@ export function EarningsCalculator() {
                   w="full"
                   justify="space-between"
                   pt={3}
-                  borderTopWidth="2px"
-                  borderColor="gray.300"
-                  fontWeight="bold"
+                  css={{
+                    borderTop: "2px solid",
+                    borderColor: "hsl(215.4, 16.3%, 46.9% / 0.2)",
+                    fontWeight: "bold",
+                  }}
                 >
-                  <Text>You Keep</Text>
-                  <Text color={branding.colors.primary}>${earnings.net.toLocaleString()}</Text>
+                  <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>You Keep</Text>
+                  <Text
+                    css={{
+                      background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ${earnings.net.toLocaleString()}
+                  </Text>
                 </Flex>
               </VStack>
             </Box>
             <Button
               w="full"
-              bg={branding.colors.primary}
-              color="white"
-              _hover={{ bg: branding.colors.primaryHover }}
+              className="btn-gradient"
+              mt={6}
+              css={{ fontWeight: 600 }}
             >
               Start Your Community
             </Button>
@@ -278,13 +356,21 @@ export function FaqAccordion() {
       {faqData.map((item, index) => (
         <Accordion.Item key={index} value={`item-${index}`}>
           <Accordion.ItemTrigger>
-            <Box as="span" flex="1" textAlign="left" fontWeight="600">
+            <Box
+              as="span"
+              flex="1"
+              textAlign="left"
+              fontWeight="600"
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+            >
               {item.q}
             </Box>
             <Accordion.ItemIndicator />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
-            <Accordion.ItemBody pb={4}>{item.a}</Accordion.ItemBody>
+            <Accordion.ItemBody pb={4} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+              {item.a}
+            </Accordion.ItemBody>
           </Accordion.ItemContent>
         </Accordion.Item>
       ))}

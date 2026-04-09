@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { Flex, Heading, Spinner, VStack, Box } from "@chakra-ui/react";
 import { setCookie } from "cookies-next";
 
 const setAuthToken = (token: string) => {
@@ -34,15 +34,36 @@ export default function AuthCallback() {
   }, [router, searchParams]);
 
   return (
-    <Flex minH="100vh" alignItems="center" justifyContent="center">
+    <Flex minH="100vh" alignItems="center" justifyContent="center" className="animate-fade-in-up">
       <VStack gap={6}>
-        <Heading size="lg">Completing login...</Heading>
-        <Spinner
-          borderWidth="4px"
-          animationDuration="0.65s"
-          color="blue.500"
-          size="xl"
-        />
+        <Box className="glass-card" p={8} borderRadius="20px" css={{ boxShadow: "var(--glow-primary)" }}>
+          <Heading
+            size="lg"
+            mb={4}
+            textAlign="center"
+            css={{
+              background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Completing login...
+          </Heading>
+          <Flex justify="center">
+            <Spinner
+              borderWidth="4px"
+              animationDuration="0.65s"
+              css={{
+                color: "hsl(211, 71%, 43%)",
+                "& .chakra-spinner__track": {
+                  borderColor: "hsl(211, 71%, 43% / 0.1)",
+                },
+              }}
+              size="xl"
+            />
+          </Flex>
+        </Box>
       </VStack>
     </Flex>
   );

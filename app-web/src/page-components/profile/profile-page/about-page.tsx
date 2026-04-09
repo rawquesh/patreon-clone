@@ -110,7 +110,7 @@ const DisplayAboutDetails: React.FC<{
             return (
               <Link
                 href={attribs.href}
-                color="blue.500"
+                css={{ color: "hsl(211, 71%, 43%)" }}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -154,8 +154,7 @@ const DisplayAboutDetails: React.FC<{
                   as="pre"
                   p={4}
                   my={4}
-                  bg="gray.800" // Dark background for code
-                  color="gray.100" // Light text
+                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
                   borderRadius="md"
                   overflowX="auto"
                   fontSize="sm" // Smaller font for code
@@ -176,7 +175,7 @@ const DisplayAboutDetails: React.FC<{
                 whiteSpace="pre-wrap"
                 fontSize="sm"
                 fontFamily="monospace"
-                bg="gray.100"
+                css={{ background: "hsl(210, 30%, 88%)" }}
                 borderRadius="md"
               >
                 {reactChildren}
@@ -215,11 +214,10 @@ const DisplayAboutDetails: React.FC<{
               <Box
                 as="blockquote"
                 borderLeft="4px solid"
-                borderColor="gray.300"
+                css={{ borderColor: "hsl(210, 30%, 88%)", color: "hsl(215.4, 16.3%, 46.9%)" }}
                 pl={4}
                 my={4}
                 fontStyle="italic"
-                color="gray.600"
               >
                 {reactChildren}
               </Box>
@@ -260,7 +258,7 @@ const DisplayAboutDetails: React.FC<{
             <Link
               href={aboutData.introVideoUrl}
               target="_blank"
-              color="blue.500"
+              css={{ color: "hsl(211, 71%, 43%)" }}
             >
               Watch Video{" "}
               <Icon icon="mdi:external-link" display="inline-block" />
@@ -369,7 +367,7 @@ const AboutPage: React.FC<{ creatorUsername: string }> = ({
       borderRadius={"6px"}
       mx={"auto"}
       p={"24px"}
-      bg={"white"}
+      className="glass-card"
       // Keep textAlign center for the placeholder, but details will be left-aligned
       // textAlign={"center"}
     >
@@ -381,7 +379,7 @@ const AboutPage: React.FC<{ creatorUsername: string }> = ({
 
       {!isLoading && error && (
         <Center h="200px" flexDirection="column">
-          <Text color="red.500">{error}</Text>
+          <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>{error}</Text>
           <Button onClick={fetchAboutData} mt={4} size="sm">
             Retry
           </Button>

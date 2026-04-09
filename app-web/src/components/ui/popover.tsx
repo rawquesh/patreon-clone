@@ -15,7 +15,16 @@ export const PopoverContent = React.forwardRef<
   return (
     <Portal disabled={!portalled} container={portalRef}>
       <ChakraPopover.Positioner>
-        <ChakraPopover.Content ref={ref} {...rest} />
+        <ChakraPopover.Content
+          ref={ref}
+          {...rest}
+          className="glass-menu"
+          borderRadius="12px"
+          overflow="hidden"
+          css={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%)",
+          }}
+        />
       </ChakraPopover.Positioner>
     </Portal>
   )

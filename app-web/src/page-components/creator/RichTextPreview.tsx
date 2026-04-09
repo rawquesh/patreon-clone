@@ -69,7 +69,7 @@ const RichTextPreview: React.FC<RichTextPreviewProps> = ({
             return (
               <ChakraUiLink
                 href={attribs.href}
-                color="blue.500"
+                css={{ color: "hsl(211, 71%, 43%)" }}
                 target="_blank"
               >
                 {reactChildren}
@@ -112,8 +112,7 @@ const RichTextPreview: React.FC<RichTextPreviewProps> = ({
                   as="pre"
                   p={2}
                   my={2}
-                  bg="gray.800"
-                  color="gray.100"
+                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
                   borderRadius="sm"
                   overflowX="auto"
                   fontSize="xs"
@@ -216,10 +215,9 @@ const RichTextPreview: React.FC<RichTextPreviewProps> = ({
         <ChakraLink as={NextLink} href={`/post/${postId}`}>
           <Button
             variant="ghost" // Use link variant
-            colorScheme="blue" // Use colorScheme for standard link color
+            className="btn-gradient"
             size="sm"
-            mt={1} // Margin top to position below the preview
-            fontWeight="medium" // Standard link weight
+            mt={1}
           >
             Read more
           </Button>

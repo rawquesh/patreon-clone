@@ -228,10 +228,9 @@ export function TestimonialsSlider() {
           <Box
             position="relative"
             w="full"
-            bg="white"
+            className="glass-card"
             p={{ base: 8, md: 12 }}
             borderRadius="16px"
-            boxShadow="0 10px 30px rgba(0,0,0,0.05)"
           >
             <Text
               fontSize="5rem"

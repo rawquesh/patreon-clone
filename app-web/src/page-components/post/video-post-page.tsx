@@ -178,7 +178,7 @@ const VideoPostPageComponent: React.FC<{
           />
         </Flex>
         <Suspense>
-          <PostCommentsSection bg="white" postId={postId} />
+          <PostCommentsSection className="glass-card" postId={postId} />
         </Suspense>
       </Stack>
       {/* Conditionally render Creator Info based on postData.hasAccess */}

@@ -75,7 +75,7 @@ const features = [
 
 export default function PricingPage() {
   return (
-    <Box color={branding.colors.star} bg="white">
+    <Box css={{ background: "var(--app-bg)" }}>
       <MarketingHeader />
 
       <>
@@ -84,40 +84,40 @@ export default function PricingPage() {
           textAlign="center"
           pt={{ base: "5rem", md: "8rem" }}
           pb="3rem"
+          className="page-header"
         >
           <Box maxW="960px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4}>
-              <Text
-                bg={branding.colors.bgWarm}
-                color={branding.colors.primary}
-                fontWeight="600"
+              <Box
                 px={4}
                 py={2}
                 borderRadius="full"
                 fontSize={".75rem"}
+                fontWeight="600"
+                css={{
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                }}
               >
                 Simple, Transparent Pricing
-              </Text>
+              </Box>
               <Heading
                 as="h1"
                 size="5xl"
-                // textTransform={'unnd'}
-                textDecorationColor="rgba(29, 112, 191, 0.2)"
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  lineHeight: 1.15,
+                }}
               >
-                <Box
-                  color={branding.colors.primary}
-                  as={"span"}
-                  textDecorationColor="rgba(29, 112, 191, 0.2) !important"
-                  textDecoration={"underline"}
-                  textUnderlineOffset="8px"
-                >
-                  Starting a {branding.name}{" "}
-                </Box>
-                <Box textDecoration={"none"} as="span" color="#333">
-                  is Free
-                </Box>
+                Starting a {branding.name} is Free
               </Heading>
-              <Text fontSize="lg" color={branding.colors.star} maxW="80%">
+              <Text
+                fontSize="lg"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)", maxW: "80%" }}
+              >
                 Share work directly with your community right away for free and
                 introduce paid options when you&apos;re ready.
               </Text>
@@ -128,10 +128,23 @@ export default function PricingPage() {
         <Box as="section" py={{ base: "3rem", md: "4rem" }}>
           <Box maxW="1000px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={10}>
-              <Heading as="h2" size="3xl">
+              <Heading
+                as="h2"
+                size="3xl"
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 See how much you could earn
               </Heading>
-              <Text fontSize="lg" maxW="700px">
+              <Text
+                fontSize="lg"
+                maxW="700px"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+              >
                 Use our calculator to estimate your potential earnings. {branding.name}
                 takes a flat {branding.platform.feePercentage}% platform fee plus payment processing costs.
               </Text>
@@ -140,67 +153,76 @@ export default function PricingPage() {
           </Box>
         </Box>
 
-        <Box as="section" py="6rem" bg={branding.colors.bgWarm}>
+        <Box
+          as="section"
+          py="6rem"
+          className="glass-surface"
+          css={{
+            background: "rgba(255,255,255,0.5)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
           <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={12}>
-              <Text
-                bg={branding.colors.duneLight}
-                color={branding.colors.accentDark}
-                fontWeight="600"
+              <Box
                 px={4}
                 py={2}
                 borderRadius="full"
+                fontSize={".75rem"}
+                fontWeight="600"
+                className="glass-card"
+                css={{ color: "hsl(211, 71%, 43%)" }}
               >
                 Premium Features
-              </Text>
-              <Heading as="h2" size="xl">
+              </Box>
+              <Heading as="h2" size="xl" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 What&apos;s Included
               </Heading>
-              <Text fontSize="lg">
+              <Text
+                fontSize="lg"
+                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+              >
                 Every creator on {branding.name} gets access to our complete suite of
                 powerful community-building tools.
               </Text>
             </VStack>
             <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={8}>
               {features.map((feature, index) => (
-                <VStack
+                <Box
                   key={index}
-                  bg="white"
+                  className="glass-card hover-lift"
                   p={6}
                   borderRadius="16px"
-                  boxShadow="0 10px 30px rgba(0,0,0,0.05)"
                   align="start"
                   gap={4}
-                  _hover={{
-                    transform: "translateY(-5px)",
-                    boxShadow: "0 15px 35px rgba(0,0,0,0.1)",
-                  }}
-                  transition="all 0.3s ease"
+                  css={{ display: "flex", flexDirection: "column" }}
                 >
                   <Flex
-                    bg="rgba(29, 112, 191, 0.1)"
                     boxSize="48px"
                     borderRadius="12px"
                     align="center"
                     justify="center"
                     css={{
+                      background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.1), hsl(335, 27%, 64% / 0.1))",
                       "& svg": {
-                        color: branding.colors.primary,
+                        color: "hsl(211, 71%, 43%)",
                         boxSize: "24px",
                       },
                     }}
                   >
-                    {/* <Icon as={feature.icon} color={branding.colors.primary} boxSize="24px" /> */}
                     {feature.icon}
                   </Flex>
                   <Heading
                     size="sm"
                     fontSize={"xl"}
+                    css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
                   >
                     {feature.title}
                   </Heading>
-                  <Text fontSize="sm">{feature.description}</Text>
-                </VStack>
+                  <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    {feature.description}
+                  </Text>
+                </Box>
               ))}
             </SimpleGrid>
           </Box>
@@ -209,10 +231,19 @@ export default function PricingPage() {
         <Box as="section" py="6rem">
           <Box maxW="1000px" mx="auto" px={{ base: 4, md: 6 }}>
             <VStack gap={4} textAlign="center" mb={12}>
-              <Heading as="h2" size="xl">
+              <Heading
+                as="h2"
+                size="xl"
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 Frequently Asked Questions
               </Heading>
-              <Text fontSize="lg">
+              <Text fontSize="lg" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 Get answers to common questions about pricing and features.
               </Text>
             </VStack>
@@ -223,8 +254,9 @@ export default function PricingPage() {
         <Box
           as="section"
           py="5rem"
-          bg={branding.colors.primary}
-          color="white"
+          css={{
+            background: "var(--gradient-primary)",
+          }}
           textAlign="center"
         >
           <Box maxW="800px" mx="auto" px={{ base: 4, md: 6 }}>
@@ -232,7 +264,7 @@ export default function PricingPage() {
               <Heading as="h2" size="xl" color="white">
                 Ready to build your {branding.name}?
               </Heading>
-              <Text fontSize="lg" color="whiteAlpha.900">
+              <Text fontSize="lg" css={{ color: "rgba(255,255,255,0.85)" }}>
                 Join hundreds of creators building meaningful connections
                 and sustainable income.
               </Text>
@@ -240,23 +272,31 @@ export default function PricingPage() {
                 <Link href={"/auth/login"}>
                   <Button
                     size="lg"
-                    bg="white"
-                    color={branding.colors.primary}
-                    _hover={{ bg: "gray.200" }}
+                    className="glass-card"
+                    css={{
+                      color: "hsl(211, 71%, 43%)",
+                      fontWeight: 600,
+                      _hover: {
+                        background: "rgba(255,255,255,0.9)",
+                        transform: "translateY(-1px)",
+                      },
+                    }}
                   >
                     Get Started
                   </Button>
                 </Link>
-                <Link
-                  href={branding.urls.meeting}
-                  target="_blank"
-                >
+                <Link href={branding.urls.meeting} target="_blank">
                   <Button
                     size="lg"
                     variant="outline"
-                    color="white"
-                    borderColor="whiteAlpha.400"
-                    _hover={{ bg: "whiteAlpha.200" }}
+                    css={{
+                      color: "white",
+                      borderColor: "rgba(255,255,255,0.4)",
+                      _hover: {
+                        background: "rgba(255,255,255,0.15)",
+                        borderColor: "white",
+                      },
+                    }}
                   >
                     Schedule Creator Demo
                   </Button>

@@ -459,6 +459,7 @@ const TextPostForm: React.FC<TextPostFormProps> = ({
                 loading={isSubmitting}
                 disabled={!title.trim() || !textContent.trim() || isSubmitting}
                 variant={"outline"}
+                className="glass-card"
               >
                 Save as draft
               </Button>
@@ -468,6 +469,7 @@ const TextPostForm: React.FC<TextPostFormProps> = ({
               onClick={() => handleSubmit()}
               loading={isSubmitting}
               disabled={!title?.trim() || !textContent?.trim() || isSubmitting}
+              className="btn-gradient"
             >
               {isEditMode ? "Update" : "Save"}
             </Button>

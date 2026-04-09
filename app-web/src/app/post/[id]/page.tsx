@@ -16,11 +16,8 @@ import { branding } from "@/config/branding";
 type tParams = Promise<{ id: string }>;
 
 export async function generateMetadata(
-  // { params }: { params: { id: string } },
-  // parent: ResolvingMetadata
   props: { params: tParams }
 ): Promise<Metadata> {
-  // console.log(parent);
   const { id } = await props.params;
 
   try {
@@ -132,7 +129,7 @@ export default async function PostPage(props: { params: tParams }) {
     };
 
     return (
-      <Box py={12}>
+      <Box py={12} className="animate-fade-in-up">
         <PostPageHeader
           createdAt={post.createdAt}
           postId={post._id}
@@ -142,11 +139,6 @@ export default async function PostPage(props: { params: tParams }) {
           profilePicture={post.creator.profilePicture}
         />
         <PostContent />
-        {/* <ClientAuthCheck
-					postId={params.id}
-					tierAccess={post.tierAccess}
-					creatorUsername={post.creator.username}
-				/> */}
       </Box>
     );
   } catch (error) {

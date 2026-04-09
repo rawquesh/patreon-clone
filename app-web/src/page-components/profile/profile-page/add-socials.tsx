@@ -233,7 +233,7 @@ const AddSocials: React.FC = () => {
             Cancel
           </Button>
           <Button
-            colorScheme="blue"
+            className="btn-gradient"
             onClick={handleSubmit}
             loading={isSubmitting}
             disabled={isLoading || isSubmitting}

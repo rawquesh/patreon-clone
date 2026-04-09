@@ -27,7 +27,7 @@ export const HomePageForm = () => {
           <Field.Label fontSize="sm" fontWeight="600">
             Full Name
           </Field.Label>
-          <Input placeholder="Your name" bg="gray.50" />
+          <Input placeholder="Your name" className="glass-input" />
         </Field.Root>
         <Field.Root>
           <Field.Label fontSize="sm" fontWeight="600">
@@ -38,7 +38,7 @@ export const HomePageForm = () => {
             ref={inputRef}
             type="email"
             placeholder="you@example.com"
-            bg="gray.50"
+            className="glass-input"
           />
         </Field.Root>
         <Button

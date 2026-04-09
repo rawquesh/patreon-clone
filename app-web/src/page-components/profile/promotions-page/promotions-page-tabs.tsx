@@ -1,53 +1,70 @@
 "use client";
-import { Flex, Tabs, TabsContent } from "@chakra-ui/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { Box, Flex, Tabs } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import DiscountsTable from "./discounts-table";
 import GiftsTable from "./gifts-table";
 
 const PromotionsPageTabs: React.FC = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  let tab = searchParams.get("tab");
-  tab = ["autopilot", "discounts", "gifts"].includes(tab || "")
-    ? tab
-    : "discounts";
+
   return (
     <Tabs.Root
       onValueChange={(t) => {
         router.push(`/profile/promotions?tab=${t.value}`);
       }}
-      defaultValue={tab}
+      defaultValue="discounts"
       mt={6}
     >
-      <Tabs.List borderBottom={"0px"}>
-        {/* <Tabs.Indicator height={0} /> */}
-        <Flex
-          css={{
-            "& [aria-selected=true]": {
-              fontWeight: 600,
-              bgColor: "transparant",
-              border: "none",
-              boxShadow: "none",
-            },
-            // "& [aria-selected=true]::before": {
-            // 	bgColor: "red",
-            // 	// width: "50%",
-            // 	// left: "50%",
-            // },
-          }}
-        >
-          {/* <Tabs.Trigger value="autopilot">Autopilot</Tabs.Trigger> */}
-          <Tabs.Trigger value="discounts">Discounts</Tabs.Trigger>
-          <Tabs.Trigger value="gifts">Gifts</Tabs.Trigger>
-        </Flex>
+      <Tabs.List
+        className="glass-card-static"
+        borderRadius="12px"
+        p={1}
+        gap={1}
+        css={{
+          background: "rgba(255,255,255,0.7)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        {["discounts", "gifts"].map((value) => (
+          <Tabs.Trigger
+            key={value}
+            value={value}
+            borderRadius="10px"
+            px={5}
+            py={2}
+            fontSize="sm"
+            fontWeight={500}
+            textTransform="capitalize"
+            css={{
+              color: "hsl(215.4, 16.3%, 46.9%)",
+              transition: "all 0.15s ease",
+              "&[data-state=active]": {
+                background: "var(--gradient-primary)",
+                color: "white",
+                fontWeight: 600,
+                boxShadow: "0 2px 8px hsl(211, 71%, 43% / 0.3)",
+              },
+              "&:hover:not([data-state=active])": {
+                color: "hsl(222.2, 47.4%, 11.2%)",
+                background: "rgba(255,255,255,0.6)",
+              },
+            }}
+          >
+            {value}
+          </Tabs.Trigger>
+        ))}
       </Tabs.List>
-      <TabsContent value="discounts">
-        <DiscountsTable />
-      </TabsContent>
-      <TabsContent value="gifts">
-        <GiftsTable />
-      </TabsContent>
+      <Tabs.Content value="discounts">
+        <Box mt={6}>
+          <DiscountsTable />
+        </Box>
+      </Tabs.Content>
+      <Tabs.Content value="gifts">
+        <Box mt={6}>
+          <GiftsTable />
+        </Box>
+      </Tabs.Content>
     </Tabs.Root>
   );
 };

@@ -12,13 +12,13 @@ export function ProfilePage() {
   const { isLoadingUser } = useAuth();
 
   return (
-    <Box>
+    <Box className="animate-fade-in-up">
       {isLoadingUser ? (
-        <Center h={"100vh"}>
+        <Center h="100vh">
           <Spinner
             borderWidth="4px"
             animationDuration="0.65s"
-            color="blue.500"
+            css={{ borderColor: "hsl(211, 71%, 43%)", borderTopColor: "transparent" }}
             size="xl"
           />
         </Center>

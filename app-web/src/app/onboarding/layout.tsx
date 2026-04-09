@@ -7,8 +7,6 @@ export default async function OnboardingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-
-  // params: { id: string; route: string };
 }>) {
   return (
     <Grid
@@ -26,18 +24,21 @@ export default async function OnboardingLayout({
         }}
         left={0}
         p={6}
+        zIndex={10}
       >
         <img src={"/icons/logo.svg"} alt="logo" />
       </Box>
-      <Grid
+      <Box
         maxW={"440px"}
         w={"95vw"}
         mx={"auto"}
         pt={{ base: "80px", lg: "160px" }}
         textAlign={"center"}
+        className="animate-fade-in-up"
+        css={{ paddingBottom: "40px" }}
       >
         {children}
-      </Grid>
+      </Box>
       <Suspense>
         <LayoutRight />
       </Suspense>

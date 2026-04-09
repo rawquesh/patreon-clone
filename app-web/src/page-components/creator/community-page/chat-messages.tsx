@@ -233,7 +233,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
         alignItems="center"
         justifyContent="center"
       >
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
       </Flex>
     );
   }
@@ -245,7 +245,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
         alignItems="center"
         justifyContent="center"
       >
-        <Text color="red.500">Could not load chat.</Text>
+        <Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Could not load chat.</Text>
       </Flex>
     );
   }
@@ -258,9 +258,9 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
       flexDirection="column"
       pos="relative" // Needed for overlay
     >
-      <Flex px={"15px"} borderBottomWidth="1px" alignItems="center">
+      <Flex px={"15px"} borderBottomWidth="1px" alignItems="center" css={{ borderColor: "hsl(210, 30%, 88%)" }}>
         <Stack gap={0} flex={1}>
-          <Text fontWeight={600}>{currentChat.title}</Text>
+          <Text fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{currentChat.title}</Text>
           <ViewChatDetails chat={currentChat} />
         </Stack>
       </Flex>
@@ -285,7 +285,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
             width: "6px",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "gray.200",
+            background: "hsl(210, 30%, 88%)",
             borderRadius: "24px",
           },
           scrollPaddingTop: "40px",
@@ -296,8 +296,15 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
           <Flex justify="center" py={2} top={0} zIndex={2}>
             <Button
               size="sm"
-              colorScheme="blue"
-              variant="outline"
+              css={{
+                borderColor: "hsl(211, 71%, 43%)",
+                color: "hsl(211, 71%, 43%)",
+                "&:hover": {
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                  borderColor: "transparent",
+                },
+              }}
               disabled={loadingOlder}
               onClick={handleLoadOlderMessages}
               borderRadius="full"
@@ -319,17 +326,17 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
           {chatItems.map((item) =>
             isDateSeparator(item) ? (
               <Center key={item.key} py={2}>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
                 <Text
                   mx={4}
                   fontSize="xs"
                   fontWeight="medium"
-                  color="gray.500"
+                  css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                   textTransform="uppercase"
                 >
                   {formatDateSeparator(item.date)}
                 </Text>
-                <Box flex="1" height="1px" bg="gray.200" />
+                <Box flex="1" height="1px" css={{ background: "hsl(210, 30%, 88%)" }} />
               </Center>
             ) : (
               <ChatMessage
@@ -351,7 +358,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ chatId: propChatId }) => {
             justifyContent="center"
             zIndex={10}
           >
-            <Spinner size="xl" color="blue.500" />
+            <Spinner size="xl" css={{ color: "hsl(211, 71%, 43%)" }} />
           </Flex>
         )}
       </Box>

@@ -3,13 +3,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { VStack, Text, Flex, Switch } from "@chakra-ui/react";
 import api from "@/lib/api";
 
-// interface NotificationSetting {
-//   id: string;
-//   title: string;
-//   subtitle?: string;
-//   enabled: boolean;
-// }
-
 type NotificationSection = Record<string, { title: string; enabled: boolean }>;
 
 const NotificationSettings: React.FC = () => {
@@ -71,8 +64,6 @@ const NotificationSettings: React.FC = () => {
       newSettings.creatorNotifyOnDirectMessages.enabled =
         creatorSettings.creatorNotifyOnDirectMessages;
       return newSettings;
-      // console.log({ pre, newSettings });
-      // return pre;
     });
     setLoading(false);
   };
@@ -80,22 +71,32 @@ const NotificationSettings: React.FC = () => {
   return (
     <VStack
       align="stretch"
-      gap={8}
-      bg="white"
+      gap={4}
+      className="glass-card"
       p={6}
-      borderRadius="lg"
+      borderRadius="16px"
       w="full"
       maxW="800px"
     >
       {Object.entries(settings).map(([key, value]) => (
-        <Flex key={key} justify="space-between" align="center" py={1}>
-          <Text color="gray.700">{value.title}</Text>
+        <Flex
+          key={key}
+          justify="space-between"
+          align="center"
+          py={1}
+        >
+          <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+            {value.title}
+          </Text>
           <Switch.Root
             disabled={loading}
             checked={value.enabled}
             onClick={() => handleToggle(key, !value.enabled)}
-            // onChange={() => handleToggle(key, !value.enabled)}
-            colorScheme="blue"
+            css={{
+              "& [data-checked]": {
+                background: "var(--gradient-primary) !important",
+              },
+            }}
           >
             <Switch.HiddenInput />
             <Switch.Control />

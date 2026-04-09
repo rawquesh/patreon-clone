@@ -1,5 +1,5 @@
 "use client";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Stack, Text, Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
@@ -45,14 +45,29 @@ const CreateMembershipPage = () => {
   };
 
   return (
-    <Stack maxW="800px" mx="auto" p={8} gap={6}>
+    <Stack
+      maxW="800px"
+      mx="auto"
+      p={8}
+      gap={6}
+      className="animate-fade-in-up"
+    >
       <Flex justifyContent="space-between" alignItems="center">
-        <Text fontSize="2xl" fontWeight="bold">
+        <Heading
+          fontSize="2xl"
+          fontWeight="bold"
+          css={{
+            background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           Create New Tier
-        </Text>
+        </Heading>
       </Flex>
 
-      <Box bg={"white"} p={6} borderRadius={"8px"} boxShadow={"md"}>
+      <Box className="glass-card" p={6} borderRadius="16px">
         <CreateMembershipForm
           onSubmit={handleSubmit}
           isLoading={isSubmitting}

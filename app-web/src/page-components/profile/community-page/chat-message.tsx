@@ -54,29 +54,51 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       )}
       <Box
         maxW="70%"
-        bg={isOwnMessage ? "blue.500" : "blue.100"}
-        color={isOwnMessage ? "white" : "black"}
-        p={3}
-        borderRadius="lg"
+        css={{
+          background: isOwnMessage
+            ? "var(--gradient-primary)"
+            : "rgba(255,255,255,0.85)",
+          backdropFilter: "blur(8px)",
+          color: isOwnMessage ? "white" : "hsl(222.2, 47.4%, 11.2%)",
+          border: "1px solid",
+          borderColor: isOwnMessage
+            ? "transparent"
+            : "rgba(255,255,255,0.5)",
+          borderRadius: "16px",
+          borderBottomLeftRadius: isOwnMessage ? "16px" : "4px",
+          borderBottomRightRadius: isOwnMessage ? "4px" : "16px",
+          p: "12px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+        }}
       >
         {!isOwnMessage && (
           <Flex align="center" mb={1}>
-            <Text fontSize="sm" fontWeight="bold" mr={2}>
+            <Text
+              fontSize="13px"
+              fontWeight={700}
+              mr={2}
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+            >
               {message.sender.displayName}
             </Text>
             {isSenderChatCreator && (
-              <Badge
-                colorScheme="blue"
-                fontSize="0.6em"
-                px={1.5}
+              <Box
+                px={2}
+                py={0.5}
                 borderRadius="full"
+                fontSize="10px"
+                fontWeight={600}
+                css={{
+                  background: "var(--gradient-primary)",
+                  color: "white",
+                }}
               >
                 Creator
-              </Badge>
+              </Box>
             )}
           </Flex>
         )}
-        <Text>{message.content}</Text>
+        <Text fontSize="14px">{message.content}</Text>
 
         {message.attachments?.map((attachment, index) => (
           <Box key={index} mt={2}>
@@ -85,22 +107,33 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                 src={attachment.url}
                 alt={attachment.fileName}
                 maxH="200px"
-                borderRadius="md"
+                borderRadius="12px"
                 cursor="pointer"
                 onClick={() => window.open(attachment.url, "_blank")}
+                style={{ objectFit: "cover" }}
               />
             ) : (
-              <Link href={attachment.url} color="blue.400">
-                📎 {attachment.fileName}
+              <Link
+                href={attachment.url}
+                css={{
+                  color: "hsl(211, 71%, 43%)",
+                  "&:hover": { textDecoration: "underline" },
+                }}
+              >
+                {attachment.fileName}
               </Link>
             )}
           </Box>
         ))}
 
         <Text
-          fontSize="xs"
-          color={isOwnMessage ? "whiteAlpha.700" : "gray.500"}
+          fontSize="11px"
           mt={1}
+          css={{
+            color: isOwnMessage
+              ? "rgba(255,255,255,0.7)"
+              : "hsl(215.4, 16.3%, 46.9%)",
+          }}
         >
           {format(new Date(message.createdAt), "h:mm a")}
         </Text>

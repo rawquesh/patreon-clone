@@ -43,9 +43,7 @@ export function InteractiveHero() {
           const targetElement = document.querySelector(targetId);
           if (targetElement) {
             window.scrollTo({
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              //@ts-ignore
-              top: targetElement.offsetTop - 80,
+              top: (targetElement as HTMLElement).offsetTop - 80,
               behavior: "smooth",
             });
           }
@@ -55,8 +53,36 @@ export function InteractiveHero() {
   }, []);
 
   return (
-    <Box as="section" pt={{ base: "5rem", md: "8rem" }} pb="5rem">
-      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }}>
+    <Box as="section" pt={{ base: "7rem", md: "9rem" }} pb="5rem" position="relative" overflow="hidden">
+      {/* Background orbs */}
+      <Box
+        position="absolute"
+        w="400px"
+        h="400px"
+        borderRadius="full"
+        css={{
+          background: "hsl(211, 71%, 43% / 0.08)",
+          filter: "blur(100px)",
+          top: "-100px",
+          right: "-100px",
+          pointerEvents: "none",
+        }}
+      />
+      <Box
+        position="absolute"
+        w="350px"
+        h="350px"
+        borderRadius="full"
+        css={{
+          background: "hsl(335, 27%, 64% / 0.06)",
+          filter: "blur(80px)",
+          bottom: "-50px",
+          left: "-100px",
+          pointerEvents: "none",
+        }}
+      />
+
+      <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }} position="relative">
         <Flex
           direction={{ base: "column-reverse", lg: "row" }}
           align="center"
@@ -69,78 +95,98 @@ export function InteractiveHero() {
             textAlign={{ base: "center", lg: "left" }}
           >
             <Text
-              bg="rgba(29, 112, 191, 0.08)"
-              color={branding.colors.primary}
-              fontWeight="600"
-              px={4}
-              py={2}
-              borderRadius="full"
-              fontSize={".75rem"}
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.08), hsl(335, 27%, 64% / 0.08))",
+                color: "hsl(211, 71%, 43%)",
+                fontWeight: 600,
+                padding: "6px 16px",
+                borderRadius: "9999px",
+                fontSize: "0.75rem",
+                border: "1px solid hsl(211, 71%, 43% / 0.15)",
+              }}
             >
               Create with Purpose
             </Text>
             <Heading
               as="h1"
               fontSize={{ base: "2.5rem", md: "3rem" }}
-              fontWeight="medium"
-              color={branding.colors.textHeader}
-              lineHeight="1.2"
+              fontWeight={700}
+              lineHeight={1.2}
+              css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
             >
               Build a thriving{" "}
               <Box
                 as="span"
-                color={branding.colors.primary}
-                textDecoration="underline"
-                textDecorationColor="rgba(29, 112, 191, 0.2)"
-                textUnderlineOffset="8px"
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
                 Creator Community
               </Box>{" "}
               online
             </Heading>
-            <Text fontSize="lg" color={branding.colors.star} maxW="550px">
+            <Text fontSize="lg" css={{ color: "hsl(215.4, 16.3%, 46.9%)", maxW: "550px" }}>
               {branding.description}
             </Text>
             <HStack gap={4} pt={4}>
               <Link href={"/auth/login"}>
                 <Button
-                  bg={branding.colors.primary}
-                  color="white"
-                  _hover={{ bg: branding.colors.primaryHover }}
                   size="lg"
+                  css={{
+                    background: "var(--gradient-primary)",
+                    borderRadius: "12px",
+                    fontWeight: 600,
+                    transition: "all 0.15s ease",
+                    "&:hover": {
+                      boxShadow: "0 0 20px hsl(211, 71%, 43% / 0.3)",
+                      transform: "translateY(-1px)",
+                    },
+                  }}
                 >
                   Join {branding.name}
                 </Button>
               </Link>
               <Link href={"/community"}>
                 <Button
-                  variant="outline"
-                  borderColor={branding.colors.primary}
-                  color={branding.colors.primary}
                   size="lg"
+                  variant="outline"
+                  css={{
+                    borderColor: "hsl(211, 71%, 43%)",
+                    color: "hsl(211, 71%, 43%)",
+                    borderRadius: "12px",
+                    fontWeight: 600,
+                    transition: "all 0.15s ease",
+                    "&:hover": {
+                      background: "hsl(211, 71%, 43% / 0.05)",
+                      borderColor: "hsl(211, 71%, 43%)",
+                    },
+                  }}
                 >
                   Explore Creators
                 </Button>
               </Link>
             </HStack>
             <HStack gap={10} pt={8}>
-              <VStack alignItems={"start"}>
-                <Heading textAlign={"left"} size="2xl">
+              <VStack alignItems="start">
+                <Heading textAlign="left" size="2xl" css={{ color: "hsl(211, 71%, 43%)" }}>
                   {marketing.heroStats.activeCommunities}
                 </Heading>
-                <Text>Active Communities</Text>
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Active Communities</Text>
               </VStack>
-              <VStack alignItems={"start"}>
-                <Heading textAlign={"left"} size="2xl">
+              <VStack alignItems="start">
+                <Heading textAlign="left" size="2xl" css={{ color: "hsl(211, 71%, 43%)" }}>
                   {marketing.heroStats.communityMembers}
                 </Heading>
-                <Text>Community Members</Text>
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Community Members</Text>
               </VStack>
-              <VStack alignItems={"start"}>
-                <Heading textAlign={"left"} size="2xl">
+              <VStack alignItems="start">
+                <Heading textAlign="left" size="2xl" css={{ color: "hsl(211, 71%, 43%)" }}>
                   {marketing.heroStats.generatedRevenue}
                 </Heading>
-                <Text>Generated Revenue</Text>
+                <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Generated Revenue</Text>
               </VStack>
             </HStack>
           </VStack>
@@ -152,30 +198,22 @@ export function InteractiveHero() {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             pos={"relative"}
-            css={{
-              "& .pattern": {
-                position: "absolute",
-                bordeRadius: "50%",
-                rounded: "50%",
-                zIndex: -1,
-                display: { base: "none", md: "block" },
-              },
-              "& .pattern-1": {
-                width: { base: "150px", md: "300px" },
-                height: { base: "150px", md: "300px" },
-                backgroundColor: `${branding.colors.primary}0d`,
-                top: "-100px",
-                right: "-100px",
-              },
-              "& .pattern-2": {
-                width: { base: "125px", md: "250px" },
-                height: { base: "125px", md: "250px" },
-                backgroundColor: `${branding.colors.accent}0d`,
-                bottom: "-80px",
-                left: "-100px",
-              },
-            }}
           >
+            {/* Decorative background */}
+            <Box
+              position="absolute"
+              w="300px"
+              h="300px"
+              borderRadius="full"
+              css={{
+                background: "hsl(211, 71%, 43% / 0.08)",
+                filter: "blur(60px)",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: -1,
+              }}
+            />
             <MotionImage
               src="/hero.png"
               alt="hero image"
@@ -184,15 +222,19 @@ export function InteractiveHero() {
               style={{
                 rotateX: rotate.x,
                 rotateY: rotate.y,
+                borderRadius: "16px",
               }}
               transition={{
                 type: "tween",
                 stiffness: 350,
                 damping: 40,
               }}
+              css={{
+                boxShadow: "0 20px 60px rgba(29, 112, 191, 0.15), 0 8px 24px rgba(0,0,0,0.08)",
+                maxWidth: "100%",
+                height: "auto",
+              }}
             />
-            <div className="pattern pattern-1"></div>
-            <div className="pattern pattern-2"></div>
           </MotionFlex>
         </Flex>
       </Box>

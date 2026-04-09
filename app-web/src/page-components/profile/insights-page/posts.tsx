@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
+import { Box, Flex, Text, HStack, Grid } from "@chakra-ui/react";
 import { Line } from "react-chartjs-2";
-import { branding } from "@/config/branding";
 import {
   Chart,
   LineElement,
@@ -63,8 +62,8 @@ const PostsTab = () => {
           ? Object.values(postsData.impressionData)
           : [],
         fill: true,
-        borderColor: branding.colors.accent,
-        backgroundColor: "rgba(189, 101, 71, 0.2)",
+        borderColor: "hsl(335, 27%, 64%)",
+        backgroundColor: "rgba(163, 97, 132, 0.15)",
         tension: 0.4,
         yAxisID: "y",
       },
@@ -74,7 +73,7 @@ const PostsTab = () => {
           ? Object.values(postsData.engagementData)
           : [],
         fill: false,
-        borderColor: branding.colors.linkBlue,
+        borderColor: "hsl(211, 71%, 43%)",
         tension: 0.4,
         yAxisID: "y1",
       },
@@ -95,6 +94,11 @@ const PostsTab = () => {
       legend: {
         display: true,
         position: "top",
+        labels: {
+          color: "hsl(215.4, 16.3%, 46.9%)",
+          usePointStyle: true,
+          padding: 16,
+        },
       },
     },
     scales: {
@@ -106,14 +110,17 @@ const PostsTab = () => {
         title: {
           display: true,
           text: "Impressions",
+          color: "hsl(215.4, 16.3%, 46.9%)",
         },
         ticks: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           callback: function (value: number) {
             if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
             return value;
           },
+          color: "hsl(215.4, 16.3%, 46.9%)",
+        },
+        grid: {
+          color: "rgba(0,0,0,0.04)",
         },
       },
       y1: {
@@ -124,17 +131,22 @@ const PostsTab = () => {
         title: {
           display: true,
           text: "Engagements",
+          color: "hsl(215.4, 16.3%, 46.9%)",
         },
         grid: {
           drawOnChartArea: false,
         },
         ticks: {
           precision: 0,
+          color: "hsl(215.4, 16.3%, 46.9%)",
         },
       },
       x: {
         grid: {
           display: false,
+        },
+        ticks: {
+          color: "hsl(215.4, 16.3%, 46.9%)",
         },
       },
     },
@@ -143,7 +155,20 @@ const PostsTab = () => {
   if (isLoading) {
     return (
       <Flex justify="center" align="center" my={10}>
-        <Spinner size="xl" color="blue.500" />
+        <Box
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          border="3px solid hsl(210, 30%, 88%)"
+          borderTopColor="hsl(211, 71%, 43%)"
+          animation="spin 0.8s linear infinite"
+          css={{
+            "@keyframes spin": {
+              "0%": { transform: "rotate(0deg)" },
+              "100%": { transform: "rotate(360deg)" },
+            },
+          }}
+        />
       </Flex>
     );
   }
@@ -151,21 +176,27 @@ const PostsTab = () => {
   if (error || !postsData) {
     return (
       <Box textAlign="center" my={10}>
-        <Text fontSize="lg" color="red.500">
-          Failed to load posts insights
-        </Text>
+        <Box className="glass-card" p={6} borderRadius="12px">
+          <Text fontSize="lg" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
+            Failed to load posts insights
+          </Text>
+        </Box>
       </Box>
     );
   }
 
   return (
     <Box>
-      <Flex justifyContent="space-between" marginBottom="6">
+      <Flex justifyContent="space-between" mb={6}>
         <HStack gap={6}>
-          <NativeSelectRoot size="sm">
+          <NativeSelectRoot size="sm" className="glass-card" borderRadius="10px" overflow="hidden">
             <NativeSelectField
               value={timeRange}
               onChange={handleTimeRangeChange}
+              css={{
+                background: "rgba(255,255,255,0.7)",
+                backdropFilter: "blur(12px)",
+              }}
             >
               <option value={TimeRange.SEVEN_DAYS}>Past 7 days</option>
               <option value={TimeRange.THIRTY_DAYS}>Past 30 days</option>
@@ -173,58 +204,110 @@ const PostsTab = () => {
             </NativeSelectField>
           </NativeSelectRoot>
         </HStack>
-        <Text fontSize="sm" color="gray.500">
+        <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           Last updated at {new Date().toLocaleTimeString()}
         </Text>
       </Flex>
 
-      <Box p={4} boxShadow="md" bg="white" rounded="8px">
+      <Box className="glass-card" p={6} borderRadius="16px" mb={6}>
         <Grid
           templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
           gap={6}
-          marginBottom={6}
+          mb={6}
         >
-          <Stat.Root>
-            <Stat.Label>Total Impressions</Stat.Label>
-            <Stat.ValueText>
-              {postsData.totalImpressions.toLocaleString()}
-            </Stat.ValueText>
-          </Stat.Root>
-          <Stat.Root>
-            <Stat.Label>Total Engagements</Stat.Label>
-            <Stat.ValueText>
-              {postsData.totalEngagements.toLocaleString()}
-            </Stat.ValueText>
-          </Stat.Root>
+          {[
+            { label: "Total Impressions", value: postsData.totalImpressions },
+            { label: "Total Engagements", value: postsData.totalEngagements },
+          ].map((stat) => (
+            <Box
+              key={stat.label}
+              p={4}
+              borderRadius="12px"
+              css={{
+                background: "rgba(255,255,255,0.5)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Text fontSize="13px" fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                {stat.label}
+              </Text>
+              <Text
+                fontSize="3xl"
+                fontWeight={800}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {stat.value.toLocaleString()}
+              </Text>
+            </Box>
+          ))}
         </Grid>
         <Box height="300px">
           <Line data={chartData} options={chartOptions} />
         </Box>
       </Box>
 
-      <Box mt={8} p={4} boxShadow="md" bg="white" rounded="8px">
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+      <Box className="glass-card" p={6} borderRadius="16px">
+        <Text fontSize="md" fontWeight={700} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Top Performing Posts
         </Text>
-        <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
-          {postsData.topPerformingPosts.map((post) => (
-            <Box key={post.id} p={4} bg="gray.50" borderRadius="md">
-              <Text fontWeight="bold" lineClamp={2} mb={2}>
+        <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={4}>
+          {postsData.topPerformingPosts.map((post: any) => (
+            <Box
+              key={post.id}
+              p={4}
+              borderRadius="12px"
+              css={{
+                background: "rgba(255,255,255,0.5)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.5)",
+              }}
+            >
+              <Text
+                fontWeight={700}
+                lineClamp={2}
+                mb={2}
+                css={{ color: "hsl(222.2, 47.4%, 11.2%)", fontSize: "14px" }}
+              >
                 {post.title}
               </Text>
-              <Flex justifyContent="space-between" mt={2}>
-                <Stat.Root>
-                  <Stat.Label>Impressions</Stat.Label>
-                  <Stat.ValueText>
+              <Flex justifyContent="space-between" mt={3}>
+                <Box>
+                  <Text fontSize="11px" fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    Impressions
+                  </Text>
+                  <Text
+                    fontWeight={700}
+                    css={{
+                      background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
                     {post.impressions.toLocaleString()}
-                  </Stat.ValueText>
-                </Stat.Root>
-                <Stat.Root>
-                  <Stat.Label>Engagements</Stat.Label>
-                  <Stat.ValueText>
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="11px" fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+                    Engagements
+                  </Text>
+                  <Text
+                    fontWeight={700}
+                    css={{
+                      background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
                     {post.engagements.toLocaleString()}
-                  </Stat.ValueText>
-                </Stat.Root>
+                  </Text>
+                </Box>
               </Flex>
             </Box>
           ))}

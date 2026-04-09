@@ -1,11 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Stack, Text, HStack, Link } from "@chakra-ui/react";
+import { Stack, Text, HStack, Link, Flex } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { Creator } from "@/lib/backend-services/creator-service";
 import { useCreatorPosts } from "@/lib/backend-services/creator-service";
-// import { useCreatorMemberships } from "@/lib/backend-services/subscription-service";
 import api from "@/lib/api";
 import { toaster } from "@/components/ui/toaster";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -21,7 +20,6 @@ const platformIcons = [
   { icon: "ic:baseline-tiktok", title: "Tiktok" },
 ];
 
-// Helper function to get the icon for a platform
 const getIconForPlatform = (platform: string) => {
   const normalizedPlatform = platform.toLowerCase().trim();
   const match = platformIcons.find((item) =>
@@ -42,6 +40,7 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
   const postCount = posts?.length || 0;
   const { user } = useAuth();
   const router = useRouter();
+
   useEffect(() => {
     const fetchCreatorSocialLinks = async () => {
       try {
@@ -95,13 +94,21 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
       justifyContent="center"
       gap={2}
     >
-      <Text fontWeight={600} fontSize="xl">
+      <Text
+        fontWeight={700}
+        fontSize="xl"
+        css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+      >
         {creator.creatorUsername}
       </Text>
-      <Text fontSize="sm" maxW="300px" color="star.600">
+      <Text
+        fontSize="sm"
+        maxW="300px"
+        css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+      >
         {creator.creatorHeadline || "No description provided."}
       </Text>
-      <Text fontSize="sm" fontWeight={600} maxW="300px">
+      <Text fontSize="sm" fontWeight={600} css={{ color: "hsl(211, 71%, 43%)" }}>
         {postCount} {postCount === 1 ? "Post" : "Posts"}
       </Text>
 
@@ -114,6 +121,8 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.platform}
+              _hover={{ color: "hsl(211, 71%, 43%)" }}
+              transition="all 0.15s ease"
             >
               <Icon icon={getIconForPlatform(link.platform)} fontSize="20px" />
             </Link>
@@ -127,6 +136,13 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
           onClick={handleJoinForFree}
           loading={isLoading}
           loadingText="Joining..."
+          mt={2}
+          css={{
+            background: "var(--gradient-primary)",
+            borderRadius: "12px",
+            fontWeight: 600,
+            transition: "all 0.15s ease",
+          }}
         >
           Join for free
         </Button>

@@ -64,7 +64,7 @@ export default function ClientAuthCheck({
 			left="0"
 			right="0"
 			bottom="0"
-			bg="white"
+			className="glass-card"
 			zIndex={999}
 		>
 			<Center minH="100vh">
@@ -90,7 +90,7 @@ export default function ClientAuthCheck({
 							content
 						</Text>
 						<Button
-							colorScheme="blue"
+							className="btn-gradient"
 							onClick={() => router.push(`/creator/${creatorUsername}`)}
 						>
 							View Membership Options
