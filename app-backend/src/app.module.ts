@@ -23,6 +23,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
 import { PushNotificationsModule } from './push-notifications/push-notifications.module';
 import { ReportsModule } from './reports/reports.module';
 import { AdminModule } from './admin/admin.module';
+import { ServerStatusModule } from './server-status/server-status.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AdminModule } from './admin/admin.module';
     PushNotificationsModule,
     ReportsModule,
     AdminModule,
+    ServerStatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
