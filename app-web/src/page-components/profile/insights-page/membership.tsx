@@ -4,7 +4,7 @@ import { Box, Flex, Text, HStack, Grid, Spinner, Stat } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
 import { branding } from "@/config/branding";
 import {
-  ChartJS,
+  Chart,
   BarElement,
   PointElement,
   LinearScale,
@@ -24,7 +24,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMembershipInsights } from "@/lib/backend-services/insights-service";
 import { TimeRange } from "@/typings/insights";
 
-ChartJS.register(
+Chart.register(
   BarElement,
   PointElement,
   LinearScale,

@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { branding } from "@/config/branding";
 import {
+  Chart,
   LineElement,
   PointElement,
   LinearScale,
@@ -12,10 +13,9 @@ import {
   CategoryScale,
   Filler,
   Legend,
-  ChartJS,
 } from "chart.js";
 
-ChartJS.register(
+Chart.register(
   LineElement,
   PointElement,
   LinearScale,

@@ -13,7 +13,7 @@ import {
 import { Line, Bar } from "react-chartjs-2";
 import { branding } from "@/config/branding";
 import {
-  ChartJS,
+  Chart,
   LineElement,
   PointElement,
   LinearScale,
@@ -34,7 +34,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchEarningsInsights } from "@/lib/backend-services/insights-service";
 import { TimeRange } from "@/typings/insights";
 
-ChartJS.register(
+Chart.register(
   LineElement,
   PointElement,
   LinearScale,
