@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -24,13 +23,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import {
   MoreHorizontal,
   Search,
   Eye,
@@ -38,20 +30,15 @@ import {
   UserCheck,
   ChevronLeft,
   ChevronRight,
-  Loader2,
   User,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import {
-  getMembers,
-  getMemberById,
-  deactivateMember,
-  activateMember,
-} from '@/lib/services';
-import type { Member, MemberDetail } from '@/types';
+import { getMembers, deactivateMember, activateMember } from '@/lib/services';
+import { MemberDetailDialog } from '@/components/dialogs';
+import type { Member } from '@/types';
 
 function StatusBadge({ status }: { status: string }) {
   return (
@@ -74,157 +61,6 @@ function SubscriptionBadge({ status }: { status: string }) {
   };
   const c = config[status as keyof typeof config] || config.cancelled;
   return <Badge className={cn('text-xs font-medium border', c.class)}>{c.label}</Badge>;
-}
-
-function MemberDetailDialog({
-  member,
-  open,
-  onClose,
-  onAction,
-}: {
-  member: Member | null;
-  open: boolean;
-  onClose: () => void;
-  onAction: (id: string, action: string) => Promise<void>;
-}) {
-  const { toast } = useToast();
-  const [detail, setDetail] = useState<MemberDetail | null>(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (open && member) {
-      setLoadingDetail(true);
-      getMemberById(member.id || (member as any)._id)
-        .then(setDetail)
-        .catch(() => toast({ title: 'Failed to load member details', variant: 'destructive' }))
-        .finally(() => setLoadingDetail(false));
-    }
-  }, [open, member]);
-
-  const handleAction = async (action: string) => {
-    if (!detail) return;
-    const id = detail.id || (detail as any)._id;
-    setLoading(true);
-    try {
-      await onAction(id, action);
-      onClose();
-    } catch {
-      toast({ title: `${action} failed`, variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const d = detail;
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Member Details</DialogTitle>
-          <DialogDescription>Full profile information for this member.</DialogDescription>
-        </DialogHeader>
-        {loadingDetail ? (
-          <div className="space-y-3">
-            <Skeleton className="h-20 w-full rounded-xl" />
-            <Skeleton className="h-32 w-full rounded-xl" />
-          </div>
-        ) : d ? (
-          <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 blur-md" />
-                <Avatar className="h-16 w-16 ring-2 ring-white dark:ring-gray-800">
-                  <AvatarImage src={d.profilePicture || ''} />
-                  <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold text-lg">
-                    {(d.displayName || d.firstName || 'M').charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-lg truncate">
-                  {d.displayName || `${d.firstName || ''} ${d.lastName || ''}`.trim() || 'Unknown'}
-                </h3>
-                <p className="text-sm text-muted-foreground truncate">{d.email}</p>
-                <div className="mt-1.5">
-                  <StatusBadge status={d.isDeactivated ? 'inactive' : 'active'} />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {d.countryOfResidence && (
-                <div className="rounded-xl border p-3.5 glass-card-static">
-                  <p className="text-xs text-muted-foreground mb-1">Country</p>
-                  <p className="font-medium text-sm">{d.countryOfResidence}</p>
-                </div>
-              )}
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Member Since</p>
-                <p className="font-medium text-sm">
-                  {d.createdAt
-                    ? new Date(d.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                    : '-'}
-                </p>
-              </div>
-            </div>
-
-            {d.subscriptions && d.subscriptions.length > 0 ? (
-              <div className="rounded-xl border glass-card-static">
-                <div className="px-3.5 py-2.5 border-b border-border/50">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subscriptions</p>
-                </div>
-                <div className="divide-y divide-border/30">
-                  {d.subscriptions.slice(0, 5).map((sub) => (
-                    <div key={sub.id} className="flex items-center justify-between p-3.5">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={sub.creator?.profilePicture || ''} />
-                          <AvatarFallback className="text-xs bg-gradient-accent text-slate-900 dark:text-white">
-                            <User className="h-4 w-4" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="text-sm font-medium">
-                            {sub.creator?.displayName || sub.creator?.creatorUsername || 'Unknown'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">{sub.membership?.name || '-'}</p>
-                        </div>
-                      </div>
-                      <div className="text-right shrink-0 ml-4">
-                        <p className="text-sm font-bold">${(sub.monthlyRate || 0).toFixed(2)}<span className="text-xs font-normal text-muted-foreground">/mo</span></p>
-                        <SubscriptionBadge status={sub.status} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="rounded-xl border p-6 glass-card-static text-center">
-                <p className="text-sm text-muted-foreground">No active subscriptions.</p>
-              </div>
-            )}
-
-            <div className="flex gap-2 pt-2 border-t border-border/50">
-              {d.isDeactivated ? (
-                <Button size="sm" onClick={() => handleAction('activate')} disabled={loading} className="btn-gradient">
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserCheck className="h-4 w-4" />}
-                  Activate Member
-                </Button>
-              ) : (
-                <Button size="sm" variant="destructive" onClick={() => handleAction('deactivate')} disabled={loading}>
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserX className="h-4 w-4" />}
-                  Deactivate Member
-                </Button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <p className="text-muted-foreground text-center py-8">No data available.</p>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
 }
 
 const STATUS_TABS = [
@@ -276,7 +112,6 @@ function MembersPageInner() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
 
   const page = Number(searchParams.get('page') || '1');
@@ -457,7 +292,7 @@ function MembersPageInner() {
                         <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
                           <DropdownMenuLabel className="text-xs text-muted-foreground">Actions</DropdownMenuLabel>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => { setSelectedMember(member); setDialogOpen(true); }} className="rounded-lg cursor-pointer hover:bg-primary/5">
+                          <DropdownMenuItem onClick={() => setSelectedMember(member)} className="rounded-lg cursor-pointer hover:bg-primary/5">
                             <Eye className="mr-2 h-4 w-4 text-muted-foreground" /> View Details
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
@@ -503,9 +338,8 @@ function MembersPageInner() {
 
       <MemberDetailDialog
         member={selectedMember}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onAction={handleAction}
+        onClose={() => setSelectedMember(null)}
+        onRefresh={load}
       />
     </>
   );

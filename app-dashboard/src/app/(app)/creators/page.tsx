@@ -23,13 +23,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import {
   MoreHorizontal,
   Search,
   CheckCircle,
@@ -39,7 +32,6 @@ import {
   Eye,
   ChevronLeft,
   ChevronRight,
-  Loader2,
   Users,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -48,13 +40,13 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import {
   getCreators,
-  getCreatorById,
   approveCreator,
   rejectCreator,
   suspendCreator,
   activateCreator,
 } from '@/lib/services';
-import type { Creator, CreatorDetail, CreatorStatus } from '@/types';
+import { CreatorDetailDialog } from '@/components/dialogs';
+import type { Creator, CreatorStatus } from '@/types';
 
 function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
   const config = {
@@ -71,187 +63,6 @@ function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
   );
 }
 
-function CreatorDetailDialog({
-  creator,
-  open,
-  onClose,
-  onAction,
-}: {
-  creator: CreatorDetail | null;
-  open: boolean;
-  onClose: () => void;
-  onAction: (id: string, action: string) => Promise<void>;
-}) {
-  const [detail, setDetail] = useState<CreatorDetail | null>(creator);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    if (open && creator) {
-      setDetail(creator);
-      setLoadingDetail(true);
-      getCreatorById(creator.id || (creator as any)._id)
-        .then(setDetail)
-        .catch(() => toast({ title: 'Failed to load creator details', variant: 'destructive' }))
-        .finally(() => setLoadingDetail(false));
-    }
-  }, [open, creator]);
-
-  const handleAction = async (action: string) => {
-    if (!detail) return;
-    const id = detail.id || (detail as any)._id;
-    setLoading(true);
-    try {
-      await onAction(id, action);
-      onClose();
-    } catch {
-      toast({ title: `Action failed`, variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const c = detail;
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Creator Details</DialogTitle>
-          <DialogDescription>Full profile information for this creator.</DialogDescription>
-        </DialogHeader>
-        {loadingDetail ? (
-          <div className="space-y-3">
-            <Skeleton className="h-20 w-full rounded-xl" />
-            <Skeleton className="h-32 w-full rounded-xl" />
-            <Skeleton className="h-16 w-full rounded-xl" />
-          </div>
-        ) : c ? (
-          <div className="space-y-5">
-            {/* Profile header */}
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 blur-md" />
-                <Avatar className="h-16 w-16 ring-2 ring-white dark:ring-gray-800">
-                  <AvatarImage src={c.profilePicture || ''} />
-                  <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold text-lg">
-                    {(c.displayName || c.creatorUsername || 'C').charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-lg truncate">
-                  {c.displayName || c.creatorUsername || 'Unknown'}
-                </h3>
-                <p className="text-sm text-muted-foreground truncate">{c.email}</p>
-                {c.creatorUsername && (
-                  <p className="text-xs text-muted-foreground">@{c.creatorUsername}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Status</p>
-                <CreatorStatusBadge status={c.creatorStatus} />
-              </div>
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Stripe</p>
-                <Badge className={cn(
-                  'text-xs font-medium',
-                  c.hasCompletedStripeOnboarding
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
-                    : 'bg-muted text-muted-foreground border border-border'
-                )}>
-                  {c.hasCompletedStripeOnboarding ? 'Onboarded' : 'Not Onboarded'}
-                </Badge>
-              </div>
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Subscribers</p>
-                <p className="font-bold text-lg">{c.subscriberCount ?? '-'}</p>
-              </div>
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Posts</p>
-                <p className="font-bold text-lg">{c.postCount ?? '-'}</p>
-              </div>
-              <div className="rounded-xl border p-3.5 glass-card-static col-span-2">
-                <p className="text-xs text-muted-foreground mb-1">Available Balance</p>
-                <p className="font-bold text-emerald-600 dark:text-emerald-400">
-                  ${(c.availableBalance || 0).toFixed(2)}
-                </p>
-              </div>
-            </div>
-
-            {c.bio && (
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1.5">Bio</p>
-                <p className="text-sm leading-relaxed">{c.bio}</p>
-              </div>
-            )}
-
-            {c.creatorCategory && (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Category:</span>
-                <Badge variant="outline" className="text-xs">{c.creatorCategory}</Badge>
-              </div>
-            )}
-
-            {/* Actions */}
-            <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
-              {c.creatorStatus !== 'PUBLISHED' && (
-                <Button
-                  size="sm"
-                  onClick={() => handleAction('approve')}
-                  disabled={loading}
-                  className="btn-gradient"
-                >
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-                  Approve
-                </Button>
-              )}
-              {c.creatorStatus === 'PUBLISHED' && (
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleAction('suspend')}
-                  disabled={loading}
-                >
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
-                  Suspend
-                </Button>
-              )}
-              {c.creatorStatus === 'ARCHIVED' && (
-                <Button
-                  size="sm"
-                  onClick={() => handleAction('activate')}
-                  disabled={loading}
-                  className="btn-gradient"
-                >
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-                  Reactivate
-                </Button>
-              )}
-              {(c.creatorStatus === 'DRAFT' || c.creatorStatus === 'ONBOARDING') && (
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleAction('reject')}
-                  disabled={loading}
-                >
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <XCircle className="h-4 w-4" />}
-                  Reject
-                </Button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <p className="text-muted-foreground text-center py-8">No data available.</p>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 const STATUS_TABS = [
   { value: 'all', label: 'All' },
@@ -306,8 +117,7 @@ function CreatorsPageInner() {
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 20, totalPages: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCreator, setSelectedCreator] = useState<CreatorDetail | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
 
   const page = Number(searchParams.get('page') || '1');
@@ -374,8 +184,7 @@ function CreatorsPageInner() {
   };
 
   const openDetail = (creator: Creator) => {
-    setSelectedCreator(creator as unknown as CreatorDetail);
-    setDialogOpen(true);
+    setSelectedCreator(creator);
   };
 
   return (
@@ -621,9 +430,8 @@ function CreatorsPageInner() {
 
       <CreatorDetailDialog
         creator={selectedCreator}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onAction={handleAction}
+        onClose={() => setSelectedCreator(null)}
+        onRefresh={load}
       />
     </>
   );

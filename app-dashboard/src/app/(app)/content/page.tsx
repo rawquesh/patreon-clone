@@ -16,13 +16,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -50,12 +43,12 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import {
   getPosts,
-  getPostById,
   withholdPost,
   restorePost,
   deletePost,
 } from '@/lib/services';
-import type { Post, PostDetail, PostStatus } from '@/types';
+import { PostDetailDialog } from '@/components/dialogs';
+import type { Post, PostStatus } from '@/types';
 
 function PostTypeIcon({ type }: { type: string }) {
   const configs: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
@@ -84,148 +77,6 @@ function StatusBadge({ status }: { status: PostStatus }) {
   return <Badge className={cn('text-xs font-medium border', c.class)}>{c.label}</Badge>;
 }
 
-function PostDetailDialog({
-  post,
-  open,
-  onClose,
-  onAction,
-}: {
-  post: Post | null;
-  open: boolean;
-  onClose: () => void;
-  onAction: (id: string, action: string) => Promise<void>;
-}) {
-  const { toast } = useToast();
-  const [detail, setDetail] = useState<PostDetail | null>(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (open && post) {
-      setLoadingDetail(true);
-      getPostById(post.id || (post as any)._id)
-        .then(setDetail)
-        .catch(() => toast({ title: 'Failed to load post', variant: 'destructive' }))
-        .finally(() => setLoadingDetail(false));
-    }
-  }, [open, post]);
-
-  const handleAction = async (action: string) => {
-    if (!detail) return;
-    const id = detail.id || (detail as any)._id;
-    setLoading(true);
-    try {
-      await onAction(id, action);
-      onClose();
-    } catch {
-      toast({ title: `${action} failed`, variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const p = detail || post;
-  if (!p) return null;
-
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Post Details</DialogTitle>
-          <DialogDescription>Full post information and engagement stats.</DialogDescription>
-        </DialogHeader>
-        {loadingDetail ? (
-          <div className="space-y-3">
-            <Skeleton className="h-32 w-full rounded-xl" />
-            <Skeleton className="h-48 w-full rounded-xl" />
-          </div>
-        ) : (
-          <div className="space-y-5">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={(p as any).creator?.profilePicture || ''} />
-                <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold">
-                  {(p as any).creator?.displayName?.charAt(0) || 'C'}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <p className="font-semibold">
-                  {(p as any).creator?.displayName || (p as any).creator?.creatorUsername || 'Unknown'}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
-                </p>
-              </div>
-              <StatusBadge status={p.status} />
-            </div>
-
-            {p.title && <h3 className="font-bold text-lg">{p.title}</h3>}
-
-            {p.mediaUrls && p.mediaUrls.length > 0 && (
-              <div className="grid grid-cols-2 gap-2 rounded-xl overflow-hidden">
-                {p.mediaUrls.slice(0, 4).map((url, i) => (
-                  <div key={i} className="relative aspect-video rounded-lg overflow-hidden">
-                    <Image src={url} alt={`Media ${i + 1}`} fill className="object-cover" />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {(p as any).textContent && (
-              <p className="text-sm whitespace-pre-wrap leading-relaxed">{(p as any).textContent}</p>
-            )}
-            {p.description && (
-              <p className="text-sm whitespace-pre-wrap leading-relaxed">{p.description}</p>
-            )}
-
-            {/* Engagement stats */}
-            <div className="grid grid-cols-4 gap-3">
-              {[
-                { label: 'Views', value: p.viewCount || 0, color: 'text-primary' },
-                { label: 'Likes', value: p.likeCount || 0, color: 'text-rose-500' },
-                { label: 'Comments', value: p.commentCount || 0, color: 'text-blue-500' },
-                { label: 'Shares', value: p.shareCount || 0, color: 'text-emerald-500' },
-              ].map((stat) => (
-                <div key={stat.label} className="rounded-xl border p-3.5 glass-card-static text-center">
-                  <p className={cn('text-xl font-bold', stat.color)}>{stat.value.toLocaleString()}</p>
-                  <p className="text-xs text-muted-foreground">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {p.tags && p.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {p.tags.map((tag: string) => (
-                  <Badge key={tag} variant="outline" className="text-xs rounded-full px-2.5 py-0.5">
-                    #{tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
-
-            <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
-              {p.status === 'published' ? (
-                <Button size="sm" variant="destructive" onClick={() => handleAction('withhold')} disabled={loading} className="rounded-lg">
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
-                  Withhold
-                </Button>
-              ) : (
-                <Button size="sm" onClick={() => handleAction('restore')} disabled={loading} className="btn-gradient rounded-lg">
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-                  Restore
-                </Button>
-              )}
-              <Button size="sm" variant="destructive" onClick={() => handleAction('delete')} disabled={loading} className="rounded-lg">
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                Delete
-              </Button>
-            </div>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 function ContentPageSkeleton() {
   return (
@@ -271,7 +122,6 @@ function ContentFeedPageInner() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
   const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all');
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
@@ -437,7 +287,7 @@ function ContentFeedPageInner() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
-                        <DropdownMenuItem onClick={() => { setSelectedPost(post); setDialogOpen(true); }} className="rounded-lg cursor-pointer hover:bg-primary/5">
+                        <DropdownMenuItem onClick={() => setSelectedPost(post)} className="rounded-lg cursor-pointer hover:bg-primary/5">
                           <EyeIcon className="mr-2 h-4 w-4 text-muted-foreground" /> View Post
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'withhold')} className="rounded-lg cursor-pointer hover:bg-amber-500/5">
@@ -510,9 +360,8 @@ function ContentFeedPageInner() {
 
       <PostDetailDialog
         post={selectedPost}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onAction={handleAction}
+        onClose={() => setSelectedPost(null)}
+        onRefresh={load}
       />
     </>
   );

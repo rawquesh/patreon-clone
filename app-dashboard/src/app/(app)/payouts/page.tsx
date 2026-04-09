@@ -9,13 +9,6 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import {
   Wallet,
   CheckCircle,
   XCircle,
@@ -25,7 +18,6 @@ import {
   ChevronRight,
   Loader2,
   Check,
-  AlertCircle,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -34,12 +26,12 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import {
   getPayouts,
-  getPayoutById,
   approvePayout,
   rejectPayout,
   getPayoutStats,
 } from '@/lib/services';
-import type { Payout, PayoutDetail, PayoutStatus, PayoutStats } from '@/types';
+import { PayoutDetailDialog } from '@/components/dialogs';
+import type { Payout, PayoutStatus, PayoutStats } from '@/types';
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
@@ -56,129 +48,6 @@ function PayoutStatusBadge({ status }: { status: PayoutStatus }) {
   return <Badge className={cn('text-xs font-medium border', c.class)}>{c.label}</Badge>;
 }
 
-function PayoutDetailDialog({
-  payout,
-  open,
-  onClose,
-}: {
-  payout: Payout | null;
-  open: boolean;
-  onClose: () => void;
-}) {
-  const { toast } = useToast();
-  const [detail, setDetail] = useState<PayoutDetail | null>(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-
-  useEffect(() => {
-    if (open && payout) {
-      setLoadingDetail(true);
-      getPayoutById(payout.id || (payout as any)._id)
-        .then(setDetail)
-        .catch(() => toast({ title: 'Failed to load payout details', variant: 'destructive' }))
-        .finally(() => setLoadingDetail(false));
-    }
-  }, [open, payout]);
-
-  const p = detail || payout;
-  if (!p) return null;
-
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Payout Details</DialogTitle>
-          <DialogDescription>Details for this payout request.</DialogDescription>
-        </DialogHeader>
-        {loadingDetail ? (
-          <div className="space-y-3">
-            <Skeleton className="h-20 w-full rounded-xl" />
-            <Skeleton className="h-32 w-full rounded-xl" />
-          </div>
-        ) : p ? (
-          <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-accent rounded-full opacity-20 blur-md" />
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={p.creator?.avatar || ''} />
-                  <AvatarFallback className="bg-gradient-accent text-slate-900 dark:text-white font-bold text-lg">
-                    {(p.creator?.name || 'C').charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-lg truncate">{p.creator?.name || 'Unknown'}</p>
-                {p.creator?.username && (
-                  <p className="text-sm text-muted-foreground">@{p.creator.username}</p>
-                )}
-              </div>
-              <PayoutStatusBadge status={p.status} />
-            </div>
-
-            {/* Amount highlight */}
-            <div className="relative overflow-hidden rounded-2xl border border-border/50 glass-card-static py-5 text-center">
-              <div className="absolute inset-0 bg-gradient-primary/5" />
-              <p className="relative text-3xl font-black tracking-tight text-gradient">
-                {formatCurrency(p.amount)}
-              </p>
-              <p className="relative text-xs text-muted-foreground mt-1">Payout Amount</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl border p-3.5 glass-card-static">
-                <p className="text-xs text-muted-foreground mb-1">Requested</p>
-                <p className="font-medium text-sm">
-                  {p.createdAt
-                    ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                    : '-'}
-                </p>
-              </div>
-              {p.completedAt && (
-                <div className="rounded-xl border p-3.5 glass-card-static">
-                  <p className="text-xs text-muted-foreground mb-1">Processed</p>
-                  <p className="font-medium text-sm">
-                    {new Date(p.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </p>
-                </div>
-              )}
-              {p.stripeTransferId && (
-                <div className="rounded-xl border p-3.5 glass-card-static col-span-2">
-                  <p className="text-xs text-muted-foreground mb-1">Stripe Transfer ID</p>
-                  <p className="text-xs font-mono break-all">{p.stripeTransferId}</p>
-                </div>
-              )}
-              {p.failureReason && (
-                <div className="rounded-xl border p-3.5 glass-card-static col-span-2 border-rose-200 dark:border-rose-800">
-                  <div className="flex items-center gap-2 mb-1">
-                    <AlertCircle className="h-3 w-3 text-rose-500" />
-                    <p className="text-xs text-muted-foreground">Failure Reason</p>
-                  </div>
-                  <p className="text-sm text-rose-600 dark:text-rose-400">{p.failureReason}</p>
-                </div>
-              )}
-              {detail?.creator && (
-                <>
-                  <div className="rounded-xl border p-3.5 glass-card-static">
-                    <p className="text-xs text-muted-foreground mb-1">Available Balance</p>
-                    <p className="font-bold text-emerald-600 dark:text-emerald-400">
-                      {formatCurrency(detail.creator.availableBalance || 0)}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border p-3.5 glass-card-static">
-                    <p className="text-xs text-muted-foreground mb-1">Lifetime Earnings</p>
-                    <p className="font-bold">
-                      {formatCurrency(detail.creator.lifetimeEarnings || 0)}
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        ) : null}
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 const STATUS_TABS = [
   { value: 'pending', label: 'Pending', icon: Clock },
@@ -236,7 +105,6 @@ function PayoutsPageInner() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPayout, setSelectedPayout] = useState<Payout | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(searchParams.get('status') || 'pending');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -471,7 +339,7 @@ function PayoutsPageInner() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => { setSelectedPayout(payout); setDialogOpen(true); }}
+                          onClick={() => setSelectedPayout(payout)}
                           className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
                         >
                           <Eye className="h-4 w-4" />
@@ -537,8 +405,7 @@ function PayoutsPageInner() {
 
       <PayoutDetailDialog
         payout={selectedPayout}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        onClose={() => setSelectedPayout(null)}
       />
     </>
   );
