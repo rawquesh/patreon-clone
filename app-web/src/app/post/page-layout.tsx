@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth.provider";
 import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import { branding } from "@/config/branding";
 
 export const PageLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoadingUser } = useAuth();
