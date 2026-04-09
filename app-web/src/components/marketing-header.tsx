@@ -57,33 +57,29 @@ const Desktop = () => {
     >
       <Box maxW="1200px" mx="auto" px={{ base: 4, md: 6 }} py={3}>
         <Flex justify="space-between" align="center">
-          <HStack gap={3}>
-            <Box
-              w="36px"
-              h="36px"
-              borderRadius="10px"
-              background="var(--gradient-primary)"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexShrink={0}
-            >
-              <Image src="/icons/logo.png" alt="logo" boxSize="22px" />
-            </Box>
-            <Heading
-              size="lg"
-              fontWeight={700}
-              css={{
-                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                fontSize: "1.25rem",
-              }}
-            >
-              {branding.name}
-            </Heading>
-          </HStack>
+          <Link href="/">
+            <HStack gap={3} cursor="pointer">
+              <Image
+                src="/icons/logo.png"
+                alt="logo"
+                boxSize="36px"
+                borderRadius="10px"
+              />
+              <Heading
+                size="lg"
+                fontWeight={700}
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  fontSize: "1.25rem",
+                }}
+              >
+                {branding.name}
+              </Heading>
+            </HStack>
+          </Link>
           <HStack gap={{ base: 4, md: 8 }} display={{ base: "none", md: "flex" }}>
             <Link href="/">
               <Text
@@ -183,33 +179,29 @@ const Mobile = () => {
         maxW="100vw"
         py={3}
       >
-        <HStack gap={2}>
-          <Box
-            w="32px"
-            h="32px"
-            borderRadius="8px"
-            background="var(--gradient-primary)"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexShrink={0}
-          >
-            <Image src="/icons/logo.png" alt="logo" boxSize="20px" />
-          </Box>
-          <Heading
-            size="lg"
-            fontWeight={700}
-            css={{
-              background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontSize: "1.1rem",
-            }}
-          >
-            {branding.name}
-          </Heading>
-        </HStack>
+        <Link href="/">
+          <HStack gap={2} cursor="pointer">
+            <Image
+              src="/icons/logo.png"
+              alt="logo"
+              boxSize="32px"
+              borderRadius="8px"
+            />
+            <Heading
+              size="lg"
+              fontWeight={700}
+              css={{
+                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                fontSize: "1.1rem",
+              }}
+            >
+              {branding.name}
+            </Heading>
+          </HStack>
+        </Link>
         <DrawerRoot
           closeOnInteractOutside={true}
           closeOnEscape={true}
@@ -233,18 +225,12 @@ const Mobile = () => {
               <DrawerCloseTrigger />
             </DrawerHeader>
             <HStack gap={2} mb={8}>
-              <Box
-                w="32px"
-                h="32px"
+              <Image
+                src="/icons/logo.png"
+                alt="logo"
+                boxSize="32px"
                 borderRadius="8px"
-                background="var(--gradient-primary)"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexShrink={0}
-              >
-                <Image src="/icons/logo.png" alt="logo" boxSize="20px" />
-              </Box>
+              />
               <Heading
                 size="lg"
                 fontWeight={700}

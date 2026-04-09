@@ -9,6 +9,7 @@ import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import { IconButton, Input, Stack, Text, Box, Flex, VStack } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -110,32 +111,29 @@ const LoginPages: React.FC = () => {
 
         <VStack gap={5}>
           {/* Logo + Brand */}
-          <Flex alignItems="center" gap={3} mb={2}>
-            <Box
-              w="44px"
-              h="44px"
-              borderRadius="12px"
-              background="var(--gradient-primary)"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexShrink={0}
-            >
-              <Box as="img" src="/icons/logo.png" alt="logo" boxSize="26px" />
-            </Box>
-            <Text
-              fontWeight={700}
-              fontSize="xl"
-              css={{
-                background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              {branding.name}
-            </Text>
-          </Flex>
+          <Link href="/">
+            <Flex alignItems="center" gap={3} mb={2} cursor="pointer">
+              <Box
+                as="img"
+                src="/icons/logo.png"
+                alt="logo"
+                boxSize="44px"
+                borderRadius="12px"
+              />
+              <Text
+                fontWeight={700}
+                fontSize="xl"
+                css={{
+                  background: "linear-gradient(135deg, hsl(211, 71%, 43%), hsl(335, 27%, 64%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {branding.name}
+              </Text>
+            </Flex>
+          </Link>
 
           <Text
             fontSize="xl"

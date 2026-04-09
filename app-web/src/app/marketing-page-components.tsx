@@ -121,24 +121,20 @@ export function FeaturesSection() {
             (tabKey) => (
               <Button
                 key={tabKey}
-                bg={activeTab === tabKey ? branding.colors.primary : branding.colors.bgWarm}
-                color={activeTab === tabKey ? "white" : branding.colors.star}
-                boxShadow={
-                  activeTab === tabKey
-                    ? "0 4px 12px rgba(29, 112, 191, 0.25)"
-                    : "none"
-                }
+                className={activeTab === tabKey ? "btn-gradient" : ""}
+                bg={activeTab === tabKey ? undefined : branding.colors.bgWarm}
+                color={activeTab === tabKey ? undefined : branding.colors.textDark}
                 onClick={() => setActiveTab(tabKey)}
-                _hover={{
-                  bg:
-                    activeTab !== tabKey
-                      ? "rgba(29, 112, 191, 0.1)"
-                      : undefined,
+                css={{
+                  borderRadius: "9999px",
+                  fontWeight: 600,
+                  px: 6,
+                  py: 5,
+                  fontSize: "0.9rem",
+                  "& > span": { position: "relative", zIndex: 1 },
                 }}
-                px={6}
-                py={5}
               >
-                {tabKey}
+                <span>{tabKey}</span>
               </Button>
             )
           )}

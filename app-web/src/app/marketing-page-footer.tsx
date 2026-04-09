@@ -70,7 +70,7 @@ export const MarketingPageFooter = () => {
                   {[
                     { href: "/", label: "Home" },
                     { href: "/pricing", label: "Pricing" },
-                    { href: "#", label: "Communities" },
+                    { href: "/community", label: "Communities" },
                   ].map((item) => (
                     <Link
                       key={item.href}

@@ -157,7 +157,7 @@ const SupportPage: React.FC = () => {
                     gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                     gap={4}
                   >
-                    <Box>
+                    <Field.Root>
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
@@ -173,9 +173,9 @@ const SupportPage: React.FC = () => {
                         className="glass-input"
                         required
                       />
-                    </Box>
+                    </Field.Root>
 
-                    <Box>
+                    <Field.Root>
                       <Field.Label
                         fontSize="sm"
                         fontWeight="600"
@@ -191,10 +191,10 @@ const SupportPage: React.FC = () => {
                         className="glass-input"
                         required
                       />
-                    </Box>
+                    </Field.Root>
                   </Box>
 
-                  <Box>
+                  <Field.Root>
                     <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Email Address
                     </Field.Label>
@@ -207,9 +207,9 @@ const SupportPage: React.FC = () => {
                       className="glass-input"
                       required
                     />
-                  </Box>
+                  </Field.Root>
 
-                  <Box>
+                  <Field.Root>
                     <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Phone Number
                     </Field.Label>
@@ -222,9 +222,9 @@ const SupportPage: React.FC = () => {
                       className="glass-input"
                       required
                     />
-                  </Box>
+                  </Field.Root>
 
-                  <Box>
+                  <Field.Root>
                     <Field.Label fontSize="sm" fontWeight="600" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                       Message
                     </Field.Label>
@@ -238,7 +238,7 @@ const SupportPage: React.FC = () => {
                       required
                       resize="vertical"
                     />
-                  </Box>
+                  </Field.Root>
 
                   {submitStatus.type && (
                     <Box
