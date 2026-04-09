@@ -103,18 +103,18 @@ const AboutPage: React.FC = () => {
                 as="h1"
                 fontSize="4xl"
                 fontWeight="bold"
-                color=branding.colors.textHeader
+                color={branding.colors.textHeader}
                 mb="6"
               >
                 Our Mission
               </Heading>
-              <Text color=branding.colors.star fontSize="xl" mb="8">
+              <Text color={branding.colors.star} fontSize="xl" mb="8">
                 Patreon Clone empowers Jewish creators to share their voices, build
                 thriving communities, and generate meaningful connections and
                 sustainable income.
               </Text>
               <Link href={"/pricing"}>
-                <Button bg=branding.colors.primaryDark color="white" _hover={{ bg: branding.colors.primary }}>
+                <Button bg={branding.colors.primaryDark} color="white" _hover={{ bg: branding.colors.primary }}>
                   <ChevronRight size={16} />
                   <Text>Start Creating</Text>
                 </Button>
@@ -136,12 +136,12 @@ const AboutPage: React.FC = () => {
                   as="h2"
                   fontSize="3xl"
                   fontWeight="bold"
-                  color=branding.colors.textHeader
+                  color={branding.colors.textHeader}
                   mb="6"
                 >
                   Our Story
                 </Heading>
-                <Stack gap={4} color=branding.colors.star>
+                <Stack gap={4} color={branding.colors.star}>
                   <Text>
                     Patreon Clone was founded with a clear vision: to create a
                     platform that specifically addresses the needs of Jewish
@@ -181,19 +181,19 @@ const AboutPage: React.FC = () => {
         </Box>
 
         {/* Our Values */}
-        <Box as="section" py="20" bg=branding.colors.bgLight>
+        <Box as="section" py="20" bg={branding.colors.bgLight}>
           <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }}>
             <VStack textAlign="center" mb="16">
               <Heading
                 as="h2"
                 fontSize="3xl"
                 fontWeight="bold"
-                color=branding.colors.textHeader
+                color={branding.colors.textHeader}
                 mb="4"
               >
                 Our Values
               </Heading>
-              <Text color=branding.colors.star fontSize="lg" maxW="3xl" mx="auto">
+              <Text color={branding.colors.star} fontSize="lg" maxW="3xl" mx="auto">
                 At Patreon Clone, our work is guided by a set of core principles that
                 shape everything we do
               </Text>
@@ -226,12 +226,12 @@ const AboutPage: React.FC = () => {
                     as="h3"
                     fontSize="xl"
                     fontWeight="bold"
-                    color=branding.colors.textHeader
+                    color={branding.colors.textHeader}
                     mb="3"
                   >
                     {value.title}
                   </Heading>
-                  <Text color=branding.colors.star>{value.description}</Text>
+                  <Text color={branding.colors.star}>{value.description}</Text>
                 </GridItem>
               ))}
             </Grid>
@@ -246,12 +246,12 @@ const AboutPage: React.FC = () => {
                 as="h2"
                 fontSize="3xl"
                 fontWeight="bold"
-                color=branding.colors.textHeader
+                color={branding.colors.textHeader}
                 mb="4"
               >
                 Our Team
               </Heading>
-              <Text color=branding.colors.star fontSize="lg" maxW="3xl" mx="auto">
+              <Text color={branding.colors.star} fontSize="lg" maxW="3xl" mx="auto">
                 Patreon Clone is built by a diverse team of Jewish creators,
                 technologists, and community builders
               </Text>
@@ -281,14 +281,14 @@ const AboutPage: React.FC = () => {
                       as="h3"
                       fontSize="xl"
                       fontWeight="bold"
-                      color=branding.colors.textHeader
+                      color={branding.colors.textHeader}
                     >
                       {member.name}
                     </Heading>
-                    <Text color=branding.colors.accent fontWeight="medium" mb="3">
+                    <Text color={branding.colors.accent} fontWeight="medium" mb="3">
                       {member.role}
                     </Text>
-                    <Text color=branding.colors.star>{member.bio}</Text>
+                    <Text color={branding.colors.star}>{member.bio}</Text>
                   </Box>
                 </GridItem>
               ))}
@@ -297,7 +297,7 @@ const AboutPage: React.FC = () => {
         </Box> */}
 
         {/* CTA Section */}
-        <Box as="section" py="20" bg=branding.colors.primary color="white">
+        <Box as="section" py="20" bg={branding.colors.primary} color="white">
           <Container
             maxW="7xl"
             px={{ base: 4, sm: 6, lg: 8 }}
@@ -306,14 +306,14 @@ const AboutPage: React.FC = () => {
             <Heading as="h2" fontSize="3xl" fontWeight="bold" mb="6">
               Join Our Growing Community
             </Heading>
-            <Text color=branding.colors.lightBlue fontSize="xl" mb="8" maxW="2xl" mx="auto">
+            <Text color={branding.colors.lightBlue} fontSize="xl" mb="8" maxW="2xl" mx="auto">
               Become part of the Patreon Clone family and help us build the future of
               Jewish creator communities
             </Text>
             <Link href={"/pricing"}>
               <Button
                 bg="white"
-                color=branding.colors.primaryDark
+                color={branding.colors.primaryDark}
                 _hover={{ bg: branding.colors.desertLight, color: branding.colors.accent }}
               >
                 Get Started Today

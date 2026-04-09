@@ -34,7 +34,7 @@ const FreeMembershipCard: React.FC<Props> = ({ creatorId, creatorName }) => {
         position="absolute"
         top={0}
         right={0}
-        bg=branding.colors.success
+        bg={branding.colors.success}
         color="white"
         px={2}
         py={1}

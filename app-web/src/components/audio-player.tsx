@@ -111,7 +111,7 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
           as="button"
           w="12"
           h="12"
-          bg=branding.colors.primary
+          bg={branding.colors.primary}
           borderRadius="full"
           onClick={handlePlayPause}
           color="white"
@@ -245,7 +245,7 @@ const CustomAudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
         as="button"
         w="12"
         h="12"
-        bg=branding.colors.primary
+        bg={branding.colors.primary}
         borderRadius="full"
         onClick={handlePlayPause}
         color="white"
