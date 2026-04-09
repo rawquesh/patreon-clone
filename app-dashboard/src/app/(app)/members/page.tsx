@@ -136,7 +136,7 @@ function MemberDetailDialog({
                 <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 blur-md" />
                 <Avatar className="h-16 w-16 ring-2 ring-white dark:ring-gray-800">
                   <AvatarImage src={d.profilePicture || ''} />
-                  <AvatarFallback className="bg-gradient-primary text-white font-bold text-lg">
+                  <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold text-lg">
                     {(d.displayName || d.firstName || 'M').charAt(0)}
                   </AvatarFallback>
                 </Avatar>
@@ -180,7 +180,7 @@ function MemberDetailDialog({
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={sub.creator?.profilePicture || ''} />
-                          <AvatarFallback className="text-xs bg-gradient-accent text-white">
+                          <AvatarFallback className="text-xs bg-gradient-accent text-slate-900 dark:text-white">
                             <User className="h-4 w-4" />
                           </AvatarFallback>
                         </Avatar>
@@ -417,7 +417,7 @@ function MembersPageInner() {
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
                           <AvatarImage src={member.profilePicture || ''} />
-                          <AvatarFallback className="bg-gradient-accent text-white text-sm font-bold">
+                          <AvatarFallback className="bg-gradient-accent text-slate-900 dark:text-white text-sm font-bold">
                             {(member.displayName || member.firstName || 'M').charAt(0)}
                           </AvatarFallback>
                         </Avatar>

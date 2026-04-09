@@ -144,7 +144,7 @@ function PostDetailDialog({
             <div className="flex items-center gap-3">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={(p as any).creator?.profilePicture || ''} />
-                <AvatarFallback className="bg-gradient-primary text-white font-bold">
+                <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold">
                   {(p as any).creator?.displayName?.charAt(0) || 'C'}
                 </AvatarFallback>
               </Avatar>
@@ -418,7 +418,7 @@ function ContentFeedPageInner() {
                   <div className="flex items-center gap-3 mb-3">
                     <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
                       <AvatarImage src={(post as any).creator?.profilePicture || ''} />
-                      <AvatarFallback className="bg-gradient-primary text-white text-sm font-bold">
+                      <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white text-sm font-bold">
                         {(post as any).creator?.displayName?.charAt(0) || 'C'}
                       </AvatarFallback>
                     </Avatar>

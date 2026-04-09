@@ -76,7 +76,7 @@ function AppSidebarFooter({ adminUser, onLogout }: { adminUser: AdminUser | null
               alt="Admin"
               data-ai-hint="person avatar"
             />
-            <AvatarFallback className="bg-gradient-primary text-white text-xs font-semibold">
+            <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white text-xs font-semibold">
               {initials}
             </AvatarFallback>
           </Avatar>

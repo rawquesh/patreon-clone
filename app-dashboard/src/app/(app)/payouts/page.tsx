@@ -101,7 +101,7 @@ function PayoutDetailDialog({
                 <div className="absolute inset-0 bg-gradient-accent rounded-full opacity-20 blur-md" />
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={p.creator?.avatar || ''} />
-                  <AvatarFallback className="bg-gradient-accent text-white font-bold text-lg">
+                  <AvatarFallback className="bg-gradient-accent text-slate-900 dark:text-white font-bold text-lg">
                     {(p.creator?.name || 'C').charAt(0)}
                   </AvatarFallback>
                 </Avatar>
@@ -356,7 +356,7 @@ function PayoutsPageInner() {
                     value={tab.value}
                     className={cn(
                       'h-8 rounded-lg text-xs font-medium transition-all duration-200',
-                      'data-[state=active]:bg-gradient-primary data-[state=active]:text-white data-[state=active]:shadow-md'
+                      'data-[state=active]:bg-gradient-primary data-[state=active]:text-slate-900 dark:data-[state=active]:text-white data-[state=active]:shadow-md'
                     )}
                   >
                     <tab.icon className="h-3.5 w-3.5 mr-1.5" />
@@ -433,7 +433,7 @@ function PayoutsPageInner() {
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
                           <AvatarImage src={payout.creator?.avatar || ''} />
-                          <AvatarFallback className="bg-gradient-accent text-white text-sm font-bold">
+                          <AvatarFallback className="bg-gradient-accent text-slate-900 dark:text-white text-sm font-bold">
                             {(payout.creator?.name || 'C').charAt(0)}
                           </AvatarFallback>
                         </Avatar>

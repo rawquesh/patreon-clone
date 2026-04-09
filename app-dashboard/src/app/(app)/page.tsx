@@ -445,7 +445,7 @@ export default function DashboardPage() {
                       <TableCell className="pl-6">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/30 transition-all duration-200">
-                            <AvatarFallback className="text-xs bg-gradient-primary text-white">
+                            <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">
                               {tx.memberName.charAt(0)}
                             </AvatarFallback>
                           </Avatar>

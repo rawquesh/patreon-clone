@@ -129,7 +129,7 @@ function SubscriptionDetailDialog({
                 <div className="flex items-center gap-2 mt-1">
                   <Avatar className="h-7 w-7">
                     <AvatarImage src={s.member.avatar || ''} />
-                    <AvatarFallback className="text-xs bg-gradient-primary text-white">{s.member.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">{s.member.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
                     <p className="font-medium text-sm truncate">{s.member.name}</p>
@@ -141,7 +141,7 @@ function SubscriptionDetailDialog({
                 <p className="text-xs text-muted-foreground mb-1">Creator</p>
                 <div className="flex items-center gap-2 mt-1">
                   <Avatar className="h-7 w-7">
-                    <AvatarFallback className="text-xs bg-gradient-accent text-white">{s.creator.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-gradient-accent text-slate-900 dark:text-white">{s.creator.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <p className="font-medium text-sm truncate">{s.creator.name}</p>
                 </div>
@@ -421,7 +421,7 @@ function SubscriptionsPageInner() {
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
                           <AvatarImage src={sub.member.avatar || ''} />
-                          <AvatarFallback className="text-xs bg-gradient-primary text-white font-bold">
+                          <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white font-bold">
                             {sub.member.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>

@@ -134,7 +134,7 @@ function CreatorDetailDialog({
                 <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 blur-md" />
                 <Avatar className="h-16 w-16 ring-2 ring-white dark:ring-gray-800">
                   <AvatarImage src={c.profilePicture || ''} />
-                  <AvatarFallback className="bg-gradient-primary text-white font-bold text-lg">
+                  <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white font-bold text-lg">
                     {(c.displayName || c.creatorUsername || 'C').charAt(0)}
                   </AvatarFallback>
                 </Avatar>
@@ -473,7 +473,7 @@ function CreatorsPageInner() {
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
                           <AvatarImage src={creator.profilePicture || ''} />
-                          <AvatarFallback className="bg-gradient-primary text-white text-sm font-bold">
+                          <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white text-sm font-bold">
                             {(creator.displayName || creator.creatorUsername || 'C').charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -596,7 +596,7 @@ function CreatorsPageInner() {
                       className={cn(
                         'h-8 min-w-[32px] rounded-lg text-xs font-medium transition-all duration-200',
                         page === p
-                          ? 'bg-gradient-primary text-white shadow-md'
+                          ? 'bg-gradient-primary text-slate-900 dark:text-white shadow-md'
                           : 'text-muted-foreground hover:bg-primary/10 hover:text-primary'
                       )}
                     >
