@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -13,10 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -44,11 +42,12 @@ import {
   ImageIcon,
   Video,
   Link,
+  Eye as EyeIcon,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import {
   getPosts,
   getPostById,
@@ -59,21 +58,30 @@ import {
 import type { Post, PostDetail, PostStatus } from '@/types';
 
 function PostTypeIcon({ type }: { type: string }) {
-  const iconClass = 'h-4 w-4';
-  switch (type) {
-    case 'image': return <ImageIcon className={iconClass} />;
-    case 'video': return <Video className={iconClass} />;
-    case 'link': return <Link className={iconClass} />;
-    default: return <FileText className={iconClass} />;
-  }
+  const configs: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
+    image: { icon: <ImageIcon className="h-4 w-4" />, color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400', label: 'Image' },
+    video: { icon: <Video className="h-4 w-4" />, color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400', label: 'Video' },
+    link: { icon: <Link className="h-4 w-4" />, color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', label: 'Link' },
+    audio: { icon: <FileText className="h-4 w-4" />, color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400', label: 'Audio' },
+    text: { icon: <FileText className="h-4 w-4" />, color: 'bg-muted text-muted-foreground', label: 'Text' },
+  };
+  const c = configs[type] || configs.text;
+  return (
+    <div className={cn('inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium', c.color)}>
+      {c.icon}
+      {c.label}
+    </div>
+  );
 }
 
 function StatusBadge({ status }: { status: PostStatus }) {
-  const variant =
-    status === 'published' ? 'default'
-    : status === 'draft' ? 'secondary'
-    : 'outline';
-  return <Badge variant={variant}>{status}</Badge>;
+  const config = {
+    published: { label: 'Published', class: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
+    draft: { label: 'Draft', class: 'bg-muted text-muted-foreground border-border' },
+    archived: { label: 'Archived', class: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800' },
+  };
+  const c = config[status] || config.draft;
+  return <Badge className={cn('text-xs font-medium border', c.class)}>{c.label}</Badge>;
 }
 
 function PostDetailDialog({
@@ -121,38 +129,42 @@ function PostDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Post Details</DialogTitle>
           <DialogDescription>Full post information and engagement stats.</DialogDescription>
         </DialogHeader>
         {loadingDetail ? (
           <div className="space-y-3">
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-32 w-full rounded-xl" />
+            <Skeleton className="h-48 w-full rounded-xl" />
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="flex items-center gap-3">
-              <Avatar>
+              <Avatar className="h-12 w-12">
                 <AvatarImage src={(p as any).creator?.profilePicture || ''} />
-                <AvatarFallback>{(p as any).creator?.displayName?.charAt(0) || 'C'}</AvatarFallback>
+                <AvatarFallback className="bg-gradient-primary text-white font-bold">
+                  {(p as any).creator?.displayName?.charAt(0) || 'C'}
+                </AvatarFallback>
               </Avatar>
-              <div>
-                <p className="font-medium">{(p as any).creator?.displayName || (p as any).creator?.creatorUsername || 'Unknown'}</p>
-                <p className="text-sm text-muted-foreground">
+              <div className="flex-1">
+                <p className="font-semibold">
+                  {(p as any).creator?.displayName || (p as any).creator?.creatorUsername || 'Unknown'}
+                </p>
+                <p className="text-xs text-muted-foreground">
                   {p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
                 </p>
               </div>
               <StatusBadge status={p.status} />
             </div>
 
-            {p.title && <h3 className="font-semibold text-lg">{p.title}</h3>}
+            {p.title && <h3 className="font-bold text-lg">{p.title}</h3>}
 
             {p.mediaUrls && p.mediaUrls.length > 0 && (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 rounded-xl overflow-hidden">
                 {p.mediaUrls.slice(0, 4).map((url, i) => (
-                  <div key={i} className="relative aspect-video rounded-md overflow-hidden">
+                  <div key={i} className="relative aspect-video rounded-lg overflow-hidden">
                     <Image src={url} alt={`Media ${i + 1}`} fill className="object-cover" />
                   </div>
                 ))}
@@ -160,52 +172,50 @@ function PostDetailDialog({
             )}
 
             {(p as any).textContent && (
-              <p className="text-sm whitespace-pre-wrap">{(p as any).textContent}</p>
+              <p className="text-sm whitespace-pre-wrap leading-relaxed">{(p as any).textContent}</p>
             )}
             {p.description && (
-              <p className="text-sm whitespace-pre-wrap">{p.description}</p>
+              <p className="text-sm whitespace-pre-wrap leading-relaxed">{p.description}</p>
             )}
 
+            {/* Engagement stats */}
             <div className="grid grid-cols-4 gap-3">
-              <div className="rounded-md border p-3 text-center">
-                <p className="text-2xl font-bold">{p.viewCount || 0}</p>
-                <p className="text-xs text-muted-foreground">Views</p>
-              </div>
-              <div className="rounded-md border p-3 text-center">
-                <p className="text-2xl font-bold">{p.likeCount || 0}</p>
-                <p className="text-xs text-muted-foreground">Likes</p>
-              </div>
-              <div className="rounded-md border p-3 text-center">
-                <p className="text-2xl font-bold">{p.commentCount || 0}</p>
-                <p className="text-xs text-muted-foreground">Comments</p>
-              </div>
-              <div className="rounded-md border p-3 text-center">
-                <p className="text-2xl font-bold">{p.shareCount || 0}</p>
-                <p className="text-xs text-muted-foreground">Shares</p>
-              </div>
+              {[
+                { label: 'Views', value: p.viewCount || 0, color: 'text-primary' },
+                { label: 'Likes', value: p.likeCount || 0, color: 'text-rose-500' },
+                { label: 'Comments', value: p.commentCount || 0, color: 'text-blue-500' },
+                { label: 'Shares', value: p.shareCount || 0, color: 'text-emerald-500' },
+              ].map((stat) => (
+                <div key={stat.label} className="rounded-xl border p-3.5 glass-card-static text-center">
+                  <p className={cn('text-xl font-bold', stat.color)}>{stat.value.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
+                </div>
+              ))}
             </div>
 
             {p.tags && p.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1.5">
                 {p.tags.map((tag: string) => (
-                  <Badge key={tag} variant="outline">{tag}</Badge>
+                  <Badge key={tag} variant="outline" className="text-xs rounded-full px-2.5 py-0.5">
+                    #{tag}
+                  </Badge>
                 ))}
               </div>
             )}
 
-            <div className="flex flex-wrap gap-2 pt-2">
+            <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
               {p.status === 'published' ? (
-                <Button size="sm" variant="destructive" onClick={() => handleAction('withhold')} disabled={loading}>
+                <Button size="sm" variant="destructive" onClick={() => handleAction('withhold')} disabled={loading} className="rounded-lg">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
                   Withhold
                 </Button>
               ) : (
-                <Button size="sm" onClick={() => handleAction('restore')} disabled={loading}>
+                <Button size="sm" onClick={() => handleAction('restore')} disabled={loading} className="btn-gradient rounded-lg">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
                   Restore
                 </Button>
               )}
-              <Button size="sm" variant="destructive" onClick={() => handleAction('delete')} disabled={loading}>
+              <Button size="sm" variant="destructive" onClick={() => handleAction('delete')} disabled={loading} className="rounded-lg">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                 Delete
               </Button>
@@ -217,30 +227,35 @@ function PostDetailDialog({
   );
 }
 
+function ContentPageSkeleton() {
+  return (
+    <div className="space-y-4">
+      <PageHeader title="Content Feed" description="A global feed of all posts on the platform." />
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Card key={i} className="glass-card-static overflow-hidden">
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+              </div>
+              <Skeleton className="h-40 w-full rounded-xl" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ContentFeedPage() {
   return (
-    <Suspense fallback={
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i}>
-              <CardContent className="p-4 space-y-3">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-3 w-24" />
-                  </div>
-                </div>
-                <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<ContentPageSkeleton />}>
       <ContentFeedPageInner />
     </Suspense>
   );
@@ -304,16 +319,9 @@ function ContentFeedPageInner() {
 
   const handleAction = async (id: string, action: string) => {
     try {
-      if (action === 'withhold') {
-        await withholdPost(id);
-        toast({ title: 'Post withheld' });
-      } else if (action === 'restore') {
-        await restorePost(id);
-        toast({ title: 'Post restored' });
-      } else if (action === 'delete') {
-        await deletePost(id);
-        toast({ title: 'Post deleted' });
-      }
+      if (action === 'withhold') { await withholdPost(id); toast({ title: 'Post withheld' }); }
+      else if (action === 'restore') { await restorePost(id); toast({ title: 'Post restored' }); }
+      else if (action === 'delete') { await deletePost(id); toast({ title: 'Post deleted' }); }
       load();
     } catch (e: any) {
       toast({ title: `Action failed: ${e?.message}`, variant: 'destructive' });
@@ -323,25 +331,23 @@ function ContentFeedPageInner() {
 
   return (
     <>
-      <PageHeader
-        title="Content Feed"
-        description="A global feed of all posts on the platform."
-      >
+      <PageHeader title="Content Feed" description="A global feed of all posts on the platform." gradientTitle>
+
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search posts..."
               value={searchValue}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-9 w-48"
+              className="glass-input pl-10 h-10 rounded-xl text-sm w-44"
             />
           </div>
           <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); updateParams({ type: v, page: '1' }); }}>
-            <SelectTrigger className="w-full sm:w-[160px]">
-              <SelectValue placeholder="Filter by type" />
+            <SelectTrigger className="h-10 rounded-xl text-xs w-[140px] btn-gradient-ghost">
+              <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="glass-menu rounded-xl">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="text">Text</SelectItem>
               <SelectItem value="image">Image</SelectItem>
@@ -351,10 +357,10 @@ function ContentFeedPageInner() {
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); updateParams({ status: v, page: '1' }); }}>
-            <SelectTrigger className="w-full sm:w-[160px]">
-              <SelectValue placeholder="Filter by status" />
+            <SelectTrigger className="h-10 rounded-xl text-xs w-[140px] btn-gradient-ghost">
+              <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="glass-menu rounded-xl">
               <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="published">Published</SelectItem>
               <SelectItem value="draft">Draft</SelectItem>
@@ -365,9 +371,9 @@ function ContentFeedPageInner() {
       </PageHeader>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 stagger-children">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i}>
+            <Card key={i} className="glass-card-static overflow-hidden">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-3">
                   <Skeleton className="h-10 w-10 rounded-full" />
@@ -376,7 +382,7 @@ function ContentFeedPageInner() {
                     <Skeleton className="h-3 w-24" />
                   </div>
                 </div>
-                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-40 w-full rounded-xl" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-3/4" />
               </CardContent>
@@ -384,28 +390,37 @@ function ContentFeedPageInner() {
           ))}
         </div>
       ) : error ? (
-        <Card>
-          <CardContent className="py-8 text-center">
-            <p className="text-destructive mb-3">{error}</p>
-            <Button variant="outline" onClick={load}>Retry</Button>
+        <Card className="glass-card-static">
+          <CardContent className="py-12 text-center">
+            <p className="text-destructive font-medium mb-4">{error}</p>
+            <Button variant="outline" onClick={load} className="btn-gradient-ghost rounded-xl">Retry</Button>
           </CardContent>
         </Card>
       ) : posts.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center text-muted-foreground">
-            No posts found matching your filters.
+        <Card className="glass-card-static">
+          <CardContent className="py-16 text-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-muted/50 flex items-center justify-center">
+                <FileText className="h-7 w-7 text-muted-foreground/50" />
+              </div>
+              <p className="font-medium text-muted-foreground">No posts found</p>
+              <p className="text-sm text-muted-foreground/70">Try adjusting your filters</p>
+            </div>
           </CardContent>
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 stagger-children">
             {posts.map((post) => (
-              <Card key={post.id || (post as any)._id} className="flex flex-col">
+              <Card key={post.id || (post as any)._id} className="glass-card hover-lift overflow-hidden group">
                 <CardContent className="p-4 flex flex-col flex-1">
+                  {/* Creator info */}
                   <div className="flex items-center gap-3 mb-3">
-                    <Avatar>
+                    <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
                       <AvatarImage src={(post as any).creator?.profilePicture || ''} />
-                      <AvatarFallback>{(post as any).creator?.displayName?.charAt(0) || 'C'}</AvatarFallback>
+                      <AvatarFallback className="bg-gradient-primary text-white text-sm font-bold">
+                        {(post as any).creator?.displayName?.charAt(0) || 'C'}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm truncate">
@@ -415,54 +430,54 @@ function ContentFeedPageInner() {
                         {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '-'}
                       </p>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <PostTypeIcon type={post.type} />
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => { setSelectedPost(post); setDialogOpen(true); }}>
-                            <Eye className="mr-2 h-4 w-4" /> View Post
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'withhold')}>
-                            <Ban className="mr-2 h-4 w-4" /> Withhold
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'restore')}>
-                            <RotateCcw className="mr-2 h-4 w-4" /> Restore
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="text-destructive"
-                            onClick={() => handleAction(post.id || (post as any)._id, 'delete')}
-                          >
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
+                        <DropdownMenuItem onClick={() => { setSelectedPost(post); setDialogOpen(true); }} className="rounded-lg cursor-pointer hover:bg-primary/5">
+                          <EyeIcon className="mr-2 h-4 w-4 text-muted-foreground" /> View Post
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'withhold')} className="rounded-lg cursor-pointer hover:bg-amber-500/5">
+                          <Ban className="mr-2 h-4 w-4 text-amber-600" /> Withhold
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'restore')} className="rounded-lg cursor-pointer hover:bg-emerald-500/5">
+                          <RotateCcw className="mr-2 h-4 w-4 text-emerald-600" /> Restore
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5" onClick={() => handleAction(post.id || (post as any)._id, 'delete')}>
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
 
+                  {/* Media */}
                   {post.mediaUrls && post.mediaUrls.length > 0 && (
-                    <div className="relative mb-3 aspect-video w-full rounded-md overflow-hidden">
-                      <Image
-                        src={post.mediaUrls[0]}
-                        alt="Post media"
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative mb-3 aspect-video w-full rounded-xl overflow-hidden">
+                      <Image src={post.mediaUrls[0]} alt="Post media" fill className="object-cover" />
+                      {post.mediaUrls.length > 1 && (
+                        <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full">
+                          +{post.mediaUrls.length - 1}
+                        </div>
+                      )}
                     </div>
                   )}
 
-                  <p className="text-sm text-muted-foreground flex-1 line-clamp-3">
+                  {/* Content */}
+                  <p className="text-sm text-muted-foreground flex-1 line-clamp-3 leading-relaxed">
                     {post.content || (post as any).textContent || post.description || post.title || 'No content'}
                   </p>
 
-                  <div className="flex items-center justify-between mt-3">
-                    <StatusBadge status={post.status} />
-                    <div className="flex gap-3 text-xs text-muted-foreground">
-                      <span>{post.viewCount || 0} views</span>
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
+                    <PostTypeIcon type={post.type} />
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <EyeIcon className="h-3.5 w-3.5" />
+                        {(post.viewCount || 0).toLocaleString()}
+                      </span>
                       <span>{post.likeCount || 0} likes</span>
                     </div>
                   </div>
@@ -472,19 +487,19 @@ function ContentFeedPageInner() {
           </div>
 
           {pagination.totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex items-center justify-between mt-8 px-2">
+              <p className="text-xs text-muted-foreground">
                 Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
                 {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} posts
               </p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page - 1) })} disabled={page <= 1}>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page - 1) })} disabled={page <= 1} className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost">
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                <span className="flex items-center text-sm">
+                <span className="text-xs text-muted-foreground px-2">
                   Page {pagination.page} of {pagination.totalPages}
                 </span>
-                <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page + 1) })} disabled={page >= pagination.totalPages}>
+                <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page + 1) })} disabled={page >= pagination.totalPages} className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost">
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>

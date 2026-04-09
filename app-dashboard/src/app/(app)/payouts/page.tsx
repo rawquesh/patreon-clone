@@ -4,15 +4,8 @@ import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { StatCard } from '@/components/stat-card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,11 +25,13 @@ import {
   ChevronRight,
   Loader2,
   Check,
+  AlertCircle,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import {
   getPayouts,
   getPayoutById,
@@ -47,24 +42,18 @@ import {
 import type { Payout, PayoutDetail, PayoutStatus, PayoutStats } from '@/types';
 
 function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(amount);
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
 }
 
 function PayoutStatusBadge({ status }: { status: PayoutStatus }) {
-  const variant =
-    status === 'completed' ? 'default'
-    : status === 'pending' || status === 'processing' ? 'secondary'
-    : 'destructive';
-  const label =
-    status === 'completed' ? 'Approved'
-    : status === 'pending' ? 'Pending'
-    : status === 'processing' ? 'Processing'
-    : 'Rejected';
-  return <Badge variant={variant}>{label}</Badge>;
+  const config = {
+    completed: { label: 'Approved', class: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
+    pending: { label: 'Pending', class: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800' },
+    processing: { label: 'Processing', class: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800' },
+    failed: { label: 'Rejected', class: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800' },
+  };
+  const c = config[status] || config.pending;
+  return <Badge className={cn('text-xs font-medium border', c.class)}>{c.label}</Badge>;
 }
 
 function PayoutDetailDialog({
@@ -95,27 +84,30 @@ function PayoutDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Payout Details</DialogTitle>
           <DialogDescription>Details for this payout request.</DialogDescription>
         </DialogHeader>
         {loadingDetail ? (
           <div className="space-y-3">
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-20 w-full rounded-xl" />
+            <Skeleton className="h-32 w-full rounded-xl" />
           </div>
         ) : p ? (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={p.creator?.avatar || ''} />
-                <AvatarFallback>
-                  {(p.creator?.name || 'C').charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold text-lg">{p.creator?.name || 'Unknown'}</p>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-accent rounded-full opacity-20 blur-md" />
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={p.creator?.avatar || ''} />
+                  <AvatarFallback className="bg-gradient-accent text-white font-bold text-lg">
+                    {(p.creator?.name || 'C').charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-lg truncate">{p.creator?.name || 'Unknown'}</p>
                 {p.creator?.username && (
                   <p className="text-sm text-muted-foreground">@{p.creator.username}</p>
                 )}
@@ -123,14 +115,18 @@ function PayoutDetailDialog({
               <PayoutStatusBadge status={p.status} />
             </div>
 
-            <div className="text-center py-4 bg-muted/50 rounded-lg">
-              <p className="text-3xl font-bold">{formatCurrency(p.amount)}</p>
-              <p className="text-sm text-muted-foreground">Payout Amount</p>
+            {/* Amount highlight */}
+            <div className="relative overflow-hidden rounded-2xl border border-border/50 glass-card-static py-5 text-center">
+              <div className="absolute inset-0 bg-gradient-primary/5" />
+              <p className="relative text-3xl font-black tracking-tight text-gradient">
+                {formatCurrency(p.amount)}
+              </p>
+              <p className="relative text-xs text-muted-foreground mt-1">Payout Amount</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Requested</p>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1">Requested</p>
                 <p className="font-medium text-sm">
                   {p.createdAt
                     ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -138,34 +134,41 @@ function PayoutDetailDialog({
                 </p>
               </div>
               {p.completedAt && (
-                <div className="rounded-md border p-3">
-                  <p className="text-xs text-muted-foreground">Processed</p>
+                <div className="rounded-xl border p-3.5 glass-card-static">
+                  <p className="text-xs text-muted-foreground mb-1">Processed</p>
                   <p className="font-medium text-sm">
                     {new Date(p.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </p>
                 </div>
               )}
               {p.stripeTransferId && (
-                <div className="rounded-md border p-3 col-span-2">
-                  <p className="text-xs text-muted-foreground">Stripe Transfer ID</p>
-                  <p className="text-xs font-mono">{p.stripeTransferId}</p>
+                <div className="rounded-xl border p-3.5 glass-card-static col-span-2">
+                  <p className="text-xs text-muted-foreground mb-1">Stripe Transfer ID</p>
+                  <p className="text-xs font-mono break-all">{p.stripeTransferId}</p>
                 </div>
               )}
               {p.failureReason && (
-                <div className="rounded-md border p-3 col-span-2 border-destructive/50">
-                  <p className="text-xs text-muted-foreground">Failure Reason</p>
-                  <p className="text-sm text-destructive">{p.failureReason}</p>
+                <div className="rounded-xl border p-3.5 glass-card-static col-span-2 border-rose-200 dark:border-rose-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <AlertCircle className="h-3 w-3 text-rose-500" />
+                    <p className="text-xs text-muted-foreground">Failure Reason</p>
+                  </div>
+                  <p className="text-sm text-rose-600 dark:text-rose-400">{p.failureReason}</p>
                 </div>
               )}
               {detail?.creator && (
                 <>
-                  <div className="rounded-md border p-3">
-                    <p className="text-xs text-muted-foreground">Available Balance</p>
-                    <p className="font-medium text-sm">{formatCurrency(detail.creator.availableBalance || 0)}</p>
+                  <div className="rounded-xl border p-3.5 glass-card-static">
+                    <p className="text-xs text-muted-foreground mb-1">Available Balance</p>
+                    <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                      {formatCurrency(detail.creator.availableBalance || 0)}
+                    </p>
                   </div>
-                  <div className="rounded-md border p-3">
-                    <p className="text-xs text-muted-foreground">Lifetime Earnings</p>
-                    <p className="font-medium text-sm">{formatCurrency(detail.creator.lifetimeEarnings || 0)}</p>
+                  <div className="rounded-xl border p-3.5 glass-card-static">
+                    <p className="text-xs text-muted-foreground mb-1">Lifetime Earnings</p>
+                    <p className="font-bold">
+                      {formatCurrency(detail.creator.lifetimeEarnings || 0)}
+                    </p>
                   </div>
                 </>
               )}
@@ -183,40 +186,40 @@ const STATUS_TABS = [
   { value: 'failed', label: 'Rejected', icon: XCircle },
 ];
 
+function PayoutsPageSkeleton() {
+  return (
+    <div className="space-y-4">
+      <PageHeader title="Payout Manager" description="Process, track, and manage creator payouts." />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i} className="glass-card-static">
+            <CardHeader className="pb-2">
+              <Skeleton className="h-3 w-24 mb-3" />
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-3 w-32 mt-2" />
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
+      <div className="glass-card-static rounded-xl overflow-hidden">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 p-4 border-b border-border/30 last:border-0">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="space-y-2 flex-1">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+            <Skeleton className="h-6 w-16 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function PayoutsPage() {
   return (
-    <Suspense fallback={
-      <div className="space-y-4">
-        <PageHeader title="Payout Manager" description="Process, track, and manage creator payouts." />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardContent className="pt-6">
-                <Skeleton className="h-4 w-24 mb-2" />
-                <Skeleton className="h-8 w-32 mb-2" />
-                <Skeleton className="h-3 w-40" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <Card className="mt-6">
-          <CardContent className="p-6">
-            <div className="space-y-3">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-48" />
-                    <Skeleton className="h-3 w-32" />
-                  </div>
-                  <Skeleton className="h-5 w-20" />
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    }>
+    <Suspense fallback={<PayoutsPageSkeleton />}>
       <PayoutsPageInner />
     </Suspense>
   );
@@ -244,11 +247,7 @@ function PayoutsPageInner() {
     setError(null);
     try {
       const [payoutResult, statsResult] = await Promise.all([
-        getPayouts({
-          page,
-          limit: 20,
-          status: activeTab as any,
-        }),
+        getPayouts({ page, limit: 20, status: activeTab as any }),
         getPayoutStats(),
       ]);
       setPayouts(payoutResult.payouts);
@@ -296,202 +295,244 @@ function PayoutsPageInner() {
 
   return (
     <>
-      <PageHeader title="Payout Manager" description="Process, track, and manage creator payouts." />
+      <PageHeader title="Payout Manager" description="Process, track, and manage creator payouts." gradientTitle />
 
+      {/* Stat Cards */}
       {isLoading ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children mb-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardContent className="pt-6">
-                <Skeleton className="h-4 w-24 mb-2" />
-                <Skeleton className="h-8 w-32 mb-2" />
-                <Skeleton className="h-3 w-40" />
-              </CardContent>
+            <Card key={i} className="glass-card-static">
+              <CardHeader className="pb-2">
+                <Skeleton className="h-3 w-24 mb-3" />
+                <Skeleton className="h-8 w-32" />
+                <Skeleton className="h-3 w-32 mt-2" />
+              </CardHeader>
             </Card>
           ))}
         </div>
       ) : stats ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children mb-6">
           <StatCard
             title="Pending Payouts"
             value={formatCurrency(stats.pendingAmount)}
             icon={Clock}
             description={`${stats.pendingCount} open requests`}
+            accentColor="amber"
           />
           <StatCard
             title="Paid This Month"
             value={formatCurrency(stats.paidThisMonthAmount)}
             icon={CheckCircle}
             description={`${stats.paidThisMonth} payouts`}
+            accentColor="emerald"
           />
           <StatCard
             title="Total Paid"
             value={formatCurrency(stats.totalPaid)}
             icon={Wallet}
             description="All-time payouts"
+            accentColor="primary"
           />
           <StatCard
             title="Rejected"
             value={stats.rejectedCount.toString()}
             icon={XCircle}
             description="Rejected payouts"
+            accentColor="rose"
           />
         </div>
       ) : null}
 
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Payout Requests</CardTitle>
-          <CardDescription>Review and process creator payout requests.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); updateParams({ status: v, page: '1' }); }}>
-            <TabsList>
-              {STATUS_TABS.map((tab) => (
-                <TabsTrigger key={tab.value} value={tab.value}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {STATUS_TABS.map((tab) => (
-              <TabsContent key={tab.value} value={tab.value} className="mt-4">
-                {isLoading ? (
-                  <div className="space-y-3">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <div key={i} className="flex items-center gap-4">
-                        <Skeleton className="h-10 w-10 rounded-full" />
-                        <div className="space-y-2 flex-1">
-                          <Skeleton className="h-4 w-48" />
-                          <Skeleton className="h-3 w-32" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : error ? (
-                  <div className="text-center py-8">
-                    <p className="text-destructive mb-3">{error}</p>
-                    <Button variant="outline" onClick={load}>Retry</Button>
-                  </div>
-                ) : (
-                  <>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Creator</TableHead>
-                          <TableHead>Request Date</TableHead>
-                          {tab.value !== 'pending' && <TableHead>Processed Date</TableHead>}
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Amount</TableHead>
-                          <TableHead><span className="sr-only">Actions</span></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {payouts.length === 0 ? (
-                          <TableRow>
-                            <TableCell colSpan={tab.value === 'pending' ? 5 : 6} className="text-center py-8 text-muted-foreground">
-                              No {tab.label.toLowerCase()} payouts.
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          payouts.map((payout) => (
-                            <TableRow key={payout.id || (payout as any)._id}>
-                              <TableCell className="font-medium">
-                                <div className="flex items-center gap-3">
-                                  <Avatar>
-                                    <AvatarImage src={payout.creator?.avatar || ''} />
-                                    <AvatarFallback>
-                                      {(payout.creator?.name || 'C').charAt(0)}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <div>
-                                    <div>{payout.creator?.name || 'Unknown'}</div>
-                                    {payout.creator?.username && (
-                                      <div className="text-sm text-muted-foreground">
-                                        @{payout.creator.username}
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>{formatDate(payout.createdAt)}</TableCell>
-                              {tab.value !== 'pending' && (
-                                <TableCell>{formatDate(payout.completedAt || '')}</TableCell>
-                              )}
-                              <TableCell><PayoutStatusBadge status={payout.status} /></TableCell>
-                              <TableCell className="text-right font-medium">
-                                {formatCurrency(payout.amount)}
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center justify-end gap-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => { setSelectedPayout(payout); setDialogOpen(true); }}
-                                  >
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                  {tab.value === 'pending' && (
-                                    <>
-                                      <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => handleAction(payout.id || (payout as any)._id, 'approve')}
-                                        disabled={actionLoading === (payout.id || (payout as any)._id)}
-                                      >
-                                        {actionLoading === (payout.id || (payout as any)._id) ? (
-                                          <Loader2 className="h-4 w-4 animate-spin" />
-                                        ) : (
-                                          <Check className="h-4 w-4" />
-                                        )}
-                                      </Button>
-                                      <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => handleAction(payout.id || (payout as any)._id, 'reject')}
-                                        disabled={actionLoading === (payout.id || (payout as any)._id)}
-                                      >
-                                        {actionLoading === (payout.id || (payout as any)._id) ? (
-                                          <Loader2 className="h-4 w-4 animate-spin" />
-                                        ) : (
-                                          <XCircle className="h-4 w-4" />
-                                        )}
-                                      </Button>
-                                    </>
-                                  )}
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        )}
-                      </TableBody>
-                    </Table>
-
-                    {pagination.totalPages > 1 && (
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                        <p className="text-sm text-muted-foreground">
-                          Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
-                          {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
-                        </p>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page - 1) })} disabled={page <= 1}>
-                            <ChevronLeft className="h-4 w-4" />
-                          </Button>
-                          <span className="flex items-center text-sm">
-                            Page {pagination.page} of {pagination.totalPages}
-                          </span>
-                          <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page + 1) })} disabled={page >= pagination.totalPages}>
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
+      {/* Tabs + Table */}
+      <Card className="glass-card-static overflow-hidden">
+        <CardHeader className="pb-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <CardTitle className="text-base font-semibold">Payout Requests</CardTitle>
+            <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); updateParams({ status: v, page: '1' }); }} className="flex-1">
+              <TabsList className="h-9 bg-muted/50 rounded-xl">
+                {STATUS_TABS.map((tab) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className={cn(
+                      'h-8 rounded-lg text-xs font-medium transition-all duration-200',
+                      'data-[state=active]:bg-gradient-primary data-[state=active]:text-white data-[state=active]:shadow-md'
                     )}
-                  </>
-                )}
-              </TabsContent>
-            ))}
-          </Tabs>
-        </CardContent>
+                  >
+                    <tab.icon className="h-3.5 w-3.5 mr-1.5" />
+                    {tab.label}
+                    {!isLoading && stats && (
+                      <span className={cn(
+                        'ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full',
+                        'bg-white/20 dark:bg-white/10'
+                      )}>
+                        {tab.value === 'pending' ? stats.pendingCount :
+                         tab.value === 'completed' ? stats.paidThisMonth :
+                         stats.rejectedCount}
+                      </span>
+                    )}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+          <CardDescription className="text-xs mt-1">Review and process creator payout requests.</CardDescription>
+        </CardHeader>
+
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b border-border/50 hover:bg-transparent">
+                <TableHead className="pl-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Creator</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Request Date</TableHead>
+                {activeTab !== 'pending' && <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Processed</TableHead>}
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right pr-6">Amount</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pr-6"><span className="sr-only">Actions</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i} className="border-b border-border/30 last:border-0">
+                    <TableCell className="pl-6"><Skeleton className="h-10 w-10 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    {activeTab !== 'pending' && <TableCell><Skeleton className="h-4 w-24" /></TableCell>}
+                    <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                    <TableCell className="pr-6"><Skeleton className="h-4 w-20 ml-auto" /></TableCell>
+                    <TableCell className="pr-6"><Skeleton className="h-8 w-20" /></TableCell>
+                  </TableRow>
+                ))
+              ) : error ? (
+                <TableRow>
+                  <TableCell colSpan={activeTab === 'pending' ? 5 : 6} className="text-center py-12 text-destructive">
+                    <p className="font-medium mb-3">{error}</p>
+                    <Button variant="outline" onClick={load} size="sm" className="btn-gradient-ghost rounded-xl">Retry</Button>
+                  </TableCell>
+                </TableRow>
+              ) : payouts.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={activeTab === 'pending' ? 5 : 6} className="text-center py-16">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                        <Wallet className="h-6 w-6 text-muted-foreground/50" />
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        No {activeTab} payouts
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                payouts.map((payout) => (
+                  <TableRow
+                    key={payout.id || (payout as any)._id}
+                    className="table-row-hover border-b border-border/30 last:border-0 group"
+                  >
+                    <TableCell className="pl-6">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
+                          <AvatarImage src={payout.creator?.avatar || ''} />
+                          <AvatarFallback className="bg-gradient-accent text-white text-sm font-bold">
+                            {(payout.creator?.name || 'C').charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium truncate">{payout.creator?.name || 'Unknown'}</div>
+                          {payout.creator?.username && (
+                            <div className="text-xs text-muted-foreground truncate">@{payout.creator.username}</div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm text-muted-foreground">{formatDate(payout.createdAt)}</span>
+                    </TableCell>
+                    {activeTab !== 'pending' && (
+                      <TableCell>
+                        <span className="text-sm text-muted-foreground">{formatDate(payout.completedAt || '')}</span>
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <PayoutStatusBadge status={payout.status} />
+                    </TableCell>
+                    <TableCell className="pr-6 text-right">
+                      <span className={cn(
+                        'text-sm font-bold tabular-nums',
+                        payout.status === 'failed' ? 'text-rose-600 dark:text-rose-400' :
+                        payout.status === 'completed' ? 'text-emerald-600 dark:text-emerald-400' :
+                        'text-amber-600 dark:text-amber-400'
+                      )}>
+                        {formatCurrency(payout.amount)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="pr-6">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => { setSelectedPayout(payout); setDialogOpen(true); }}
+                          className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        {activeTab === 'pending' && (
+                          <>
+                            <Button
+                              size="sm"
+                              onClick={() => handleAction(payout.id || (payout as any)._id, 'approve')}
+                              disabled={actionLoading === (payout.id || (payout as any)._id)}
+                              className="h-8 px-3 rounded-lg btn-gradient text-xs font-semibold shadow-md"
+                            >
+                              {actionLoading === (payout.id || (payout as any)._id) ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Check className="h-3.5 w-3.5" />
+                              )}
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleAction(payout.id || (payout as any)._id, 'reject')}
+                              disabled={actionLoading === (payout.id || (payout as any)._id)}
+                              className="h-8 px-3 rounded-lg text-xs font-semibold"
+                            >
+                              {actionLoading === (payout.id || (payout as any)._id) ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <XCircle className="h-3.5 w-3.5" />
+                              )}
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
+
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-border/50 bg-muted/20">
+            <p className="text-xs text-muted-foreground">
+              Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+              {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total}
+            </p>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page - 1) })} disabled={page <= 1} className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost">
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-xs text-muted-foreground px-2">
+                Page {pagination.page} of {pagination.totalPages}
+              </span>
+              <Button variant="outline" size="sm" onClick={() => updateParams({ page: String(page + 1) })} disabled={page >= pagination.totalPages} className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost">
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
 
       <PayoutDetailDialog

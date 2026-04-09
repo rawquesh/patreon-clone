@@ -27,6 +27,84 @@ interface AdminUser {
   profilePicture?: string;
 }
 
+function AppSidebarHeader() {
+  return (
+    <div className="relative">
+      {/* Gradient accent bar at top */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-primary rounded-t-xl" />
+      <SidebarHeader className="pt-4">
+        <div className="flex items-center gap-2.5 px-2">
+          {/* Logo with glow */}
+          <div className="relative flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-primary opacity-20 blur-md rounded-xl" />
+            <div className="relative bg-gradient-primary p-2 rounded-xl">
+              <LayoutTemplate className="h-5 w-5 text-white" />
+            </div>
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-gradient">Patreon Clone</h1>
+            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
+              Admin Panel
+            </p>
+          </div>
+        </div>
+      </SidebarHeader>
+    </div>
+  );
+}
+
+function AppSidebarFooter({ adminUser, onLogout }: { adminUser: AdminUser | null; onLogout: () => void }) {
+  const displayName =
+    adminUser?.displayName ||
+    `${adminUser?.firstName || ''} ${adminUser?.lastName || ''}`.trim() ||
+    'Admin User';
+  const initials = displayName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+
+  return (
+    <SidebarFooter className="border-t border-border/50">
+      <div className="flex items-center gap-3 p-3 mx-1 my-1 rounded-xl hover:bg-white/50 dark:hover:bg-white/5 transition-colors duration-200 group">
+        {/* Avatar with gradient ring on hover */}
+        <div className="relative shrink-0">
+          <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-200" />
+          <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/30 transition-all duration-200">
+            <AvatarImage
+              src={adminUser?.profilePicture || 'https://placehold.co/40x40.png'}
+              alt="Admin"
+              data-ai-hint="person avatar"
+            />
+            <AvatarFallback className="bg-gradient-primary text-white text-xs font-semibold">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <div className="flex flex-col min-w-0 flex-1">
+          <span className="font-semibold text-sm truncate group-hover:text-primary transition-colors duration-200">
+            {displayName}
+          </span>
+          <span className="text-[11px] text-muted-foreground truncate">
+            {adminUser?.email || 'admin@patreon-clone.example.com'}
+          </span>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          type="submit"
+          aria-label="Log out"
+          className="shrink-0 h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+          onClick={onLogout}
+        >
+          <LogOut className="h-4 w-4" />
+        </Button>
+      </div>
+    </SidebarFooter>
+  );
+}
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
@@ -48,68 +126,63 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     router.push('/login');
   };
 
-  const displayName =
-    adminUser?.displayName ||
-    `${adminUser?.firstName || ''} ${adminUser?.lastName || ''}`.trim() ||
-    'Admin User';
-  const initials = displayName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-
   return (
     <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <LayoutTemplate className="text-primary size-8" />
-            <h1 className="text-2xl font-semibold text-primary">Patreon Clone</h1>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
+      {/* Glass Sidebar */}
+      <Sidebar className="glass-card-static border-r border-white/20 dark:border-white/10">
+        {/* Gradient top decoration */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        {/* Subtle inner gradient */}
+        <div
+          className="absolute inset-0 pointer-events-none rounded-xl"
+          style={{ background: 'var(--gradient-sidebar)' }}
+        />
+
+        <AppSidebarHeader />
+        <SidebarContent className="relative">
           <SideNav />
         </SidebarContent>
-        <SidebarFooter>
-          <div className="flex items-center gap-3 p-2 rounded-md">
-            <Avatar className="h-10 w-10">
-              <AvatarImage
-                src={adminUser?.profilePicture || 'https://placehold.co/40x40.png'}
-                alt="Admin"
-                data-ai-hint="person avatar"
-              />
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col min-w-0 flex-1">
-              <span className="font-semibold text-sm truncate">{displayName}</span>
-              <span className="text-xs text-muted-foreground truncate">
-                {adminUser?.email || 'admin@patreon-clone.example.com'}
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              type="submit"
-              aria-label="Log out"
-              className="ml-auto shrink-0"
-              onClick={handleLogout}
-            >
-              <LogOut className="h-5 w-5 cursor-pointer text-muted-foreground hover:text-foreground" />
-            </Button>
-          </div>
-        </SidebarFooter>
+        <AppSidebarFooter adminUser={adminUser} onLogout={handleLogout} />
       </Sidebar>
+
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 lg:px-8 md:justify-end">
+        {/* Glass Header */}
+        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b glass-card-static px-4 sm:px-6 lg:px-8 gap-4">
           <div className="md:hidden">
             <SidebarTrigger>
-              <Menu className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Menu className="h-5 w-5" />
+              </Button>
             </SidebarTrigger>
           </div>
-          <div className="flex items-center gap-4" />
+
+          {/* Breadcrumb / page title area — can be used for dynamic titles */}
+          <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+            <LayoutTemplate className="h-4 w-4" />
+            <span>Patreon Clone Admin</span>
+          </div>
+
+          {/* Right side actions slot */}
+          <div className="flex items-center gap-3 ml-auto">
+            {/* Optional: notifications, user pill, etc. */}
+            <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full glass-card text-xs font-medium text-muted-foreground">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                Live
+              </div>
+            </div>
+          </div>
         </header>
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+
+        {/* Content area with gradient mesh background */}
+        <main className="min-h-[calc(100vh-4rem)] p-4 sm:p-6 lg:p-8 bg-mesh">
+          <div className="animate-fade-in-up">
+            {children}
+          </div>
+        </main>
         <Toaster />
       </SidebarInset>
     </SidebarProvider>

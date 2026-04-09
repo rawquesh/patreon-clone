@@ -19,7 +19,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -41,10 +40,12 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  Users,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import {
   getCreators,
   getCreatorById,
@@ -56,16 +57,18 @@ import {
 import type { Creator, CreatorDetail, CreatorStatus } from '@/types';
 
 function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
-  const variant =
-    status === 'PUBLISHED' ? 'default'
-    : status === 'ONBOARDING' ? 'secondary'
-    : 'destructive';
-  const label =
-    status === 'PUBLISHED' ? 'Active'
-    : status === 'ONBOARDING' ? 'Onboarding'
-    : status === 'DRAFT' ? 'Draft'
-    : 'Archived';
-  return <Badge variant={variant}>{label}</Badge>;
+  const config = {
+    PUBLISHED: { label: 'Active', class: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
+    ONBOARDING: { label: 'Onboarding', class: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800' },
+    DRAFT: { label: 'Draft', class: 'bg-muted text-muted-foreground border-border' },
+    ARCHIVED: { label: 'Archived', class: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800' },
+  };
+  const c = config[status] || config.DRAFT;
+  return (
+    <Badge className={cn('text-xs font-medium border', c.class)}>
+      {c.label}
+    </Badge>
+  );
 }
 
 function CreatorDetailDialog({
@@ -79,9 +82,9 @@ function CreatorDetailDialog({
   onClose: () => void;
   onAction: (id: string, action: string) => Promise<void>;
 }) {
-  const [loading, setLoading] = useState(false);
   const [detail, setDetail] = useState<CreatorDetail | null>(creator);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -112,93 +115,96 @@ function CreatorDetailDialog({
   const c = detail;
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-lg glass-dialog-content animate-fade-in-scale max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Creator Details</DialogTitle>
           <DialogDescription>Full profile information for this creator.</DialogDescription>
         </DialogHeader>
         {loadingDetail ? (
           <div className="space-y-3">
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-20 w-full rounded-xl" />
+            <Skeleton className="h-32 w-full rounded-xl" />
+            <Skeleton className="h-16 w-full rounded-xl" />
           </div>
         ) : c ? (
-          <div className="space-y-4">
+          <div className="space-y-5">
+            {/* Profile header */}
             <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={c.profilePicture || ''} />
-                <AvatarFallback>
-                  {(c.displayName || c.creatorUsername || 'C').charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="font-semibold text-lg">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-primary rounded-full opacity-20 blur-md" />
+                <Avatar className="h-16 w-16 ring-2 ring-white dark:ring-gray-800">
+                  <AvatarImage src={c.profilePicture || ''} />
+                  <AvatarFallback className="bg-gradient-primary text-white font-bold text-lg">
+                    {(c.displayName || c.creatorUsername || 'C').charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-lg truncate">
                   {c.displayName || c.creatorUsername || 'Unknown'}
                 </h3>
-                <p className="text-sm text-muted-foreground">{c.email}</p>
+                <p className="text-sm text-muted-foreground truncate">{c.email}</p>
                 {c.creatorUsername && (
-                  <p className="text-sm text-muted-foreground">@{c.creatorUsername}</p>
+                  <p className="text-xs text-muted-foreground">@{c.creatorUsername}</p>
                 )}
               </div>
             </div>
 
+            {/* Stats grid */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Status</p>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1">Status</p>
                 <CreatorStatusBadge status={c.creatorStatus} />
               </div>
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Stripe</p>
-                <Badge variant={c.hasCompletedStripeOnboarding ? 'default' : 'secondary'}>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1">Stripe</p>
+                <Badge className={cn(
+                  'text-xs font-medium',
+                  c.hasCompletedStripeOnboarding
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+                    : 'bg-muted text-muted-foreground border border-border'
+                )}>
                   {c.hasCompletedStripeOnboarding ? 'Onboarded' : 'Not Onboarded'}
                 </Badge>
               </div>
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Subscribers</p>
-                <p className="font-semibold">{c.subscriberCount ?? '-'}</p>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1">Subscribers</p>
+                <p className="font-bold text-lg">{c.subscriberCount ?? '-'}</p>
               </div>
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Posts</p>
-                <p className="font-semibold">{c.postCount ?? '-'}</p>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1">Posts</p>
+                <p className="font-bold text-lg">{c.postCount ?? '-'}</p>
               </div>
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Available Balance</p>
-                <p className="font-semibold">${(c.availableBalance || 0).toFixed(2)}</p>
-              </div>
-              <div className="rounded-md border p-3">
-                <p className="text-xs text-muted-foreground">Lifetime Earnings</p>
-                <p className="font-semibold">${(c.lifetimeEarnings || 0).toFixed(2)}</p>
+              <div className="rounded-xl border p-3.5 glass-card-static col-span-2">
+                <p className="text-xs text-muted-foreground mb-1">Available Balance</p>
+                <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                  ${(c.availableBalance || 0).toFixed(2)}
+                </p>
               </div>
             </div>
 
             {c.bio && (
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">Bio</p>
-                <p className="text-sm">{c.bio}</p>
+              <div className="rounded-xl border p-3.5 glass-card-static">
+                <p className="text-xs text-muted-foreground mb-1.5">Bio</p>
+                <p className="text-sm leading-relaxed">{c.bio}</p>
               </div>
             )}
 
             {c.creatorCategory && (
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">Category</p>
-                <p className="text-sm">{c.creatorCategory}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Category:</span>
+                <Badge variant="outline" className="text-xs">{c.creatorCategory}</Badge>
               </div>
             )}
 
-            {c.countryOfResidence && (
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">Country</p>
-                <p className="text-sm">{c.countryOfResidence}</p>
-              </div>
-            )}
-
-            <div className="flex flex-wrap gap-2 pt-2">
+            {/* Actions */}
+            <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
               {c.creatorStatus !== 'PUBLISHED' && (
                 <Button
                   size="sm"
                   onClick={() => handleAction('approve')}
                   disabled={loading}
+                  className="btn-gradient"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
                   Approve
@@ -220,6 +226,7 @@ function CreatorDetailDialog({
                   size="sm"
                   onClick={() => handleAction('activate')}
                   disabled={loading}
+                  className="btn-gradient"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
                   Reactivate
@@ -239,7 +246,7 @@ function CreatorDetailDialog({
             </div>
           </div>
         ) : (
-          <p className="text-muted-foreground">No data available.</p>
+          <p className="text-muted-foreground text-center py-8">No data available.</p>
         )}
       </DialogContent>
     </Dialog>
@@ -257,28 +264,27 @@ function CreatorsPageSkeleton() {
   return (
     <div className="space-y-4">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Skeleton className="h-10 w-64" />
+        <Skeleton className="h-11 w-80 rounded-xl" />
       </div>
-      <div className="flex gap-1 mb-4">
+      <div className="flex gap-2 mb-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Skeleton key={i} className="h-9 w-20" />
+          <Skeleton key={i} className="h-9 w-20 rounded-full" />
         ))}
       </div>
-      <Card>
-        <CardContent className="p-6 space-y-3">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-48" />
-                <Skeleton className="h-3 w-32" />
-              </div>
-              <Skeleton className="h-5 w-16" />
-              <Skeleton className="h-5 w-20" />
+      <div className="glass-card-static rounded-xl overflow-hidden">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 p-4 border-b border-border/30 last:border-0">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="space-y-2 flex-1">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-3 w-32" />
             </div>
-          ))}
-        </CardContent>
-      </Card>
+            <Skeleton className="h-6 w-16 rounded-full" />
+            <Skeleton className="h-6 w-20 rounded-full" />
+            <Skeleton className="h-8 w-8 rounded-lg" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -377,185 +383,241 @@ function CreatorsPageInner() {
       <PageHeader
         title="Creators"
         description="Manage all creators on the platform."
+        gradientTitle
       />
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+
+      {/* Controls */}
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by name, email, or username..."
             value={searchValue}
             onChange={(e) => handleSearch(e.target.value)}
-            className="pl-9"
+            className="glass-input pl-10 h-11 rounded-xl text-sm"
           />
         </div>
       </div>
 
-      <div className="flex gap-1 mb-4">
+      {/* Status tabs */}
+      <div className="flex flex-wrap gap-2 mb-6">
         {STATUS_TABS.map((tab) => (
           <Button
             key={tab.value}
             variant={statusFilter === tab.value ? 'default' : 'outline'}
             size="sm"
             onClick={() => updateParams({ status: tab.value, page: '1' })}
+            className={cn(
+              'rounded-full text-xs font-medium h-8 transition-all duration-200',
+              statusFilter === tab.value
+                ? 'btn-gradient shadow-md'
+                : 'btn-gradient-ghost rounded-full'
+            )}
           >
             {tab.label}
           </Button>
         ))}
       </div>
 
-      <Card>
-        <CardContent className="p-0">
-          {isLoading ? (
-            <div className="p-6 space-y-3">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-48" />
-                    <Skeleton className="h-3 w-32" />
-                  </div>
-                  <Skeleton className="h-5 w-16" />
-                  <Skeleton className="h-5 w-20" />
-                </div>
-              ))}
-            </div>
-          ) : error ? (
-            <div className="p-8 text-center">
-              <p className="text-destructive mb-3">{error}</p>
-              <Button variant="outline" onClick={load}>Retry</Button>
-            </div>
-          ) : (
-            <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Creator</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Stripe</TableHead>
-                    <TableHead>Subscribers</TableHead>
-                    <TableHead>Joined</TableHead>
-                    <TableHead><span className="sr-only">Actions</span></TableHead>
+      {/* Table */}
+      <div className="glass-card-static rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b border-border/50 hover:bg-transparent">
+                <TableHead className="pl-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Creator</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Stripe</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subscribers</TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Joined</TableHead>
+                <TableHead className="pr-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider"><span className="sr-only">Actions</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i} className="border-b border-border/30 last:border-0">
+                    <TableCell className="pl-6"><Skeleton className="h-10 w-10 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell className="pr-6"><Skeleton className="h-8 w-8 rounded-lg" /></TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {creators.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                        No creators found.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    creators.map((creator) => (
-                      <TableRow key={creator.id || (creator as any)._id}>
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-3">
-                            <Avatar>
-                              <AvatarImage src={creator.profilePicture || ''} />
-                              <AvatarFallback>
-                                {(creator.displayName || creator.creatorUsername || 'C').charAt(0)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div>{creator.displayName || creator.creatorUsername || 'Unknown'}</div>
-                              <div className="text-sm text-muted-foreground">{creator.email}</div>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <CreatorStatusBadge status={creator.creatorStatus} />
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={creator.hasCompletedStripeOnboarding ? 'default' : 'secondary'}>
-                            {creator.hasCompletedStripeOnboarding ? 'Onboarded' : 'Not Onboarded'}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{creator.subscriberCount ?? '-'}</TableCell>
-                        <TableCell>
-                          {creator.createdAt
-                            ? new Date(creator.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                            : '-'}
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem onClick={() => openDetail(creator)}>
-                                <Eye className="mr-2 h-4 w-4" /> View Details
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              {creator.creatorStatus !== 'PUBLISHED' && (
-                                <DropdownMenuItem onClick={() => handleAction(creator.id || (creator as any)._id, 'approve')}>
-                                  <CheckCircle className="mr-2 h-4 w-4 text-emerald-500" /> Approve
-                                </DropdownMenuItem>
-                              )}
-                              {(creator.creatorStatus === 'DRAFT' || creator.creatorStatus === 'ONBOARDING') && (
-                                <DropdownMenuItem
-                                  className="text-destructive"
-                                  onClick={() => handleAction(creator.id || (creator as any)._id, 'reject')}
-                                >
-                                  <XCircle className="mr-2 h-4 w-4" /> Reject
-                                </DropdownMenuItem>
-                              )}
-                              {creator.creatorStatus === 'PUBLISHED' && (
-                                <DropdownMenuItem
-                                  className="text-destructive"
-                                  onClick={() => handleAction(creator.id || (creator as any)._id, 'suspend')}
-                                >
-                                  <Ban className="mr-2 h-4 w-4" /> Suspend
-                                </DropdownMenuItem>
-                              )}
-                              {creator.creatorStatus === 'ARCHIVED' && (
-                                <DropdownMenuItem onClick={() => handleAction(creator.id || (creator as any)._id, 'activate')}>
-                                  <RotateCcw className="mr-2 h-4 w-4" /> Reactivate
-                                </DropdownMenuItem>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-
-              {pagination.totalPages > 1 && (
-                <div className="flex items-center justify-between px-6 py-4 border-t">
-                  <p className="text-sm text-muted-foreground">
-                    Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
-                    {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} creators
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => updateParams({ page: String(page - 1) })}
-                      disabled={page <= 1}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="flex items-center text-sm">
-                      Page {pagination.page} of {pagination.totalPages}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => updateParams({ page: String(page + 1) })}
-                      disabled={page >= pagination.totalPages}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                ))
+              ) : error ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-12 text-destructive">
+                    <p className="font-medium mb-3">{error}</p>
+                    <Button variant="outline" onClick={load} size="sm" className="btn-gradient-ghost">Retry</Button>
+                  </TableCell>
+                </TableRow>
+              ) : creators.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-16">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                        <Users className="h-6 w-6 text-muted-foreground/50" />
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground">No creators found</p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                creators.map((creator) => (
+                  <TableRow
+                    key={creator.id || (creator as any)._id}
+                    className="table-row-hover border-b border-border/30 last:border-0 group"
+                  >
+                    <TableCell className="pl-6">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
+                          <AvatarImage src={creator.profilePicture || ''} />
+                          <AvatarFallback className="bg-gradient-primary text-white text-sm font-bold">
+                            {(creator.displayName || creator.creatorUsername || 'C').charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium text-sm">{creator.displayName || creator.creatorUsername || 'Unknown'}</div>
+                          <div className="text-xs text-muted-foreground">{creator.email}</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <CreatorStatusBadge status={creator.creatorStatus} />
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={cn(
+                        'text-xs font-medium',
+                        creator.hasCompletedStripeOnboarding
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+                          : 'bg-muted text-muted-foreground border border-border'
+                      )}>
+                        {creator.hasCompletedStripeOnboarding ? 'Onboarded' : 'Not Onboarded'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm font-semibold tabular-nums">
+                        {creator.subscriberCount ?? '-'}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm text-muted-foreground">
+                        {creator.createdAt
+                          ? new Date(creator.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                          : '-'}
+                      </span>
+                    </TableCell>
+                    <TableCell className="pr-6">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
+                          <DropdownMenuItem
+                            onClick={() => openDetail(creator)}
+                            className="rounded-lg cursor-pointer hover:bg-primary/5"
+                          >
+                            <Eye className="mr-2 h-4 w-4 text-muted-foreground" /> View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          {creator.creatorStatus !== 'PUBLISHED' && (
+                            <DropdownMenuItem
+                              onClick={() => handleAction(creator.id || (creator as any)._id, 'approve')}
+                              className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/5"
+                            >
+                              <CheckCircle className="mr-2 h-4 w-4" /> Approve
+                            </DropdownMenuItem>
+                          )}
+                          {(creator.creatorStatus === 'DRAFT' || creator.creatorStatus === 'ONBOARDING') && (
+                            <DropdownMenuItem
+                              className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
+                              onClick={() => handleAction(creator.id || (creator as any)._id, 'reject')}
+                            >
+                              <XCircle className="mr-2 h-4 w-4" /> Reject
+                            </DropdownMenuItem>
+                          )}
+                          {creator.creatorStatus === 'PUBLISHED' && (
+                            <DropdownMenuItem
+                              className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
+                              onClick={() => handleAction(creator.id || (creator as any)._id, 'suspend')}
+                            >
+                              <Ban className="mr-2 h-4 w-4" /> Suspend
+                            </DropdownMenuItem>
+                          )}
+                          {creator.creatorStatus === 'ARCHIVED' && (
+                            <DropdownMenuItem
+                              onClick={() => handleAction(creator.id || (creator as any)._id, 'activate')}
+                              className="rounded-lg cursor-pointer text-primary hover:bg-primary/5"
+                            >
+                              <RotateCcw className="mr-2 h-4 w-4" /> Reactivate
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
               )}
-            </>
-          )}
-        </CardContent>
-      </Card>
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Pagination */}
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-border/50 bg-muted/20">
+            <p className="text-xs text-muted-foreground">
+              Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+              {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} creators
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => updateParams({ page: String(page - 1) })}
+                disabled={page <= 1}
+                className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <div className="flex items-center gap-1 px-2">
+                {Array.from({ length: Math.min(pagination.totalPages, 5) }, (_, i) => {
+                  let p = i + 1;
+                  if (pagination.totalPages > 5) {
+                    if (page > 3) p = page - 2 + i;
+                    if (page > pagination.totalPages - 2) p = pagination.totalPages - 4 + i;
+                  }
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => updateParams({ page: String(p) })}
+                      className={cn(
+                        'h-8 min-w-[32px] rounded-lg text-xs font-medium transition-all duration-200',
+                        page === p
+                          ? 'bg-gradient-primary text-white shadow-md'
+                          : 'text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                      )}
+                    >
+                      {p}
+                    </button>
+                  );
+                })}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => updateParams({ page: String(page + 1) })}
+                disabled={page >= pagination.totalPages}
+                className="h-8 w-8 p-0 rounded-lg btn-gradient-ghost"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <CreatorDetailDialog
         creator={selectedCreator}
