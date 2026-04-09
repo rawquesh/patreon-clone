@@ -436,7 +436,7 @@ The application uses `@nestjs/config` and reads from `.env`. Key variables:
 | `AWS_DEFAULT_REGION`, `AWS_ACCESS_KEY`, `AWS_SECRET_KEY` | AWS S3 credentials |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth |
 | `FRONTEND_URL` | For Stripe redirect URLs |
-| `SERVER_URL` | For OAuth callback URLs |
+| `BACKEND_URL` | For OAuth callback URLs |
 
 ---
 

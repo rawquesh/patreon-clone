@@ -2,15 +2,18 @@ import { apiClient } from '@/lib/api-client';
 
 export interface StatusCheck {
   name: string;
-  status: 'pending' | 'checking' | 'success' | 'error';
+  status: 'pending' | 'checking' | 'success' | 'error' | 'warning';
   message: string;
   error?: string;
+  description?: string;
+  isOptional?: boolean;
 }
 
 export interface ServerStatus {
   checks: StatusCheck[];
   allPassed: boolean;
   adminExists: boolean;
+  adminCreationReady: boolean;
 }
 
 export interface CreateAdminRequest {
