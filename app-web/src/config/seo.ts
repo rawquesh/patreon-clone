@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { branding } from "./branding";
 
 /**
@@ -16,10 +16,6 @@ export const seoDefaults = (baseUrl: string): Metadata => ({
     icon: branding.assets.favicon,
     apple: branding.assets.favicon,
     shortcut: branding.assets.favicon,
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
   },
   openGraph: {
     title: branding.name,
@@ -44,6 +40,11 @@ export const seoDefaults = (baseUrl: string): Metadata => ({
     images: [branding.assets.heroImage],
   },
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 /**
  * Build the site base URL from environment variables.

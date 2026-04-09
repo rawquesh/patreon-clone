@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import { isPublicRoute } from "@/config/routes";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const isAuthenticated = token ? isValidToken(token) : false;
 

@@ -11,7 +11,7 @@ import { UserModeProvider } from "@/context/user-mode.provider";
 import { ChatProvider } from "@/context/chat.provider";
 import { SubscriptionProvider } from "@/context/subscription.provider";
 import { NotificationsProvider } from "@/context/notifications.provider";
-import { seoDefaults, getBaseUrl } from "@/config/seo";
+import { seoDefaults, getBaseUrl, viewport } from "@/config/seo";
 
 const epilogue = Epilogue({
   variable: "--font-epilogue-mono",

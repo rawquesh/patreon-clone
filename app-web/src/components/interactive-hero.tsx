@@ -15,8 +15,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { branding, marketing } from "@/config";
 
-const MotionFlex = motion(Flex);
-const MotionImage = motion(Image);
+const MotionFlex = motion.create(Flex);
+const MotionImage = motion.create(Image);
 
 export function InteractiveHero() {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });

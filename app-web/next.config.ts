@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import { branding } from "./src/config/branding";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["192.168.1.3"],
   images: {
     remotePatterns: [
       {

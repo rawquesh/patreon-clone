@@ -8,7 +8,7 @@ import { useAuth } from "@/context/auth.provider";
 import { Link } from "react-scroll";
 import { useRouter } from "next/navigation";
 
-const MotionFlex = motion(Flex);
+const MotionFlex = motion.create(Flex);
 
 const PurchaseMembershipBanner: React.FC<{ creatorId: string }> = ({}) => {
   const shouldBeVisible = useScrollBeyond(300);
