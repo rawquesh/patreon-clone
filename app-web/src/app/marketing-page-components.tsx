@@ -89,7 +89,13 @@ export function FeaturesSection() {
   const [activeTab, setActiveTab] = useState("Monetize Your Passion");
 
   return (
-    <Box as="section" py="6rem">
+    <Box
+      as="section"
+      py="6rem"
+      css={{
+        background: "linear-gradient(135deg, hsl(211, 71%, 43% / 0.03) 0%, hsl(335, 27%, 64% / 0.04) 50%, transparent 100%)",
+      }}
+    >
       <Box maxW="1200px" mx="auto" px={{ base: 4, md: 8 }}>
         <VStack gap={4} align="flex-start" mb={12}>
           <Text

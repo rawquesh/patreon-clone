@@ -77,10 +77,8 @@ const LoginPages: React.FC = () => {
   return (
     <Box
       className="bg-animated-gradient"
-      minW="300px"
-      maxW="420px"
-      mx="auto"
-      h="100vh"
+      position="fixed"
+      inset={0}
       display="flex"
       alignItems="center"
       justifyContent="center"

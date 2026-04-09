@@ -70,7 +70,7 @@ const customConfig = defineConfig({
         // Warm neutral (star/text)
         star: {
           50:  { value: "#FBFBF9" },
-          100: { value: "#F7F5ED" },
+          100: { value: "#FFF2F2" },
           200: { value: "#E0DDCE" },
           300: { value: "#C4C1B5" },
           400: { value: "#A6A59C" },

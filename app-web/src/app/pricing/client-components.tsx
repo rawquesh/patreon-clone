@@ -71,31 +71,33 @@ export function EarningsCalculator() {
       <HStack justify="center" mb={8}>
         <Button
           onClick={() => setIsAnnual(false)}
-          className={!isAnnual ? "btn-gradient" : "glass-card"}
+          className={!isAnnual ? "btn-gradient" : ""}
+          bg={!isAnnual ? undefined : branding.colors.bgWarm}
+          color={!isAnnual ? undefined : branding.colors.textDark}
           css={{
-            borderRadius: "full",
+            borderRadius: "9999px",
             fontWeight: 600,
             px: 6,
             py: 5,
-            color: !isAnnual ? "white" : "hsl(215.4, 16.3%, 46.9%)",
-            boxShadow: !isAnnual ? "var(--glow-primary)" : "none",
+            "& > span": { position: "relative", zIndex: 1 },
           }}
         >
-          Monthly Billing
+          <span>Monthly Billing</span>
         </Button>
         <Button
           onClick={() => setIsAnnual(true)}
-          className={isAnnual ? "btn-gradient" : "glass-card"}
+          className={isAnnual ? "btn-gradient" : ""}
+          bg={isAnnual ? undefined : branding.colors.bgWarm}
+          color={isAnnual ? undefined : branding.colors.textDark}
           css={{
-            borderRadius: "full",
+            borderRadius: "9999px",
             fontWeight: 600,
             px: 6,
             py: 5,
-            color: isAnnual ? "white" : "hsl(215.4, 16.3%, 46.9%)",
-            boxShadow: isAnnual ? "var(--glow-primary)" : "none",
+            "& > span": { position: "relative", zIndex: 1 },
           }}
         >
-          Annual Billing
+          <span>Annual Billing</span>
         </Button>
       </HStack>
       <Box
@@ -154,18 +156,17 @@ export function EarningsCalculator() {
                     key={p}
                     size="sm"
                     borderRadius="full"
-                    className={fee === p ? "btn-gradient" : "glass-card"}
-                    css={{
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      px: 3,
-                      py: 4,
-                      color: fee === p ? "white" : "hsl(215.4, 16.3%, 46.9%)",
-                      boxShadow: fee === p ? "var(--glow-primary)" : "none",
-                    }}
+                    className={fee === p ? "btn-gradient" : ""}
+                    bg={fee === p ? undefined : branding.colors.bgWarm}
+                    color={fee === p ? undefined : branding.colors.textDark}
+                    fontWeight={600}
+                    fontSize="12px"
+                    px={3}
+                    py={4}
                     onClick={() => setFee(p)}
+                    css={{ "& > span": { position: "relative", zIndex: 1 } }}
                   >
-                    ${p}
+                    <span>${p}</span>
                   </Button>
                 ))}
               </HStack>
@@ -207,18 +208,17 @@ export function EarningsCalculator() {
                     key={p}
                     size="sm"
                     borderRadius="full"
-                    className={members === p ? "btn-gradient" : "glass-card"}
-                    css={{
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      px: 3,
-                      py: 4,
-                      color: members === p ? "white" : "hsl(215.4, 16.3%, 46.9%)",
-                      boxShadow: members === p ? "var(--glow-primary)" : "none",
-                    }}
+                    className={members === p ? "btn-gradient" : ""}
+                    bg={members === p ? undefined : branding.colors.bgWarm}
+                    color={members === p ? undefined : branding.colors.textDark}
+                    fontWeight={600}
+                    fontSize="12px"
+                    px={3}
+                    py={4}
                     onClick={() => setMembers(p)}
+                    css={{ "& > span": { position: "relative", zIndex: 1 } }}
                   >
-                    {p.toLocaleString()}
+                    <span>{p.toLocaleString()}</span>
                   </Button>
                 ))}
               </HStack>
@@ -320,9 +320,9 @@ export function EarningsCalculator() {
               w="full"
               className="btn-gradient"
               mt={6}
-              css={{ fontWeight: 600 }}
+              css={{ fontWeight: 600, "& > span": { position: "relative", zIndex: 1 } }}
             >
-              Start Your Community
+              <span>Start Your Community</span>
             </Button>
           </VStack>
         </Flex>

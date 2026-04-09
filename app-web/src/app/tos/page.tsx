@@ -1,17 +1,22 @@
 import { Box, Heading, Text, List } from "@chakra-ui/react";
 import React from "react";
 import { branding } from "@/config/branding";
+import { MarketingHeader } from "@/components/marketing-header";
+import { MarketingPageFooter } from "../marketing-page-footer";
 
 const TermsOfServicePage: React.FC = () => {
   return (
-    <Box
-      maxW="800px"
-      mx="auto"
-      py={12}
-      px={{ base: 4, md: 6 }}
-      className="animate-fade-in-up"
-    >
-      <Box className="glass-card" p={8} borderRadius="20px" css={{ marginBottom: "24px" }}>
+    <Box css={{ background: "var(--app-bg)" }}>
+      <MarketingHeader />
+      <Box
+        pt={{ base: "5rem", md: "8rem" }}
+        maxW="800px"
+        mx="auto"
+        pb={12}
+        px={{ base: 4, md: 6 }}
+        className="animate-fade-in-up"
+      >
+        <Box className="glass-card" p={8} borderRadius="20px" css={{ marginBottom: "24px" }}>
         <Heading
           as="h1"
           size="xl"
@@ -306,6 +311,8 @@ const TermsOfServicePage: React.FC = () => {
           <b css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</b>.
         </Text>
       </Box>
+    </Box>
+      <MarketingPageFooter />
     </Box>
   );
 };

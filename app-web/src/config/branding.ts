@@ -83,10 +83,10 @@ export const branding = {
     greenDark: "#618967",
     star: "#5A5954",
     textHeader: "#141413",
-    textDark: "#201F18",
+    textDark: "#4F4E46",
     border: "#E6E5DD",
     bgLight: "#EBEAE4",
-    bgWarm: "#F7F5ED",
+    bgWarm: "#FFF2F2",
     white: "#FFFFFF",
     /** Used for join/subscribe/success action buttons */
     success: "#38A169",

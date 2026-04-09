@@ -1,16 +1,21 @@
 import { Box, Heading, Text, List } from "@chakra-ui/react";
 import React from "react";
 import { branding } from "@/config/branding";
+import { MarketingHeader } from "@/components/marketing-header";
+import { MarketingPageFooter } from "../marketing-page-footer";
 
 const PrivacyPolicyPage: React.FC = () => {
 	return (
-		<Box
-			maxW="800px"
-			mx="auto"
-			py={12}
-			px={{ base: 4, md: 6 }}
-			className="animate-fade-in-up"
-		>
+		<Box css={{ background: "var(--app-bg)" }}>
+			<MarketingHeader />
+			<Box
+				pt={{ base: "5rem", md: "8rem" }}
+				maxW="800px"
+				mx="auto"
+				py={12}
+				px={{ base: 4, md: 6 }}
+				className="animate-fade-in-up"
+			>
 			<Box
 				className="glass-card"
 				p={8}
@@ -391,6 +396,8 @@ const PrivacyPolicyPage: React.FC = () => {
 					Mailing Address: <b css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{branding.contact.mailingAddress}</b>
 				</Text>
 			</Box>
+		</Box>
+			<MarketingPageFooter />
 		</Box>
 	);
 };
