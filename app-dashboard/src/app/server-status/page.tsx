@@ -10,7 +10,6 @@ import {
   createAdmin,
   type StatusCheck,
   type ServerStatus,
-  type AdminUser,
 } from '@/lib/services/server-status.service';
 import { getAuthToken } from '@/lib/auth';
 import {
@@ -224,7 +223,6 @@ export default function ServerStatusPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [visibleCards, setVisibleCards] = useState(0);
-  const [createdAdmin, setCreatedAdmin] = useState<AdminUser | null>(null);
   const hasCheckedAuth = useRef(false);
 
   const {
@@ -259,7 +257,6 @@ export default function ServerStatusPage() {
     setIsLoading(true);
     setStatus(null);
     setVisibleCards(0);
-    setCreatedAdmin(null);
 
     try {
       const result = await getServerStatus();
@@ -282,14 +279,15 @@ export default function ServerStatusPage() {
   const onCreateAdmin = async (data: CreateAdminFormData) => {
     setIsCreating(true);
     try {
-      const result = await createAdmin(data);
-      setCreatedAdmin(result.user);
+      await createAdmin(data);
       setShowAdminDialog(false);
       toast({
         title: 'Admin Created',
-        description: `Admin account ${result.user.email} has been created successfully.`,
+        description: `Redirecting you to the login page...`,
       });
-      setTimeout(() => runChecks(), 2000);
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1500);
     } catch (err: any) {
       toast({
         title: 'Creation Failed',
@@ -416,7 +414,7 @@ export default function ServerStatusPage() {
         })}
 
         {/* Admin User Check */}
-        {status && (
+        {status && visibleCards >= totalChecks && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 px-1">
               <h2 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">
@@ -431,12 +429,12 @@ export default function ServerStatusPage() {
 
             {status.checks
               .filter((c) => c.name === 'Admin User')
-              .map((check, ci) => (
+              .map((check) => (
                 <CheckCard
                   key={check.name}
                   check={check}
-                  index={100 + ci}
-                  visible={visibleCards > 100}
+                  index={totalChecks + 1}
+                  visible={true}
                 />
               ))}
           </div>
@@ -506,38 +504,6 @@ export default function ServerStatusPage() {
               Go to Login
               <ArrowRight className="h-4 w-4" />
             </Button>
-          </div>
-        )}
-
-        {/* Admin Created */}
-        {createdAdmin && (
-          <div className="rounded-xl border border-green-200 bg-green-50 dark:bg-green-950/20 p-5 text-center space-y-3 animate-bounce-in">
-            <div className="flex justify-center">
-              <div className="rounded-full bg-green-500 p-3 shadow-lg">
-                <Sparkles className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            <div>
-              <h3 className="font-bold text-green-700 dark:text-green-400">
-                Admin Created Successfully
-              </h3>
-              <p className="text-sm text-green-600 dark:text-green-500 font-medium">
-                {createdAdmin.email}
-              </p>
-            </div>
-            <div className="flex justify-center gap-3 pt-1">
-              <Button
-                onClick={() => router.push('/login')}
-                className="gap-2 bg-green-600 hover:bg-green-700 text-white"
-              >
-                Sign In
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" onClick={runChecks} className="gap-2">
-                <RefreshCw className="h-4 w-4" />
-                Re-check
-              </Button>
-            </div>
           </div>
         )}
 

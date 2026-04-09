@@ -44,8 +44,7 @@ export default function LoginPage() {
       // Store user info in sessionStorage for header display
       sessionStorage.setItem('admin_user', JSON.stringify(response.user));
       const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
-      router.push(redirect);
-      router.refresh();
+      window.location.href = redirect;
     } catch (err: any) {
       setError(err?.message || 'Invalid credentials. Please try again.');
     } finally {
