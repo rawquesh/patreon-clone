@@ -4,6 +4,7 @@ import { useAuth } from "@/context/auth.provider";
 import { Center, Flex, Text, Box, Button } from "@chakra-ui/react";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface TierAccess {
 	id: string;
@@ -40,7 +41,7 @@ export default function ClientAuthCheck({
 			}
 
 			try {
-				const { data } = await api.get(`/posts/${postId}/check-access`);
+				const { data } = await api.get(ApiEndpoints.postCheckAccess(postId));
 				setIsAccessible(data.isAccessible);
 			} catch (error) {
 				console.error("Error checking post access:", error);

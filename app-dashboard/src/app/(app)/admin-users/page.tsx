@@ -61,7 +61,7 @@ const ROLE_LABELS: Record<AdminRole, string> = {
 
 const ALL_PERMISSIONS: AdminPermission[] = [
   'view_dashboard', 'manage_creators', 'manage_members', 'manage_content',
-  'manage_subscriptions', 'manage_payouts', 'manage_reports', 'manage_bans',
+  'manage_subscriptions', 'manage_payouts', 'manage_reports',
   'manage_settings', 'view_audit_log', 'manage_admins', 'view_analytics',
   'export_data', 'bulk_operations',
 ];
@@ -74,7 +74,6 @@ const PERMISSION_LABELS: Record<AdminPermission, string> = {
   manage_subscriptions: 'Manage Subscriptions',
   manage_payouts: 'Manage Payouts',
   manage_reports: 'Manage Reports',
-  manage_bans: 'Manage Bans',
   manage_settings: 'Manage Settings',
   view_audit_log: 'View Audit Log',
   manage_admins: 'Manage Admins',

@@ -71,7 +71,7 @@ export class BulkOperationsService {
   }
 
   async bulkMembers(dto: BulkMembersDto, adminId: string): Promise<BulkResult> {
-    const { ids, action, reason, banExpiresAt, banAdminNotes } = dto;
+    const { ids, action, reason } = dto;
     const successful: string[] = [];
     const failed: Array<{ id: string; reason: string }> = [];
 

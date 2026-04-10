@@ -26,9 +26,11 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Collection {
   _id: string;
@@ -56,7 +58,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await api.delete(`/collections/${collection._id}`);
+      await api.delete(ApiEndpoints.collectionById(collection._id));
       toaster.create({
         title: "Success",
         description: "Collection deleted successfully",
@@ -91,7 +93,7 @@ const CollectionActionsMenu: React.FC<CollectionActionsMenuProps> = ({
 
     setIsUpdating(true);
     try {
-      await api.put(`/collections/${collection._id}`, {
+      await api.put(ApiEndpoints.collectionById(collection._id), {
         title,
         description: description.trim() || undefined,
       });

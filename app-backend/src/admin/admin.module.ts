@@ -59,11 +59,6 @@ import { AdminUsersController } from './controllers/admin-users.controller';
 import { AdminUsersService } from './services/admin-users.service';
 import { AdminUser, AdminUserSchema } from './schemas/admin-user.schema';
 
-// NEW: Ban Management
-import { BansController } from './controllers/bans.controller';
-import { BansService } from './services/bans.service';
-import { Ban, BanSchema } from './schemas/ban.schema';
-
 // NEW: Bulk Operations
 import { BulkOperationsController } from './controllers/bulk-operations.controller';
 import { BulkOperationsService } from './services/bulk-operations.service';
@@ -91,7 +86,6 @@ import { ExportService } from './services/export.service';
       // NEW schemas
       { name: AuditLog.name, schema: AuditLogSchema },
       { name: AdminUser.name, schema: AdminUserSchema },
-      { name: Ban.name, schema: BanSchema },
       { name: Notification.name, schema: NotificationSchema },
     ]),
     AdminGuardModule,
@@ -110,7 +104,6 @@ import { ExportService } from './services/export.service';
     SettingsController,
     AuditLogController,
     AdminUsersController,
-    BansController,
     BulkOperationsController,
     AnalyticsController,
     ExportController,
@@ -127,7 +120,6 @@ import { ExportService } from './services/export.service';
     // NEW providers
     AuditLogService,
     AdminUsersService,
-    BansService,
     BulkOperationsService,
     AdminAnalyticsService,
     ExportService,

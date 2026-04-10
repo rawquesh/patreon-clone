@@ -35,7 +35,6 @@ const menuItems = [
   { href: '/audit-log', label: 'Audit Log', icon: ScrollText },
   { href: '/settings', label: 'Settings', icon: Settings },
   { href: '/admin-users', label: 'Admin Users', icon: UserCog },
-  { href: '/bans', label: 'Ban Management', icon: ShieldAlert },
   { href: '/export', label: 'Data Export', icon: FileDown },
   { href: '/server-status', label: 'Server Status', icon: Server },
 ];

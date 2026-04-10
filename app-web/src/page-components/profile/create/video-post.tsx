@@ -19,10 +19,12 @@ import Attachments from "./attachments";
 import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
 import { uploadVideoToS3 } from "@/lib/s3-video-upload";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Membership {
   _id: string;
@@ -74,7 +76,7 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
       const fetchPostData = async () => {
         setIsLoading(true);
         try {
-          const { data } = await api.get(`/posts/${currentPostId}`);
+          const { data } = await api.get(ApiEndpoints.post(currentPostId));
           setTitle(data.title || "");
           const url = data.videoUrl || "";
           setVideoUrl(url);
@@ -215,7 +217,7 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
       // Create or update the post
       let response;
       if (isEditMode) {
-        response = await api.put(`/posts/video/${currentPostId}`, formData, {
+        response = await api.put(ApiEndpoints.postVideoUpdate(currentPostId), formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -227,7 +229,7 @@ const CreateVideoPost: React.FC<VideoPostProps> = ({
           duration: 3000,
         });
       } else {
-        response = await api.post("/posts/video", formData, {
+        response = await api.post(ApiEndpoints.postsVideo, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

@@ -26,13 +26,15 @@ interface ExportCardProps {
   icon: React.ReactNode;
   onExport: (params: ExportParams) => Promise<void>;
   accentColor: string;
+  filterType?: 'users' | 'subscriptions' | 'payouts' | 'reports';
 }
 
-function ExportCard({ title, description, icon, onExport, accentColor }: ExportCardProps) {
+function ExportCard({ title, description, icon, onExport, accentColor, filterType }: ExportCardProps) {
   const { toast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date } | undefined>();
   const [statusFilter, setStatusFilter] = useState<string>('');
+  const [userTypeFilter, setUserTypeFilter] = useState<string>('all');
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -41,6 +43,7 @@ function ExportCard({ title, description, icon, onExport, accentColor }: ExportC
         startDate: dateRange?.from ? dateRange.from.toISOString() : undefined,
         endDate: dateRange?.to ? dateRange.to.toISOString() : undefined,
         status: statusFilter || undefined,
+        type: filterType === 'users' ? userTypeFilter : undefined,
       };
       await onExport(params);
       toast({ title: `${title} exported successfully` });
@@ -90,6 +93,21 @@ function ExportCard({ title, description, icon, onExport, accentColor }: ExportC
           />
         </div>
 
+        {filterType === 'users' && (
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">User Type</Label>
+            <select
+              className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              value={userTypeFilter}
+              onChange={(e) => setUserTypeFilter(e.target.value)}
+            >
+              <option value="all">All users</option>
+              <option value="creator">Creators only</option>
+              <option value="member">Members only</option>
+            </select>
+          </div>
+        )}
+
         {title.includes('Subscription') && (
           <div className="space-y-1.5">
             <Label className="text-xs text-muted-foreground">Status (optional)</Label>
@@ -120,6 +138,22 @@ function ExportCard({ title, description, icon, onExport, accentColor }: ExportC
               <option value="under_review">Under Review</option>
               <option value="resolved">Resolved</option>
               <option value="dismissed">Dismissed</option>
+            </select>
+          </div>
+        )}
+
+        {filterType === 'payouts' && (
+          <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Status (optional)</Label>
+            <select
+              className="flex h-9 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
             </select>
           </div>
         )}
@@ -223,6 +257,7 @@ export default function ExportPage() {
           icon={<Users className="h-6 w-6" />}
           onExport={exportUsers}
           accentColor="primary"
+          filterType="users"
         />
         <ExportCard
           title="Subscriptions"
@@ -230,6 +265,7 @@ export default function ExportPage() {
           icon={<BadgeDollarSign className="h-6 w-6" />}
           onExport={exportSubscriptions}
           accentColor="emerald"
+          filterType="subscriptions"
         />
         <ExportCard
           title="Payouts"
@@ -237,6 +273,7 @@ export default function ExportPage() {
           icon={<FileText className="h-6 w-6" />}
           onExport={exportPayouts}
           accentColor="amber"
+          filterType="payouts"
         />
         <ExportCard
           title="Reports"
@@ -244,6 +281,7 @@ export default function ExportPage() {
           icon={<ShieldAlert className="h-6 w-6" />}
           onExport={exportReports}
           accentColor="purple"
+          filterType="reports"
         />
       </div>
 

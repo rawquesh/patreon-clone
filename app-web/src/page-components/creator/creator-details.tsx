@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { Creator } from "@/lib/backend-services/creator-service";
 import { useCreatorPosts } from "@/lib/backend-services/creator-service";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { toaster } from "@/components/ui/toaster";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAuth } from "@/context/auth.provider";
@@ -44,7 +45,7 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
   useEffect(() => {
     const fetchCreatorSocialLinks = async () => {
       try {
-        const { data } = await api.get(`/creator/${creator._id}/stats`);
+        const { data } = await api.get(ApiEndpoints.creatorStats(creator._id));
         if (data.socialLinks && Array.isArray(data.socialLinks)) {
           setSocialLinks(data.socialLinks);
         }
@@ -64,7 +65,7 @@ const CreatorDetails: React.FC<{ creator: Creator; isMember: boolean }> = ({
     } else {
       try {
         setIsLoading(true);
-        await api.post(`/memberships/subscribe/free/${creator._id}`);
+        await api.post(ApiEndpoints.membershipSubscribeFree(creator._id));
         toaster.create({
           title: "Success",
           description: "You have successfully joined the free membership",

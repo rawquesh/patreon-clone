@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { ApiEndpoints } from "./api_endpoints";
 import {
   NotificationFilterDto,
   NotificationResponseDto,
@@ -14,7 +15,7 @@ export const fetchNotifications = async (
   try {
     const params = { ...filterDto };
 
-    const { data } = await api.get("/notifications", { params });
+    const { data } = await api.get(ApiEndpoints.notifications, { params });
     return data;
   } catch (error) {
     console.error("Error fetching notifications:", error);
@@ -24,7 +25,7 @@ export const fetchNotifications = async (
 
 export const getUnreadCount = async (): Promise<number> => {
   try {
-    const { data } = await api.get("/notifications/count");
+    const { data } = await api.get(ApiEndpoints.notificationsCount);
     return data.count;
   } catch (error) {
     console.error("Error fetching unread count:", error);
@@ -34,7 +35,7 @@ export const getUnreadCount = async (): Promise<number> => {
 
 export const markAsRead = async (ids: string[]): Promise<boolean> => {
   try {
-    const { data } = await api.post("/notifications/mark-read", {
+    const { data } = await api.post(ApiEndpoints.notificationsMarkRead, {
       ids,
     } as MarkReadDto);
     return data.success;
@@ -46,7 +47,7 @@ export const markAsRead = async (ids: string[]): Promise<boolean> => {
 
 export const markAllAsRead = async (): Promise<boolean> => {
   try {
-    const { data } = await api.post("/notifications/mark-all-read");
+    const { data } = await api.post(ApiEndpoints.notificationsMarkAllRead);
     return data.success;
   } catch (error) {
     console.error("Error marking all notifications as read:", error);
@@ -56,7 +57,7 @@ export const markAllAsRead = async (): Promise<boolean> => {
 
 export const deleteNotification = async (id: string): Promise<boolean> => {
   try {
-    const { data } = await api.delete(`/notifications/${id}`);
+    const { data } = await api.delete(ApiEndpoints.notification(id));
     return data.success;
   } catch (error) {
     console.error("Error deleting notification:", error);

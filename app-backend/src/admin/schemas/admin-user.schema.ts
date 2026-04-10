@@ -16,7 +16,6 @@ export enum AdminPermission {
   MANAGE_SUBSCRIPTIONS = 'manage_subscriptions',
   MANAGE_PAYOUTS = 'manage_payouts',
   MANAGE_REPORTS = 'manage_reports',
-  MANAGE_BANS = 'manage_bans',
   MANAGE_SETTINGS = 'manage_settings',
   VIEW_AUDIT_LOG = 'view_audit_log',
   MANAGE_ADMINS = 'manage_admins',
@@ -33,7 +32,6 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
     AdminPermission.MANAGE_MEMBERS,
     AdminPermission.MANAGE_CONTENT,
     AdminPermission.MANAGE_REPORTS,
-    AdminPermission.MANAGE_BANS,
     AdminPermission.BULK_OPERATIONS,
   ],
   [AdminRole.ANALYST]: [

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../api";
 import { CreatorCategory, HARDCODED_CATEGORIES } from "../constants";
 import { SubscribedFeedResponse } from "./home-service.types";
+import { ApiEndpoints } from "./api_endpoints";
 
 export interface Creator {
   _id: string;
@@ -25,7 +26,7 @@ export const useRecentlyVisitedCreators = () => {
     queryKey: ["recentlyVisitedCreators"],
     queryFn: async () => {
       const { data } = await api.get<RecentlyVisitedCreator[]>(
-        "/creators/recently-visited"
+        ApiEndpoints.creatorsRecentlyVisited
       );
       return data;
     },
@@ -37,7 +38,7 @@ export const useTopCreators = () => {
   return useQuery({
     queryKey: ["topCreators"],
     queryFn: async () => {
-      const { data } = await api.get<Creator[]>("/creators/top");
+      const { data } = await api.get<Creator[]>(ApiEndpoints.creatorsTop);
       return data;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
@@ -52,7 +53,7 @@ export const usePopularThisWeek = () => {
     queryKey: ["popularThisWeek"],
     queryFn: async () => {
       const { data } = await api.get<PopularCreator[]>(
-        "/creators/popular-this-week"
+        ApiEndpoints.creatorsPopularThisWeek
       );
       return data;
     },
@@ -68,7 +69,7 @@ export const useTopCreatorsByCategory = (category: string) => {
     queryKey: ["topCreatorsByCategory", category],
     queryFn: async () => {
       const { data } = await api.get<Creator[]>(
-        `/creators/top-by-category/${category}`
+        ApiEndpoints.creatorsTopByCategory(category)
       );
       return data;
     },
@@ -98,7 +99,7 @@ export const useSubscribedFeed = (page: number = 1, limit: number = 10) => {
     queryKey: ["subscribedFeed", page, limit],
     queryFn: async () => {
       const { data } = await api.get<SubscribedFeedResponse>(
-        `/home/subscribed-feed?page=${page}&limit=${limit}`
+        `${ApiEndpoints.homeSubscribedFeed}?page=${page}&limit=${limit}`
       );
       return data;
     },
@@ -109,7 +110,7 @@ export const useSubscribedFeed = (page: number = 1, limit: number = 10) => {
 export const homeAPI = {
   getRecentlyVisited: async (): Promise<RecentlyVisitedCreator[]> => {
     try {
-      const { data } = await api.get("/home/recently-visited");
+      const { data } = await api.get(ApiEndpoints.homeRecentlyVisited);
       return data;
     } catch (error) {
       console.log(error);
@@ -119,25 +120,25 @@ export const homeAPI = {
   },
 
   getTopCreators: async (): Promise<Creator[]> => {
-    const { data } = await api.get("/home/top-creators");
+    const { data } = await api.get(ApiEndpoints.homeTopCreators);
     return data;
   },
 
   getPopularThisWeek: async (): Promise<Creator[]> => {
-    const { data } = await api.get("/home/popular-this-week");
+    const { data } = await api.get(ApiEndpoints.homePopularThisWeek);
     return data;
   },
 
   getTopCreatorsByCategory: async (category: string): Promise<Creator[]> => {
     const { data } = await api.get(
-      `/home/top-by-category?category=${encodeURIComponent(category)}`
+      `${ApiEndpoints.homeTopByCategory}?category=${encodeURIComponent(category)}`
     );
     return data;
   },
 
   getSubscribedFeed: async (page: number = 1, limit: number = 10) => {
     const { data } = await api.get<SubscribedFeedResponse>(
-      `/home/subscribed-feed?page=${page}&limit=${limit}`
+      `${ApiEndpoints.homeSubscribedFeed}?page=${page}&limit=${limit}`
     );
     return data;
   },

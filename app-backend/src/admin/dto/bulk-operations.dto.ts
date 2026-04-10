@@ -27,20 +27,12 @@ export class BulkMembersDto {
   @IsMongoId({ each: true })
   ids: string[];
 
-  @IsEnum(['activate', 'deactivate', 'ban'])
+  @IsEnum(['activate', 'deactivate'])
   action: string;
 
   @IsOptional()
   @IsString()
   reason?: string;
-
-  @IsOptional()
-  @IsDateString()
-  banExpiresAt?: string;
-
-  @IsOptional()
-  @IsString()
-  banAdminNotes?: string;
 }
 
 export class BulkPostsDto {

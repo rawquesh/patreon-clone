@@ -14,6 +14,7 @@ import React, { useState, useEffect } from "react";
 import CreateCollectionForm from "./create-collection-form";
 import ButtonWithIcon from "@/components/ui/button-with-icon";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Collection {
   _id: string;
@@ -37,7 +38,7 @@ const CreateCollection: React.FC<{
       setError(null);
       try {
         const { data } = await api.get<{ collections: Collection[] }>(
-          "/collections"
+          ApiEndpoints.collections
         );
         setCollections(data.collections || []);
       } catch (err: any) {
@@ -82,7 +83,7 @@ const CreateCollection: React.FC<{
       setError(null);
       try {
         const { data } = await api.get<{ collections: Collection[] }>(
-          "/collections/my-collections"
+          ApiEndpoints.collectionsMy
         );
         setCollections(data.collections || []);
         setSelectedCollectionId(newCollectionId);

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 import {
   IMembership,
   SubscriptionResponse,
@@ -17,7 +18,7 @@ export const useCreatorMemberships = (creatorId: string) => {
     queryKey: ["creatorMemberships", creatorId],
     queryFn: async () => {
       const { data } = await api.get<IMembership[]>(
-        `/memberships/creator/${creatorId}`
+        ApiEndpoints.membershipsByCreator(creatorId)
       );
       return data;
     },
@@ -46,7 +47,7 @@ export const useMembershipDetails = (membershipId: string) => {
         }
 
         const { data } = await api.get<IMembership>(
-          `/memberships/${membershipId}`
+          ApiEndpoints.membershipById(membershipId)
         );
 
         // If we got an array of memberships, return the first one
@@ -100,7 +101,7 @@ export const useUserSubscriptions = (filters?: SubscriptionFilterParams) => {
       if (filters?.status) params.append("status", filters.status);
 
       const { data } = await api.get<SubscriptionsResponse>(
-        `/memberships/subscriber?${params}`
+        `${ApiEndpoints.membershipsSubscriber}?${params}`
       );
       return data;
     },
@@ -120,7 +121,7 @@ export const useValidatePromotion = () => {
       membershipId: string;
     }) => {
       const { data } = await api.post<IPromotionValidationResponse>(
-        "/promotions/validate",
+        ApiEndpoints.promotionsValidate,
         {
           code,
           membershipId,
@@ -144,7 +145,7 @@ export const useSubscribeToPaidMembership = () => {
     }) => {
       const payload = promotionCode ? { promotionCode } : {};
       const { data } = await api.post<SubscriptionResponse>(
-        `memberships/checkout/${membershipId}`,
+        ApiEndpoints.membershipCheckout(membershipId),
         payload
       );
       return data;
@@ -181,7 +182,7 @@ export const useSubscribeToFreeMembership = () => {
       // For free memberships, we just add a subscription without a specific membership
       // Find the free membership ID for this creator first
       const { data: memberships } = await api.get<IMembership[]>(
-        `/memberships/creator/${creatorId}`
+        ApiEndpoints.membershipsByCreator(creatorId)
       );
 
       // Get the free membership or use a default ID
@@ -191,7 +192,7 @@ export const useSubscribeToFreeMembership = () => {
 
       // Use the regular subscription endpoint
       const { data } = await api.post<SubscriptionResponse>(
-        `/memberships/subscribe/${freeMembership.id}`
+        ApiEndpoints.membershipSubscribe(freeMembership.id)
       );
 
       return data;
@@ -221,7 +222,7 @@ export const useCancelSubscription = () => {
   return useMutation({
     mutationFn: async (subscriptionId: string) => {
       const { data } = await api.delete<{ success: boolean }>(
-        `/memberships/subscribe/${subscriptionId}`
+        ApiEndpoints.membershipSubscribe(subscriptionId)
       );
       return data;
     },
@@ -247,7 +248,7 @@ export const useRedeemPromotion = () => {
       membershipId: string;
     }) => {
       const { data } = await api.post<IPromotionRedemptionResponse>(
-        "/promotions/redeem",
+        ApiEndpoints.promotionsRedeem,
         { code, membershipId }
       );
       return data;
@@ -285,7 +286,7 @@ export const getCreatorMemberships = async (
 ): Promise<IMembership[]> => {
   try {
     const { data } = await api.get<IMembership[]>(
-      `/memberships/creator/${creatorId}`
+      ApiEndpoints.membershipsByCreator(creatorId)
     );
     return data;
   } catch (error) {
@@ -302,7 +303,7 @@ export const checkSubscription = async (
 ): Promise<ICheckSubscriptionResponse> => {
   try {
     const { data } = await api.get<ICheckSubscriptionResponse>(
-      `/memberships/check/${creatorId}`
+      ApiEndpoints.membershipCheck(creatorId)
     );
     return data;
   } catch (error) {
@@ -324,7 +325,7 @@ export const getUserSubscriptions = async (
     if (filters?.status) params.append("status", filters.status);
 
     const { data } = await api.get<SubscriptionsResponse>(
-      `/memberships/subscriber?${params}`
+      `${ApiEndpoints.membershipsSubscriber}?${params}`
     );
     return data;
   } catch (error) {
@@ -343,7 +344,7 @@ export const subscribeToPaidMembership = async (
   try {
     const payload = promotionCode ? { promotionCode } : {};
     const { data } = await api.post<SubscriptionResponse>(
-      `memberships/checkout/${membershipId}`,
+      ApiEndpoints.membershipCheckout(membershipId),
       payload
     );
     return data;
@@ -361,7 +362,7 @@ export const subscribeToFreeMembership = async (
 ): Promise<SubscriptionResponse> => {
   try {
     const { data } = await api.post<SubscriptionResponse>(
-      `/memberships/subscribe/free/${creatorId}`
+      ApiEndpoints.membershipSubscribeFree(creatorId)
     );
     return data;
   } catch (error) {
@@ -378,7 +379,7 @@ export const cancelSubscription = async (
 ): Promise<{ success: boolean }> => {
   try {
     const { data } = await api.delete<{ success: boolean }>(
-      `/memberships/subscribe/${subscriptionId}`
+      ApiEndpoints.membershipSubscribe(subscriptionId)
     );
     return data;
   } catch (error) {
@@ -396,7 +397,7 @@ export const validatePromotion = async (
 ): Promise<IPromotionValidationResponse> => {
   try {
     const { data } = await api.post<IPromotionValidationResponse>(
-      "/promotions/validate",
+      ApiEndpoints.promotionsValidate,
       { code, membershipId }
     );
     return data;
@@ -415,7 +416,7 @@ export const redeemPromotion = async (
 ): Promise<IPromotionRedemptionResponse> => {
   try {
     const { data } = await api.post<IPromotionRedemptionResponse>(
-      "/promotions/redeem",
+      ApiEndpoints.promotionsRedeem,
       { code, membershipId }
     );
     return data;

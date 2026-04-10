@@ -13,10 +13,11 @@ export class ExportController {
   async exportUsers(
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
-    @Query('status') status?: string,
+    @Query('type') type?: string,
+    @Query('deactivated') deactivated?: string,
     @Res() res?: Response,
   ) {
-    const result = await this.exportService.exportUsers({ startDate, endDate, status });
+    const result = await this.exportService.exportUsers({ startDate, endDate, type, deactivated });
     res?.setHeader('Content-Type', 'text/csv');
     res?.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
     res?.send(result.csv);

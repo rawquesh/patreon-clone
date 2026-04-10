@@ -18,7 +18,7 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-import { DollarSign, Users, Wallet, TrendingUp, ArrowUpRight, ArrowDownRight, ShieldAlert, BarChart3, Settings, Ban, FileDown, ScrollText, Zap } from 'lucide-react';
+import { DollarSign, Users, Wallet, TrendingUp, ArrowUpRight, ArrowDownRight, ShieldAlert, BarChart3, Settings, FileDown, ScrollText, Zap } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -338,9 +338,6 @@ export default function DashboardPage() {
         </a>
         <a href="/settings" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition-colors font-medium">
           <Settings className="h-3.5 w-3.5" /> Settings
-        </a>
-        <a href="/bans" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors font-medium">
-          <Ban className="h-3.5 w-3.5" /> Bans
         </a>
         <a href="/audit-log" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-slate-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-500/20 transition-colors font-medium">
           <ScrollText className="h-3.5 w-3.5" /> Audit Log

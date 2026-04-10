@@ -4,6 +4,8 @@ export type ExportParams = {
   startDate?: string;
   endDate?: string;
   status?: string;
+  type?: string;
+  deactivated?: string;
 };
 
 function buildQuery(params: ExportParams): string {

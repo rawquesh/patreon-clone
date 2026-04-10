@@ -35,11 +35,14 @@ export class ExportService {
   async exportUsers(params: {
     startDate?: string;
     endDate?: string;
-    status?: string;
+    type?: string;
+    deactivated?: string;
   }): Promise<{ csv: string; filename: string }> {
     const filter: any = {};
-    if (params.status === 'creator') filter.isCreator = true;
-    if (params.status === 'member') filter.isCreator = { $ne: true };
+    if (params.type === 'creator') filter.isCreator = true;
+    if (params.type === 'member') filter.isCreator = { $ne: true, isAdmin: { $ne: true } };
+    if (params.deactivated === 'true') filter.isDeactivated = true;
+    if (params.deactivated === 'false') filter.isDeactivated = { $ne: true };
     if (params.startDate) filter.createdAt = { $gte: new Date(params.startDate) };
     if (params.endDate) {
       filter.createdAt = { ...filter.createdAt, $lte: new Date(params.endDate) };

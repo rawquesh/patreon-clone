@@ -8,7 +8,6 @@ export type AdminPermission =
   | 'manage_subscriptions'
   | 'manage_payouts'
   | 'manage_reports'
-  | 'manage_bans'
   | 'manage_settings'
   | 'view_audit_log'
   | 'manage_admins'

@@ -11,6 +11,7 @@ import { useAuth } from "@/context/auth.provider";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 const ActionBarMenu: React.FC<{ creatorId: string }> = ({ creatorId }) => {
   const { user } = useAuth();
@@ -22,7 +23,7 @@ const ActionBarMenu: React.FC<{ creatorId: string }> = ({ creatorId }) => {
     } else {
       try {
         setIsLoading(true);
-        await api.post(`/memberships/subscribe/free/${creatorId}`);
+        await api.post(ApiEndpoints.membershipSubscribeFree(creatorId));
         toaster.create({
           title: "Success",
           description: "You have successfully joined the free membership",

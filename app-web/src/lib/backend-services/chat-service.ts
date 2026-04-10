@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { io, Socket } from "socket.io-client";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 import { branding } from "@/config/branding";
 import { toastHandlers } from "@/lib/toasts";
 
@@ -248,7 +249,7 @@ class ChatService {
     groupChats: Chat[];
   }> {
     try {
-      const response = await api.get("/chat");
+      const response = await api.get(ApiEndpoints.chat);
 
       return response.data;
     } catch (error) {
@@ -260,7 +261,7 @@ class ChatService {
 
   public async getChat(chatId: string): Promise<Chat> {
     try {
-      const response = await api.get(`/chat/${chatId}`);
+      const response = await api.get(ApiEndpoints.chatById(chatId));
       return response.data;
     } catch (error) {
       console.error(`Error fetching chat ${chatId}:`, error);
@@ -298,7 +299,7 @@ class ChatService {
         queryParams.append("initialLoad", params.initialLoad.toString());
 
       const response = await api.get(
-        `/chat/${chatId}/messages?${queryParams.toString()}`
+        `${ApiEndpoints.chatMessages(chatId)}?${queryParams.toString()}`
       );
       return response.data;
     } catch (error) {
@@ -325,7 +326,7 @@ class ChatService {
       if (params?.endDate) queryParams.append("endDate", params.endDate);
 
       const response = await api.get(
-        `/chat/${chatId}/message-dates?${queryParams.toString()}`
+        `${ApiEndpoints.chatMessageDates(chatId)}?${queryParams.toString()}`
       );
       return response.data;
     } catch (error) {
@@ -352,7 +353,7 @@ class ChatService {
         accessType: data.accessType,
         accessTiers: data.accessTiers || [],
       };
-      const response = await api.post("/chat/group", cleanData);
+      const response = await api.post(ApiEndpoints.chatGroup, cleanData);
       return response.data;
     } catch (error) {
       console.error("Error creating group chat:", error);
@@ -366,7 +367,7 @@ class ChatService {
     creatorId: string
   ): Promise<Chat> {
     try {
-      const response = await api.post("/chat/direct", {
+      const response = await api.post(ApiEndpoints.chatDirect, {
         participantId,
         creatorId,
       });
@@ -390,7 +391,7 @@ class ChatService {
         formData.append("attachment", attachment);
       }
 
-      const response = await api.post(`/chat/${chatId}/messages`, formData, {
+      const response = await api.post(ApiEndpoints.chatMessages(chatId), formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -408,7 +409,7 @@ class ChatService {
     lastReadMessageId: string
   ): Promise<void> {
     try {
-      await api.post(`/chat/${chatId}/read`, { lastReadMessageId });
+      await api.post(ApiEndpoints.chatRead(chatId), { lastReadMessageId });
     } catch (error) {
       console.error(`Error marking messages as read in chat ${chatId}:`, error);
       throw error;
@@ -421,7 +422,7 @@ class ChatService {
 
   public async getUnreadCount(): Promise<number> {
     try {
-      const response = await api.get("/chat/unread/count");
+      const response = await api.get(ApiEndpoints.chatUnreadCount);
       return response.data.count;
     } catch (error) {
       console.error("Error fetching unread count:", error);

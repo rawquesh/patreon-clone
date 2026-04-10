@@ -15,10 +15,12 @@ import Tags from "./tags";
 import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
 import { Editor } from "primereact/editor";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 // import { RichTextEditor } from "./editor";
 // import { RichTextBlock } from "./slate-editor";
@@ -138,7 +140,7 @@ const TextPostForm: React.FC<TextPostFormProps> = ({
       const fetchPostData = async () => {
         setIsLoading(true);
         try {
-          const { data } = await api.get(`/posts/${currentPostId}`);
+          const { data } = await api.get(ApiEndpoints.post(currentPostId));
 
           if (isMounted) {
             setTitle(data.title || "");
@@ -231,7 +233,7 @@ const TextPostForm: React.FC<TextPostFormProps> = ({
 
         let response;
         if (isEditMode) {
-          response = await api.put(`/posts/text/${currentPostId}`, formData, {
+          response = await api.put(ApiEndpoints.postTextUpdate(currentPostId), formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -243,7 +245,7 @@ const TextPostForm: React.FC<TextPostFormProps> = ({
             duration: 3000,
           });
         } else {
-          response = await api.post("/posts/text", formData, {
+          response = await api.post(ApiEndpoints.postsText, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

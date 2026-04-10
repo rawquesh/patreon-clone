@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { ApiEndpoints } from "./api_endpoints";
 
 export interface MemberFilterParams {
   page?: number;
@@ -67,7 +68,7 @@ export const fetchMembers = async (
 ): Promise<MembersResponse> => {
   try {
     const queryParams = buildMemberQueryParams(params);
-    const { data } = await api.get(`/members?${queryParams}`);
+    const { data } = await api.get(`${ApiEndpoints.members}?${queryParams}`);
     return data;
   } catch (error) {
     console.error("Error fetching members:", error);
@@ -81,7 +82,7 @@ export const exportMembersToCSV = async (
 ): Promise<Blob> => {
   try {
     const queryParams = buildMemberQueryParams(params);
-    const response = await api.get(`/members/export?${queryParams}`, {
+    const response = await api.get(`${ApiEndpoints.membersExport}?${queryParams}`, {
       responseType: "blob",
     });
     return new Blob([response.data], { type: "text/csv" });

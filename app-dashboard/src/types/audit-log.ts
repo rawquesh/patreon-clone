@@ -4,8 +4,6 @@ export type AuditAction =
   | 'user.deactivated'
   | 'user.reactivated'
   | 'user.deleted'
-  | 'user.banned'
-  | 'user.unbanned'
   | 'creator.approved'
   | 'creator.rejected'
   | 'creator.suspended'
@@ -24,8 +22,6 @@ export type AuditAction =
   | 'admin.updated'
   | 'admin.deleted'
   | 'admin.role_changed'
-  | 'ban.created'
-  | 'ban.lifted'
   | 'bulk.action';
 
 export type AuditTargetType =
@@ -35,8 +31,7 @@ export type AuditTargetType =
   | 'Payout'
   | 'Report'
   | 'Setting'
-  | 'AdminUser'
-  | 'Ban';
+  | 'AdminUser';
 
 export type AuditLog = {
   id: string;

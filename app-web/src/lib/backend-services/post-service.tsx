@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 import {
   toastHandlers,
   getErrorMessage,
@@ -14,7 +15,7 @@ export const usePostComments = (postId: string, page = 1, limit = 10) => {
     queryKey: ["postComments", postId, page, limit],
     queryFn: async () => {
       const { data } = await api.get<ICommentResponse>(
-        `/posts/${postId}/comments?page=${page}&limit=${limit}`
+        `${ApiEndpoints.postComments(postId)}?page=${page}&limit=${limit}`
       );
       return data;
     },
@@ -26,7 +27,7 @@ export const usePostLikes = (postId: string) => {
   return useQuery({
     queryKey: ["postLikes", postId],
     queryFn: async () => {
-      const { data } = await api.get(`/posts/${postId}/likes`);
+      const { data } = await api.get(ApiEndpoints.postLikes(postId));
       return data;
     },
     enabled: !!postId,
@@ -41,7 +42,7 @@ export const usePostLiked = (postId: string) => {
       const { data } = await api.get<{
         liked: boolean;
         message: string;
-      }>(`/posts/${postId}/liked`);
+      }>(ApiEndpoints.postLiked(postId));
       return data.liked;
     },
     enabled: !!postId,
@@ -66,7 +67,7 @@ export const useAddComment = () => {
         ? { text: content, parentId }
         : { text: content };
       const { data } = await api.post<CommentResponse>(
-        `/posts/${postId}/comments`,
+        ApiEndpoints.postComments(postId),
         payload
       );
       return data;
@@ -98,7 +99,7 @@ export const useEditComment = () => {
       content: string;
     }) => {
       const { data } = await api.put<CommentResponse>(
-        `/posts/${postId}/comments/${commentId}`,
+        ApiEndpoints.commentUpdate(postId, commentId),
         { text: content }
       );
       return data;
@@ -128,7 +129,7 @@ export const useDeleteComment = () => {
       commentId: string;
     }) => {
       const { data } = await api.delete(
-        `/posts/${postId}/comments/${commentId}`
+        ApiEndpoints.commentUpdate(postId, commentId)
       );
       return data;
     },
@@ -150,7 +151,7 @@ export const useLikePost = () => {
 
   return useMutation({
     mutationFn: async ({ postId }: { postId: string }) => {
-      const { data } = await api.post<LikeResponse>(`/posts/${postId}/like`);
+      const { data } = await api.post<LikeResponse>(ApiEndpoints.postLike(postId));
       return data;
     },
     onSuccess: (data, variables) => {
@@ -179,7 +180,7 @@ export const useUnlikePost = () => {
 
   return useMutation({
     mutationFn: async ({ postId }: { postId: string }) => {
-      const { data } = await api.delete<LikeResponse>(`/posts/${postId}/like`);
+      const { data } = await api.delete<LikeResponse>(ApiEndpoints.postLike(postId));
       return data;
     },
     onSuccess: (data, variables) => {
@@ -215,7 +216,7 @@ export const useLikeComment = () => {
       commentId: string;
     }) => {
       const { data } = await api.post<LikeResponse>(
-        `/posts/${postId}/comments/${commentId}/like`
+        ApiEndpoints.commentLike(postId, commentId)
       );
       return data;
     },
@@ -243,7 +244,7 @@ export const useUnlikeComment = () => {
       commentId: string;
     }) => {
       const { data } = await api.delete<LikeResponse>(
-        `/posts/${postId}/comments/${commentId}/like`
+        ApiEndpoints.commentLike(postId, commentId)
       );
       return data;
     },

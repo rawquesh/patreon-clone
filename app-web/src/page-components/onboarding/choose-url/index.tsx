@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { branding } from "@/config/branding";
@@ -24,6 +25,7 @@ import {
   CreatorCategory,
 } from "@/typings/IUser";
 import { Gender } from "@/types/auth";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 // Simple debounce hook implementation
 const useDebounce = <T,>(value: T, delay: number): T => {
@@ -77,7 +79,7 @@ const OnboardingForm: React.FC = () => {
 
     setIsCheckingUsername(true);
     try {
-      const { data } = await api.get(`/users/check-username/${username}`);
+      const { data } = await api.get(ApiEndpoints.usersCheckUsername(username));
       setIsUsernameAvailable(data.available);
     } catch (error) {
       console.error("Error checking username availability:", error);

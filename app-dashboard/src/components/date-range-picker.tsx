@@ -43,6 +43,11 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
   const [open, setOpen] = React.useState(false);
   const [localRange, setLocalRange] = React.useState<{ from?: Date; to?: Date } | undefined>(value);
 
+  // Sync local state when value prop changes (e.g., from URL params)
+  React.useEffect(() => {
+    setLocalRange(value);
+  }, [value]);
+
   const displayValue = localRange?.from && localRange?.to
     ? `${format(localRange.from, 'MMM d, yyyy')} - ${format(localRange.to, 'MMM d, yyyy')}`
     : 'Select date range';
@@ -59,7 +64,7 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
           {displayValue}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="end">
+      <PopoverContent className="w-[320px] p-0" align="end">
         <div className="p-3 border-b border-border">
           <div className="grid grid-cols-2 gap-1">
             {PRESETS.map((preset) => (
@@ -87,10 +92,16 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
             setLocalRange({ from: range?.from, to: range?.to });
             if (range?.from && range?.to) {
               onChange({ from: range.from, to: range.to });
+              setOpen(false);
             }
           }}
           numberOfMonths={1}
-          className="p-3"
+          className="p-3 w-[296px]"
+          classNames={{
+            months: "flex flex-row",
+            month: "w-full",
+            table: "w-full",
+          }}
         />
         {localRange?.from && (
           <div className="p-3 border-t border-border flex justify-end">

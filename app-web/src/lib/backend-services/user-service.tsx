@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 import { toastHandlers, getErrorMessage } from "@/lib/toasts";
 import { useAuth } from "@/context/auth.provider";
 import { User } from "@/typings/IUser";
@@ -39,7 +40,7 @@ export const useUserPreferences = () => {
         // Check if user exists first
         if (!user) throw new Error("User not authenticated");
 
-        const { data } = await api.get<UserPreferences>("/users/preferences");
+        const { data } = await api.get<UserPreferences>(ApiEndpoints.usersPreferences);
         return data;
       } catch (error) {
         // Return default preferences if error occurs
@@ -109,7 +110,7 @@ export const getUserProfile = async (token: string): Promise<User | null> => {
   if (!token) return null;
 
   try {
-    const { data } = await api.get<User>("/auth/user", {
+    const { data } = await api.get<User>(ApiEndpoints.authUser, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -135,7 +136,7 @@ export const getUserPreferences = async (
   }
 
   try {
-    const { data } = await api.get<UserPreferences>("/users/preferences", {
+    const { data } = await api.get<UserPreferences>(ApiEndpoints.usersPreferences, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -160,7 +161,7 @@ export const updateUserProfile = async (
   if (!token) return null;
 
   try {
-    const { data } = await api.put<User>("/users/profile", userData, {
+    const { data } = await api.put<User>(ApiEndpoints.usersProfile, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -180,7 +181,7 @@ export const updateUserPreferences = async (
 
   try {
     const { data } = await api.patch<UserPreferences>(
-      "/users/preferences",
+      ApiEndpoints.usersPreferences,
       preferences,
       {
         headers: {

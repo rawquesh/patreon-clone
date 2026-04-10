@@ -58,13 +58,6 @@ export {
   updateAdminRole,
 } from './admin-users.service';
 export {
-  getBans,
-  getBanStats,
-  getBanById,
-  createBan,
-  liftBan,
-} from './bans.service';
-export {
   getAuditLogs,
 } from './audit-log.service';
 export {

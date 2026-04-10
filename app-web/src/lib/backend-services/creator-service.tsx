@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useQuery } from "@tanstack/react-query";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 import { useParams } from "next/navigation";
 import { PostFilterParams } from "@/typings/IPost";
 import { fetchCreatorPosts } from "./posts-service";
@@ -59,7 +60,7 @@ export const useCreator = (username?: string) => {
   return useQuery({
     queryKey: ["creator", creatorUsername],
     queryFn: async () => {
-      const { data } = await api.get<Creator>(`/creator/${creatorUsername}`);
+      const { data } = await api.get<Creator>(ApiEndpoints.creator(creatorUsername));
       return data;
     },
     enabled: !!creatorUsername,
@@ -149,7 +150,7 @@ export const recordCreatorVisit = async (creatorId: string) => {
 
 export const creatorAPI = {
   getCreator: async (username: string): Promise<Creator> => {
-    const { data } = await api.get(`/creator/${username}`);
+    const { data } = await api.get(ApiEndpoints.creator(username));
     return data;
   },
 
@@ -205,14 +206,14 @@ export const creatorAPI = {
 
   // Note: These API methods will remain for legacy code, but should be deprecated
   getCreatorMemberships: async (creatorId: string): Promise<Membership[]> => {
-    const { data } = await api.get(`/memberships/creator/${creatorId}`);
+    const { data } = await api.get(ApiEndpoints.membershipsByCreator(creatorId));
     return data;
   },
 
   checkSubscription: async (creatorId: string): Promise<boolean> => {
     try {
       const { data } = await api.get<{ isSubscribed: boolean }>(
-        `/memberships/check/${creatorId}`
+        ApiEndpoints.membershipCheck(creatorId)
       );
       return data.isSubscribed;
     } catch (_error) {

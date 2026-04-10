@@ -7,6 +7,7 @@ import { InputGroup } from "@/components/ui/input-group";
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { IconButton, Input, Stack, Text, Box, Flex, VStack } from "@chakra-ui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
@@ -22,7 +23,7 @@ const checkEmail = async (
   try {
     const {
       data: { isInUse, passwordSet },
-    } = await api.get(`/auth/check-email/${email}`);
+    } = await api.get(ApiEndpoints.authCheckEmail(email));
     return { isInUse, passwordSet };
   } catch (error) {
     console.error("Error checking email:", error);

@@ -271,27 +271,20 @@ export class AnalyticsTrackerService {
           date: now,
         });
 
-        const postAge = now.getTime() - new Date(post.createdAt).getTime();
-        const daysSinceCreation = Math.max(
-          1,
-          Math.floor(postAge / (1000 * 60 * 60 * 24)),
-        );
-
-        const viewMultiplier = Math.max(0.1, 1 - daysSinceCreation / 30);
-
-        const baseViews = 20 + Math.floor(Math.random() * 30);
-        const hourlyViews = Math.floor(baseViews * viewMultiplier);
-
-        const engagementRate = 0.05 + Math.random() * 0.05;
-        const hourlyEngagements = Math.floor(hourlyViews * engagementRate);
+        // Read real engagement data from the Post document
+        const realViews = post.viewCount || 0;
+        const realLikes = post.likeCount || 0;
+        const realComments = post.commentCount || 0;
+        const realShares = post.shareCount || 0;
+        const realEngagements = realLikes + realComments + realShares;
 
         if (existingInsight) {
           await this.postInsightModel.updateOne(
             { _id: existingInsight._id },
             {
-              $inc: {
-                impressions: hourlyViews,
-                engagements: hourlyEngagements,
+              $set: {
+                impressions: realViews,
+                engagements: realEngagements,
               },
             },
           );
@@ -300,22 +293,13 @@ export class AnalyticsTrackerService {
             post: post._id,
             creator: post.creator,
             date: now,
-            impressions: hourlyViews,
-            engagements: hourlyEngagements,
+            impressions: realViews,
+            engagements: realEngagements,
           });
         }
-
-        await this.postModel.updateOne(
-          { _id: post._id },
-          {
-            $inc: {
-              viewCount: hourlyViews,
-              likeCount: Math.floor(hourlyEngagements * 0.6),
-              commentCount: Math.floor(hourlyEngagements * 0.3),
-              shareCount: Math.floor(hourlyEngagements * 0.1),
-            },
-          },
-        );
+        // NOTE: Do NOT write to Post document here. Real engagement counts
+        // (viewCount, likeCount, commentCount, shareCount) are written by
+        // PostsService when users actually view, like, comment, or share.
       }
 
       this.logger.log('Completed recording hourly post insights');

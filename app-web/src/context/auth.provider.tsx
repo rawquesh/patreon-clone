@@ -7,6 +7,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { setCookie, deleteCookie } from "cookies-next";
@@ -129,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       if (!checkAuth()) return null;
       try {
-        const { data } = await api.get<User>("/auth/user");
+        const { data } = await api.get<User>(ApiEndpoints.authUser);
         return data;
       } catch (error) {
         console.log(error);
@@ -142,7 +143,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithEmail = useMutation({
     mutationFn: async (data: LoginData) => {
       window.localStorage.removeItem("userMode");
-      const response = await api.post<AuthResponse>("/auth/login", data);
+      const response = await api.post<AuthResponse>(ApiEndpoints.authLogin, data);
       return response.data;
     },
     onSuccess: async (data) => {
@@ -163,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const onboardCreator = useMutation({
     mutationFn: async (data: CreatorOnboardingData) => {
       const response = await api.post<OnboardingResponse>(
-        "/users/onboard-creator",
+        ApiEndpoints.usersOnboardCreator,
         data
       );
       return response.data;
@@ -177,7 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signup = useMutation({
     mutationFn: async (data: SignupData) => {
       window.localStorage.removeItem("userMode");
-      const response = await api.post<AuthResponse>("/auth/login", data);
+      const response = await api.post<AuthResponse>(ApiEndpoints.authLogin, data);
       return response.data;
     },
     onSuccess: (data) => {
@@ -202,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       gender: Gender;
     }) => {
       window.localStorage.removeItem("userMode");
-      const { data } = await api.post<AuthResponse>("/auth/register", {
+      const { data } = await api.post<AuthResponse>(ApiEndpoints.authRegister, {
         email,
         password,
         firstName,
@@ -231,7 +232,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleGoogleLogin = () => {
     window.localStorage.removeItem("userMode");
-    window.location.href = `https://${branding.urls.apiServer}/auth/google`;
+    window.location.href = `https://${branding.urls.apiServer}${ApiEndpoints.authGoogle}`;
   };
 
   const logout = () => {
@@ -243,7 +244,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = useMutation({
     mutationFn: async (data: UpdateProfileDto) => {
-      const response = await api.put<User>("/users/profile", data);
+      const response = await api.put<User>(ApiEndpoints.usersProfile, data);
       return response.data;
     },
     onSuccess: (data) => {
@@ -253,7 +254,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfilePhoto = useMutation({
     mutationFn: async (formData: FormData) => {
-      const response = await api.put<User>("/users/profile/photo", formData, {
+      const response = await api.put<User>(ApiEndpoints.usersProfilePhoto, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

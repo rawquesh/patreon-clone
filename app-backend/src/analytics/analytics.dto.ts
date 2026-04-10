@@ -47,20 +47,9 @@ export class PostsInsightsDto {
 
 // Response Interfaces
 
-export interface TierStats {
-  name: string;
-  count: number;
-  growth: number;
-}
-
 export interface MembershipInsightsResponse {
-  activeMembers: number;
-  activeGrowth: number;
-  newMembers: number;
-  upgradedMembers: number;
-  cancelledMembers: number;
-  membershipData: number[];
-  tiers: TierStats[];
+  membershipData: Record<string, number>;
+  tiers: Array<{ name: string; count: number }>;
 }
 
 export interface TierBreakdown {
@@ -71,11 +60,7 @@ export interface TierBreakdown {
 
 export interface EarningsInsightsResponse {
   totalEarnings: number;
-  growthPercentage: number;
-  monthlyEarnings: number[];
-  earningsData: number[]; // Daily earnings breakdown for short time ranges
-  yearlyProjection: number;
-  periods: string[];
+  earningsData: Record<string, number>;
   tierBreakdown: TierBreakdown[];
   availablePayout: number;
   pendingBalance: number;

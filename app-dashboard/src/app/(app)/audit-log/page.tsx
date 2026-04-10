@@ -31,7 +31,7 @@ import { getAuditLogs } from '@/lib/services';
 import type { AuditLog, AuditAction, AuditTargetType } from '@/types/audit-log';
 
 const ALL_ACTIONS: AuditAction[] = [
-  'user.created', 'user.updated', 'user.deactivated', 'user.reactivated', 'user.deleted', 'user.banned', 'user.unbanned',
+  'user.created', 'user.updated', 'user.deactivated', 'user.reactivated', 'user.deleted',
   'creator.approved', 'creator.rejected', 'creator.suspended', 'creator.activated',
   'post.withheld', 'post.restored', 'post.deleted',
   'subscription.cancelled',
@@ -39,14 +39,13 @@ const ALL_ACTIONS: AuditAction[] = [
   'report.resolved', 'report.dismissed',
   'setting.updated', 'setting.bulk_updated',
   'admin.created', 'admin.updated', 'admin.deleted', 'admin.role_changed',
-  'ban.created', 'ban.lifted',
   'bulk.action',
 ];
 
-const TARGET_TYPES: AuditTargetType[] = ['User', 'Post', 'Subscription', 'Payout', 'Report', 'Setting', 'AdminUser', 'Ban'];
+const TARGET_TYPES: AuditTargetType[] = ['User', 'Post', 'Subscription', 'Payout', 'Report', 'Setting', 'AdminUser'];
 
 const ACTION_CATEGORIES: Record<string, AuditAction[]> = {
-  'user': ['user.created', 'user.updated', 'user.deactivated', 'user.reactivated', 'user.deleted', 'user.banned', 'user.unbanned'],
+  'user': ['user.created', 'user.updated', 'user.deactivated', 'user.reactivated', 'user.deleted'],
   'creator': ['creator.approved', 'creator.rejected', 'creator.suspended', 'creator.activated'],
   'post': ['post.withheld', 'post.restored', 'post.deleted'],
   'subscription': ['subscription.cancelled'],
@@ -54,7 +53,6 @@ const ACTION_CATEGORIES: Record<string, AuditAction[]> = {
   'report': ['report.resolved', 'report.dismissed'],
   'setting': ['setting.updated', 'setting.bulk_updated'],
   'admin': ['admin.created', 'admin.updated', 'admin.deleted', 'admin.role_changed'],
-  'ban': ['ban.created', 'ban.lifted'],
   'bulk': ['bulk.action'],
 };
 
@@ -64,8 +62,6 @@ const ACTION_COLORS: Record<string, string> = {
   'user.deactivated': 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
   'user.reactivated': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
   'user.deleted': 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
-  'user.banned': 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
-  'user.unbanned': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
   'creator.approved': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
   'creator.rejected': 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
   'creator.suspended': 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
@@ -84,8 +80,6 @@ const ACTION_COLORS: Record<string, string> = {
   'admin.updated': 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
   'admin.deleted': 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
   'admin.role_changed': 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
-  'ban.created': 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
-  'ban.lifted': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
   'bulk.action': 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
 };
 
@@ -202,7 +196,7 @@ function AuditLogPageInner() {
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Tabs value={actionCategory} onValueChange={handleCategoryChange}>
           <TabsList className="rounded-xl h-9">
-            {['all', 'user', 'creator', 'post', 'subscription', 'payout', 'report', 'setting', 'admin', 'ban', 'bulk'].map((cat) => (
+            {['all', 'user', 'creator', 'post', 'subscription', 'payout', 'report', 'setting', 'admin', 'bulk'].map((cat) => (
               <TabsTrigger key={cat} value={cat} className="rounded-lg text-xs font-medium capitalize h-7 px-2">
                 {cat === 'all' ? 'All' : cat}
               </TabsTrigger>

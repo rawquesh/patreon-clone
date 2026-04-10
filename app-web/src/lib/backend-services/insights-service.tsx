@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { ApiEndpoints } from "./api_endpoints";
 import {
   TimeRange,
   EarningsFilter,
@@ -12,7 +13,7 @@ export const fetchMembershipInsights = async (
 ): Promise<MembershipInsightsResponse> => {
   try {
     const { data } = await api.get(
-      `/analytics/memberships?timeRange=${timeRange}`
+      `${ApiEndpoints.analyticsMemberships}?timeRange=${timeRange}`
     );
     return data;
   } catch (error) {
@@ -27,7 +28,7 @@ export const fetchEarningsInsights = async (
 ): Promise<EarningsInsightsResponse> => {
   try {
     const { data } = await api.get(
-      `/analytics/earnings?timeRange=${timeRange}&filter=${filter}`
+      `${ApiEndpoints.analyticsEarnings}?timeRange=${timeRange}&filter=${filter}`
     );
     console.log(`/analytics/earnings?timeRange=${timeRange}&filter=${filter}`);
     console.log(data);
@@ -42,7 +43,7 @@ export const fetchPostsInsights = async (
   timeRange: TimeRange | string = TimeRange.FOURTEEN_DAYS
 ): Promise<PostsInsightsResponse> => {
   try {
-    const { data } = await api.get(`/analytics/posts?timeRange=${timeRange}`);
+    const { data } = await api.get(`${ApiEndpoints.analyticsPosts}?timeRange=${timeRange}`);
     return data;
   } catch (error) {
     console.error("Error fetching posts insights:", error);

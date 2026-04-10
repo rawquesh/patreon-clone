@@ -16,9 +16,11 @@ import ImageUpload from "./image-upload";
 import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Membership {
   _id: string;
@@ -66,7 +68,7 @@ const CreateImagePost: React.FC<ImagePostProps> = ({
       const fetchPostData = async () => {
         setIsLoading(true);
         try {
-          const { data } = await api.get(`/posts/${currentPostId}`);
+          const { data } = await api.get(ApiEndpoints.post(currentPostId));
           setTitle(data.title || "");
           setDescription(data.description || "");
           setExistingImages(data.mediaUrls || []);
@@ -157,7 +159,7 @@ const CreateImagePost: React.FC<ImagePostProps> = ({
 
       let response;
       if (isEditMode) {
-        response = await api.put(`/posts/image/${currentPostId}`, formData, {
+        response = await api.put(ApiEndpoints.postImageUpdate(currentPostId), formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -169,7 +171,7 @@ const CreateImagePost: React.FC<ImagePostProps> = ({
           duration: 3000,
         });
       } else {
-        response = await api.post("/posts/image", formData, {
+        response = await api.post(ApiEndpoints.postsImage, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

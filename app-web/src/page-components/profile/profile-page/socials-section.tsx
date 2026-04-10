@@ -14,6 +14,7 @@ import AddSocials from "./add-socials";
 import { useAuth } from "@/context/auth.provider";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 const platformIcons = [
   { icon: "mingcute:youtube-fill", title: "Youtube" },
@@ -66,7 +67,7 @@ const SocialsSection: React.FC = () => {
     const fetchSocialLinks = async () => {
       if (user && user._id) {
         try {
-          const { data } = await api.get(`/creator/${user._id}/stats`);
+          const { data } = await api.get(ApiEndpoints.creatorStats(user._id));
           if (data.socialLinks && Array.isArray(data.socialLinks)) {
             setSocialLinks(data.socialLinks);
           }

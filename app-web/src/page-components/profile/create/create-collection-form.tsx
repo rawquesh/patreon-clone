@@ -24,6 +24,7 @@ import {
 // import ButtonWithIcon from "@/components/ui/button-with-icon";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Props {
   open: boolean;
@@ -84,7 +85,7 @@ const CreateCollectionForm: React.FC<Props> = ({ onClose, open, onSubmit }) => {
         formData.append("coverImage", coverImage);
       }
 
-      const { data } = await api.post("/collections", formData, {
+      const { data } = await api.post(ApiEndpoints.collections, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

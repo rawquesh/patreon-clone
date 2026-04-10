@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { ApiEndpoints } from "./api_endpoints";
 import {
   PostFilterParams,
   PostsResponse,
@@ -50,7 +51,7 @@ export const fetchPosts = async (
   params: PostFilterParams = {}
 ): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
-  const { data } = await api.get(`/posts/my-posts?${queryParams}`);
+  const { data } = await api.get(`${ApiEndpoints.postsMyPosts}?${queryParams}`);
   return data;
 };
 
@@ -59,9 +60,9 @@ export const fetchCreatorPosts = async (
   params: PostFilterParams = {}
 ): Promise<CreatorPostsResponse> => {
   const queryParams = buildPostQueryParams(params);
-  console.log(`/posts/by-creator/${creatorId}?${queryParams}`);
+  console.log(`${ApiEndpoints.postsByCreator(creatorId)}?${queryParams}`);
   const { data } = await api.get<CreatorPostsResponse>(
-    `/posts/by-creator/${creatorId}?${queryParams}`
+    `${ApiEndpoints.postsByCreator(creatorId)}?${queryParams}`
   );
   return data;
 };
@@ -70,7 +71,7 @@ export const fetchMyPosts = async (
   params: PostFilterParams = {}
 ): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
-  const { data } = await api.get(`/posts/my-posts?${queryParams}`);
+  const { data } = await api.get(`${ApiEndpoints.postsMyPosts}?${queryParams}`);
   return data;
 };
 
@@ -78,7 +79,7 @@ export const fetchMyDrafts = async (
   params: PostFilterParams = {}
 ): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
-  const response = await api.get(`/posts/drafts?${queryParams}`);
+  const response = await api.get(`${ApiEndpoints.postsDrafts}?${queryParams}`);
 
   const draftsData = response.data.drafts || [];
   return {
@@ -104,14 +105,14 @@ export const fetchCollectionWithPosts = async (
   params: PostFilterParams = {}
 ): Promise<CollectionWithPostsResponse> => {
   const queryParams = buildPostQueryParams(params);
-  const endpoint = `/collections/${collectionId}?${queryParams}`;
+  const endpoint = `${ApiEndpoints.collectionById(collectionId)}?${queryParams}`;
   const { data } = await api.get<CollectionWithPostsResponse>(endpoint);
   return data;
 };
 
 // Fetch collections created by the logged-in user
 export const fetchMyCollections = async (): Promise<MyCollectionsResponse> => {
-  const { data } = await api.get<MyCollectionsResponse>("/collections");
+  const { data } = await api.get<MyCollectionsResponse>(ApiEndpoints.collections);
   return data;
 };
 
@@ -120,7 +121,7 @@ export const addPostToCollection = async (
   collectionId: string,
   postId: string
 ): Promise<void> => {
-  await api.post(`/collections/${collectionId}/posts`, { postId });
+  await api.post(ApiEndpoints.collectionPosts(collectionId), { postId });
 };
 
 // Remove a post from a specific collection
@@ -129,17 +130,17 @@ export const removePostFromCollection = async (
   postId: string
 ): Promise<void> => {
   // The DTO only contains postId, which is sent in the request body for DELETE
-  await api.delete(`/collections/${collectionId}/posts`, { data: { postId } });
+  await api.delete(ApiEndpoints.collectionPosts(collectionId), { data: { postId } });
 };
 
 export const deletePost = async (postId: string): Promise<void> => {
-  await api.delete(`/posts/permanent/${postId}`);
+  await api.delete(ApiEndpoints.postPermanent(postId));
 };
 
 export const publishPost = async (postId: string): Promise<void> => {
-  await api.post(`/posts/${postId}/publish`);
+  await api.post(ApiEndpoints.postPublish(postId));
 };
 
 export const unpublishPost = async (postId: string): Promise<void> => {
-  await api.post(`/posts/${postId}/unpublish`);
+  await api.post(ApiEndpoints.postUnpublish(postId));
 };

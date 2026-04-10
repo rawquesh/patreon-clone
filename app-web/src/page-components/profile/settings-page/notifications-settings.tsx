@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { VStack, Text, Flex, Switch } from "@chakra-ui/react";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 type NotificationSection = Record<string, { title: string; enabled: boolean }>;
 
@@ -23,7 +24,7 @@ const NotificationSettings: React.FC = () => {
   });
 
   const getNotificationSettings = useCallback(async () => {
-    const res = await api.get("/notifications/settings");
+    const res = await api.get(ApiEndpoints.notificationsSettings);
     const {
       data: { creatorSettings },
     } = res;
@@ -49,7 +50,7 @@ const NotificationSettings: React.FC = () => {
     console.log(settingId, on);
     setLoading(true);
 
-    const res = await api.put(`/notifications/settings/creator`, {
+    const res = await api.put(ApiEndpoints.notificationSettingsCreator, {
       [settingId]: !settings[settingId].enabled,
     });
 

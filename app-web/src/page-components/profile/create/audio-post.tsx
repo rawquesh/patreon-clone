@@ -16,9 +16,11 @@ import { Button } from "@/components/ui/button";
 import AudioUpload from "./audio-upload";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Membership {
   _id: string;
@@ -67,7 +69,7 @@ const CreateAudioPost: React.FC<AudioPostProps> = ({
       const fetchPostData = async () => {
         setIsLoading(true);
         try {
-          const { data } = await api.get(`/posts/${currentPostId}`);
+          const { data } = await api.get(ApiEndpoints.post(currentPostId));
           setTitle(data.title || "");
           setDescription(data.description || "");
           setTags(data.tags || []);
@@ -173,7 +175,7 @@ const CreateAudioPost: React.FC<AudioPostProps> = ({
 
       let response;
       if (isEditMode) {
-        response = await api.put(`/posts/audio/${currentPostId}`, formData, {
+        response = await api.put(ApiEndpoints.postAudioUpdate(currentPostId), formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -185,7 +187,7 @@ const CreateAudioPost: React.FC<AudioPostProps> = ({
           duration: 3000,
         });
       } else {
-        response = await api.post("/posts/audio", formData, {
+        response = await api.post(ApiEndpoints.postsAudio, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

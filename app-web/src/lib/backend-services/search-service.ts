@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { CreatorCategory } from "@/lib/constants";
 import api from "../api";
+import { ApiEndpoints } from "./api_endpoints";
 
 interface Creator {
   _id: string;
@@ -50,7 +51,7 @@ export const useSearchResults = (query: string, category: string = "all") => {
         params.set("category", category);
       }
 
-      const { data } = await api.get(`/search?${params.toString()}`);
+      const { data } = await api.get(`${ApiEndpoints.search}?${params.toString()}`);
       return data;
     },
     enabled: !!query,
@@ -60,7 +61,7 @@ export const useSearchResults = (query: string, category: string = "all") => {
 
 export const searchAPI = {
   search: async (query: string, category?: string): Promise<SearchResults> => {
-    let searchUrl = `/search?q=${encodeURIComponent(query)}&full=true`;
+    let searchUrl = `${ApiEndpoints.search}?q=${encodeURIComponent(query)}&full=true`;
 
     if (category && category !== "all") {
       searchUrl += `&category=${encodeURIComponent(category)}`;

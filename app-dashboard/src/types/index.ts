@@ -6,7 +6,6 @@ export type { Payout, PayoutStatus, PayoutDetail, PayoutStats } from './payout';
 export type { AnalyticsOverview, RevenueAnalytics, CreatorAnalytics, SubscriberAnalytics, ReportAnalytics, EngagementAnalytics } from './analytics';
 export type { PlatformSetting } from './settings';
 export type { AdminUser, AdminRole, AdminPermission } from './admin-user';
-export type { Ban, BanType, BanStatus, BanStats } from './ban';
 export type { AuditLog, AuditAction, AuditTargetType } from './audit-log';
 
 export type PaginatedResponse<T> = {

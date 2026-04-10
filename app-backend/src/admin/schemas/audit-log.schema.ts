@@ -8,8 +8,6 @@ export enum AuditAction {
   USER_DEACTIVATED = 'user.deactivated',
   USER_REACTIVATED = 'user.reactivated',
   USER_DELETED = 'user.deleted',
-  USER_BANNED = 'user.banned',
-  USER_UNBANNED = 'user.unbanned',
   // Creators
   CREATOR_APPROVED = 'creator.approved',
   CREATOR_REJECTED = 'creator.rejected',
@@ -36,9 +34,6 @@ export enum AuditAction {
   ADMIN_UPDATED = 'admin.updated',
   ADMIN_DELETED = 'admin.deleted',
   ADMIN_ROLE_CHANGED = 'admin.role_changed',
-  // Bans
-  BAN_CREATED = 'ban.created',
-  BAN_LIFTED = 'ban.lifted',
   // Bulk
   BULK_ACTION = 'bulk.action',
 }
@@ -51,7 +46,6 @@ export enum AuditTargetType {
   REPORT = 'Report',
   SETTING = 'Setting',
   ADMIN_USER = 'AdminUser',
-  BAN = 'Ban',
 }
 
 @Schema({ timestamps: true })

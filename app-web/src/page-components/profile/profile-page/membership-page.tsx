@@ -17,6 +17,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import ButtonWithIcon from "@/components/ui/button-with-icon";
 import { CreateMembershipForm } from "@/components/forms/create-membership-form";
 import { toaster } from "@/components/ui/toaster";
@@ -56,7 +57,7 @@ const MembershipPage: React.FC = () => {
         total: number;
         totalSubscribers: number;
         totalEarnings: number;
-      }>("/memberships/creator");
+      }>(ApiEndpoints.membershipsCreator);
       return data;
     },
   });
@@ -64,7 +65,7 @@ const MembershipPage: React.FC = () => {
   const updateMembershipMutation = useMutation({
     mutationFn: async (variables: { id: string; formData: FormData }) => {
       const { id, formData } = variables;
-      return api.put(`/memberships/${id}`, formData, {
+      return api.put(ApiEndpoints.membershipById(id), formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -95,7 +96,7 @@ const MembershipPage: React.FC = () => {
   const setFeaturedMutation = useMutation({
     mutationFn: async (data: { membershipId: string; isFeatured: boolean }) => {
       const { membershipId, isFeatured } = data;
-      return api.put(`/memberships/${membershipId}/featured`, { isFeatured });
+      return api.put(ApiEndpoints.membershipFeaturedUpdate(membershipId), { isFeatured });
     },
     onSuccess: () => {
       toaster.create({

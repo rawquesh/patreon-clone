@@ -16,9 +16,11 @@ import LinkInput from "./link-input";
 import { Button } from "@/components/ui/button";
 import { toaster } from "@/components/ui/toaster";
 import api from "@/lib/api";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
+import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Membership {
   _id: string;
@@ -65,7 +67,7 @@ const CreateLinkPost: React.FC<LinkPostProps> = ({
       const fetchPostData = async () => {
         setIsLoading(true);
         try {
-          const { data } = await api.get(`/posts/${currentPostId}`);
+          const { data } = await api.get(ApiEndpoints.post(currentPostId));
           setTitle(data.title || "");
           setLinkUrl(data.linkUrl || "");
           setDescription(data.description || "");
@@ -154,7 +156,7 @@ const CreateLinkPost: React.FC<LinkPostProps> = ({
 
       let response;
       if (isEditMode) {
-        response = await api.put(`/posts/link/${currentPostId}`, formData, {
+        response = await api.put(ApiEndpoints.postLinkUpdate(currentPostId), formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -166,7 +168,7 @@ const CreateLinkPost: React.FC<LinkPostProps> = ({
           duration: 3000,
         });
       } else {
-        response = await api.post("/posts/link", formData, {
+        response = await api.post(ApiEndpoints.postsLink, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
