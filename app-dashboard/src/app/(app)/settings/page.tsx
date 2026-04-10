@@ -204,7 +204,7 @@ export default function SettingsPage() {
   const { toast } = useToast();
   const [settings, setSettings] = useState<PlatformSetting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState<SettingCategory>('financial');
+  const [activeCategory, setActiveCategory] = useState<SettingCategory>('features');
   const [isSaving, setIsSaving] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
 
@@ -265,6 +265,11 @@ export default function SettingsPage() {
         toast({ title: `Cannot save empty value for "${label}"`, variant: 'destructive' });
         return;
       }
+
+      if (key === 'platformCommissionRate' && (typeof value !== 'number' || value < 0 || value > 0.9)) {
+        toast({ title: 'Commission rate must be between 0% and 90%', variant: 'destructive' });
+        return;
+      }
     }
 
     setIsSaving(true);
@@ -282,7 +287,7 @@ export default function SettingsPage() {
     }
   };
 
-  const categories: SettingCategory[] = ['financial', 'features', 'content'];
+  const categories: SettingCategory[] = ['features', 'financial', 'content'];
 
   const getCategorySettings = (cat: SettingCategory) =>
     settings.filter(
@@ -304,7 +309,7 @@ export default function SettingsPage() {
     return (
       <>
         <PageHeader title="Platform Settings" description="Configure platform-wide settings and preferences." gradientTitle />
-        <Tabs defaultValue="financial" className="space-y-6">
+        <Tabs defaultValue="features" className="space-y-6">
           <Skeleton className="h-10 w-96 rounded-xl" />
           <div className="space-y-4">
             <Skeleton className="h-48 rounded-xl" />

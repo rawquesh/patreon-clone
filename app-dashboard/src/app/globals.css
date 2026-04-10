@@ -208,7 +208,6 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--gradient-primary-hover);
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;

@@ -62,14 +62,14 @@ export class PlatformSettingsSeeder implements OnModuleInit {
       {
         key: 'maxMediaUploadSize',
         value: 10485760,
-        description: 'Maximum media file upload size in bytes (default: 10MB)',
+        description: 'Maximum media file upload size in bytes (enter value in MB)',
         category: SettingCategory.CONTENT,
         isPublic: false,
       },
       {
         key: 'maxPostLength',
         value: 50000,
-        description: 'Maximum text content length for posts',
+        description: 'Maximum number of characters allowed in post text content',
         category: SettingCategory.CONTENT,
         isPublic: false,
       },
