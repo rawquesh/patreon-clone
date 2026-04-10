@@ -248,13 +248,13 @@ const LoginPages: React.FC = () => {
             css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
           >
             By continuing, you agree to our{" "}
-            <Box as="a" href="/tos" target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
+            <a href="/tos" target="_blank" style={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
               Terms of Service
-            </Box>{" "}
+            </a>{" "}
             and{" "}
-            <Box as="a" href="/privacy-policy" target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
+            <a href="/privacy-policy" target="_blank" style={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
               Privacy Policy
-            </Box>
+            </a>
             .
           </Text>
         </VStack>

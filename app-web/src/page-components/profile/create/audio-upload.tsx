@@ -101,7 +101,7 @@ const AudioUpload: React.FC<Props> = ({
 									icon="material-symbols:mic"
 									width="48"
 									height="48"
-									css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+									style={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
 								/>
 								<Text fontSize={"sm"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
 									Drag and drop an audio <br /> file to upload

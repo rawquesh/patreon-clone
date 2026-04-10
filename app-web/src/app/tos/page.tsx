@@ -308,7 +308,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
         <Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
           For questions about these Terms, contact us at{" "}
-          <b css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</b>.
+          <b style={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</b>.
         </Text>
       </Box>
     </Box>

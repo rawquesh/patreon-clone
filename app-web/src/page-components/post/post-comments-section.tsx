@@ -18,11 +18,13 @@ import { IComment } from "@/typings/IComment";
 interface PostCommentsSectionProps {
   bg?: "star" | "white";
   postId: string;
+  className?: string;
 }
 
 const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
   bg = "star",
   postId,
+  className,
 }) => {
   const [commentText, setCommentText] = useState("");
   const { user } = useAuth();
@@ -117,7 +119,7 @@ const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
   }
 
   return (
-    <Box>
+    <Box className={className}>
       <Separator my={4} />
       {comments
         .filter((comment) => !comment.parentComment)

@@ -27,8 +27,6 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({ children }) => {
             justifyContent: "center",
             zIndex: 1,
             color: "white",
-          }}
-          css={{
             "& #notification-text": {
               color: "white",
             },

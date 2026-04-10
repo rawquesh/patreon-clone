@@ -72,7 +72,7 @@ const CollectionsTable: React.FC = () => {
 							justifyContent: "center",
 						}}
 					>
-						<Icon height="32px" icon="solar:playlist-bold" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
+						<Icon height="32px" icon="solar:playlist-bold" style={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
 					</Box>
 					<Text
 						fontSize="sm"

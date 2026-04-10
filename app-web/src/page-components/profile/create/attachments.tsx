@@ -69,7 +69,8 @@ const Attachments: React.FC<Props> = ({
 					css={{ color: "hsl(211, 71%, 43%)" }}
 					as={"button"}
 					_hover={{
-						css: { color: "hsl(211, 71%, 43%)", opacity: 0.8 },
+						color: "hsl(211, 71%, 43%)",
+						opacity: 0.8,
 					}}
 					onClick={() => {
 						handleUpload();

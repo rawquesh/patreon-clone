@@ -92,7 +92,7 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
               username={user?.firstName || ""}
             />
             {currentMode === "creator" && (
-              <Icon height="20px" icon={"iconamoon:check-bold"} css={{ color: "hsl(211, 71%, 43%)" }} />
+              <Icon height="20px" icon={"iconamoon:check-bold"} style={{ color: "hsl(211, 71%, 43%)" }} />
             )}
           </Flex>
           <Flex
@@ -116,7 +116,7 @@ const MobileBottomDrawer: React.FC<Props> = ({ currentMode, onModeChange }) => {
               mode="user"
             />
             {currentMode === "user" && (
-              <Icon height="20px" icon={"iconamoon:check-bold"} css={{ color: "hsl(211, 71%, 43%)" }} />
+              <Icon height="20px" icon={"iconamoon:check-bold"} style={{ color: "hsl(211, 71%, 43%)" }} />
             )}
           </Flex>
           <Separator my={3} />

@@ -104,7 +104,7 @@ const TopCreatorsCategory: React.FC<{ category: string; id: string }> = ({
               <Icon
                 width={"24px"}
                 icon={"material-symbols:chevron-right-rounded"}
-                css={{ color: "hsl(211, 71%, 43%)" }}
+                style={{ color: "hsl(211, 71%, 43%)" }}
               />
             </Flex>
           </Link>

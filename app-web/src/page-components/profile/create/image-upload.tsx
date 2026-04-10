@@ -205,7 +205,7 @@ const ImageUpload: React.FC<Props> = ({
 								icon="material-symbols:add-photo-alternate"
 								width="48"
 								height="48"
-								css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+								style={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
 							/>
 							<Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} textAlign="center">
 								Add Images

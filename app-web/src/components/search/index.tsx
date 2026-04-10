@@ -91,7 +91,7 @@ const SearchComponent: React.FC = () => {
       <form onSubmit={handleSearch}>
         <InputGroup
           startElement={
-            <Icon icon="material-symbols:search" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
+            <Icon icon="material-symbols:search" style={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
           }
         >
           <Input
@@ -211,7 +211,7 @@ const SearchComponent: React.FC = () => {
                             icon="material-symbols:tag"
                             width="20px"
                             height="20px"
-                            css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
+                            style={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
                           />
                           <Text css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{topic}</Text>
                         </Flex>

@@ -24,74 +24,74 @@ const NotificationItem: React.FC<Props> = ({ notification }) => {
       case NotificationType.LIKE:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             liked your post:{" "}
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
           </Text>
         );
       case NotificationType.COMMENT:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             commented on your post:{" "}
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
           </Text>
         );
       case NotificationType.COMMENT_REPLY:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             replied to your comment on:{" "}
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
           </Text>
         );
       case NotificationType.NEW_MEMBER:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             became a new member.
           </Text>
         );
       case NotificationType.UPGRADE:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             upgraded their membership.
           </Text>
         );
       case NotificationType.DOWNGRADE:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             downgraded their membership.
           </Text>
         );
       case NotificationType.CANCELLATION:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             cancelled their membership.
           </Text>
         );
       case NotificationType.NEW_POST:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             published a new post:{" "}
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{notification.post?.title}</strong>
           </Text>
         );
       case NotificationType.GROUP_CHAT_CREATED:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             created a new group chat.
           </Text>
         );
       case NotificationType.DIRECT_CHAT_CREATED:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             started a conversation with you.
           </Text>
         );
@@ -99,20 +99,20 @@ const NotificationItem: React.FC<Props> = ({ notification }) => {
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
             New message in your group chat from{" "}
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>.
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>.
           </Text>
         );
       case NotificationType.DIRECT_MESSAGE:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             sent you a new message.
           </Text>
         );
       default:
         return (
           <Text fontSize={"14px"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
-            <strong css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
+            <strong style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{actor}</strong>{" "}
             sent you a notification.
           </Text>
         );

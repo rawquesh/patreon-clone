@@ -90,15 +90,11 @@ const VideoPost: React.FC<Props> = ({
   };
 
   const YouTubeEmbed = ({ videoId }: { videoId: string }) => (
-    <Box
-      as="iframe"
+    <iframe
       src={`https://www.youtube.com/embed/${videoId}`}
-      width="100%"
-      height="100%"
+      style={{ width: "100%", height: "100%", borderRadius: "12px", border: "0" }}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-      border="0"
-      css={{ borderRadius: "12px" }}
     />
   );
 
@@ -146,7 +142,7 @@ const VideoPost: React.FC<Props> = ({
               zIndex={1000}
               css={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)" }}
             >
-              <Icon width={60} icon={"tabler:lock-filled"} css={{ color: "white" }} />
+              <Icon width={60} icon={"tabler:lock-filled"} style={{ color: "white" }} />
               <Text color="white" fontSize="md" fontWeight={500}>
                 Subscribe to watch this video
               </Text>

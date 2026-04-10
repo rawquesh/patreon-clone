@@ -220,7 +220,7 @@ const GiftsTable: React.FC = () => {
 											justifyContent: "center",
 										}}
 									>
-										<Icon width="28px" height="28px" icon={"mdi:gift"} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
+										<Icon width="28px" height="28px" icon={"mdi:gift"} style={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
 									</Box>
 									<Text fontSize="lg" fontWeight={600} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
 										No gifts yet

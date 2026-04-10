@@ -43,7 +43,7 @@ const CommunityGuidelinesPage: React.FC = () => {
 
           <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)", marginTop: "16px" }}>
             If you come across any violations, please report them to{" "}
-            <strong css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</strong>.
+            <strong style={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</strong>.
           </Text>
         </Box>
 
@@ -318,9 +318,9 @@ const CommunityGuidelinesPage: React.FC = () => {
               </Heading>
               <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
                 If you believe a strike was issued in error, you may appeal
-                within <strong css={{ color: "hsl(211, 71%, 43%)" }}>{branding.legal.strikeAppealDays} days</strong> by responding to the
+                within <strong style={{ color: "hsl(211, 71%, 43%)" }}>{branding.legal.strikeAppealDays} days</strong> by responding to the
                 notification email. We will review and respond within{" "}
-                <strong css={{ color: "hsl(211, 71%, 43%)" }}>{branding.legal.strikeReviewDays} days</strong>.
+                <strong style={{ color: "hsl(211, 71%, 43%)" }}>{branding.legal.strikeReviewDays} days</strong>.
               </Text>
             </Box>
           </Stack>
@@ -332,7 +332,7 @@ const CommunityGuidelinesPage: React.FC = () => {
           </Heading>
           <Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
             If you witness a violation of these guidelines, please report it to{" "}
-            <strong css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</strong>. Our team will review reports and
+            <strong style={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.supportEmail}</strong>. Our team will review reports and
             take appropriate action.
           </Text>
         </Box>

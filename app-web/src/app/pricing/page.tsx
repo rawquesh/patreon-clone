@@ -193,9 +193,10 @@ export default function PricingPage() {
                   className="glass-card hover-lift"
                   p={6}
                   borderRadius="16px"
-                  align="start"
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="start"
                   gap={4}
-                  css={{ display: "flex", flexDirection: "column" }}
                 >
                   <Flex
                     boxSize="48px"

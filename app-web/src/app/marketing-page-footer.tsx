@@ -1,13 +1,16 @@
+"use client";
+
 import {
   Box,
   Flex,
   Grid,
   Heading,
+  Link,
   SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import Link from "next/link";
+import NextLink from "next/link";
 import { QrDownload } from "@/components/QrDownload";
 import { branding } from "@/config/branding";
 
@@ -73,6 +76,7 @@ export const MarketingPageFooter = () => {
                     { href: "/community", label: "Communities" },
                   ].map((item) => (
                     <Link
+                      as={NextLink}
                       key={item.href}
                       href={item.href}
                       css={{
@@ -96,6 +100,7 @@ export const MarketingPageFooter = () => {
                     { href: "/tos", label: "Terms of Service" },
                   ].map((item) => (
                     <Link
+                      as={NextLink}
                       key={item.href}
                       href={item.href}
                       css={{

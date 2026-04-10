@@ -333,7 +333,7 @@ const OnboardingForm: React.FC = () => {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                css={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
+                style={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
               >
                 Privacy Policy
               </a>
@@ -344,7 +344,7 @@ const OnboardingForm: React.FC = () => {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                css={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
+                style={{ color: "hsl(211, 71%, 43%)", textDecoration: "underline" }}
               >
                 Terms Of Service
               </a>

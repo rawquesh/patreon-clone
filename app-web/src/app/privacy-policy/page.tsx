@@ -360,7 +360,7 @@ const PrivacyPolicyPage: React.FC = () => {
 					</List.Item>
 				</List.Root>
 				<Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
-					To make a request, email <b css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.privacyEmail}</b>.
+					To make a request, email <b style={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.privacyEmail}</b>.
 				</Text>
 
 				<Heading as="h2" size="lg" mt={8} mb={4} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
@@ -390,10 +390,10 @@ const PrivacyPolicyPage: React.FC = () => {
 					contact us at:
 				</Text>
 				<Text mb={1} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
-					Email: <b css={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.privacyEmail}</b>
+					Email: <b style={{ color: "hsl(211, 71%, 43%)" }}>{branding.contact.privacyEmail}</b>
 				</Text>
 				<Text mb={6} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
-					Mailing Address: <b css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{branding.contact.mailingAddress}</b>
+					Mailing Address: <b style={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>{branding.contact.mailingAddress}</b>
 				</Text>
 			</Box>
 		</Box>

@@ -18,11 +18,13 @@ import React, { useState, useEffect } from "react";
 interface PostCommentsSectionProps {
   bg?: "star" | "white";
   postId: string;
+  className?: string;
 }
 
 const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
   bg = "star",
   postId,
+  className,
 }) => {
   const [commentText, setCommentText] = useState("");
   const { user } = useAuth();
@@ -85,7 +87,7 @@ const PostCommentsSection: React.FC<PostCommentsSectionProps> = ({
   }
 
   return (
-    <div>
+    <div className={className}>
       <Separator my={4} />
       {comments.map((comment) => (
         <Comment

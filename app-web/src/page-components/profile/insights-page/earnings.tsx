@@ -88,7 +88,7 @@ const EarningsTab = () => {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `$${context.raw.toLocaleString()}`,
+          label: (context) => `$${(context.raw as number).toLocaleString()}`,
         },
       },
     },
@@ -124,7 +124,7 @@ const EarningsTab = () => {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `$${context.raw.toLocaleString()}`,
+          label: (context) => `$${(context.raw as number).toLocaleString()}`,
         },
       },
     },

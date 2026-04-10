@@ -85,7 +85,7 @@ const DiscountTableMenuPopover: React.FC<Props> = ({
               />
               <Flex
                 _hover={{
-                  css: { background: "hsl(0, 84.2%, 60.2% / 0.15)" },
+                  background: "hsl(0, 84.2%, 60.2% / 0.15)",
                 }}
                 gap={4}
                 px={4}

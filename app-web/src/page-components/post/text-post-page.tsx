@@ -137,13 +137,13 @@ const TextPostPageComponent: React.FC<{
                   as="pre"
                   p={4}
                   my={4}
-                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
-                  borderRadius="md"
-                  overflowX="auto"
-                  fontSize="sm" // Smaller font for code
-                  fontFamily="monospace"
                   css={{
-                    // Target inner code elements if needed
+                    background: "hsl(222.2, 47.4%, 11.2%)",
+                    color: "hsl(210, 40%, 96%)",
+                    borderRadius: "md",
+                    overflowX: "auto",
+                    fontSize: "sm",
+                    fontFamily: "monospace",
                     code: { fontFamily: "monospace !important" },
                   }}
                 >
@@ -210,11 +210,13 @@ const TextPostPageComponent: React.FC<{
               <Box
                 as="blockquote"
                 borderLeft="4px solid"
-                css={{ borderColor: "hsl(210, 30%, 88%)" }}
+                css={{
+                  borderColor: "hsl(210, 30%, 88%)",
+                  color: "hsl(215.4, 16.3%, 46.9%)",
+                }}
                 pl={4}
                 my={4}
                 fontStyle="italic"
-                css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}
               >
                 {reactChildren}
               </Box>

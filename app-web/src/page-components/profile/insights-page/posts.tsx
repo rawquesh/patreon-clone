@@ -113,8 +113,9 @@ const PostsTab = () => {
           color: "hsl(215.4, 16.3%, 46.9%)",
         },
         ticks: {
-          callback: function (value: number) {
-            if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+          callback: function (value: string | number) {
+            const num = typeof value === "string" ? parseFloat(value) : value;
+            if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
             return value;
           },
           color: "hsl(215.4, 16.3%, 46.9%)",

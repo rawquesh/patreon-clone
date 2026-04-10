@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Box,
@@ -10,13 +12,14 @@ import {
   SimpleGrid,
   Image,
   Icon,
+  Link,
 } from "@chakra-ui/react";
 import {
   TestimonialsSlider,
   FeaturesSection,
 } from "./marketing-page-components";
 import { CheckIcon, PostIcon, UserIcon } from "./icons";
-import Link from "next/link";
+import NextLink from "next/link";
 import { MarketingHeader } from "@/components/marketing-header";
 import { InteractiveHero } from "@/components/interactive-hero";
 import { HomePageForm } from "./home-page-form";
@@ -370,11 +373,11 @@ export default function MarketingPage() {
                     pt={2}
                   >
                     By signing up, you agree to our{" "}
-                    <Link href="/tos" target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
+                    <Link as={NextLink} href="/tos" target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
                       Terms of Service
                     </Link>{" "}
                     and{" "}
-                    <Link href={"/privacy-policy"} target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
+                    <Link as={NextLink} href={"/privacy-policy"} target="_blank" css={{ color: "hsl(211, 71%, 43%)", fontWeight: 500 }}>
                       Privacy Policy
                     </Link>
                     .

@@ -71,7 +71,7 @@ const RestrictedAudioContent: React.FC<RestrictedAudioContentProps> = ({
             flexShrink={0}
             mr={4}
           >
-            <Icon as={Music} boxSize={8} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
+            <Icon as={Music} boxSize={8} style={{ color: "hsl(215.4, 16.3%, 46.9%)" }} />
           </Flex>
         )}
 

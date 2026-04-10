@@ -154,12 +154,15 @@ const DisplayAboutDetails: React.FC<{
                   as="pre"
                   p={4}
                   my={4}
-                  css={{ background: "hsl(222.2, 47.4%, 11.2%)", color: "hsl(210, 40%, 96%)" }}
-                  borderRadius="md"
-                  overflowX="auto"
-                  fontSize="sm" // Smaller font for code
-                  fontFamily="monospace"
-                  css={{ code: { fontFamily: "monospace !important" } }} // Ensure inner code uses monospace
+                  css={{
+                    background: "hsl(222.2, 47.4%, 11.2%)",
+                    color: "hsl(210, 40%, 96%)",
+                    borderRadius: "md",
+                    overflowX: "auto",
+                    fontSize: "sm",
+                    fontFamily: "monospace",
+                    code: { fontFamily: "monospace !important" },
+                  }}
                 >
                   {reactChildren}
                 </Box>

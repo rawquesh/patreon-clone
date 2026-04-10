@@ -73,7 +73,7 @@ const CollectionsPage: React.FC<{ creatorId: string }> = ({ creatorId }) => {
       >
         <Stack textAlign={"center"} mt={6} alignItems={"center"}>
           <Box w={"fit"} css={{ background: "hsl(211, 71%, 43% / 0.1)" }} p={4} borderRadius={"999px"}>
-            <Icon height={"36px"} css={{ color: "hsl(211, 71%, 43%)" }} icon={"solar:playlist-bold"} />
+            <Icon height={"36px"} style={{ color: "hsl(211, 71%, 43%)" }} icon={"solar:playlist-bold"} />
           </Box>
           <Text fontSize={"sm"} fontWeight={600}>
             {creator?.displayName || "This creator"} hasn&apos;t created any
