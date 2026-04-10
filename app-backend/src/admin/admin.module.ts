@@ -16,7 +16,6 @@ import { MembersService } from './services/members.service';
 import { ContentService } from './services/content.service';
 import { SubscriptionsService } from './services/subscriptions.service';
 import { PayoutsService } from './services/payouts.service';
-import { AdminGuard } from './admin.guard';
 import {
   PostReport,
   PostReportSchema,
@@ -43,6 +42,7 @@ import {
 } from '@/database/schemas/payout/payout.schema';
 import { Membership, MembershipSchema } from '@/database/schemas/membership/membership.schema';
 import { PaymentsModule } from '@/payments/payments.module';
+import { AdminGuardModule } from './schemas/admin-guard.module';
 
 // NEW: Platform Settings
 import { SettingsController } from './controllers/settings.controller';
@@ -95,6 +95,7 @@ import { ExportService } from './services/export.service';
       { name: AdminUser.name, schema: AdminUserSchema },
       { name: Ban.name, schema: BanSchema },
     ]),
+    AdminGuardModule,
     forwardRef(() => PaymentsModule),
   ],
   controllers: [
@@ -124,7 +125,6 @@ import { ExportService } from './services/export.service';
     ContentService,
     SubscriptionsService,
     PayoutsService,
-    AdminGuard,
     // NEW providers
     SettingsService,
     PlatformSettingsSeeder,
@@ -139,6 +139,7 @@ import { ExportService } from './services/export.service';
     ReportsService,
     ModerationService,
     AuditLogService,
+    AdminGuardModule,
   ],
 })
 export class AdminModule {}
