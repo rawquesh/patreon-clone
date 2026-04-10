@@ -145,35 +145,36 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </Sidebar>
 
       <SidebarInset>
-        {/* Glass Header */}
-        <header className="sticky top-0 z-[55] flex h-16 items-center justify-between border-b glass-card-static px-4 sm:px-6 lg:px-8 gap-4">
-          <div className="md:hidden">
-            <SidebarTrigger>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Menu className="h-5 w-5" />
-              </Button>
+        {/* Premium Glass Header */}
+        <header className="sticky top-0 z-[55] flex h-16 items-center justify-between glass-card px-4 sm:px-6 lg:px-8 gap-4 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)] relative overflow-hidden backdrop-blur-2xl">
+          {/* Subtle bottom gradient border & top glow wash */}
+          <div className="absolute pointer-events-none inset-0 bg-gradient-to-b from-primary/5 to-transparent z-0" />
+          <div className="absolute pointer-events-none bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent z-0" />
+          
+          {/* Mobile Trigger */}
+          <div className="md:hidden relative z-10 flex items-center">
+            <SidebarTrigger className="hover-lift h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/10">
+              <Menu className="h-5 w-5" />
             </SidebarTrigger>
           </div>
 
-          {/* Breadcrumb / page title area — can be used for dynamic titles */}
-          <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-            <div className="relative w-4 h-4">
+          {/* Breadcrumb / Brand Title Area */}
+          <div className="hidden md:flex items-center gap-2.5 text-sm font-semibold text-foreground relative z-10">
+            <div className="relative w-5 h-5 drop-shadow-[0_0_8px_rgba(var(--primary),0.3)]">
               <Image src="/logo.png" alt={branding.appName} fill className="object-contain" />
             </div>
-            <span>{branding.appName} Admin</span>
+            <span className="text-gradient tracking-wide">{branding.appName} Console</span>
           </div>
 
           {/* Right side actions slot */}
-          <div className="flex items-center gap-3 ml-auto">
-            {/* Optional: notifications, user pill, etc. */}
-            <div className="flex items-center gap-2">
-              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full glass-card text-xs font-medium text-muted-foreground">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                Live
-              </div>
+          <div className="flex items-center gap-3 ml-auto relative z-10">
+            {/* Enhanced Live Indicator Pill */}
+            <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)] text-xs font-semibold text-emerald-600 dark:text-emerald-400 backdrop-blur-md transition-all duration-300 hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] hover-lift cursor-default">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              System Live
             </div>
           </div>
         </header>
