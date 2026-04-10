@@ -89,8 +89,9 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
     final token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
     if (token == null || token.isEmpty) return;
 
-    final user = await AuthenticationRepository().getUserFromToken(token);
-    if (user != null) {
+    final result = await AuthenticationRepository().getUserFromToken(token);
+    if (result.isSuccess && result.data != null) {
+      final user = result.data!;
       authenticationProvider.userModel.set(value: user, isNotify: true);
       profileImageUrl = user.profilePicture;
       coverImageUrl = user.profileCover;
@@ -153,20 +154,20 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
   }
 
   Future<void> _uploadCoverImage(File imageFile) async {
-    final url = await myUserController.uploadCoverImage(imageFile: imageFile);
-    if (url != null) {
-      coverImageUrl = url;
+    final urlResult = await myUserController.uploadCoverImage(imageFile: imageFile);
+    if (urlResult.isSuccess && urlResult.data != null && urlResult.data!.isNotEmpty) {
+      coverImageUrl = urlResult.data!;
     } else {
-      _showErrorSnackBar('Failed to upload cover image');
+      _showErrorSnackBar(urlResult.errorMessage ?? 'Failed to upload cover image');
     }
   }
 
   Future<void> _uploadProfileImage(File imageFile) async {
-    final url = await myUserController.uploadProfileImage(imageFile: imageFile);
-    if (url != null) {
-      profileImageUrl = url;
+    final urlResult = await myUserController.uploadProfileImage(imageFile: imageFile);
+    if (urlResult.isSuccess && urlResult.data != null && urlResult.data!.isNotEmpty) {
+      profileImageUrl = urlResult.data!;
     } else {
-      _showErrorSnackBar('Failed to upload profile image');
+      _showErrorSnackBar(urlResult.errorMessage ?? 'Failed to upload profile image');
     }
   }
 
@@ -187,13 +188,13 @@ class _CreatorHeaderSectionState extends State<CreatorHeaderSection> with MySafe
   }
 
   Future<void> _updateHeadline(String newHeadline) async {
-    final success = await myUserController.updateCreatorHeadline(headline: newHeadline);
-    if (success) {
+    final result = await myUserController.updateCreatorHeadline(headline: newHeadline);
+    if (result.isSuccess) {
       headline = newHeadline;
       _showSuccessSnackBar('Headline updated successfully');
       mySetState();
     } else {
-      _showErrorSnackBar('Failed to update headline');
+      _showErrorSnackBar(result.errorMessage ?? 'Failed to update headline');
     }
   }
 

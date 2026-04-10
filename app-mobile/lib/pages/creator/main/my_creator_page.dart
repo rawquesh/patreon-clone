@@ -40,9 +40,10 @@ class _MyCreatorPageState extends State<MyCreatorPage> with SingleTickerProvider
     final token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
     if (token == null || token.isEmpty) return;
 
-    final user = await AuthenticationRepository().getUserFromToken(token);
-    MyPrint.printOnConsole("Fetched userModel: $user, Fetched user: ${user?.userId}, creatorStatus: ${user?.creatorStatus}");
-    if (user != null) {
+    final userResult = await AuthenticationRepository().getUserFromToken(token);
+    if (userResult.isSuccess && userResult.data != null) {
+      final user = userResult.data!;
+      MyPrint.printOnConsole("Fetched userModel: $user, Fetched user: ${user.userId}, creatorStatus: ${user.creatorStatus}");
       authenticationProvider.userModel.set(value: user, isNotify: true);
       MyPrint.printOnConsole("user creatorStatus: ${user.creatorStatus}");
       isCreatorPublished = user.creatorStatus.toLowerCase() == 'published';

@@ -20,7 +20,6 @@ import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
 import { Editor } from "primereact/editor";
-import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 // import { RichTextEditor } from "./editor";
 // import { RichTextBlock } from "./slate-editor";

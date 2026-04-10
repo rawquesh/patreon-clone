@@ -102,7 +102,7 @@ class _BecomeCreatorOnboardingState extends State<BecomeCreatorOnboarding> with 
 
     try {
       final repo = UserRepository();
-      final user = await repo.onboardCreator(
+      final result = await repo.onboardCreator(
         token: token,
         username: _urlController.text.trim(),
         contentVisibleTo: _selectedContentVisibility!,
@@ -111,7 +111,8 @@ class _BecomeCreatorOnboardingState extends State<BecomeCreatorOnboarding> with 
 
       if (mounted) Navigator.of(context, rootNavigator: true).pop();
 
-      if (user != null) {
+      if (result.isSuccess && result.data != null) {
+        final user = result.data!;
         final userModel = _authProvider.userModel.get();
         userModel?.updateFromMap(user.toMap());
         if (userModel != null) {
@@ -123,7 +124,7 @@ class _BecomeCreatorOnboardingState extends State<BecomeCreatorOnboarding> with 
         }
       } else {
         if (mounted) {
-          MyToast.showError(context: context, msg: 'Failed to onboard');
+          MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to onboard');
         }
       }
     } catch (e) {

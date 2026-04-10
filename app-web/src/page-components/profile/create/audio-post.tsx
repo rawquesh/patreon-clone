@@ -20,7 +20,6 @@ import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useRouter, useParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery } from "@tanstack/react-query";
-import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Membership {
   _id: string;

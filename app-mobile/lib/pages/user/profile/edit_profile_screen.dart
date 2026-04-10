@@ -76,13 +76,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> with MySafeState 
 
       final UserRepository userRepository = UserRepository();
 
-      final photoUrl = await userRepository.uploadProfilePhoto(
+      final photoResult = await userRepository.uploadProfilePhoto(
         token: token,
         imageFile: _selectedImage!,
       );
-      MyPrint.printOnConsole("Photo URL from server: $photoUrl");
+      MyPrint.printOnConsole("Photo URL from server: ${photoResult.data}");
 
-      if (photoUrl != null) {
+      if (photoResult.isSuccess && photoResult.data != null && photoResult.data!.isNotEmpty) {
+        final photoUrl = photoResult.data!;
         if (userModel != null) {
           userModel!.profilePicture = photoUrl;
           authenticationProvider.userModel.set(value: userModel);
@@ -93,9 +94,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> with MySafeState 
           const SnackBar(content: Text('Profile photo updated successfully')),
         );
       } else {
-        MyPrint.printOnConsole("Photo upload failed, null URL returned.");
+        MyPrint.printOnConsole("Photo upload failed: ${photoResult.errorMessage}");
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to upload profile photo')),
+          SnackBar(content: Text(photoResult.errorMessage ?? 'Failed to upload profile photo')),
         );
       }
     } catch (e) {
@@ -157,12 +158,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> with MySafeState 
       String? token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
 
       final UserRepository userRepository = UserRepository();
-      final updatedUser = await userRepository.updateUserProfileFromModel(
+      final updateResult = await userRepository.updateUserProfileFromModel(
         token: token,
         data: updateModel,
       );
 
-      if (updatedUser != null) {
+      if (updateResult.isSuccess && updateResult.data != null) {
+        final updatedUser = updateResult.data!;
         if (userModel != null) {
           userModel!.displayName = updatedUser.displayName;
           userModel!.email = updatedUser.email;
@@ -184,7 +186,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with MySafeState 
         Navigator.of(context).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update profile')),
+          SnackBar(content: Text(updateResult.errorMessage ?? 'Failed to update profile')),
         );
       }
     } catch (e) {

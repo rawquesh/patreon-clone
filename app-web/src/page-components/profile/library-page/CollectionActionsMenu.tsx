@@ -30,7 +30,6 @@ import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 
 interface Collection {
   _id: string;
