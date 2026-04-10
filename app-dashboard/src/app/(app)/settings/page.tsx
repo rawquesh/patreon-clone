@@ -103,7 +103,7 @@ function SettingField({ setting, value, onChange, isUpdating }: SettingFieldProp
               isPercentage
                 ? value * 100
                 : isByteSize
-                  ? Math.round(value / 1024 / 1024)
+                  ? value
                   : isTextLength
                     ? value
                     : value
@@ -115,9 +115,7 @@ function SettingField({ setting, value, onChange, isUpdating }: SettingFieldProp
                 key,
                 isPercentage
                   ? val / 100
-                  : isByteSize
-                    ? Math.round(val * 1024 * 1024)
-                    : val,
+                  : val,
               );
             }}
             disabled={isUpdating}
@@ -348,7 +346,8 @@ export default function SettingsPage() {
               size="sm"
               onClick={handleSave}
               disabled={isSaving}
-              className="btn-gradient h-8 text-xs gap-1.5"
+              variant="gradient"
+              className="h-8 text-xs gap-1.5"
             >
               {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
               Save Changes {pendingCount > 1 ? `(${pendingCount})` : ''}

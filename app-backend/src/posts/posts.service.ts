@@ -64,11 +64,12 @@ export class PostsService {
 
   private async validateAttachments(attachments?: Attachment[]): Promise<void> {
     if (!attachments || attachments.length === 0) return;
-    const maxSize = await this.settingsService.get<number>('maxMediaUploadSize', 10485760);
+    const maxSizeMB = await this.settingsService.get<number>('maxMediaUploadSize', 10);
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
     for (const attachment of attachments) {
-      if (attachment.fileSize && attachment.fileSize > maxSize) {
+      if (attachment.fileSize && attachment.fileSize > maxSizeBytes) {
         throw new BadRequestException(
-          `File "${attachment.fileName}" exceeds maximum upload size of ${Math.round(maxSize / 1024 / 1024)}MB`,
+          `File "${attachment.fileName}" exceeds maximum upload size of ${maxSizeMB}MB`,
         );
       }
     }
