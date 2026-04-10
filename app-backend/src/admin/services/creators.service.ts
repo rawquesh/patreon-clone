@@ -9,6 +9,11 @@ import { User } from '@/database/schemas/user';
 import { CreatorStatus } from '@/database/schemas/user';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
 import { Post } from '@/database/schemas/post';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import {
   GetCreatorsQueryDto,
   CreatorActionDto,
@@ -21,6 +26,7 @@ export class CreatorsService {
     @InjectModel(Subscription.name)
     private subscriptionModel: Model<Subscription>,
     @InjectModel(Post.name) private postModel: Model<Post>,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   async getCreators(
@@ -62,7 +68,6 @@ export class CreatorsService {
       this.userModel.countDocuments(filter),
     ]);
 
-    // Enrich with subscription count
     const enrichedCreators = await Promise.all(
       creators.map(async (creator: any) => {
         const subscriberCount = await this.subscriptionModel
@@ -136,20 +141,29 @@ export class CreatorsService {
     };
   }
 
-  async approveCreator(id: string, dto: CreatorActionDto): Promise<any> {
+  async approveCreator(id: string, dto: CreatorActionDto, adminId: string): Promise<any> {
     const creator = await this.userModel.findById(id);
     if (!creator) throw new NotFoundException('Creator not found');
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
 
     creator.creatorStatus = CreatorStatus.PUBLISHED;
     await creator.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.CREATOR_APPROVED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+      details: { reason: dto.reason },
+    });
+
     return {
       message: 'Creator approved successfully',
       creator: this.sanitizeCreator(creator),
     };
   }
 
-  async rejectCreator(id: string, dto: CreatorActionDto): Promise<any> {
+  async rejectCreator(id: string, dto: CreatorActionDto, adminId: string): Promise<any> {
     const creator = await this.userModel.findById(id);
     if (!creator) throw new NotFoundException('Creator not found');
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
@@ -157,13 +171,22 @@ export class CreatorsService {
     creator.creatorStatus = CreatorStatus.ARCHIVED;
     creator.isCreator = false;
     await creator.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.CREATOR_REJECTED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+      details: { reason: dto.reason },
+    });
+
     return {
       message: 'Creator rejected successfully',
       creator: this.sanitizeCreator(creator),
     };
   }
 
-  async suspendCreator(id: string, dto: CreatorActionDto): Promise<any> {
+  async suspendCreator(id: string, dto: CreatorActionDto, adminId: string): Promise<any> {
     const creator = await this.userModel.findById(id);
     if (!creator) throw new NotFoundException('Creator not found');
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
@@ -171,19 +194,36 @@ export class CreatorsService {
 
     creator.creatorStatus = CreatorStatus.ARCHIVED;
     await creator.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.CREATOR_SUSPENDED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+      details: { reason: dto.reason },
+    });
+
     return {
       message: 'Creator suspended successfully',
       creator: this.sanitizeCreator(creator),
     };
   }
 
-  async activateCreator(id: string): Promise<any> {
+  async activateCreator(id: string, adminId: string): Promise<any> {
     const creator = await this.userModel.findById(id);
     if (!creator) throw new NotFoundException('Creator not found');
 
     creator.creatorStatus = CreatorStatus.PUBLISHED;
     creator.isCreator = true;
     await creator.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.CREATOR_ACTIVATED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+    });
+
     return {
       message: 'Creator activated successfully',
       creator: this.sanitizeCreator(creator),

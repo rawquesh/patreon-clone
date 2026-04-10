@@ -7,6 +7,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@/database/schemas/user';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import { GetMembersQueryDto } from '../dto/members.dto';
 
 @Injectable()
@@ -15,6 +20,7 @@ export class MembersService {
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Subscription.name)
     private subscriptionModel: Model<Subscription>,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   async getMembers(
@@ -58,7 +64,6 @@ export class MembersService {
       this.userModel.countDocuments(filter),
     ]);
 
-    // Enrich with subscription info
     const enrichedMembers = await Promise.all(
       members.map(async (member: any) => {
         const activeSubscription = await this.subscriptionModel
@@ -138,7 +143,7 @@ export class MembersService {
     };
   }
 
-  async deactivateMember(id: string): Promise<any> {
+  async deactivateMember(id: string, adminId: string): Promise<any> {
     const member = await this.userModel.findById(id);
     if (!member) throw new NotFoundException('Member not found');
     if (member.isCreator) throw new BadRequestException('User is a creator');
@@ -146,6 +151,14 @@ export class MembersService {
 
     member.isDeactivated = true;
     await member.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.USER_DEACTIVATED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+    });
+
     return {
       message: 'Member deactivated successfully',
       member: {
@@ -157,12 +170,20 @@ export class MembersService {
     };
   }
 
-  async activateMember(id: string): Promise<any> {
+  async activateMember(id: string, adminId: string): Promise<any> {
     const member = await this.userModel.findById(id);
     if (!member) throw new NotFoundException('Member not found');
 
     member.isDeactivated = false;
     await member.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.USER_REACTIVATED,
+      targetType: AuditTargetType.USER,
+      targetId: id,
+      performedBy: adminId,
+    });
+
     return {
       message: 'Member activated successfully',
       member: {

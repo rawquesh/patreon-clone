@@ -7,6 +7,7 @@ import {
   Query,
   Body,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
@@ -44,17 +45,18 @@ export class ContentController {
   async withholdPost(
     @Param('id') id: string,
     @Body() dto: WithholdContentDto,
+    @Request() req,
   ) {
-    return this.contentService.withholdPost(id, 'admin', dto);
+    return this.contentService.withholdPost(id, req.user.userId, dto);
   }
 
   @Post(':id/restore')
-  async restorePost(@Param('id') id: string) {
-    return this.contentService.restorePost(id);
+  async restorePost(@Param('id') id: string, @Request() req) {
+    return this.contentService.restorePost(id, req.user.userId);
   }
 
   @Delete(':id')
-  async deletePost(@Param('id') id: string) {
-    return this.contentService.deletePost(id);
+  async deletePost(@Param('id') id: string, @Request() req) {
+    return this.contentService.deletePost(id, req.user.userId);
   }
 }

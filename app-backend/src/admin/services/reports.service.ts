@@ -10,6 +10,11 @@ import { PostReport } from '@/database/schemas/report/post-report.schema';
 import { UserReport } from '@/database/schemas/report/user-report.schema';
 import { Post } from '@/database/schemas/post';
 import { User } from '@/database/schemas/user';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import {
   CreatePostReportDto,
   CreateUserReportDto,
@@ -30,13 +35,11 @@ export class ReportsService {
     private readonly postModel: Model<Post>,
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   // ==================== USER REPORTING (public) ====================
 
-  /**
-   * Any authenticated user can create a post report.
-   */
   async createPostReport(
     reportedBy: string,
     dto: CreatePostReportDto,
@@ -72,9 +75,6 @@ export class ReportsService {
     return saved;
   }
 
-  /**
-   * Any authenticated user can create a user report.
-   */
   async createUserReport(
     reportedBy: string,
     dto: CreateUserReportDto,
@@ -189,6 +189,20 @@ export class ReportsService {
     report.reviewedAt = new Date();
     await report.save();
 
+    await this.auditLogService.log({
+      action: dto.status === 'resolved'
+        ? AuditAction.REPORT_RESOLVED
+        : AuditAction.REPORT_DISMISSED,
+      targetType: AuditTargetType.REPORT,
+      targetId: reportId,
+      performedBy: reviewerId,
+      details: {
+        status: dto.status,
+        adminNotes: dto.adminNotes,
+        reportType: 'post',
+      },
+    });
+
     await report.populate([
       {
         path: 'post',
@@ -296,6 +310,20 @@ export class ReportsService {
     report.reviewedBy = reviewerId as any;
     report.reviewedAt = new Date();
     await report.save();
+
+    await this.auditLogService.log({
+      action: dto.status === 'resolved'
+        ? AuditAction.REPORT_RESOLVED
+        : AuditAction.REPORT_DISMISSED,
+      targetType: AuditTargetType.REPORT,
+      targetId: reportId,
+      performedBy: reviewerId,
+      details: {
+        status: dto.status,
+        adminNotes: dto.adminNotes,
+        reportType: 'user',
+      },
+    });
 
     await report.populate([
       {

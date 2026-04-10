@@ -31,10 +31,6 @@ export class ReportsController {
 
   // ==================== REPORT CREATION (public - any authenticated user) ====================
 
-  /**
-   * Create a new post report (public)
-   * @route POST /admin/reports/posts
-   */
   @Post('posts')
   @HttpCode(HttpStatus.CREATED)
   async createPostReport(
@@ -48,10 +44,6 @@ export class ReportsController {
     return { message: 'Post reported successfully', report };
   }
 
-  /**
-   * Create a new user report (public)
-   * @route POST /admin/reports/users
-   */
   @Post('users')
   @HttpCode(HttpStatus.CREATED)
   async createUserReport(
@@ -67,10 +59,6 @@ export class ReportsController {
 
   // ==================== POST REPORTS (admin) ====================
 
-  /**
-   * Get all post reports (admin)
-   * @route GET /admin/reports/posts
-   */
   @Get('posts')
   async getPostReports(@Query() query: GetReportsQueryDto) {
     const { reports, total } = await this.reportsService.getPostReports(query);
@@ -82,30 +70,18 @@ export class ReportsController {
     };
   }
 
-  /**
-   * Get all reports for a specific post (admin)
-   * @route GET /admin/reports/posts/by-post/:postId
-   */
   @Get('posts/by-post/:postId')
   async getReportsByPostId(@Param('postId') postId: string) {
     const reports = await this.reportsService.getPostReportsByPostId(postId);
     return { reports, count: reports.length };
   }
 
-  /**
-   * Get a specific post report (admin)
-   * @route GET /admin/reports/posts/:id
-   */
   @Get('posts/:id')
   async getPostReportById(@Param('id') id: string) {
     const report = await this.reportsService.getPostReportById(id);
     return { report };
   }
 
-  /**
-   * Update post report status (admin)
-   * @route PUT /admin/reports/posts/:id/status
-   */
   @Put('posts/:id/status')
   async updatePostReportStatus(
     @Request() req,
@@ -120,10 +96,6 @@ export class ReportsController {
     return { message: 'Report status updated successfully', report };
   }
 
-  /**
-   * Delete a post report (admin)
-   * @route DELETE /admin/reports/posts/:id
-   */
   @Delete('posts/:id')
   async deletePostReport(@Param('id') id: string) {
     await this.reportsService.deletePostReport(id);
@@ -132,10 +104,6 @@ export class ReportsController {
 
   // ==================== USER REPORTS (admin) ====================
 
-  /**
-   * Get all user reports (admin)
-   * @route GET /admin/reports/users
-   */
   @Get('users')
   async getUserReports(@Query() query: GetUserReportsQueryDto) {
     const { reports, total } = await this.reportsService.getUserReports(query);
@@ -147,30 +115,18 @@ export class ReportsController {
     };
   }
 
-  /**
-   * Get all reports for a specific user (admin)
-   * @route GET /admin/reports/users/by-user/:userId
-   */
   @Get('users/by-user/:userId')
   async getReportsByUserId(@Param('userId') userId: string) {
     const reports = await this.reportsService.getUserReportsByUserId(userId);
     return { reports, count: reports.length };
   }
 
-  /**
-   * Get a specific user report (admin)
-   * @route GET /admin/reports/users/:id
-   */
   @Get('users/:id')
   async getUserReportById(@Param('id') id: string) {
     const report = await this.reportsService.getUserReportById(id);
     return { report };
   }
 
-  /**
-   * Update user report status (admin)
-   * @route PUT /admin/reports/users/:id/status
-   */
   @Put('users/:id/status')
   async updateUserReportStatus(
     @Request() req,
@@ -185,10 +141,6 @@ export class ReportsController {
     return { message: 'Report status updated successfully', report };
   }
 
-  /**
-   * Delete a user report (admin)
-   * @route DELETE /admin/reports/users/:id
-   */
   @Delete('users/:id')
   async deleteUserReport(@Param('id') id: string) {
     await this.reportsService.deleteUserReport(id);
@@ -197,10 +149,6 @@ export class ReportsController {
 
   // ==================== STATISTICS (admin) ====================
 
-  /**
-   * Get report statistics (admin)
-   * @route GET /admin/reports/statistics
-   */
   @Get('statistics')
   async getReportStatistics() {
     const statistics = await this.reportsService.getReportStatistics();

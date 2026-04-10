@@ -44,6 +44,39 @@ import {
 import { Membership, MembershipSchema } from '@/database/schemas/membership/membership.schema';
 import { PaymentsModule } from '@/payments/payments.module';
 
+// NEW: Platform Settings
+import { SettingsController } from './controllers/settings.controller';
+import { SettingsService } from './services/settings.service';
+import { PlatformSettingsSeeder } from './schemas/platform-settings.seeder';
+import { PlatformSetting, PlatformSettingSchema } from './schemas/platform-setting.schema';
+
+// NEW: Audit Log
+import { AuditLogController } from './controllers/audit-log.controller';
+import { AuditLogService } from './services/audit-log.service';
+import { AuditLog, AuditLogSchema } from './schemas/audit-log.schema';
+
+// NEW: Admin Users
+import { AdminUsersController } from './controllers/admin-users.controller';
+import { AdminUsersService } from './services/admin-users.service';
+import { AdminUser, AdminUserSchema } from './schemas/admin-user.schema';
+
+// NEW: Ban Management
+import { BansController } from './controllers/bans.controller';
+import { BansService } from './services/bans.service';
+import { Ban, BanSchema } from './schemas/ban.schema';
+
+// NEW: Bulk Operations
+import { BulkOperationsController } from './controllers/bulk-operations.controller';
+import { BulkOperationsService } from './services/bulk-operations.service';
+
+// NEW: Admin Analytics
+import { AnalyticsController } from './controllers/analytics.controller';
+import { AdminAnalyticsService } from './services/analytics.service';
+
+// NEW: Data Export
+import { ExportController } from './controllers/export.controller';
+import { ExportService } from './services/export.service';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -56,6 +89,11 @@ import { PaymentsModule } from '@/payments/payments.module';
       { name: Subscription.name, schema: SubscriptionSchema },
       { name: PayoutRequest.name, schema: PayoutRequestSchema },
       { name: Membership.name, schema: MembershipSchema },
+      // NEW schemas
+      { name: PlatformSetting.name, schema: PlatformSettingSchema },
+      { name: AuditLog.name, schema: AuditLogSchema },
+      { name: AdminUser.name, schema: AdminUserSchema },
+      { name: Ban.name, schema: BanSchema },
     ]),
     forwardRef(() => PaymentsModule),
   ],
@@ -68,6 +106,14 @@ import { PaymentsModule } from '@/payments/payments.module';
     ContentController,
     SubscriptionsController,
     PayoutsController,
+    // NEW controllers
+    SettingsController,
+    AuditLogController,
+    AdminUsersController,
+    BansController,
+    BulkOperationsController,
+    AnalyticsController,
+    ExportController,
   ],
   providers: [
     ReportsService,
@@ -79,11 +125,20 @@ import { PaymentsModule } from '@/payments/payments.module';
     SubscriptionsService,
     PayoutsService,
     AdminGuard,
+    // NEW providers
+    SettingsService,
+    PlatformSettingsSeeder,
+    AuditLogService,
+    AdminUsersService,
+    BansService,
+    BulkOperationsService,
+    AdminAnalyticsService,
+    ExportService,
   ],
   exports: [
     ReportsService,
     ModerationService,
-    AdminGuard,
+    AuditLogService,
   ],
 })
 export class AdminModule {}

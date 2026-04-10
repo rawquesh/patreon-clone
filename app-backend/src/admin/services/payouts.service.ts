@@ -8,6 +8,11 @@ import { Model } from 'mongoose';
 import { PayoutRequest } from '@/database/schemas/payout/payout.schema';
 import { User } from '@/database/schemas/user';
 import { PaymentsService } from '@/payments/payments.service';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import { GetPayoutsQueryDto } from '../dto/payouts.dto';
 
 @Injectable()
@@ -17,6 +22,7 @@ export class PayoutsService {
     private payoutRequestModel: Model<PayoutRequest>,
     @InjectModel(User.name) private userModel: Model<User>,
     private paymentsService: PaymentsService,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   async getPayouts(
@@ -111,7 +117,7 @@ export class PayoutsService {
     };
   }
 
-  async approvePayout(id: string): Promise<any> {
+  async approvePayout(id: string, adminId: string): Promise<any> {
     const payout = await this.payoutRequestModel.findById(id);
     if (!payout) throw new NotFoundException('Payout not found');
     if (payout.status !== 'pending') {
@@ -121,13 +127,11 @@ export class PayoutsService {
     const creator = await this.userModel.findById(payout.creator);
     if (!creator) throw new NotFoundException('Creator not found');
 
-    // Check available balance
     if ((creator.availableBalance || 0) < payout.amount) {
       throw new BadRequestException('Insufficient balance for this payout');
     }
 
     try {
-      // Initiate Stripe payout
       await this.paymentsService.initiatePayoutToBank(
         payout.creator.toString(),
         payout.amount,
@@ -135,12 +139,19 @@ export class PayoutsService {
 
       payout.status = 'completed';
       payout.completedAt = new Date();
-      payout.stripeTransferId = `tr_${Date.now()}`; // Stripe would provide the real ID
+      payout.stripeTransferId = `tr_${Date.now()}`;
       await payout.save();
 
-      // Deduct from creator's available balance
       creator.availableBalance = Math.max(0, creator.availableBalance - payout.amount);
       await creator.save();
+
+      await this.auditLogService.log({
+        action: AuditAction.PAYOUT_APPROVED,
+        targetType: AuditTargetType.PAYOUT,
+        targetId: id,
+        performedBy: adminId,
+        details: { amount: payout.amount, creatorId: payout.creator.toString() },
+      });
 
       return {
         message: 'Payout approved and processed successfully',
@@ -156,7 +167,7 @@ export class PayoutsService {
     }
   }
 
-  async rejectPayout(id: string, reason?: string): Promise<any> {
+  async rejectPayout(id: string, reason: string, adminId: string): Promise<any> {
     const payout = await this.payoutRequestModel.findById(id);
     if (!payout) throw new NotFoundException('Payout not found');
     if (payout.status !== 'pending') {
@@ -167,7 +178,6 @@ export class PayoutsService {
     payout.failureReason = reason || 'Rejected by admin';
     await payout.save();
 
-    // Move amount from pending to available balance
     const creator = await this.userModel.findById(payout.creator);
     if (creator) {
       creator.pendingBalance = Math.max(
@@ -177,6 +187,14 @@ export class PayoutsService {
       creator.availableBalance += payout.amount;
       await creator.save();
     }
+
+    await this.auditLogService.log({
+      action: AuditAction.PAYOUT_REJECTED,
+      targetType: AuditTargetType.PAYOUT,
+      targetId: id,
+      performedBy: adminId,
+      details: { reason, amount: payout.amount, creatorId: payout.creator.toString() },
+    });
 
     return {
       message: 'Payout rejected successfully',

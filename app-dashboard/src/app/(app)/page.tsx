@@ -18,12 +18,13 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-import { DollarSign, Users, Wallet, TrendingUp, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { DollarSign, Users, Wallet, TrendingUp, ArrowUpRight, ArrowDownRight, ShieldAlert, BarChart3, Settings, Ban, FileDown, ScrollText, Zap } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { getDashboardStats } from '@/lib/services';
+import { getDashboardStats, getAuditLogs } from '@/lib/services';
 import type { DashboardStats } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -125,18 +126,28 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [isLoadingActivity, setIsLoadingActivity] = useState(true);
 
   useEffect(() => {
     async function load() {
       setIsLoading(true);
       setError(null);
+      setIsLoadingActivity(true);
       try {
         const data = await getDashboardStats(6);
         setStats(data);
       } catch (e: any) {
         setError(e?.message || 'Failed to load dashboard stats');
+      }
+      try {
+        const activityData = await getAuditLogs({ limit: 10, sortOrder: 'desc' });
+        setRecentActivity(activityData.logs || []);
+      } catch (e: any) {
+        console.warn('Failed to load activity:', e);
       } finally {
         setIsLoading(false);
+        setIsLoadingActivity(false);
       }
     }
     load();
@@ -152,8 +163,8 @@ export default function DashboardPage() {
         <div className="mb-8">
           <Skeleton className="h-32 w-full rounded-2xl" />
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
-          {Array.from({ length: 4 }).map((_, i) => (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 stagger-children">
+          {Array.from({ length: 8 }).map((_, i) => (
             <Card key={i} className="glass-card-static">
               <CardHeader className="pb-2">
                 <Skeleton className="h-3 w-24" />
@@ -247,9 +258,9 @@ export default function DashboardPage() {
       <WelcomeBanner stats={stats} />
 
       {/* Stat Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 stagger-children">
         <StatCard
-          title="Total Revenue"
+          title="Lifetime Revenue"
           value={formatCurrency(stats.totalRevenue)}
           icon={DollarSign}
           description={`${stats.newCreatorsThisMonth} new creators this month`}
@@ -280,6 +291,57 @@ export default function DashboardPage() {
           description={`${stats.pendingPayoutsCount} pending requests`}
           accentColor="amber"
         />
+        <StatCard
+          title="ARPU"
+          value={formatCurrency(stats.totalSubscriptions > 0 ? stats.mrr / stats.totalSubscriptions : 0)}
+          icon={TrendingUp}
+          description="Avg revenue per subscriber"
+          accentColor="primary"
+        />
+        <StatCard
+          title="MRR"
+          value={formatCurrency(stats.mrr)}
+          icon={DollarSign}
+          description="Monthly recurring revenue"
+          accentColor="emerald"
+        />
+        <StatCard
+          title="Churn Rate"
+          value={`${stats.churnRate.toFixed(1)}%`}
+          icon={ArrowDownRight}
+          description="Monthly churn rate"
+          accentColor={stats.churnRate > 5 ? 'rose' : 'emerald'}
+        />
+        <StatCard
+          title="Growth"
+          value={`+${stats.membershipGrowth.length > 0 ? stats.membershipGrowth[stats.membershipGrowth.length - 1]?.count || 0 : 0}`}
+          icon={ArrowUpRight}
+          description="New members this month"
+          accentColor="emerald"
+        />
+      </div>
+
+      {/* Quick Actions */}
+      <div className="flex items-center gap-2 mt-6">
+        <span className="text-xs text-muted-foreground font-medium">Quick Actions:</span>
+        <a href="/reports" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors font-medium">
+          <ShieldAlert className="h-3.5 w-3.5" /> Reports
+        </a>
+        <a href="/analytics" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-colors font-medium">
+          <BarChart3 className="h-3.5 w-3.5" /> Analytics
+        </a>
+        <a href="/settings" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition-colors font-medium">
+          <Settings className="h-3.5 w-3.5" /> Settings
+        </a>
+        <a href="/bans" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors font-medium">
+          <Ban className="h-3.5 w-3.5" /> Bans
+        </a>
+        <a href="/audit-log" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-slate-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-500/20 transition-colors font-medium">
+          <ScrollText className="h-3.5 w-3.5" /> Audit Log
+        </a>
+        <a href="/export" className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors font-medium">
+          <FileDown className="h-3.5 w-3.5" /> Export
+        </a>
       </div>
 
       {/* Charts */}
@@ -395,106 +457,188 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Transactions */}
+      {/* Recent Transactions & Activity */}
       <Card className="mt-6 glass-card-static overflow-hidden">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-base font-semibold">Recent Transactions</CardTitle>
-              <CardDescription className="text-xs">
-                Latest subscriptions and payout requests
-              </CardDescription>
-            </div>
+            <Tabs defaultValue="transactions" className="w-auto">
+              <TabsList className="rounded-xl h-9">
+                <TabsTrigger value="transactions" className="rounded-lg text-xs font-medium">Recent Transactions</TabsTrigger>
+                <TabsTrigger value="activity" className="rounded-lg text-xs font-medium">Admin Activity</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent border-b border-border/50">
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pl-6">User</TableHead>
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Creator</TableHead>
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Type</TableHead>
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Date</TableHead>
-                  <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right pr-6">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stats.recentTransactions.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-16 text-muted-foreground">
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
-                          <DollarSign className="h-6 w-6 text-muted-foreground/50" />
-                        </div>
-                        <p className="text-sm font-medium">No recent transactions</p>
-                        <p className="text-xs text-muted-foreground/70">
-                          Transactions will appear here once members start subscribing
-                        </p>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  stats.recentTransactions.map((tx, i) => (
-                    <TableRow
-                      key={tx.id}
-                      className="table-row-hover border-b border-border/30 last:border-0"
-                      style={{ animationDelay: `${i * 40}ms` }}
-                    >
-                      <TableCell className="pl-6">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/30 transition-all duration-200">
-                            <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">
-                              {tx.memberName.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="max-w-[140px] truncate">
-                            <div className="text-sm font-medium truncate">{tx.memberName}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-muted-foreground max-w-[100px] truncate block">
-                          {tx.creatorName}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={cn(
-                          'text-xs font-medium px-2 py-1 rounded-full capitalize',
-                          tx.type === 'payout'
-                            ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        )}>
-                          {tx.type}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <TransactionBadge status={tx.status} />
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-muted-foreground">
-                          {formatDate(tx.date)}
-                        </span>
-                      </TableCell>
-                      <TableCell className="pr-6 text-right">
-                        <span
-                          className={cn(
-                            'text-sm font-bold',
-                            tx.type === 'payout'
-                              ? 'text-rose-600 dark:text-rose-400'
-                              : 'text-emerald-600 dark:text-emerald-400'
-                          )}
-                        >
-                          {tx.type === 'payout' ? '-' : '+'}{formatCurrency(tx.amount)}
-                        </span>
-                      </TableCell>
+          <Tabs defaultValue="transactions" className="w-full">
+            <TabsContent value="transactions" className="m-0">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent border-b border-border/50">
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pl-6">User</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Creator</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Type</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Date</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right pr-6">Amount</TableHead>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                  </TableHeader>
+                  <TableBody>
+                    {stats.recentTransactions.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-16 text-muted-foreground">
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                              <DollarSign className="h-6 w-6 text-muted-foreground/50" />
+                            </div>
+                            <p className="text-sm font-medium">No recent transactions</p>
+                            <p className="text-xs text-muted-foreground/70">
+                              Transactions will appear here once members start subscribing
+                            </p>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      stats.recentTransactions.map((tx, i) => (
+                        <TableRow
+                          key={tx.id}
+                          className="table-row-hover border-b border-border/30 last:border-0"
+                          style={{ animationDelay: `${i * 40}ms` }}
+                        >
+                          <TableCell className="pl-6">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/30 transition-all duration-200">
+                                <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">
+                                  {tx.memberName.charAt(0)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="max-w-[140px] truncate">
+                                <div className="text-sm font-medium truncate">{tx.memberName}</div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-muted-foreground max-w-[100px] truncate block">
+                              {tx.creatorName}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={cn(
+                              'text-xs font-medium px-2 py-1 rounded-full capitalize',
+                              tx.type === 'payout'
+                                ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                            )}>
+                              {tx.type}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <TransactionBadge status={tx.status} />
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-muted-foreground">
+                              {formatDate(tx.date)}
+                            </span>
+                          </TableCell>
+                          <TableCell className="pr-6 text-right">
+                            <span
+                              className={cn(
+                                'text-sm font-bold',
+                                tx.type === 'payout'
+                                  ? 'text-rose-600 dark:text-rose-400'
+                                  : 'text-emerald-600 dark:text-emerald-400'
+                              )}
+                            >
+                              {tx.type === 'payout' ? '-' : '+'}{formatCurrency(tx.amount)}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="activity" className="m-0">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent border-b border-border/50">
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pl-6">Action</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Target</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Details</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Performed By</TableHead>
+                      <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pr-6">Time</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {isLoadingActivity ? (
+                      Array.from({ length: 5 }).map((_, i) => (
+                        <TableRow key={i} className="border-b border-border/30">
+                          <TableCell className="pl-6"><Skeleton className="h-5 w-32 rounded-full" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                        </TableRow>
+                      ))
+                    ) : recentActivity.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-16 text-muted-foreground">
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                              <ScrollText className="h-6 w-6 text-muted-foreground/50" />
+                            </div>
+                            <p className="text-sm font-medium">No recent activity</p>
+                            <p className="text-xs text-muted-foreground/70">
+                              Admin actions will appear here as they happen
+                            </p>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      recentActivity.map((log: any, i: number) => (
+                        <TableRow key={log.id} className="border-b border-border/30 last:border-0">
+                          <TableCell className="pl-6">
+                            <span className="text-xs font-medium px-2 py-1 rounded-full bg-muted text-muted-foreground capitalize">
+                              {log.action?.replace('.', ' ')}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-xs text-muted-foreground">
+                              {log.targetType} <span className="font-mono">#{log.targetId?.slice(-6)}</span>
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-xs text-muted-foreground max-w-[200px] truncate block">
+                              {log.details?.reason || log.details?.role || '-'}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-muted-foreground">{log.performedBy || '-'}</span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(log.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} {new Date(log.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+              {recentActivity.length > 0 && (
+                <div className="px-6 py-3 border-t border-border/50">
+                  <a href="/audit-log" className="text-xs text-primary hover:underline font-medium">
+                    View full audit log →
+                  </a>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </>

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
 import { SubscriptionsService } from '../services/subscriptions.service';
@@ -38,7 +38,7 @@ export class SubscriptionsController {
   }
 
   @Post(':id/cancel')
-  async cancelSubscription(@Param('id') id: string) {
-    return this.subscriptionsService.cancelSubscription(id);
+  async cancelSubscription(@Param('id') id: string, @Request() req) {
+    return this.subscriptionsService.cancelSubscription(id, req.user.userId);
   }
 }

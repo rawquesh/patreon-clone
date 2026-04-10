@@ -8,6 +8,11 @@ import { Model } from 'mongoose';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
 import { User } from '@/database/schemas/user';
 import { Membership } from '@/database/schemas/membership/membership.schema';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import { GetSubscriptionsQueryDto } from '../dto/subscriptions.dto';
 
 @Injectable()
@@ -17,6 +22,7 @@ export class SubscriptionsService {
     private subscriptionModel: Model<Subscription>,
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Membership.name) private membershipModel: Model<Membership>,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   async getSubscriptions(
@@ -38,7 +44,6 @@ export class SubscriptionsService {
     if (memberId) filter.subscriber = memberId;
     if (status) filter.status = status;
     if (search) {
-      // Search by subscriber or creator name
       const users = await this.userModel
         .find({
           $or: [
@@ -157,7 +162,7 @@ export class SubscriptionsService {
     };
   }
 
-  async cancelSubscription(id: string): Promise<any> {
+  async cancelSubscription(id: string, adminId: string): Promise<any> {
     const subscription = await this.subscriptionModel.findById(id);
     if (!subscription) throw new NotFoundException('Subscription not found');
     if (subscription.status === 'cancelled') {
@@ -174,6 +179,13 @@ export class SubscriptionsService {
         $inc: { subscriberCount: -1 },
       });
     }
+
+    await this.auditLogService.log({
+      action: AuditAction.SUBSCRIPTION_CANCELLED,
+      targetType: AuditTargetType.SUBSCRIPTION,
+      targetId: id,
+      performedBy: adminId,
+    });
 
     return {
       message: 'Subscription cancelled successfully',

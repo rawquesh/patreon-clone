@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Query, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
 import { PayoutsService } from '../services/payouts.service';
@@ -37,15 +37,16 @@ export class PayoutsController {
   }
 
   @Post(':id/approve')
-  async approvePayout(@Param('id') id: string) {
-    return this.payoutsService.approvePayout(id);
+  async approvePayout(@Param('id') id: string, @Request() req) {
+    return this.payoutsService.approvePayout(id, req.user.userId);
   }
 
   @Post(':id/reject')
   async rejectPayout(
     @Param('id') id: string,
     @Body() dto: PayoutActionDto,
+    @Request() req,
   ) {
-    return this.payoutsService.rejectPayout(id, dto.reason);
+    return this.payoutsService.rejectPayout(id, dto.reason, req.user.userId);
   }
 }

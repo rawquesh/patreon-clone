@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Param, Query, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
 import { MembersService } from '../services/members.service';
-import { GetMembersQueryDto, MemberActionDto } from '../dto/members.dto';
+import { GetMembersQueryDto } from '../dto/members.dto';
 
 @Controller('admin/members')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
@@ -34,13 +34,13 @@ export class MembersController {
   @Post(':id/deactivate')
   async deactivateMember(
     @Param('id') id: string,
-    @Body() dto: MemberActionDto,
+    @Request() req,
   ) {
-    return this.membersService.deactivateMember(id);
+    return this.membersService.deactivateMember(id, req.user.userId);
   }
 
   @Post(':id/activate')
-  async activateMember(@Param('id') id: string) {
-    return this.membersService.activateMember(id);
+  async activateMember(@Param('id') id: string, @Request() req) {
+    return this.membersService.activateMember(id, req.user.userId);
   }
 }

@@ -1,12 +1,16 @@
 import {
   Injectable,
   NotFoundException,
-  ConflictException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post, PostStatus } from '@/database/schemas/post';
 import { User } from '@/database/schemas/user';
+import { AuditLogService } from './audit-log.service';
+import {
+  AuditAction,
+  AuditTargetType,
+} from '../schemas/audit-log.schema';
 import {
   GetContentQueryDto,
   WithholdContentDto,
@@ -17,6 +21,7 @@ export class ContentService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<Post>,
     @InjectModel(User.name) private userModel: Model<User>,
+    private readonly auditLogService: AuditLogService,
   ) {}
 
   async getPosts(query: GetContentQueryDto): Promise<{ posts: any[]; total: number }> {
@@ -104,10 +109,17 @@ export class ContentService {
     const post = await this.postModel.findById(postId).lean();
     if (!post) throw new NotFoundException('Post not found');
 
-    // Mark post as hidden instead of moving to withheld collection
     await this.postModel.findByIdAndUpdate(postId, {
       isActive: false,
       status: 'archived',
+    });
+
+    await this.auditLogService.log({
+      action: AuditAction.POST_WITHHELD,
+      targetType: AuditTargetType.POST,
+      targetId: postId,
+      performedBy: adminId,
+      details: { reason: dto.reason, adminNotes: dto.adminNotes },
     });
 
     return {
@@ -116,7 +128,7 @@ export class ContentService {
     };
   }
 
-  async restorePost(postId: string): Promise<any> {
+  async restorePost(postId: string, adminId: string): Promise<any> {
     const post = await this.postModel.findById(postId);
     if (!post) throw new NotFoundException('Post not found');
 
@@ -124,19 +136,33 @@ export class ContentService {
     post.status = PostStatus.PUBLISHED;
     await post.save();
 
+    await this.auditLogService.log({
+      action: AuditAction.POST_RESTORED,
+      targetType: AuditTargetType.POST,
+      targetId: postId,
+      performedBy: adminId,
+    });
+
     return {
       message: 'Post restored successfully',
       postId,
     };
   }
 
-  async deletePost(postId: string): Promise<any> {
+  async deletePost(postId: string, adminId: string): Promise<any> {
     const post = await this.postModel.findById(postId);
     if (!post) throw new NotFoundException('Post not found');
 
     post.isDeleted = true;
     post.isActive = false;
     await post.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.POST_DELETED,
+      targetType: AuditTargetType.POST,
+      targetId: postId,
+      performedBy: adminId,
+    });
 
     return {
       message: 'Post deleted successfully',

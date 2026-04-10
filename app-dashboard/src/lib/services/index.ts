@@ -33,3 +33,41 @@ export {
   rejectPayout,
   getPayoutStats,
 } from './payout.service';
+export {
+  getAnalyticsOverview,
+  getRevenueAnalytics,
+  getCreatorAnalytics,
+  getSubscriberAnalytics,
+  getReportAnalytics,
+  getEngagementAnalytics,
+} from './analytics.service';
+export {
+  getSettings,
+  getSetting,
+  updateSetting,
+  bulkUpdateSettings,
+} from './settings.service';
+export {
+  getAdmins,
+  getAdminById,
+  createAdmin,
+  updateAdmin,
+  deleteAdmin,
+  updateAdminRole,
+} from './admin-users.service';
+export {
+  getBans,
+  getBanStats,
+  getBanById,
+  createBan,
+  liftBan,
+} from './bans.service';
+export {
+  getAuditLogs,
+} from './audit-log.service';
+export {
+  exportUsers,
+  exportSubscriptions,
+  exportPayouts,
+  exportReports,
+} from './export.service';

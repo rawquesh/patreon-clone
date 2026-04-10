@@ -6,6 +6,7 @@ import {
   Query,
   Body,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
@@ -46,28 +47,31 @@ export class CreatorsController {
   async approveCreator(
     @Param('id') id: string,
     @Body() dto: CreatorActionDto,
+    @Request() req,
   ) {
-    return this.creatorsService.approveCreator(id, dto);
+    return this.creatorsService.approveCreator(id, dto, req.user.userId);
   }
 
   @Post(':id/reject')
   async rejectCreator(
     @Param('id') id: string,
     @Body() dto: CreatorActionDto,
+    @Request() req,
   ) {
-    return this.creatorsService.rejectCreator(id, dto);
+    return this.creatorsService.rejectCreator(id, dto, req.user.userId);
   }
 
   @Post(':id/suspend')
   async suspendCreator(
     @Param('id') id: string,
     @Body() dto: CreatorActionDto,
+    @Request() req,
   ) {
-    return this.creatorsService.suspendCreator(id, dto);
+    return this.creatorsService.suspendCreator(id, dto, req.user.userId);
   }
 
   @Post(':id/activate')
-  async activateCreator(@Param('id') id: string) {
-    return this.creatorsService.activateCreator(id);
+  async activateCreator(@Param('id') id: string, @Request() req) {
+    return this.creatorsService.activateCreator(id, req.user.userId);
   }
 }
