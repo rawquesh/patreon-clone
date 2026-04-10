@@ -224,6 +224,11 @@ body {
     transform: translateY(0);
   }
 
+  .btn-gradient:hover span,
+  .btn-gradient:hover svg {
+    color: hsl(211 71% 43%);
+  }
+
   .btn-gradient span,
   .btn-gradient svg {
     position: relative;

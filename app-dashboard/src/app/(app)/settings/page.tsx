@@ -73,7 +73,10 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
   // Numeric input (for rates, amounts, sizes)
   if (typeof setting.value === 'number') {
     const isPercentage = key.includes('rate') || key.includes('percent') || key.includes('fee');
-    const isSize = key.includes('size') || key.includes('length');
+    const isByteSize = key.includes('size') && !key.includes('text_content') && !key.includes('textLength') && !key.includes('TextLength');
+    const isTextLength = key.includes('text_content') || key.includes('textLength') || key.includes('TextLength');
+
+    const isSize = isByteSize || isTextLength;
     return (
       <div className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
         <div className="flex-1 pr-4">
@@ -81,21 +84,43 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
             {setting.description || key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
           </Label>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {isPercentage ? `${(setting.value * 100).toFixed(1)}%` : isSize ? `${(setting.value / 1024 / 1024).toFixed(1)} MB` : `$${setting.value}`}
+            {isPercentage
+              ? `${(setting.value * 100).toFixed(1)}%`
+              : isByteSize
+                ? `${(setting.value / 1024 / 1024).toFixed(1)} MB`
+                : isTextLength
+                  ? `${setting.value.toLocaleString()} characters`
+                  : setting.value.toLocaleString()}
           </p>
         </div>
         <div className="flex items-center gap-1.5">
           {isPercentage && <span className="text-xs text-muted-foreground">%</span>}
-          {isSize && <span className="text-xs text-muted-foreground">MB</span>}
+          {isByteSize && <span className="text-xs text-muted-foreground">MB</span>}
+          {isTextLength && <span className="text-xs text-muted-foreground">chars</span>}
           <Input
             id={`setting-${key}`}
             type="number"
-            step={isPercentage ? '0.01' : isSize ? '1048576' : '1'}
+            step={isPercentage ? '0.01' : '1'}
             min={0}
-            value={isPercentage ? setting.value * 100 : setting.value}
+            value={
+              isPercentage
+                ? setting.value * 100
+                : isByteSize
+                  ? Math.round(setting.value / 1024 / 1024)
+                  : isTextLength
+                    ? setting.value
+                    : setting.value
+            }
             onChange={(e) => {
               const val = parseFloat(e.target.value);
-              onUpdate(key, isPercentage ? val / 100 : val);
+              onUpdate(
+                key,
+                isPercentage
+                  ? val / 100
+                  : isByteSize
+                    ? Math.round(val * 1024 * 1024)
+                    : val,
+              );
             }}
             disabled={isUpdating}
             className="w-28 h-8 text-xs rounded-lg text-center"

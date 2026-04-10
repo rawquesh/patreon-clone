@@ -38,6 +38,10 @@ export class UpdateAdminUserDto {
   isActive?: boolean;
 
   @IsOptional()
+  @IsBoolean()
+  isAdmin?: boolean;
+
+  @IsOptional()
   @IsArray()
   @IsEnum(AdminPermission, { each: true })
   permissions?: AdminPermission[];

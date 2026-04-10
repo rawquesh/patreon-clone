@@ -32,7 +32,7 @@ export async function createAdmin(dto: {
 
 export async function updateAdmin(
   id: string,
-  dto: { role?: AdminRole; isActive?: boolean; permissions?: AdminPermission[] },
+  dto: { role?: AdminRole; isActive?: boolean; isAdmin?: boolean; permissions?: AdminPermission[] },
 ): Promise<{ message: string; admin: AdminUser }> {
   return apiClient.put(`/admin/admins/${id}`, dto);
 }

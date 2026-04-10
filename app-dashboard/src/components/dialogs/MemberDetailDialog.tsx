@@ -182,12 +182,12 @@ export function MemberDetailDialog({ member, onClose, onRefresh }: MemberDetailD
               </Button>
             )}
             {d.isDeactivated ? (
-              <Button size="sm" onClick={() => handleAction('activate')} disabled={loading}>
+              <Button size="sm" onClick={() => handleAction('activate')} disabled={loading} className="btn-gradient">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserCheck className="h-4 w-4" />}
                 Activate Member
               </Button>
             ) : (
-              <Button size="sm" variant="destructive" onClick={() => handleAction('deactivate')} disabled={loading}>
+              <Button size="sm" onClick={() => handleAction('deactivate')} disabled={loading} className="btn-gradient">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserX className="h-4 w-4" />}
                 Deactivate Member
               </Button>

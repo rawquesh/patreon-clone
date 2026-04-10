@@ -211,6 +211,16 @@ export class AdminUsersService {
     } else if (dto.role !== undefined) {
       admin.permissions = ROLE_DEFAULT_PERMISSIONS[dto.role] ?? [];
     }
+
+    // Toggle isAdmin on the underlying User document
+    if (dto.isAdmin !== undefined) {
+      const user = await this.userModel.findById(admin.userId);
+      if (user) {
+        user.isAdmin = dto.isAdmin;
+        await user.save();
+      }
+    }
+
     await admin.save();
 
     await this.auditLogService.log({
