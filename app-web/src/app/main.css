@@ -164,6 +164,7 @@
   background: var(--gradient-primary-hover);
   opacity: 0;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .btn-gradient:hover::before {
@@ -179,8 +180,7 @@
   transform: translateY(0);
 }
 
-.btn-gradient span,
-.btn-gradient svg {
+.btn-gradient > * {
   position: relative;
   z-index: 1;
 }

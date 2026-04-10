@@ -78,18 +78,11 @@ const MobileDrawer: React.FC<Props> = ({ mode }) => {
           alignItems="center"
         >
           <Flex alignItems="center" gap={2}>
-            <Box
-              w="32px"
-              h="32px"
-              borderRadius="8px"
-              background="var(--gradient-primary)"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexShrink={0}
-            >
-              <img src="/icons/logo.png" alt="logo" style={{ width: "20px" }} />
-            </Box>
+            <img
+              src="/icons/logo.png"
+              alt="logo"
+              style={{ width: "32px", height: "32px", borderRadius: "8px" }}
+            />
             <Text
               fontWeight={700}
               fontSize="lg"

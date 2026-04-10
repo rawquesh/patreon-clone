@@ -1,7 +1,7 @@
 "use client";
 import SideNav from "@/components/SideNav";
 import { useAuth } from "@/context/auth.provider";
-import { Box, Flex, Image, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { branding } from "@/config/branding";
@@ -37,18 +37,11 @@ export const PageLayout = ({ children }: { children: React.ReactNode }) => {
           zIndex={10000}
         >
           <Flex alignItems="center" gap={2}>
-            <Box
-              w="32px"
-              h="32px"
-              borderRadius="8px"
-              background="var(--gradient-primary)"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexShrink={0}
-            >
-              <Image src="/icons/logo.png" alt="logo" boxSize="20px" />
-            </Box>
+            <img
+              src="/icons/logo.png"
+              alt="logo"
+              style={{ width: "32px", height: "32px", borderRadius: "8px" }}
+            />
             <Heading
               size="lg"
               fontWeight={700}

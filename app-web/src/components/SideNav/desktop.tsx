@@ -4,7 +4,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Image,
   Skeleton,
   Stack,
   Text,
@@ -94,18 +93,11 @@ const DesktopSidenav: React.FC<Props> = ({ mode }) => {
     >
       {/* Logo */}
       <HStack mb={8} gap={3}>
-        <Box
-          w={"36px"}
-          h={"36px"}
-          borderRadius={"10px"}
-          background="var(--gradient-primary)"
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          flexShrink={0}
-        >
-          <Image src="/icons/logo.png" alt="logo" boxSize={"22px"} />
-        </Box>
+        <img
+          src="/icons/logo.png"
+          alt="logo"
+          style={{ width: "36px", height: "36px", borderRadius: "10px" }}
+        />
         <VStack align="start" gap={0}>
           <Heading
             size="2xl"
