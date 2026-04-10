@@ -20,6 +20,7 @@ import {
   WithheldUser,
   WithheldUserSchema,
 } from '@/database/schemas/report/withheld.schema';
+import { AdminModule } from '@/admin/admin.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import {
       { name: WithheldPost.name, schema: WithheldPostSchema },
       { name: WithheldUser.name, schema: WithheldUserSchema },
     ]),
+    AdminModule,
   ],
   controllers: [ReportsController],
   providers: [ReportsService],
