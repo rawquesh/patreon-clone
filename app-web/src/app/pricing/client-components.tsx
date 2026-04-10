@@ -14,6 +14,7 @@ import {
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { branding } from "@/config/branding";
+import api from "@/lib/api";
 
 export const SubscriptionIcon = <Icon icon={"stash:subscription-list-light"} />;
 
@@ -39,6 +40,7 @@ export function EarningsCalculator() {
   const [fee, setFee] = useState(10);
   const [members, setMembers] = useState(100);
   const [isAnnual, setIsAnnual] = useState(false);
+  const [platformFeePct, setPlatformFeePct] = useState<number>(branding.platform.feePercentage);
   const [earnings, setEarnings] = useState({
     revenue: 0,
     platformFee: 0,
@@ -47,12 +49,28 @@ export function EarningsCalculator() {
   });
 
   useEffect(() => {
+    const fetchFee = async () => {
+      try {
+        const response = await api.get<Array<{ key: string; value: number }>>("/platform-settings");
+        const settings = response.data;
+        const commissionSetting = settings.find((s) => s.key === "platformCommissionRate");
+        if (commissionSetting && typeof commissionSetting.value === "number") {
+          setPlatformFeePct(Math.round(commissionSetting.value * 100));
+        }
+      } catch {
+        // Use fallback from branding config
+      }
+    };
+    fetchFee();
+  }, []);
+
+  useEffect(() => {
     let revenue = fee * members;
     if (isAnnual) {
       const annualTotal = revenue * 12 * 0.9;
       revenue = Math.round(annualTotal / 12);
     }
-    const platformFeeValue = Math.round(revenue * (branding.platform.feePercentage / 100));
+    const platformFeeValue = Math.round(revenue * (platformFeePct / 100));
     const processingFeeValue = Math.round(revenue * 0.029 + members * 0.3);
     const netEarnings = revenue - platformFeeValue - processingFeeValue;
     setEarnings({
@@ -61,7 +79,7 @@ export function EarningsCalculator() {
       processingFee: processingFeeValue,
       net: netEarnings,
     });
-  }, [fee, members, isAnnual]);
+  }, [fee, members, isAnnual, platformFeePct]);
 
   const feePresets = [5, 10, 25, 50, 100];
   const memberPresets = [10, 100, 500, 1000, 10000];
@@ -277,7 +295,7 @@ export function EarningsCalculator() {
                 </Flex>
                 <Flex w="full" justify="space-between" pt={3}>
                   <Text fontSize="sm" css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
-                    {branding.name} Platform Fee ({branding.platform.feePercentage}%)
+                    {branding.name} Platform Fee ({platformFeePct}%)
                   </Text>
                   <Text fontWeight="bold" fontSize="sm" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                     -${earnings.platformFee.toLocaleString()}

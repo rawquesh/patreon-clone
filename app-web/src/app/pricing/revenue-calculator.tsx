@@ -15,6 +15,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { branding } from "@/config/branding";
+import api from "@/lib/api";
 
 const RevenueCalculator: React.FC = () => {
   const [subscribers, setSubscribers] = useState<number>(500);
@@ -23,12 +24,29 @@ const RevenueCalculator: React.FC = () => {
   const [platformFee, setPlatformFee] = useState<number>(0);
   const [processingFee, setProcessingFee] = useState<number>(0);
   const [creatorEarnings, setCreatorEarnings] = useState<number>(0);
+  const [platformFeePct, setPlatformFeePct] = useState<number>(branding.platform.feePercentage);
+
+  useEffect(() => {
+    const fetchFee = async () => {
+      try {
+        const response = await api.get<Array<{ key: string; value: number }>>("/platform-settings");
+        const settings = response.data;
+        const commissionSetting = settings.find((s) => s.key === "platformCommissionRate");
+        if (commissionSetting && typeof commissionSetting.value === "number") {
+          setPlatformFeePct(Math.round(commissionSetting.value * 100));
+        }
+      } catch {
+        // Use fallback from branding config
+      }
+    };
+    fetchFee();
+  }, []);
 
   useEffect(() => {
     const calculateRevenue = () => {
       const revenue = subscribers * price;
       setMonthlyRevenue(revenue);
-      const platformFeeValue = revenue * (branding.platform.feePercentage / 100);
+      const platformFeeValue = revenue * (platformFeePct / 100);
       setPlatformFee(platformFeeValue);
       const transactionCount = revenue > 0 ? subscribers : 0;
       const processing = revenue * 0.029 + transactionCount * 0.3;
@@ -38,7 +56,7 @@ const RevenueCalculator: React.FC = () => {
     };
 
     calculateRevenue();
-  }, [subscribers, price]);
+  }, [subscribers, price, platformFeePct]);
 
   const handleSubscriberSliderChange = (details: { value: number[] }) => {
     setSubscribers(details.value[0]);
@@ -249,7 +267,7 @@ const RevenueCalculator: React.FC = () => {
                   </Text>
                 </Flex>
                 <Flex justify="space-between">
-                  <Text color={branding.colors.star}>{branding.name} Fee ({branding.platform.feePercentage}%)</Text>
+                  <Text color={branding.colors.star}>{branding.name} Fee ({platformFeePct}%)</Text>
                   <Text fontWeight="medium" css={{ color: "hsl(0, 84.2%, 60.2%)" }}>
                     -{formatCurrency(platformFee)}
                   </Text>

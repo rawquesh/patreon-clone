@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -24,11 +25,14 @@ import { PushNotificationsModule } from './push-notifications/push-notifications
 import { ReportsModule } from './reports/reports.module';
 import { AdminModule } from './admin/admin.module';
 import { ServerStatusModule } from './server-status/server-status.module';
+import { PlatformSettingsModule } from './platform-settings/platform-settings.module';
+import { MaintenanceModeGuard } from './common/guards/maintenance-mode.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URI),
+    PlatformSettingsModule,
     UsersModule,
     AuthModule,
     S3Module,
@@ -56,6 +60,9 @@ import { ServerStatusModule } from './server-status/server-status.module';
     ServerStatusModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: MaintenanceModeGuard },
+  ],
 })
 export class AppModule {}

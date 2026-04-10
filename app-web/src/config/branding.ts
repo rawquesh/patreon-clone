@@ -109,8 +109,8 @@ export const branding = {
 
   // Platform settings
   platform: {
-    /** Platform fee percentage taken from creators */
-    feePercentage: 10,
+    /** Platform fee percentage taken from creators (should be overridden by /platform-settings endpoint in production) */
+    feePercentage: 15,
     /** Description of how fees work, used in legal/marketing copy */
     feeDescription: "takes a small percentage of creator earnings",
     /** Description of platform's role, used in legal copy */

@@ -21,11 +21,10 @@ import { PayoutRequest } from '@/database/schemas/payout';
 import { NotificationGeneratorService } from '@/notifications/notification-generator.service';
 import { ConfigService } from '@nestjs/config';
 import { branding } from '@/config';
+import { SettingsService } from '@/admin/services/settings.service';
 
 @Injectable()
 export class MembershipsService {
-  private readonly platformFeePercentage: number;
-
   constructor(
     @InjectModel(Membership.name) private membershipModel: Model<Membership>,
     @InjectModel(Subscription.name)
@@ -35,9 +34,19 @@ export class MembershipsService {
     @InjectModel(User.name) private userModel: Model<User>,
     private paymentsService: PaymentsService,
     private notificationGenerator: NotificationGeneratorService,
-    // ConfigService removed -- use branding from @/config for branding values
-  ) {
-    this.platformFeePercentage = 15;
+    private readonly settingsService: SettingsService,
+  ) {}
+
+  private async getPlatformCommissionRate(): Promise<number> {
+    try {
+      const rate = await this.settingsService.get<number>(
+        'platformCommissionRate',
+        0.15,
+      );
+      return rate;
+    } catch {
+      return 0.15;
+    }
   }
 
   async createMembership(
@@ -275,7 +284,7 @@ export class MembershipsService {
             price: priceId,
           },
         ],
-        application_fee_percent: this.platformFeePercentage,
+        application_fee_percent: await this.getPlatformCommissionRate(),
         transfer_data: {
           destination: creator.stripeConnectAccountId,
         },
@@ -323,10 +332,11 @@ export class MembershipsService {
       $inc: { subscriberCount: 1 },
     });
 
+    const creatorShare = await this.calculateCreatorShare(effectivePrice);
     await this.userModel.findByIdAndUpdate(creator._id, {
       $inc: {
-        availableBalance: this.calculateCreatorShare(effectivePrice),
-        lifetimeEarnings: this.calculateCreatorShare(effectivePrice),
+        availableBalance: creatorShare,
+        lifetimeEarnings: creatorShare,
       },
     });
 
@@ -391,7 +401,7 @@ export class MembershipsService {
           customer: customerId,
           items: [{ price: membership.stripePriceId }],
           trial_end: trialEnd,
-          application_fee_percent: this.platformFeePercentage,
+          application_fee_percent: await this.getPlatformCommissionRate(),
           transfer_data: {
             destination: creator.stripeConnectAccountId,
           },
@@ -538,8 +548,9 @@ export class MembershipsService {
     };
   }
 
-  calculateCreatorShare(amount: number): number {
-    return amount * (1 - this.platformFeePercentage / 100);
+  async calculateCreatorShare(amount: number): Promise<number> {
+    const rate = await this.getPlatformCommissionRate();
+    return amount * (1 - rate);
   }
 
   async createPayoutRequest(
@@ -557,6 +568,13 @@ export class MembershipsService {
 
     if (user.availableBalance < createPayoutRequestDto.amount) {
       throw new BadRequestException('Insufficient available balance');
+    }
+
+    const minPayout = await this.settingsService.get<number>('minimumPayoutAmount', 10);
+    if (createPayoutRequestDto.amount < minPayout) {
+      throw new BadRequestException(
+        `Minimum payout amount is $${minPayout.toFixed(2)}. Requested: $${createPayoutRequestDto.amount.toFixed(2)}.`,
+      );
     }
 
     try {
@@ -629,7 +647,7 @@ export class MembershipsService {
 
     for (const sub of subscriptions) {
       const monthKey = sub.createdAt.toISOString().slice(0, 7);
-      const earnings = this.calculateCreatorShare(sub.monthlyRate);
+      const earnings = await this.calculateCreatorShare(sub.monthlyRate);
 
       if (!monthlyData.has(monthKey)) {
         monthlyData.set(monthKey, { earnings: 0, subscriptions: 0 });
@@ -1063,7 +1081,7 @@ export class MembershipsService {
         transfer_data: {
           destination: creator.stripeConnectAccountId,
         },
-        application_fee_percent: this.platformFeePercentage,
+        application_fee_percent: await this.getPlatformCommissionRate(),
       },
     });
 

@@ -147,6 +147,7 @@ export default function PricingPage() {
               >
                 Use our calculator to estimate your potential earnings. {branding.name}
                 takes a flat {branding.platform.feePercentage}% platform fee plus payment processing costs.
+                (Updates automatically when the platform fee changes.)
               </Text>
             </VStack>
             <EarningsCalculator />

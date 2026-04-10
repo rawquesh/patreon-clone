@@ -4,6 +4,7 @@ import {
   BadRequestException,
   ConflictException,
   UnauthorizedException,
+  Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -36,6 +37,7 @@ import * as bcrypt from 'bcrypt';
 import Stripe from 'stripe';
 import { DeleteUserDto } from './users.dto';
 import { business } from '@/config';
+import { SettingsService } from '@/admin/services/settings.service';
 
 interface RequestingUser {
   userId: string;
@@ -45,11 +47,14 @@ interface RequestingUser {
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Membership.name) private membershipModel: Model<any>,
     @InjectModel(Subscription.name) private subscriptionModel: Model<any>,
     private paymentsService: PaymentsService,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async findById(userId: string): Promise<User> {
@@ -142,6 +147,11 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
+    const enableNewCreators = await this.settingsService.get<boolean>('enableNewCreators', true);
+    if (!enableNewCreators) {
+      throw new BadRequestException('New creator applications are currently disabled');
+    }
+
     const existingUsername = await this.userModel.findOne({
       creatorUsername: creatorData.username.toLowerCase(),
     });
@@ -218,6 +228,11 @@ export class UsersService {
 
     if (user.creatorStatus === CreatorStatus.PUBLISHED) {
       throw new BadRequestException('Creator is already published');
+    }
+
+    const enableNewCreators = await this.settingsService.get<boolean>('enableNewCreators', true);
+    if (!enableNewCreators) {
+      throw new BadRequestException('New creator applications are currently disabled');
     }
 
     const { accountId, accountLinkUrl } =
@@ -317,10 +332,15 @@ export class UsersService {
     const isEnabled = account.charges_enabled && account.payouts_enabled;
 
     if (isEnabled && !user.hasCompletedStripeOnboarding) {
+      const requireApproval = await this.settingsService.get<boolean>('requireCreatorApproval', true);
+      const newStatus = requireApproval ? CreatorStatus.ONBOARDING : CreatorStatus.PUBLISHED;
+      if (requireApproval) {
+        this.logger.log(`Creator ${user._id} completed Stripe onboarding but requires admin approval (requireCreatorApproval=true)`);
+      }
       await this.userModel.findByIdAndUpdate(user._id, {
         $set: {
           hasCompletedStripeOnboarding: true,
-          creatorStatus: CreatorStatus.PUBLISHED,
+          creatorStatus: newStatus,
           updatedAt: new Date(),
         },
       });

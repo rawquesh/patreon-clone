@@ -26,17 +26,10 @@ export class PlatformSettingsSeeder implements OnModuleInit {
     const defaults: DefaultSetting[] = [
       {
         key: 'platformCommissionRate',
-        value: 0.05,
-        description: 'Platform takes this percentage of creator earnings (0.05 = 5%)',
+        value: 0.15,
+        description: 'Platform commission rate as a decimal (0.15 = 15%). Applied to all creator earnings.',
         category: SettingCategory.FINANCIAL,
         isPublic: true,
-      },
-      {
-        key: 'platformFee',
-        value: 0.00,
-        description: 'Additional platform fee added on top of commission per transaction',
-        category: SettingCategory.FINANCIAL,
-        isPublic: false,
       },
       {
         key: 'minimumPayoutAmount',
@@ -48,7 +41,7 @@ export class PlatformSettingsSeeder implements OnModuleInit {
       {
         key: 'payoutSchedule',
         value: 'monthly',
-        description: 'Payout schedule: "weekly" or "monthly"',
+        description: 'Payout schedule: "weekly", "biweekly", "monthly", or "quarterly"',
         category: SettingCategory.PAYOUTS,
         isPublic: true,
       },

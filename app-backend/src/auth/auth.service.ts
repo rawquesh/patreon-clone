@@ -13,6 +13,7 @@ import { SignUpDto, LoginDto, RegisterDto } from './auth.dto';
 import { PaymentsService } from '@/payments/payments.service';
 import { branding } from '@/config';
 import axios from 'axios';
+import { SettingsService } from '@/admin/services/settings.service';
 
 export interface AuthResponse {
   user: User;
@@ -27,7 +28,16 @@ export class AuthService {
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
     private paymentsService: PaymentsService,
+    private readonly settingsService: SettingsService,
   ) {}
+
+  private async isRegistrationsEnabled(): Promise<boolean> {
+    try {
+      return await this.settingsService.get<boolean>('enableRegistrations', true);
+    } catch {
+      return true;
+    }
+  }
 
   async verifyGoogleAccessToken(accessToken: string) {
     try {
@@ -51,6 +61,9 @@ export class AuthService {
       let user = await this.userModel.findOne({ email: profile.email });
 
       if (!user) {
+        if (!(await this.isRegistrationsEnabled())) {
+          throw new BadRequestException('New registrations are currently disabled');
+        }
         this.logger.log(
           `No user found for ${profile.email}, creating a new one.`,
         );
@@ -94,6 +107,10 @@ export class AuthService {
 
   async signup(signUpDto: SignUpDto): Promise<any> {
     const { email, password, firstName, lastName } = signUpDto;
+
+    if (!(await this.isRegistrationsEnabled())) {
+      throw new BadRequestException('New registrations are currently disabled');
+    }
 
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
@@ -165,6 +182,9 @@ export class AuthService {
     let user = await this.userModel.findOne({ email });
 
     if (!user) {
+      if (!(await this.isRegistrationsEnabled())) {
+        throw new BadRequestException('New registrations are currently disabled');
+      }
       user = await this.userModel.create({
         email,
         firstName,
@@ -230,6 +250,10 @@ export class AuthService {
 
   async register(registerDto: RegisterDto): Promise<AuthResponse> {
     const { email, password, firstName, lastName, gender } = registerDto;
+
+    if (!(await this.isRegistrationsEnabled())) {
+      throw new BadRequestException('New registrations are currently disabled');
+    }
 
     const existingUser = await this.userModel.findOne({
       email: email.toLowerCase(),

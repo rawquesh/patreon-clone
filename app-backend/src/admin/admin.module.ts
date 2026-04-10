@@ -45,10 +45,8 @@ import { Notification, NotificationSchema } from '@/database/schemas/notificatio
 import { PaymentsModule } from '@/payments/payments.module';
 import { AdminGuardModule } from './schemas/admin-guard.module';
 
-// NEW: Platform Settings
+// Platform Settings (SettingsService is now global via PlatformSettingsModule)
 import { SettingsController } from './controllers/settings.controller';
-import { SettingsService } from './services/settings.service';
-import { PlatformSettingsSeeder } from './schemas/platform-settings.seeder';
 import { PlatformSetting, PlatformSettingSchema } from './schemas/platform-setting.schema';
 
 // NEW: Audit Log
@@ -91,7 +89,6 @@ import { ExportService } from './services/export.service';
       { name: PayoutRequest.name, schema: PayoutRequestSchema },
       { name: Membership.name, schema: MembershipSchema },
       // NEW schemas
-      { name: PlatformSetting.name, schema: PlatformSettingSchema },
       { name: AuditLog.name, schema: AuditLogSchema },
       { name: AdminUser.name, schema: AdminUserSchema },
       { name: Ban.name, schema: BanSchema },
@@ -128,8 +125,6 @@ import { ExportService } from './services/export.service';
     SubscriptionsService,
     PayoutsService,
     // NEW providers
-    SettingsService,
-    PlatformSettingsSeeder,
     AuditLogService,
     AdminUsersService,
     BansService,

@@ -31,6 +31,7 @@ import { PostInsight } from '@/database/schemas/analytics';
 import { MembershipsService } from '@/memberships/memberships.service';
 import { User } from '@/database/schemas/user';
 import { branding, business } from '@/config';
+import { SettingsService } from '@/admin/services/settings.service';
 
 export interface PostLike {
   _id?: string;
@@ -48,7 +49,30 @@ export class PostsService {
     @InjectModel(PostInsight.name) private postInsightModel: Model<PostInsight>,
     private readonly s3Service: S3Service,
     private readonly membershipsService: MembershipsService,
+    private readonly settingsService: SettingsService,
   ) {}
+
+  private async validatePostContent(textContent?: string): Promise<void> {
+    if (!textContent) return;
+    const maxLength = await this.settingsService.get<number>('maxPostLength', 50000);
+    if (textContent.length > maxLength) {
+      throw new BadRequestException(
+        `Post content exceeds maximum length of ${maxLength} characters. Current length: ${textContent.length}`,
+      );
+    }
+  }
+
+  private async validateAttachments(attachments?: Attachment[]): Promise<void> {
+    if (!attachments || attachments.length === 0) return;
+    const maxSize = await this.settingsService.get<number>('maxMediaUploadSize', 10485760);
+    for (const attachment of attachments) {
+      if (attachment.fileSize && attachment.fileSize > maxSize) {
+        throw new BadRequestException(
+          `File "${attachment.fileName}" exceeds maximum upload size of ${Math.round(maxSize / 1024 / 1024)}MB`,
+        );
+      }
+    }
+  }
 
   private async _processRichTextImages(
     htmlContent: string,
@@ -234,6 +258,8 @@ export class PostsService {
       throw new BadRequestException('Text content is required for text posts');
     }
 
+    await this.validatePostContent(createPostData.textContent);
+
     // Process rich text images before saving
     let processedTextContent = createPostData.textContent;
     if (processedTextContent) {
@@ -321,6 +347,8 @@ export class PostsService {
     if (!videoUrl) {
       throw new BadRequestException('Video URL is required');
     }
+
+    await this.validateAttachments(attachments);
 
     let videoInfo = this.extractVideoInfo(videoUrl);
     // Allow direct uploads (e.g., S3 URLs) by treating them as a valid "upload" platform
@@ -420,6 +448,8 @@ export class PostsService {
     const { title, description, collections, tags, tierAccess, status } =
       createAudioPostDto;
 
+    await this.validateAttachments(attachments);
+
     const processedTags = this.processTags(tags);
     const processedCollections = this.processTags(collections);
     const processedTierAccess = this.processTags(tierAccess);
@@ -461,6 +491,8 @@ export class PostsService {
       status,
       thumbnailUrl,
     } = createImagePostDto;
+
+    await this.validateAttachments(attachments);
 
     const processedTags = this.processTags(tags);
     const processedCollections = this.processTags(collections);

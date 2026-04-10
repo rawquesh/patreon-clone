@@ -107,8 +107,8 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
 
   // String input
   if (typeof setting.value === 'string') {
-    // Payout schedule select
-    if (key === 'payout_schedule') {
+    // Payout schedule select (handles both snake_case and camelCase)
+    if (key === 'payout_schedule' || key === 'payoutSchedule') {
       return (
         <div className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
           <div className="flex-1 pr-4">
@@ -131,8 +131,8 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
       );
     }
 
-    // Content visibility
-    if (key === 'default_content_visibility') {
+    // Content visibility (handles both snake_case and camelCase)
+    if (key === 'default_content_visibility' || key === 'defaultContentVisibility') {
       return (
         <div className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
           <div className="flex-1 pr-4">

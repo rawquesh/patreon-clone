@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { ChatService } from '@/chat/chat.service';
 import { UsersService } from '@/users/users.service';
 import Stripe from 'stripe';
+import { Public } from '@/common/decorators/public.decorator';
 
 @Controller('webhooks/stripe')
 export class StripeWebhookController {
@@ -27,6 +28,7 @@ export class StripeWebhookController {
   ) {}
 
   @Post()
+  @Public()
   async handleStripeWebhook(
     @Req() request: Request,
     @Headers('stripe-signature') signature: string,
@@ -522,7 +524,7 @@ export class StripeWebhookController {
       const paymentAmount = priceAmount / 100;
       if (paymentAmount > 0) {
         try {
-          const creatorShare = this.membershipsService.calculateCreatorShare(paymentAmount);
+          const creatorShare = await this.membershipsService.calculateCreatorShare(paymentAmount);
           const membership = await this.membershipsService.getMembershipById(membershipId);
           if (membership?.creator) {
             const creatorField = membership.creator as any;
