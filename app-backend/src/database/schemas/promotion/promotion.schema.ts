@@ -166,12 +166,12 @@ export class PromotionRedemption extends Document {
 export const PromotionRedemptionSchema =
   SchemaFactory.createForClass(PromotionRedemption);
 
-DiscountSchema.index({ code: 1 }, { unique: true });
+
 DiscountSchema.index({ creator: 1, status: 1 });
 DiscountSchema.index({ startDate: 1, endDate: 1 });
 DiscountSchema.index({ isDeleted: 1 });
 
-GiftSchema.index({ code: 1 }, { unique: true });
+
 GiftSchema.index({ creator: 1, status: 1 });
 GiftSchema.index({ startDate: 1, endDate: 1 });
 GiftSchema.index({ isDeleted: 1 });

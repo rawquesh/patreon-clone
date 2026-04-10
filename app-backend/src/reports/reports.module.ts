@@ -21,6 +21,7 @@ import {
   WithheldUserSchema,
 } from '@/database/schemas/report/withheld.schema';
 import { AdminGuardModule } from '@/admin/schemas/admin-guard.module';
+import { AdminUser, AdminUserSchema } from '@/admin/schemas/admin-user.schema';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AdminGuardModule } from '@/admin/schemas/admin-guard.module';
       { name: User.name, schema: UserSchema },
       { name: WithheldPost.name, schema: WithheldPostSchema },
       { name: WithheldUser.name, schema: WithheldUserSchema },
+      { name: AdminUser.name, schema: AdminUserSchema },
     ]),
     AdminGuardModule,
   ],

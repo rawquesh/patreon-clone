@@ -67,5 +67,4 @@ export class AdminUser extends Document {
 }
 
 export const AdminUserSchema = SchemaFactory.createForClass(AdminUser);
-AdminUserSchema.index({ email: 1 }, { unique: true });
-AdminUserSchema.index({ userId: 1 }, { unique: true });
+

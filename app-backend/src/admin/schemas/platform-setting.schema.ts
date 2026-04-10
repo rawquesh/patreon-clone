@@ -31,5 +31,5 @@ export class PlatformSetting extends Document {
 }
 
 export const PlatformSettingSchema = SchemaFactory.createForClass(PlatformSetting);
-PlatformSettingSchema.index({ key: 1 }, { unique: true });
+
 PlatformSettingSchema.index({ category: 1 });
