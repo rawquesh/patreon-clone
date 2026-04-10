@@ -40,7 +40,7 @@ function ExportCard({ title, description, icon, onExport, accentColor, filterTyp
   const { toast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date } | undefined>();
-  const [statusFilter, setStatusFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [userTypeFilter, setUserTypeFilter] = useState<string>('all');
 
   const handleExport = async () => {
@@ -49,8 +49,8 @@ function ExportCard({ title, description, icon, onExport, accentColor, filterTyp
       const params: ExportParams = {
         startDate: dateRange?.from ? dateRange.from.toISOString() : undefined,
         endDate: dateRange?.to ? dateRange.to.toISOString() : undefined,
-        status: statusFilter || undefined,
-        type: filterType === 'users' ? userTypeFilter : undefined,
+        status: statusFilter === 'all' ? undefined : statusFilter,
+        type: filterType === 'users' ? (userTypeFilter === 'all' ? undefined : userTypeFilter) : undefined,
       };
       await onExport(params);
       toast({ title: `${title} exported successfully` });
@@ -124,7 +124,7 @@ function ExportCard({ title, description, icon, onExport, accentColor, filterTyp
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
-                <SelectItem value="">All statuses</SelectItem>
+                <SelectItem value="all">All statuses</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
                 <SelectItem value="expired">Expired</SelectItem>
@@ -142,7 +142,7 @@ function ExportCard({ title, description, icon, onExport, accentColor, filterTyp
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
-                <SelectItem value="">All statuses</SelectItem>
+                <SelectItem value="all">All statuses</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="under_review">Under Review</SelectItem>
                 <SelectItem value="resolved">Resolved</SelectItem>
@@ -160,7 +160,7 @@ function ExportCard({ title, description, icon, onExport, accentColor, filterTyp
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
-                <SelectItem value="">All statuses</SelectItem>
+                <SelectItem value="all">All statuses</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>

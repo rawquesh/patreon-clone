@@ -79,14 +79,16 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
           <CalendarIcon className="h-4 w-4 flex-shrink-0" />
           <span className="flex-1 text-left">{displayValue ?? "Date range"}</span>
           {localRange?.from && (
-            <button
-              type="button"
+            <span
+              role="button"
+              tabIndex={0}
               onClick={handleClear}
-              className="flex-shrink-0 rounded-sm p-0.5 hover:bg-muted transition-colors"
+              onKeyDown={(e) => { if (e.key === 'Enter') handleClear(e as unknown as React.MouseEvent); }}
+              className="flex-shrink-0 rounded-sm p-0.5 hover:bg-muted transition-colors cursor-pointer"
               aria-label="Clear date range"
             >
               <X className="h-3 w-3" />
-            </button>
+            </span>
           )}
           <ChevronDown className={cn("h-3.5 w-3.5 flex-shrink-0 transition-transform", open && "rotate-180")} />
         </button>
@@ -110,23 +112,14 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
           </div>
 
           <div className="p-3">
-            <Calendar
-              mode="range"
-              selected={{ from: localRange?.from, to: localRange?.to }}
-              onSelect={handleCalendarSelect}
-              numberOfMonths={1}
-              className="w-full"
-              classNames={{
-                months: "flex flex-row",
-                month: "w-full",
-                table: "w-full",
-                nav: "flex items-center gap-0.5",
-                nav_button: cn(
-                  "h-7 w-7 rounded-md p-0 flex items-center justify-center",
-                  "text-muted-foreground hover:text-foreground hover:bg-accent transition-colors",
-                ),
-              }}
-            />
+            <div className="p-3">
+              <Calendar
+                mode="range"
+                selected={{ from: localRange?.from, to: localRange?.to }}
+                onSelect={handleCalendarSelect}
+                numberOfMonths={1}
+              />
+            </div>
           </div>
         </div>
       </PopoverContent>
