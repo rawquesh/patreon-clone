@@ -39,13 +39,6 @@ export class PlatformSettingsSeeder implements OnModuleInit {
         isPublic: true,
       },
       {
-        key: 'payoutSchedule',
-        value: 'monthly',
-        description: 'Payout schedule: "weekly", "biweekly", "monthly", or "quarterly"',
-        category: SettingCategory.PAYOUTS,
-        isPublic: true,
-      },
-      {
         key: 'enableRegistrations',
         value: true,
         description: 'Allow new user sign-ups on the platform',
@@ -64,13 +57,6 @@ export class PlatformSettingsSeeder implements OnModuleInit {
         value: false,
         description: 'Put the entire platform in maintenance mode',
         category: SettingCategory.FEATURES,
-        isPublic: false,
-      },
-      {
-        key: 'defaultContentVisibility',
-        value: 'public',
-        description: 'Default post visibility: "public" or "members_only"',
-        category: SettingCategory.CONTENT,
         isPublic: false,
       },
       {
@@ -100,7 +86,7 @@ export class PlatformSettingsSeeder implements OnModuleInit {
       await this.settingModel.findOneAndUpdate(
         { key: setting.key },
         {
-          $setOnInsert: {
+          $set: {
             key: setting.key,
             value: setting.value,
             description: setting.description,

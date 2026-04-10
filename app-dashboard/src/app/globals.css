@@ -200,6 +200,8 @@ body {
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
+    border: none;
+    cursor: pointer;
   }
 
   .btn-gradient::before {
@@ -210,7 +212,6 @@ body {
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;
-    z-index: 0;
   }
 
   .btn-gradient:hover::before {
@@ -220,18 +221,15 @@ body {
   .btn-gradient:hover {
     box-shadow: var(--glow-primary);
     transform: translateY(-1px);
-    color: white;
   }
 
   .btn-gradient:active {
     transform: translateY(0);
   }
 
-  .btn-gradient span,
-  .btn-gradient svg {
+  .btn-gradient > * {
     position: relative;
     z-index: 1;
-    color: inherit;
   }
 
   /* Gradient Button — Ghost */
@@ -240,13 +238,18 @@ body {
     border: 1px solid var(--glass-border);
     color: var(--foreground);
     transition: all 0.2s ease;
+    cursor: pointer;
   }
 
   .btn-gradient-ghost:hover {
     background: rgba(255, 255, 255, 0.6);
-    border-color: hsl(211 71% 43%);
-    color: hsl(211 71% 43%);
-    box-shadow: 0 0 0 3px hsl(211 71% 43% / 0.08);
+    border-color: hsl(211, 71%, 43%);
+    color: hsl(211, 71%, 43%);
+    box-shadow: 0 0 0 3px hsl(211, 71%, 43% / 0.08);
+  }
+
+  .dark .btn-gradient-ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   /* Glass Menu / Dropdown */

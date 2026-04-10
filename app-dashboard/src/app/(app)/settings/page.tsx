@@ -85,11 +85,9 @@ function SettingField({ setting, value, onChange, isUpdating }: SettingFieldProp
           <p className="text-xs text-muted-foreground mt-0.5">
             {isPercentage
               ? `${(value * 100).toFixed(1)}%`
-              : isByteSize
-                ? `${(value / 1024 / 1024).toFixed(1)} MB`
-                : isTextLength
-                  ? `${value.toLocaleString()} characters`
-                  : value.toLocaleString()}
+              : isTextLength
+                ? `${value.toLocaleString()} characters`
+                : null}
           </p>
         </div>
         <div className="flex items-center gap-1.5">
@@ -112,6 +110,7 @@ function SettingField({ setting, value, onChange, isUpdating }: SettingFieldProp
             }
             onChange={(e) => {
               const val = parseFloat(e.target.value);
+              if (isNaN(val)) return;
               onChange(
                 key,
                 isPercentage
@@ -229,6 +228,18 @@ export default function SettingsPage() {
   };
 
   const handleInstantUpdate = async (key: string, value: any) => {
+    const setting = settings.find((s) => s.key === key);
+    const label = setting?.description || key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+    if (value === '' || value === null || value === undefined) {
+      toast({ title: `Cannot save empty value for "${label}"`, variant: 'destructive' });
+      return;
+    }
+    if (typeof value === 'number' && isNaN(value)) {
+      toast({ title: `Invalid number for "${label}"`, variant: 'destructive' });
+      return;
+    }
+
     setIsSaving(true);
     try {
       const updated = await updateSetting(key, { value });
