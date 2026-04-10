@@ -6,10 +6,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, UserX, UserCheck, User } from 'lucide-react';
+import { Loader2, UserX, UserCheck, User, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { getMemberById, deactivateMember, activateMember } from '@/lib/services';
+import { getMemberById, deactivateMember, activateMember, promoteToAdmin } from '@/lib/services';
 import type { Member, MemberDetail } from '@/types';
 
 interface MemberDetailDialogProps {
@@ -45,6 +45,9 @@ export function MemberDetailDialog({ member, onClose, onRefresh }: MemberDetailD
       if (action === 'deactivate') {
         await deactivateMember(id);
         toast({ title: 'Member deactivated' });
+      } else if (action === 'promote-to-admin') {
+        await promoteToAdmin(id);
+        toast({ title: 'Member promoted to admin' });
       } else {
         await activateMember(id);
         toast({ title: 'Member activated' });
@@ -90,7 +93,7 @@ export function MemberDetailDialog({ member, onClose, onRefresh }: MemberDetailD
                 {d.displayName || `${d.firstName || ''} ${d.lastName || ''}`.trim() || 'Unknown'}
               </h3>
               <p className="text-sm text-muted-foreground truncate">{d.email}</p>
-              <div className="mt-1.5">
+              <div className="mt-1.5 flex items-center gap-2">
                 <Badge className={cn(
                   'text-xs font-medium border',
                   d.isDeactivated
@@ -99,6 +102,12 @@ export function MemberDetailDialog({ member, onClose, onRefresh }: MemberDetailD
                 )}>
                   {d.isDeactivated ? 'Inactive' : 'Active'}
                 </Badge>
+                {d.isAdmin && (
+                  <Badge className="bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-800 text-xs font-medium">
+                    <Shield className="h-3 w-3 mr-1" />
+                    Admin
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
@@ -166,8 +175,14 @@ export function MemberDetailDialog({ member, onClose, onRefresh }: MemberDetailD
 
           {/* Actions */}
           <div className="flex gap-2 pt-2 border-t border-border/50">
+            {!d.isAdmin && (
+              <Button size="sm" onClick={() => handleAction('promote-to-admin')} disabled={loading} className="btn-gradient">
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Shield className="h-4 w-4" />}
+                Promote to Admin
+              </Button>
+            )}
             {d.isDeactivated ? (
-              <Button size="sm" onClick={() => handleAction('activate')} disabled={loading} className="btn-gradient">
+              <Button size="sm" onClick={() => handleAction('activate')} disabled={loading}>
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserCheck className="h-4 w-4" />}
                 Activate Member
               </Button>

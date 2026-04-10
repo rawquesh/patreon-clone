@@ -55,3 +55,7 @@ export async function restorePost(id: string): Promise<{ message: string }> {
 export async function deletePost(id: string): Promise<{ message: string }> {
   return apiClient.delete(`/admin/content/${id}`);
 }
+
+export async function notifyCreator(id: string, message: string): Promise<{ message: string }> {
+  return apiClient.post(`/admin/content/${id}/notify-creator`, { message });
+}

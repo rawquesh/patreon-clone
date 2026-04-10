@@ -242,10 +242,15 @@ export default function DashboardPage() {
     members: m.count,
   }));
 
-  const earningsData = stats.earningsData.map((e) => ({
+  const earningsChartData = stats.earningsData.map((e) => ({
     name: e.month.slice(5),
     earnings: e.amount,
   }));
+
+  // Compute current month's earnings for the Lifetime Revenue trend
+  const currentMonthEarnings = stats.earningsData.length > 0
+    ? stats.earningsData[stats.earningsData.length - 1]?.amount || 0
+    : 0;
 
   return (
     <>
@@ -265,7 +270,7 @@ export default function DashboardPage() {
           icon={DollarSign}
           description={`${stats.newCreatorsThisMonth} new creators this month`}
           trend="up"
-          trendValue={`+${stats.membershipGrowth.length > 0 ? stats.membershipGrowth[stats.membershipGrowth.length - 1]?.count || 0 : 0}`}
+          trendValue={currentMonthEarnings > 0 ? `+${formatCurrency(currentMonthEarnings)} this month` : 'No payouts yet'}
           accentColor="emerald"
         />
         <StatCard
@@ -313,10 +318,11 @@ export default function DashboardPage() {
           accentColor={stats.churnRate > 5 ? 'rose' : 'emerald'}
         />
         <StatCard
-          title="Growth"
-          value={`+${stats.membershipGrowth.length > 0 ? stats.membershipGrowth[stats.membershipGrowth.length - 1]?.count || 0 : 0}`}
+          title="New Subscriptions"
+          value={`+${stats.newSubscriptionsThisMonth}`}
           icon={ArrowUpRight}
-          description="New members this month"
+          description={`${stats.newMembersThisMonth} new members this month`}
+          trend="up"
           accentColor="emerald"
         />
       </div>
@@ -415,7 +421,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="h-72 pt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={earningsData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <BarChart data={earningsChartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="hsl(211 71% 43%)" stopOpacity={0.9} />

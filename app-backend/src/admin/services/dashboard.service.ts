@@ -17,6 +17,7 @@ export interface DashboardStats {
   pendingPayoutsAmount: number;
   newCreatorsThisMonth: number;
   newMembersThisMonth: number;
+  newSubscriptionsThisMonth: number;
   membershipGrowth: Array<{ month: string; count: number }>;
   earningsData: Array<{ month: string; amount: number }>;
   recentTransactions: Array<{
@@ -43,22 +44,30 @@ export class DashboardService {
   async getDashboardStats(months = 6): Promise<DashboardStats> {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    const monthsAgo = new Date(now.getFullYear(), now.getMonth() - months, 1);
+
+    const pendingPayoutDocs = await this.payoutRequestModel
+      .find({ status: 'pending' })
+      .populate('creator', 'displayName creatorUsername')
+      .exec();
+
+    const newSubsThisMonth = await this.subscriptionModel
+      .countDocuments({
+        createdAt: { $gte: startOfMonth },
+      })
+      .exec();
 
     const [
       totalCreators,
       totalMembers,
       activeSubscriptions,
-      pendingPayouts,
       newCreatorsThisMonth,
       newMembersThisMonth,
       lastMonthActiveCount,
       lastMonthCancelledCount,
       recentSubscriptions,
       recentPayouts,
-      creatorEarnings,
+      creatorEarningsAgg,
     ] = await Promise.all([
       // Total creators (isCreator = true)
       this.userModel.countDocuments({ isCreator: true }).exec(),
@@ -66,11 +75,6 @@ export class DashboardService {
       this.userModel.countDocuments({ isCreator: { $ne: true } }).exec(),
       // Active subscriptions
       this.subscriptionModel.find({ status: 'active' }).exec(),
-      // Pending payouts
-      this.payoutRequestModel
-        .find({ status: 'pending' })
-        .populate('creator', 'displayName creatorUsername')
-        .exec(),
       // New creators this month
       this.userModel
         .countDocuments({
@@ -125,6 +129,10 @@ export class DashboardService {
         .exec(),
     ]);
 
+    const creatorEarnings = creatorEarningsAgg as Array<{ _id: null; total: number }>;
+    const newSubscriptionsThisMonth: number = newSubsThisMonth;
+    const pendingPayouts: typeof pendingPayoutDocs = pendingPayoutDocs;
+
     // MRR = sum of monthlyRate on active subscriptions
     const mrr = activeSubscriptions.reduce(
       (sum, s) => sum + (s.monthlyRate || 0),
@@ -147,11 +155,11 @@ export class DashboardService {
       0,
     );
 
-    // Active creators (PUBLISHED status)
+    // Active creators (published status)
     const activeCreators = await this.userModel
       .countDocuments({
         isCreator: true,
-        creatorStatus: 'PUBLISHED',
+        creatorStatus: 'published',
       })
       .exec();
 
@@ -207,17 +215,28 @@ export class DashboardService {
       membershipGrowth.push({ month: monthStr, count });
     }
 
-    // Earnings data per month (from lifetimeEarnings trending - use totalRevenue as placeholder)
+    // Earnings data per month (from completed payouts)
     const earningsData: Array<{ month: string; amount: number }> = [];
     for (let i = months - 1; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const monthStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      // Estimate monthly earnings proportionally from lifetime
-      const estimatedMonthly =
-        totalRevenue > 0 ? totalRevenue / Math.max(1, months) : 0;
+      const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+
+      const result = await this.payoutRequestModel
+        .aggregate([
+          {
+            $match: {
+              status: 'completed',
+              completedAt: { $gte: d, $lte: monthEnd },
+            },
+          },
+          { $group: { _id: null, total: { $sum: '$amount' } } },
+        ])
+        .exec();
+
       earningsData.push({
         month: monthStr,
-        amount: Math.round(estimatedMonthly * 100) / 100,
+        amount: Math.round((result[0]?.total || 0) * 100) / 100,
       });
     }
 
@@ -233,6 +252,7 @@ export class DashboardService {
       pendingPayoutsAmount: Math.round(pendingPayoutsAmount * 100) / 100,
       newCreatorsThisMonth,
       newMembersThisMonth,
+      newSubscriptionsThisMonth,
       membershipGrowth,
       earningsData,
       recentTransactions,

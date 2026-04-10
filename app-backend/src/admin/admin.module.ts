@@ -41,6 +41,7 @@ import {
   PayoutRequestSchema,
 } from '@/database/schemas/payout/payout.schema';
 import { Membership, MembershipSchema } from '@/database/schemas/membership/membership.schema';
+import { Notification, NotificationSchema } from '@/database/schemas/notification';
 import { PaymentsModule } from '@/payments/payments.module';
 import { AdminGuardModule } from './schemas/admin-guard.module';
 
@@ -94,6 +95,7 @@ import { ExportService } from './services/export.service';
       { name: AuditLog.name, schema: AuditLogSchema },
       { name: AdminUser.name, schema: AdminUserSchema },
       { name: Ban.name, schema: BanSchema },
+      { name: Notification.name, schema: NotificationSchema },
     ]),
     AdminGuardModule,
     forwardRef(() => PaymentsModule),

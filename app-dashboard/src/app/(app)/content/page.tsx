@@ -36,6 +36,7 @@ import {
   Video,
   Link,
   Eye as EyeIcon,
+  Bell,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -46,8 +47,19 @@ import {
   withholdPost,
   restorePost,
   deletePost,
+  notifyCreator,
 } from '@/lib/services';
 import { PostDetailDialog } from '@/components/dialogs';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import type { Post, PostStatus } from '@/types';
 
 function PostTypeIcon({ type }: { type: string }) {
@@ -122,6 +134,9 @@ function ContentFeedPageInner() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [notifyPost, setNotifyPost] = useState<Post | null>(null);
+  const [notifyMessage, setNotifyMessage] = useState('');
+  const [notifyLoading, setNotifyLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
   const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all');
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
@@ -176,6 +191,22 @@ function ContentFeedPageInner() {
     } catch (e: any) {
       toast({ title: `Action failed: ${e?.message}`, variant: 'destructive' });
       throw e;
+    }
+  };
+
+  const handleNotify = async () => {
+    if (!notifyPost || notifyMessage.trim().length < 10) return;
+    const id = notifyPost.id || (notifyPost as any)._id;
+    setNotifyLoading(true);
+    try {
+      await notifyCreator(id, notifyMessage.trim());
+      toast({ title: 'Creator notified successfully' });
+      setNotifyPost(null);
+      setNotifyMessage('');
+    } catch (e: any) {
+      toast({ title: `Failed to notify: ${e?.message}`, variant: 'destructive' });
+    } finally {
+      setNotifyLoading(false);
     }
   };
 
@@ -299,6 +330,9 @@ function ContentFeedPageInner() {
                         <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5" onClick={() => handleAction(post.id || (post as any)._id, 'delete')}>
                           <Trash2 className="mr-2 h-4 w-4" /> Delete
                         </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { setNotifyPost(post); setNotifyMessage(''); }} className="rounded-lg cursor-pointer hover:bg-blue-500/5 text-blue-600 dark:text-blue-400">
+                          <Bell className="mr-2 h-4 w-4" /> Notify Creator
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
@@ -363,6 +397,46 @@ function ContentFeedPageInner() {
         onClose={() => setSelectedPost(null)}
         onRefresh={load}
       />
+
+      <Dialog open={!!notifyPost} onOpenChange={(o) => { if (!o) setNotifyPost(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Notify Creator</DialogTitle>
+            <DialogDescription>
+              Send a notice to {(notifyPost as any)?.creator?.displayName || 'the creator'} about this post.
+              The message will be delivered as an in-app notification.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label htmlFor="notify-msg" className="text-xs text-muted-foreground">
+                Message (min. 10 characters)
+              </Label>
+              <Textarea
+                id="notify-msg"
+                value={notifyMessage}
+                onChange={(e) => setNotifyMessage(e.target.value)}
+                placeholder="Enter your message to the creator..."
+                className="mt-1.5"
+                rows={4}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setNotifyPost(null)} className="rounded-xl">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleNotify}
+              disabled={notifyLoading || notifyMessage.trim().length < 10}
+              className="rounded-xl btn-gradient"
+            >
+              {notifyLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bell className="h-4 w-4" />}
+              Send Notice
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

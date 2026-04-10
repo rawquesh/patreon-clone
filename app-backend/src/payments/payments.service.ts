@@ -147,13 +147,13 @@ export class PaymentsService {
     };
   }
 
-  async initiatePayoutToBank(userId: string, amount: number): Promise<void> {
+  async initiatePayoutToBank(userId: string, amount: number): Promise<{ payoutId: string }> {
     const user = await this.userModel.findById(userId);
     if (!user?.stripeConnectAccountId) {
       throw new BadRequestException('No Stripe Connect account found');
     }
 
-    await this.stripe.payouts.create(
+    const payout = await this.stripe.payouts.create(
       {
         amount: Math.round(amount * 100),
         currency: 'usd',
@@ -162,6 +162,8 @@ export class PaymentsService {
         stripeAccount: user.stripeConnectAccountId,
       },
     );
+
+    return { payoutId: payout.id };
   }
 
   async getPayoutHistory(userId: string): Promise<any[]> {

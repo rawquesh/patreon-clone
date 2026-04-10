@@ -140,6 +140,10 @@ export class GetReportsQueryDto {
   @IsOptional()
   @IsMongoId()
   postId?: string;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
 }
 
 export class GetUserReportsQueryDto {
@@ -175,6 +179,10 @@ export class GetUserReportsQueryDto {
   @IsOptional()
   @IsMongoId()
   userId?: string;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
 }
 
 export class WithholdPostDto {

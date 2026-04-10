@@ -8,6 +8,7 @@ import { Model } from 'mongoose';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
 import { User } from '@/database/schemas/user';
 import { Membership } from '@/database/schemas/membership/membership.schema';
+import { PaymentsService } from '@/payments/payments.service';
 import { AuditLogService } from './audit-log.service';
 import {
   AuditAction,
@@ -22,6 +23,7 @@ export class SubscriptionsService {
     private subscriptionModel: Model<Subscription>,
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Membership.name) private membershipModel: Model<Membership>,
+    private readonly paymentsService: PaymentsService,
     private readonly auditLogService: AuditLogService,
   ) {}
 
@@ -167,6 +169,20 @@ export class SubscriptionsService {
     if (!subscription) throw new NotFoundException('Subscription not found');
     if (subscription.status === 'cancelled') {
       throw new BadRequestException('Subscription is already cancelled');
+    }
+
+    // Cancel the Stripe subscription if there's a Stripe subscription ID
+    if (subscription.stripeSubscriptionId) {
+      try {
+        await this.paymentsService.stripe.subscriptions.cancel(
+          subscription.stripeSubscriptionId,
+        );
+      } catch (error) {
+        console.error(
+          `Failed to cancel Stripe subscription ${subscription.stripeSubscriptionId}: ${error.message}`,
+        );
+        // Continue with local cancellation even if Stripe cancel fails
+      }
     }
 
     subscription.status = 'cancelled';

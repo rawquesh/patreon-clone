@@ -33,58 +33,120 @@ export class AdminUsersService {
   async getAdmins(query: GetAdminsQueryDto): Promise<{ admins: any[]; total: number }> {
     const { page = 1, limit = 20, role, isActive, search } = query;
 
-    const filter: any = {};
-    if (role) filter.role = role;
-    if (isActive !== undefined) filter.isActive = isActive;
+    // Query User collection for isAdmin=true, then left-join AdminUser for role/permissions
+    const userFilter: any = { isAdmin: true };
     if (search) {
-      filter.$or = [
+      userFilter.$or = [
+        { displayName: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
       ];
+    }
+    if (isActive !== undefined) {
+      userFilter.isDeactivated = isActive ? { $ne: true } : true;
     }
 
     const skip = (page - 1) * limit;
 
-    const [admins, total] = await Promise.all([
-      this.adminUserModel
-        .find(filter)
-        .populate('userId', 'displayName email profilePicture firstName lastName')
+    const [users, total] = await Promise.all([
+      this.userModel
+        .find(userFilter)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean()
         .exec(),
-      this.adminUserModel.countDocuments(filter),
+      this.userModel.countDocuments(userFilter),
     ]);
 
-    return {
-      admins: admins.map((a: any) => ({
-        ...a,
-        id: a._id.toString(),
-        user: a.userId
-          ? {
-              ...a.userId,
-              id: a.userId._id?.toString(),
-            }
-          : null,
-      })),
-      total,
-    };
+    // Fetch AdminUser records for all returned users
+    const adminUserMap = new Map<string, any>();
+    if (users.length > 0) {
+      const adminUsersForUsers = await this.adminUserModel
+        .find({ userId: { $in: users.map((u: any) => u._id) } })
+        .lean()
+        .exec();
+      for (const au of adminUsersForUsers) {
+        adminUserMap.set((au as any).userId?.toString(), au);
+      }
+    }
+
+    // Apply role filter if specified (after join)
+    let admins = users.map((u: any) => {
+      const adminUser = adminUserMap.get(u._id.toString());
+      return {
+        id: adminUser?._id?.toString() || u._id.toString(),
+        email: u.email,
+        role: adminUser?.role || 'viewer',
+        permissions: adminUser?.permissions || [],
+        isActive: adminUser?.isActive ?? true,
+        lastLoginAt: adminUser?.lastLoginAt || null,
+        createdAt: adminUser?.createdAt || u.createdAt,
+        user: {
+          id: u._id.toString(),
+          displayName: u.displayName,
+          email: u.email,
+          profilePicture: u.profilePicture,
+          firstName: u.firstName,
+          lastName: u.lastName,
+        },
+      };
+    });
+
+    if (role) {
+      admins = admins.filter((a) => a.role === role);
+    }
+
+    return { admins, total };
   }
 
   async getAdminById(id: string): Promise<any> {
-    const admin = await this.adminUserModel
+    // Try AdminUser first, then fall back to User (id could be either)
+    let adminUser = await this.adminUserModel
       .findById(id)
       .populate('userId', 'displayName email profilePicture firstName lastName')
       .lean()
       .exec();
-    if (!admin) throw new NotFoundException('Admin not found');
+
+    if (!adminUser) {
+      // Fall back: treat id as a User id and check isAdmin
+      const user = await this.userModel.findById(id).lean().exec();
+      if (!user || !user.isAdmin) throw new NotFoundException('Admin not found');
+      const linkedAdminUser = await this.adminUserModel
+        .findOne({ userId: user._id })
+        .lean()
+        .exec();
+      if (linkedAdminUser) {
+        adminUser = linkedAdminUser as any;
+        (adminUser as any).userId = user;
+      } else {
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          role: 'viewer',
+          permissions: [],
+          isActive: true,
+          lastLoginAt: null,
+          user: {
+            id: user._id.toString(),
+            displayName: user.displayName,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
+        };
+      }
+    }
+
     return {
-      ...admin,
-      id: admin._id.toString(),
-      user: (admin as any).userId
+      ...adminUser,
+      id: adminUser._id.toString(),
+      user: (adminUser as any).userId
         ? {
-            ...(admin as any).userId,
-            id: (admin as any).userId._id?.toString(),
+            ...(adminUser as any).userId,
+            id: (adminUser as any).userId._id?.toString(),
           }
         : null,
     };
@@ -98,8 +160,12 @@ export class AdminUsersService {
       throw new ConflictException('Admin with this email or user ID already exists');
     }
 
-    const user = await this.userModel.findById(dto.userId).lean();
+    const user = await this.userModel.findById(dto.userId);
     if (!user) throw new NotFoundException('User not found');
+
+    // Set isAdmin=true on the User document
+    user.isAdmin = true;
+    await user.save();
 
     const permissions = dto.permissions ?? ROLE_DEFAULT_PERMISSIONS[dto.role] ?? [];
 

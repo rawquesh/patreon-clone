@@ -271,7 +271,7 @@ export class StripeWebhookController {
           currentPeriodStart: subscription.current_period_start,
           currentPeriodEnd: subscription.current_period_end,
           monthlyRate: priceAmount / 100,
-          status: subscription.plan.status === true ? 'active' : 'expired',
+          status: subscription.status === 'active' || subscription.status === 'trialing' ? 'active' : 'expired',
         },
       );
       this.logger.log(
@@ -515,6 +515,37 @@ export class StripeWebhookController {
       this.logger.log(
         `Subscription period/status updated for ${subscription.id} from invoice_paid event.`,
       );
+
+      // Credit the creator for this payment (renewal)
+      const subscriptionItem = subscription.items?.data[0];
+      const priceAmount = subscriptionItem?.price?.unit_amount || 0;
+      const paymentAmount = priceAmount / 100;
+      if (paymentAmount > 0) {
+        try {
+          const creatorShare = this.membershipsService.calculateCreatorShare(paymentAmount);
+          const membership = await this.membershipsService.getMembershipById(membershipId);
+          if (membership?.creator) {
+            const creatorField = membership.creator as any;
+            const creatorId = creatorField._id ? creatorField._id.toString() : creatorField.toString();
+            await this.membershipsService.creditCreatorForPayment(
+              creatorId,
+              creatorShare,
+            );
+            this.logger.log(
+              `Credited creator for renewal payment: amount=${paymentAmount}, creatorShare=${creatorShare}, subscription=${subscription.id}`,
+            );
+          } else {
+            this.logger.warn(
+              `Could not find creator for membership ${membershipId} to credit payment.`,
+            );
+          }
+        } catch (creditError) {
+          this.logger.error(
+            `Failed to credit creator for payment on subscription ${subscription.id}: ${creditError.message}`,
+            creditError.stack,
+          );
+        }
+      }
 
       if (subscription.status === 'active') {
         this.logger.log(

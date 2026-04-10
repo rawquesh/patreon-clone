@@ -29,16 +29,23 @@ import {
   ChevronRight,
   ShieldAlert,
   User as UserIcon,
+  Loader2,
+  ExternalLink,
+  AlertTriangle,
+  Ban,
 } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { apiClient } from '@/lib/api-client';
+import { ReportDetailDialog } from '@/components/dialogs';
 
 type ReportStatus = 'pending' | 'under_review' | 'resolved' | 'dismissed';
 type ReportType = 'post' | 'user';
 
 interface ReportItem {
   id: string;
+  _id: string;
   type: ReportType;
   reason: string;
   description: string;
@@ -50,6 +57,13 @@ interface ReportItem {
   post?: { title?: string; type: string; creator?: { displayName?: string; email?: string } };
   reportedUser?: { displayName?: string; email?: string; isCreator?: boolean };
   reportedBy?: { displayName?: string; email?: string };
+}
+
+interface PaginationInfo {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 const STATUS_COLORS: Record<ReportStatus, string> = {
@@ -82,7 +96,7 @@ function ReportsPageInner() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const [reports, setReports] = useState<ReportItem[]>([]);
-  const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 20, totalPages: 0 });
+  const [pagination, setPagination] = useState<PaginationInfo>({ total: 0, page: 1, limit: 20, totalPages: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkLoading, setBulkLoading] = useState(false);
@@ -90,6 +104,7 @@ function ReportsPageInner() {
     (searchParams.get('status') as ReportStatus) || 'all'
   );
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
+  const [selectedReport, setSelectedReport] = useState<ReportItem | null>(null);
   const page = Number(searchParams.get('page') || '1');
 
   const load = useCallback(async () => {
@@ -99,34 +114,27 @@ function ReportsPageInner() {
         page,
         limit: 20,
         status: statusFilter === 'all' ? undefined : statusFilter,
+        search: searchValue || undefined,
       };
 
-      // Fetch both post and user reports
       const [postRes, userRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/admin/reports/posts?${new URLSearchParams(params as any).toString()}`, {
-          headers: { Authorization: `Bearer ${document.cookie.match(/auth_token=([^;]+)/)?.[1] || ''}` },
-          credentials: 'include',
-        }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/admin/reports/users?${new URLSearchParams(params as any).toString()}`, {
-          headers: { Authorization: `Bearer ${document.cookie.match(/auth_token=([^;]+)/)?.[1] || ''}` },
-          credentials: 'include',
-        }),
+        apiClient.get<{ reports: ReportItem[]; pagination: PaginationInfo }>('/reports/posts', params as any),
+        apiClient.get<{ reports: ReportItem[]; pagination: PaginationInfo }>('/reports/users', params as any),
       ]);
 
-      const postData = await postRes.json();
-      const userData = await userRes.json();
-
-      const postReports: ReportItem[] = (postData.reports || []).map((r: any) => ({
+      const postReports: ReportItem[] = (postRes.reports || []).map((r: any) => ({
         ...r,
-        id: r._id?.toString(),
+        _id: r._id?.toString() || r.id,
+        id: r.id || r._id?.toString(),
         type: 'post' as ReportType,
         post: r.post,
         reportedUser: undefined,
       }));
 
-      const userReports: ReportItem[] = (userData.reports || []).map((r: any) => ({
+      const userReports: ReportItem[] = (userRes.reports || []).map((r: any) => ({
         ...r,
-        id: r._id?.toString(),
+        _id: r._id?.toString() || r.id,
+        id: r.id || r._id?.toString(),
         type: 'user' as ReportType,
         reportedUser: r.reportedUser,
         post: undefined,
@@ -136,14 +144,20 @@ function ReportsPageInner() {
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
+      const total = (postRes.pagination?.total || 0) + (userRes.pagination?.total || 0);
       setReports(combined);
-      setPagination(postData.pagination || { total: 0, page: 1, limit: 20, totalPages: 0 });
+      setPagination({
+        total,
+        page,
+        limit: 20,
+        totalPages: Math.ceil(total / 20),
+      });
     } catch (e: any) {
       toast({ title: `Failed to load reports: ${e?.message}`, variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
-  }, [page, statusFilter, toast]);
+  }, [page, statusFilter, searchValue, toast]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -159,18 +173,47 @@ function ReportsPageInner() {
     router.push(`?${params.toString()}`);
   };
 
+  const handleSearchSubmit = () => {
+    updateParams({ search: searchValue, page: '1' });
+  };
+
+  const handleStatusChange = (status: ReportStatus | 'all') => {
+    setStatusFilter(status);
+    updateParams({ status: status, page: '1' });
+  };
+
+  const handleSingleAction = async (id: string, action: string) => {
+    const report = reports.find((r) => r.id === id || r._id === id);
+    if (!report) return;
+    try {
+      if (report.type === 'post') {
+        await apiClient.put(`/reports/posts/${id}/status`, { status: action, adminNotes: '' });
+      } else {
+        await apiClient.put(`/reports/users/${id}/status`, { status: action, adminNotes: '' });
+      }
+      toast({ title: `Report ${action === 'resolved' ? 'resolved' : 'dismissed'}` });
+      setSelectedIds(new Set());
+      load();
+    } catch (e: any) {
+      toast({ title: `Action failed: ${e?.message}`, variant: 'destructive' });
+    }
+  };
+
   const handleBulkAction = async (action: string) => {
     setBulkLoading(true);
     try {
-      const ids = Array.from(selectedIds);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/admin/bulk/reports`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${document.cookie.match(/auth_token=([^;]+)/)?.[1] || ''}` },
-        credentials: 'include',
-        body: JSON.stringify({ ids, action }),
-      });
-      if (!res.ok) throw new Error(await res.text());
-      toast({ title: `Reports ${action}ed successfully` });
+      const postIds = reports
+        .filter((r) => selectedIds.has(r.id || r._id) && r.type === 'post')
+        .map((r) => r.id || r._id);
+      const userIds = reports
+        .filter((r) => selectedIds.has(r.id || r._id) && r.type === 'user')
+        .map((r) => r.id || r._id);
+
+      await Promise.all([
+        ...postIds.map((id) => apiClient.put(`/reports/posts/${id}/status`, { status: action, adminNotes: '' })),
+        ...userIds.map((id) => apiClient.put(`/reports/users/${id}/status`, { status: action, adminNotes: '' })),
+      ]);
+      toast({ title: `${selectedIds.size} reports ${action === 'resolved' ? 'resolved' : 'dismissed'}` });
       setSelectedIds(new Set());
       load();
     } catch (e: any) {
@@ -178,6 +221,10 @@ function ReportsPageInner() {
     } finally {
       setBulkLoading(false);
     }
+  };
+
+  const handleViewReport = (report: ReportItem) => {
+    setSelectedReport(report);
   };
 
   return (
@@ -190,7 +237,7 @@ function ReportsPageInner() {
 
       {/* Tabs */}
       <div className="flex items-center justify-between mb-6">
-        <Tabs value={statusFilter} onValueChange={(v) => { setStatusFilter(v as any); updateParams({ status: v, page: '1' }); }}>
+        <Tabs value={statusFilter} onValueChange={(v) => handleStatusChange(v as ReportStatus | 'all')}>
           <TabsList className="rounded-xl">
             {(['all', 'pending', 'under_review', 'resolved', 'dismissed'] as const).map((s) => (
               <TabsTrigger key={s} value={s} className="rounded-lg text-xs font-medium capitalize">
@@ -199,22 +246,30 @@ function ReportsPageInner() {
             ))}
           </TabsList>
         </Tabs>
-        <div className="relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search reports..."
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            className="pl-10 h-9 w-64 rounded-xl text-sm"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search reports..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(); }}
+              className="pl-10 h-9 w-64 rounded-xl text-sm"
+            />
+          </div>
+          {searchValue && (
+            <Button size="sm" variant="ghost" onClick={() => { setSearchValue(''); updateParams({ search: null, page: '1' }); }} className="h-9 px-3 rounded-xl text-xs">
+              Clear
+            </Button>
+          )}
         </div>
       </div>
 
       <BulkActionToolbar
         selectedCount={selectedIds.size}
         availableActions={[
-          { label: 'Resolve', value: 'resolve' },
-          { label: 'Dismiss', value: 'dismiss', variant: 'destructive' },
+          { label: 'Resolve', value: 'resolved' },
+          { label: 'Dismiss', value: 'dismissed', variant: 'destructive' },
         ]}
         onBulkAction={handleBulkAction}
         onClearSelection={() => setSelectedIds(new Set())}
@@ -231,7 +286,7 @@ function ReportsPageInner() {
                   <Checkbox
                     checked={selectedIds.size === reports.length && reports.length > 0}
                     onCheckedChange={(v) => {
-                      if (v) setSelectedIds(new Set(reports.map((r) => r.id)));
+                      if (v) setSelectedIds(new Set(reports.map((r) => r.id || r._id)));
                       else setSelectedIds(new Set());
                     }}
                   />
@@ -264,84 +319,128 @@ function ReportsPageInner() {
                   <TableCell colSpan={8} className="text-center py-16">
                     <ShieldAlert className="h-10 w-10 mx-auto text-muted-foreground/30 mb-2" />
                     <p className="text-sm text-muted-foreground">No reports found</p>
+                    <p className="text-xs text-muted-foreground/70 mt-1">Try adjusting your filters or search</p>
                   </TableCell>
                 </TableRow>
               ) : (
-                reports.map((report) => (
-                  <TableRow key={report.id} className="border-b border-border/30 last:border-0 group">
-                    <TableCell className="pl-6">
-                      <Checkbox
-                        checked={selectedIds.has(report.id)}
-                        onCheckedChange={(v) => {
-                          const next = new Set(selectedIds);
-                          if (v) next.add(report.id);
-                          else next.delete(report.id);
-                          setSelectedIds(next);
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell className="pl-4">
-                      <Badge variant="outline" className={cn('text-xs font-medium border', report.type === 'post' ? 'border-blue-200 text-blue-600 dark:border-blue-800 dark:text-blue-400' : 'border-purple-200 text-purple-600 dark:border-purple-800 dark:text-purple-400')}>
-                        {report.type === 'post' ? 'Post' : 'User'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-[200px]">
-                        {report.type === 'post' ? (
-                          <span className="text-sm truncate block">{report.post?.title || 'Untitled Post'}</span>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-6 w-6">
-                              <AvatarFallback className="text-xs">{(report.reportedUser?.displayName || 'U').charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm">{report.reportedUser?.displayName || report.reportedUser?.email || 'Unknown User'}</span>
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs font-normal border-border">{report.reason}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-muted-foreground">{report.reportedBy?.displayName || report.reportedBy?.email || '-'}</span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={cn('text-xs font-medium border', STATUS_COLORS[report.status])}>
-                        {report.status === 'under_review' ? 'Under Review' : report.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(report.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </span>
-                    </TableCell>
-                    <TableCell className="pr-6">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
-                          <DropdownMenuItem className="rounded-lg cursor-pointer text-muted-foreground">
-                            <Eye className="mr-2 h-4 w-4" /> View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          {report.status === 'pending' && (
-                            <>
-                              <DropdownMenuItem className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400">
-                                <CheckCircle className="mr-2 h-4 w-4" /> Resolve
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="rounded-lg cursor-pointer text-muted-foreground">
-                                <XCircle className="mr-2 h-4 w-4" /> Dismiss
-                              </DropdownMenuItem>
-                            </>
+                reports.map((report) => {
+                  const rid = report.id || report._id;
+                  return (
+                    <TableRow key={rid} className="border-b border-border/30 last:border-0 group">
+                      <TableCell className="pl-6">
+                        <Checkbox
+                          checked={selectedIds.has(rid)}
+                          onCheckedChange={(v) => {
+                            const next = new Set(selectedIds);
+                            if (v) next.add(rid);
+                            else next.delete(rid);
+                            setSelectedIds(next);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className="pl-4">
+                        <Badge variant="outline" className={cn('text-xs font-medium border', report.type === 'post' ? 'border-blue-200 text-blue-600 dark:border-blue-800 dark:text-blue-400' : 'border-purple-200 text-purple-600 dark:border-purple-800 dark:text-purple-400')}>
+                          {report.type === 'post' ? 'Post' : 'User'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="max-w-[200px]">
+                          {report.type === 'post' ? (
+                            <button
+                              onClick={() => handleViewReport(report)}
+                              className="text-sm text-left hover:underline truncate block text-primary"
+                            >
+                              {report.post?.title || 'Untitled Post'}
+                            </button>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-6 w-6">
+                                <AvatarFallback className="text-xs">{(report.reportedUser?.displayName || 'U').charAt(0)}</AvatarFallback>
+                              </Avatar>
+                              <button
+                                onClick={() => handleViewReport(report)}
+                                className="text-sm hover:underline text-primary"
+                              >
+                                {report.reportedUser?.displayName || report.reportedUser?.email || 'Unknown User'}
+                              </button>
+                            </div>
                           )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="text-xs font-normal border-border">{report.reason}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm text-muted-foreground">{report.reportedBy?.displayName || report.reportedBy?.email || '-'}</span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className={cn('text-xs font-medium border', STATUS_COLORS[report.status])}>
+                          {report.status === 'under_review' ? 'Under Review' : report.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm text-muted-foreground">
+                          {new Date(report.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </TableCell>
+                      <TableCell className="pr-6">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="glass-menu rounded-xl shadow-xl">
+                            <DropdownMenuItem onClick={() => handleViewReport(report)} className="rounded-lg cursor-pointer hover:bg-primary/5">
+                              <Eye className="mr-2 h-4 w-4 text-muted-foreground" /> View Details
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            {report.status === 'pending' && (
+                              <>
+                                <DropdownMenuItem
+                                  onClick={() => handleSingleAction(rid, 'resolved')}
+                                  className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/5"
+                                >
+                                  <CheckCircle className="mr-2 h-4 w-4" /> Resolve
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleSingleAction(rid, 'dismissed')}
+                                  className="rounded-lg cursor-pointer text-muted-foreground hover:bg-muted/50"
+                                >
+                                  <XCircle className="mr-2 h-4 w-4" /> Dismiss
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                            {report.status === 'under_review' && (
+                              <>
+                                <DropdownMenuItem
+                                  onClick={() => handleSingleAction(rid, 'resolved')}
+                                  className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/5"
+                                >
+                                  <CheckCircle className="mr-2 h-4 w-4" /> Mark Resolved
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleSingleAction(rid, 'dismissed')}
+                                  className="rounded-lg cursor-pointer text-muted-foreground hover:bg-muted/50"
+                                >
+                                  <XCircle className="mr-2 h-4 w-4" /> Dismiss
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                            {(report.status === 'resolved' || report.status === 'dismissed') && (
+                              <DropdownMenuItem
+                                onClick={() => handleSingleAction(rid, 'under_review')}
+                                className="rounded-lg cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-500/5"
+                              >
+                                <AlertTriangle className="mr-2 h-4 w-4" /> Reopen
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>
@@ -375,6 +474,12 @@ function ReportsPageInner() {
           </div>
         )}
       </div>
+
+      <ReportDetailDialog
+        report={selectedReport}
+        onClose={() => setSelectedReport(null)}
+        onRefresh={load}
+      />
     </>
   );
 }

@@ -19,6 +19,7 @@ export enum AuditAction {
   POST_WITHHELD = 'post.withheld',
   POST_RESTORED = 'post.restored',
   POST_DELETED = 'post.deleted',
+  POST_NOTIFIED = 'post.notified',
   // Subscriptions
   SUBSCRIPTION_CANCELLED = 'subscription.cancelled',
   // Payouts

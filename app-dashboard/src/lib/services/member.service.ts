@@ -42,3 +42,7 @@ export async function deactivateMember(id: string): Promise<{ message: string }>
 export async function activateMember(id: string): Promise<{ message: string }> {
   return apiClient.post(`/admin/members/${id}/activate`);
 }
+
+export async function promoteToAdmin(id: string): Promise<{ message: string }> {
+  return apiClient.post(`/admin/members/${id}/promote-to-admin`);
+}

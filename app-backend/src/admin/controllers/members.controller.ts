@@ -43,4 +43,9 @@ export class MembersController {
   async activateMember(@Param('id') id: string, @Request() req) {
     return this.membersService.activateMember(id, req.user.userId);
   }
+
+  @Post(':id/promote-to-admin')
+  async promoteToAdmin(@Param('id') id: string, @Request() req) {
+    return this.membersService.promoteToAdmin(id, req.user.userId);
+  }
 }

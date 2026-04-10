@@ -50,6 +50,7 @@ export type DashboardStats = {
   pendingPayoutsAmount: number;
   newCreatorsThisMonth: number;
   newMembersThisMonth: number;
+  newSubscriptionsThisMonth: number;
   membershipGrowth: Array<{ month: string; count: number }>;
   earningsData: Array<{ month: string; amount: number }>;
   recentTransactions: Array<{

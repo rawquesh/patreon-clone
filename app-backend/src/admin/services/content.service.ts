@@ -3,9 +3,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Post, PostStatus } from '@/database/schemas/post';
 import { User } from '@/database/schemas/user';
+import { Notification, NotificationType } from '@/database/schemas/notification';
 import { AuditLogService } from './audit-log.service';
 import {
   AuditAction,
@@ -14,6 +15,7 @@ import {
 import {
   GetContentQueryDto,
   WithholdContentDto,
+  NotifyCreatorDto,
 } from '../dto/content.dto';
 
 @Injectable()
@@ -21,6 +23,7 @@ export class ContentService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<Post>,
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Notification.name) private notificationModel: Model<Notification>,
     private readonly auditLogService: AuditLogService,
   ) {}
 
@@ -167,6 +170,52 @@ export class ContentService {
     return {
       message: 'Post deleted successfully',
       postId,
+    };
+  }
+
+  async notifyCreator(
+    postId: string,
+    adminId: string,
+    dto: NotifyCreatorDto,
+  ): Promise<any> {
+    const post = await this.postModel.findById(postId).lean();
+    if (!post) throw new NotFoundException('Post not found');
+
+    const creatorId = (post.creator as any)?._id?.toString() || post.creator;
+    if (!creatorId) throw new NotFoundException('Post has no associated creator');
+
+    const creator = await this.userModel.findById(creatorId);
+    if (!creator) throw new NotFoundException('Creator not found');
+
+    const admin = await this.userModel.findById(adminId);
+    const adminName = admin?.displayName || 'Admin';
+
+    const notification = new this.notificationModel({
+      recipient: new Types.ObjectId(creatorId),
+      actor: new Types.ObjectId(adminId),
+      type: NotificationType.ADMIN_CONTENT_NOTICE,
+      post: new Types.ObjectId(postId),
+      metadata: {
+        message: dto.message,
+        postTitle: post.title,
+        adminName,
+      },
+      userMode: 'creator',
+      isRead: false,
+    });
+    await notification.save();
+
+    await this.auditLogService.log({
+      action: AuditAction.POST_NOTIFIED,
+      targetType: AuditTargetType.POST,
+      targetId: postId,
+      performedBy: adminId,
+      details: { message: dto.message, creatorId },
+    });
+
+    return {
+      message: 'Creator notified successfully',
+      notificationId: notification._id.toString(),
     };
   }
 }

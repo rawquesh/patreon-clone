@@ -114,12 +114,19 @@ export class ReportsService {
       status,
       reportedBy,
       postId,
+      search,
     } = query;
 
     const filter: any = {};
     if (status) filter.status = status;
     if (reportedBy) filter.reportedBy = reportedBy;
     if (postId) filter.post = postId;
+    if (search) {
+      filter.$or = [
+        { reason: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
+    }
 
     const skip = (page - 1) * limit;
     const sortObj: any = {};
@@ -334,12 +341,19 @@ export class ReportsService {
       status,
       reportedBy,
       userId,
+      search,
     } = query;
 
     const filter: any = {};
     if (status) filter.status = status;
     if (reportedBy) filter.reportedBy = reportedBy;
     if (userId) filter.reportedUser = userId;
+    if (search) {
+      filter.$or = [
+        { reason: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
+    }
 
     const skip = (page - 1) * limit;
     const sortObj: any = {};

@@ -560,7 +560,7 @@ export class MembershipsService {
     }
 
     try {
-      await this.paymentsService.initiatePayoutToBank(
+      const { payoutId } = await this.paymentsService.initiatePayoutToBank(
         userId,
         createPayoutRequestDto.amount,
       );
@@ -570,6 +570,7 @@ export class MembershipsService {
         amount: createPayoutRequestDto.amount,
         status: 'completed',
         completedAt: new Date(),
+        stripeTransferId: payoutId,
       });
 
       await this.userModel.findByIdAndUpdate(userId, {
@@ -1188,10 +1189,7 @@ export class MembershipsService {
       subscription.cancelledAt = new Date(data.cancelledAt * 1000);
     }
 
-    if (
-      subscription.status !== 'active' &&
-      subscription.status !== subscription.status
-    ) {
+    if (subscription.status !== 'active') {
       await this.membershipModel.findByIdAndUpdate(membershipId, {
         $inc: { subscriberCount: -1 },
       });

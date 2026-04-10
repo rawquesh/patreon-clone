@@ -152,6 +152,18 @@ export class NotificationsService {
           creatorId: actor,
         },
       };
+    } else if (type === NotificationType.ADMIN_CONTENT_NOTICE) {
+      const message = metadata?.message || 'You have received an administrative notice regarding your content.';
+      pushPayload = {
+        title: 'Administrative Notice',
+        body: message.substring(0, 100),
+        data: {
+          notification_type: 'ADMIN_CONTENT_NOTICE',
+          user_type: 'CREATOR',
+          postId: post || '',
+          actorId: actor,
+        },
+      };
     } else {
       pushPayload = {
         title: 'You have a new notification',

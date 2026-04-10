@@ -8,11 +8,13 @@ import {
   Body,
   UseGuards,
   Request,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
 import { ContentService } from '../services/content.service';
-import { GetContentQueryDto, WithholdContentDto } from '../dto/content.dto';
+import { GetContentQueryDto, WithholdContentDto, NotifyCreatorDto } from '../dto/content.dto';
 
 @Controller('admin/content')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
@@ -58,5 +60,15 @@ export class ContentController {
   @Delete(':id')
   async deletePost(@Param('id') id: string, @Request() req) {
     return this.contentService.deletePost(id, req.user.userId);
+  }
+
+  @Post(':id/notify-creator')
+  @HttpCode(HttpStatus.OK)
+  async notifyCreator(
+    @Param('id') id: string,
+    @Body() dto: NotifyCreatorDto,
+    @Request() req,
+  ) {
+    return this.contentService.notifyCreator(id, req.user.userId, dto);
   }
 }

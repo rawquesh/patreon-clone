@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, Min, Max, IsString, IsEnum } from 'class-validator';
+import { IsOptional, IsInt, Min, Max, IsString, IsEnum, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PostType, PostStatus } from '@/database/schemas/post';
 
@@ -49,4 +49,12 @@ export class WithholdContentDto {
   @IsOptional()
   @IsString()
   adminNotes?: string;
+}
+
+export class NotifyCreatorDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Message is required' })
+  @MinLength(10, { message: 'Message must be at least 10 characters' })
+  @MaxLength(500, { message: 'Message must not exceed 500 characters' })
+  message: string;
 }

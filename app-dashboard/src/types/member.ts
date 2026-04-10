@@ -14,6 +14,7 @@ export type Member = {
   countryOfResidence?: string;
   createdAt: string;
   isDeactivated?: boolean;
+  isAdmin?: boolean;
   stripeCustomerId?: string;
   subscription?: {
     plan: string;

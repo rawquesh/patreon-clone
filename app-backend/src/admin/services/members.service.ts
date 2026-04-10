@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@/database/schemas/user';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
+import { AdminUser, AdminRole, AdminPermission, ROLE_DEFAULT_PERMISSIONS } from '../schemas/admin-user.schema';
 import { AuditLogService } from './audit-log.service';
 import {
   AuditAction,
@@ -20,6 +21,8 @@ export class MembersService {
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Subscription.name)
     private subscriptionModel: Model<Subscription>,
+    @InjectModel(AdminUser.name)
+    private adminUserModel: Model<AdminUser>,
     private readonly auditLogService: AuditLogService,
   ) {}
 
@@ -35,7 +38,7 @@ export class MembersService {
       sortOrder = 'desc',
     } = query;
 
-    const filter: any = { isCreator: { $ne: true } };
+    const filter: any = { isCreator: { $ne: true }, isAdmin: { $ne: true } };
     if (status === 'active') filter.isDeactivated = { $ne: true };
     if (status === 'inactive') filter.isDeactivated = true;
     if (search) {
@@ -54,7 +57,7 @@ export class MembersService {
       this.userModel
         .find(filter)
         .select(
-          'email displayName firstName lastName profilePicture countryOfResidence createdAt isDeactivated stripeCustomerId',
+          'email displayName firstName lastName profilePicture countryOfResidence createdAt isDeactivated stripeCustomerId isAdmin',
         )
         .sort(sortObj)
         .skip(skip)
@@ -98,7 +101,7 @@ export class MembersService {
     const member = await this.userModel
       .findById(id)
       .select(
-        'email displayName firstName lastName profilePicture countryOfResidence createdAt isDeactivated stripeCustomerId',
+        'email displayName firstName lastName profilePicture countryOfResidence createdAt isDeactivated stripeCustomerId isAdmin',
       )
       .lean()
       .exec();
@@ -191,6 +194,47 @@ export class MembersService {
         displayName: member.displayName,
         email: member.email,
         isDeactivated: member.isDeactivated,
+      },
+    };
+  }
+
+  async promoteToAdmin(id: string, adminId: string): Promise<any> {
+    const member = await this.userModel.findById(id);
+    if (!member) throw new NotFoundException('Member not found');
+    if (member.isAdmin) throw new BadRequestException('User is already an admin');
+    if (member.isCreator) throw new BadRequestException('Cannot promote a creator to admin');
+
+    // Set isAdmin=true on the User document
+    member.isAdmin = true;
+    await member.save();
+
+    // Also create an AdminUser record if one doesn't already exist
+    const existingAdminUser = await this.adminUserModel.findOne({ userId: id }).exec();
+    if (!existingAdminUser) {
+      const adminUser = new this.adminUserModel({
+        email: member.email,
+        userId: id,
+        role: AdminRole.MODERATOR,
+        permissions: ROLE_DEFAULT_PERMISSIONS[AdminRole.MODERATOR] ?? [],
+      });
+      await adminUser.save();
+    }
+
+    await this.auditLogService.log({
+      action: AuditAction.ADMIN_CREATED,
+      targetType: AuditTargetType.ADMIN_USER,
+      targetId: id,
+      performedBy: adminId,
+      details: { displayName: member.displayName, email: member.email },
+    });
+
+    return {
+      message: 'Member promoted to admin successfully',
+      member: {
+        id: (member._id as any).toString(),
+        displayName: member.displayName,
+        email: member.email,
+        isAdmin: member.isAdmin,
       },
     };
   }

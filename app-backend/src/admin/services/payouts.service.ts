@@ -132,14 +132,14 @@ export class PayoutsService {
     }
 
     try {
-      await this.paymentsService.initiatePayoutToBank(
+      const { payoutId } = await this.paymentsService.initiatePayoutToBank(
         payout.creator.toString(),
         payout.amount,
       );
 
       payout.status = 'completed';
       payout.completedAt = new Date();
-      payout.stripeTransferId = `tr_${Date.now()}`;
+      payout.stripeTransferId = payoutId;
       await payout.save();
 
       creator.availableBalance = Math.max(0, creator.availableBalance - payout.amount);

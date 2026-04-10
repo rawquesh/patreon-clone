@@ -468,7 +468,7 @@ export default function ServerStatusPage() {
             </div>
             <Button
               variant="outline"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push('/')}
               className="gap-2 btn-gradient-ghost rounded-xl font-semibold"
             >
               Go to Login

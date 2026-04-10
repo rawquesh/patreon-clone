@@ -32,7 +32,7 @@ const PayoutPage: React.FC = () => {
 
         setIsOnboarded(statusData);
         setAvailableBalance(
-          balanceData.available ? balanceData.available / 100 : 0
+          balanceData.available ?? 0
         );
       } catch (error: any) {
         console.error("Error fetching payout info:", error);
@@ -114,7 +114,7 @@ const PayoutPage: React.FC = () => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(amount * 100);
+    }).format(amount);
   };
 
   return (

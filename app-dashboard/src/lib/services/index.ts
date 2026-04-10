@@ -12,6 +12,7 @@ export {
   getMemberById,
   deactivateMember,
   activateMember,
+  promoteToAdmin,
 } from './member.service';
 export {
   getPosts,
@@ -19,6 +20,7 @@ export {
   withholdPost,
   restorePost,
   deletePost,
+  notifyCreator,
 } from './post.service';
 export {
   getSubscriptions,
