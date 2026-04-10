@@ -44,21 +44,23 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
     const v = preset.getValue();
     setLocalRange(v);
     onChange(v);
-    setOpen(false);
   };
 
   const handleCalendarSelect = (range: { from?: Date; to?: Date } | undefined) => {
     setLocalRange(range);
     if (range?.from && range?.to) {
       onChange(range);
-      setOpen(false);
     }
   };
 
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleClear = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     setLocalRange(undefined);
     onChange(undefined);
+  };
+
+  const handleDone = () => {
+    setOpen(false);
   };
 
   return (
@@ -94,32 +96,50 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start" sideOffset={4}>
-        <div className="flex flex-col sm:flex-row">
-          <div className="w-full sm:w-36 border-b sm:border-b-0 sm:border-r border-border p-3 sm:p-2 space-y-0.5">
-            {PRESETS.map((preset) => (
-              <button
-                key={preset.label}
-                type="button"
-                onClick={() => handlePreset(preset)}
-                className={cn(
-                  "w-full text-left px-2 py-1.5 rounded-md text-xs",
-                  "text-muted-foreground hover:text-foreground hover:bg-accent transition-colors",
-                )}
-              >
-                {preset.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="p-3">
-            <div className="p-3">
-              <Calendar
-                mode="range"
-                selected={{ from: localRange?.from, to: localRange?.to }}
-                onSelect={handleCalendarSelect}
-                numberOfMonths={1}
-              />
+        <div className="flex flex-col">
+          <div className="flex flex-col sm:flex-row">
+            <div className="w-full sm:w-36 border-b sm:border-b-0 sm:border-r border-border p-3 sm:p-2 space-y-0.5">
+              {PRESETS.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => handlePreset(preset)}
+                  className={cn(
+                    "w-full text-left px-2 py-1.5 rounded-md text-xs font-medium",
+                    "text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors",
+                  )}
+                >
+                  {preset.label}
+                </button>
+              ))}
             </div>
+
+            <div className="p-3">
+              <div className="p-3">
+                <Calendar
+                  mode="range"
+                  selected={{ from: localRange?.from, to: localRange?.to }}
+                  onSelect={handleCalendarSelect}
+                  numberOfMonths={1}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-2 border-t p-3">
+            <button
+              type="button"
+              onClick={() => handleClear()}
+              className="text-xs font-semibold px-3 py-1.5 hover:bg-muted rounded-md transition-colors"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={handleDone}
+              className="btn-gradient text-xs px-5 py-1.5 rounded-md text-primary-foreground font-semibold flex items-center justify-center transition-opacity hover:opacity-90"
+            >
+              Done
+            </button>
           </div>
         </div>
       </PopoverContent>
