@@ -228,7 +228,7 @@ function ContentFeedPageInner() {
             <SelectTrigger className="h-10 rounded-xl text-xs w-[140px] btn-gradient-ghost">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent className="glass-menu rounded-xl">
+            <SelectContent className="rounded-xl">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="text">Text</SelectItem>
               <SelectItem value="image">Image</SelectItem>
@@ -241,7 +241,7 @@ function ContentFeedPageInner() {
             <SelectTrigger className="h-10 rounded-xl text-xs w-[140px] btn-gradient-ghost">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent className="glass-menu rounded-xl">
+            <SelectContent className="rounded-xl">
               <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="published">Published</SelectItem>
               <SelectItem value="draft">Draft</SelectItem>

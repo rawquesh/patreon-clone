@@ -197,7 +197,7 @@ function SubscriptionsPageInner() {
           <SelectTrigger className="h-11 rounded-xl text-sm w-[180px] btn-gradient-ghost">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
-          <SelectContent className="glass-menu rounded-xl">
+          <SelectContent className="rounded-xl">
             <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="cancelled">Cancelled</SelectItem>
