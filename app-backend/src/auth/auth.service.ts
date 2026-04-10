@@ -3,6 +3,8 @@ import {
   Injectable,
   BadRequestException,
   Logger,
+  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -114,7 +116,7 @@ export class AuthService {
 
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new ConflictException('An account with this email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -145,12 +147,12 @@ export class AuthService {
 
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new Error('User not found');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new Error('Invalid password');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const token = this.generateToken(user);
@@ -216,7 +218,7 @@ export class AuthService {
   async getCurrentUser(userId: string) {
     const user = await this.userModel.findById(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

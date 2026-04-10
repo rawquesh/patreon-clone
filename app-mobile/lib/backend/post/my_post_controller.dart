@@ -1,5 +1,6 @@
 import 'package:patreon-clone/backend/common/api_endpoints.dart';
 import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 import 'package:patreon-clone/models/common/data_model/paginated_request_model.dart';
 import 'package:patreon-clone/models/creator/creator_model.dart';
 import 'package:patreon-clone/models/post/data_model/comment_model.dart';
@@ -100,7 +101,10 @@ class MyPostController {
           'message': response.data!['message'] ?? (hasLiked ? 'Post unliked successfully' : 'Post liked successfully'),
         };
       } else {
-        throw Exception("Failed to ${hasLiked ? 'unlike' : 'like'} post: ${response.errorMessage}");
+        return {
+          'success': false,
+          'error': response.errorMessage ?? "Failed to ${hasLiked ? 'unlike' : 'like'} post",
+        };
       }
     } catch (e) {
       return {
@@ -175,35 +179,41 @@ class MyPostController {
     }
   }
 
-  Future<bool> publishPost({required String postId}) async {
+  Future<Result<void>> publishPost({required String postId}) async {
     try {
       final response = await _apiService.post(ApiEndpoints.postPublish(postId));
 
       MyPrint.printOnConsole('Publish post response: ${response.statusCode}');
       MyPrint.printOnConsole('${response.data}');
 
-      return response.success;
+      if (response.success) {
+        return Result.ok(null);
+      }
+      return Result.fromFailure(response);
     } catch (e) {
       MyPrint.printOnConsole('Error publishing post: $e');
-      return false;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> unpublishPost({required String postId}) async {
+  Future<Result<void>> unpublishPost({required String postId}) async {
     try {
       final response = await _apiService.post(ApiEndpoints.postUnpublish(postId));
 
       MyPrint.printOnConsole('Unpublish post response: ${response.statusCode}');
       MyPrint.printOnConsole('${response.data}');
 
-      return response.success;
+      if (response.success) {
+        return Result.ok(null);
+      }
+      return Result.fromFailure(response);
     } catch (e) {
       MyPrint.printOnConsole('Error unpublishing post: $e');
-      return false;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> addPostToCollection({
+  Future<Result<void>> addPostToCollection({
     required String postId,
     required String collectionId,
   }) async {
@@ -216,38 +226,47 @@ class MyPostController {
       MyPrint.printOnConsole('Add post to collection response: ${response.statusCode}');
       MyPrint.printOnConsole('${response.data}');
 
-      return response.success;
+      if (response.success) {
+        return Result.ok(null);
+      }
+      return Result.fromFailure(response);
     } catch (e) {
       MyPrint.printOnConsole('Error adding post to collection: $e');
-      return false;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> deletePost({required String postId}) async {
+  Future<Result<void>> deletePost({required String postId}) async {
     try {
       final response = await _apiService.delete(ApiEndpoints.post(postId));
 
       MyPrint.printOnConsole('Delete post response: ${response.statusCode}');
       MyPrint.printOnConsole('${response.data}');
 
-      return response.success;
+      if (response.success) {
+        return Result.ok(null);
+      }
+      return Result.fromFailure(response);
     } catch (e) {
       MyPrint.printOnConsole('Error deleting post: $e');
-      return false;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> deletePostPermanently({required String postId}) async {
+  Future<Result<void>> deletePostPermanently({required String postId}) async {
     try {
       final response = await _apiService.delete(ApiEndpoints.postPermanent(postId));
 
       MyPrint.printOnConsole('Permanent delete post response: ${response.statusCode}');
       MyPrint.printOnConsole('${response.data}');
 
-      return response.success;
+      if (response.success) {
+        return Result.ok(null);
+      }
+      return Result.fromFailure(response);
     } catch (e) {
       MyPrint.printOnConsole('Error permanently deleting post: $e');
-      return false;
+      return Result.fail(e.toString());
     }
   }
 }

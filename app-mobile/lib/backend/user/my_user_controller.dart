@@ -7,6 +7,7 @@ import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/managers/shared_pref_manager.dart';
 
 import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 
 class MyUserController {
   late UserRepository _userRepository;
@@ -20,66 +21,68 @@ class MyUserController {
     _authenticationProvider = authenticationProvider ?? AuthenticationProvider();
   }
 
-  Future<String?> uploadCoverImage({required File imageFile}) async {
+  Future<Result<String>> uploadCoverImage({required File imageFile}) async {
     const tag = 'uploadCoverImage';
     try {
       String? token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
-      final url = await _userRepository.uploadProfileCover(
+      final result = await _userRepository.uploadProfileCover(
         token: token,
         imageFile: imageFile,
       );
-      if (url != null && url.isNotEmpty) {
+      if (result.isSuccess && result.data != null && result.data!.isNotEmpty) {
         final userModel = _authenticationProvider.userModel.get();
         if (userModel != null) {
-          userModel.profileCover = url;
+          userModel.profileCover = result.data!;
           _authenticationProvider.userModel.set(value: userModel, isNotify: true);
         }
+        return result;
       }
-      return url;
+      return result;
     } catch (e) {
       MyPrint.printOnConsole('Error uploading cover image: $e', tag: tag);
-      return null;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<String?> uploadProfileImage({required File imageFile}) async {
+  Future<Result<String>> uploadProfileImage({required File imageFile}) async {
     const tag = 'uploadProfileImage';
     try {
       String? token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
-      final url = await _userRepository.uploadProfilePhoto(
+      final result = await _userRepository.uploadProfilePhoto(
         token: token,
         imageFile: imageFile,
       );
-      if (url != null && url.isNotEmpty) {
+      if (result.isSuccess && result.data != null && result.data!.isNotEmpty) {
         final userModel = _authenticationProvider.userModel.get();
         if (userModel != null) {
-          userModel.profilePicture = url;
+          userModel.profilePicture = result.data!;
           _authenticationProvider.userModel.set(value: userModel, isNotify: true);
         }
       }
-      return url;
+      return result;
     } catch (e) {
       MyPrint.printOnConsole('Error uploading profile image: $e', tag: tag);
-      return null;
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> updateCreatorHeadline({required String headline}) async {
+  Future<Result<void>> updateCreatorHeadline({required String headline}) async {
     try {
       final token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
-      final updatedUser = await _userRepository.updateCreatorHeadline(token: token, headline: headline);
+      final result = await _userRepository.updateCreatorHeadline(token: token, headline: headline);
 
-      if (updatedUser != null) {
-        _authenticationProvider.userModel.set(value: updatedUser, isNotify: true);
-        return true;
+      if (result.isSuccess && result.data != null) {
+        _authenticationProvider.userModel.set(value: result.data!, isNotify: true);
+        return Result.ok(null);
       }
+      return Result.fail(result.errorMessage ?? 'Failed to update headline');
     } catch (e) {
       MyPrint.printOnConsole("Exception in updateCreatorHeadline: $e");
+      return Result.fail(e.toString());
     }
-    return false;
   }
 
-  Future<Map<String, dynamic>> resetPassword({
+  Future<Result<Map<String, dynamic>>> resetPassword({
     required String currentPassword,
     required String newPassword,
     required String confirmPassword,
@@ -94,51 +97,49 @@ class MyUserController {
       );
     } catch (e) {
       MyPrint.printOnConsole('Error resetting password: $e');
-      return {
-        'success': false,
-        'message': 'Error resetting password',
-        'statusCode': 500,
-      };
+      return Result.fail(e.toString());
     }
   }
 
-  Future<bool> updateContentVisibility({required String visibility}) async {
+  Future<Result<void>> updateContentVisibility({required String visibility}) async {
     try {
       final token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
-      final updatedUser = await _userRepository.updateContentVisibility(
+      final result = await _userRepository.updateContentVisibility(
         token: token,
         contentVisibleTo: visibility,
       );
 
-      if (updatedUser != null) {
-        _authenticationProvider.userModel.set(value: updatedUser, isNotify: true);
-        return true;
+      if (result.isSuccess && result.data != null) {
+        _authenticationProvider.userModel.set(value: result.data!, isNotify: true);
+        return Result.ok(null);
       }
+      return Result.fail(result.errorMessage ?? 'Failed to update content visibility');
     } catch (e) {
       MyPrint.printOnConsole("Exception in updateContentVisibility: $e");
+      return Result.fail(e.toString());
     }
-    return false;
   }
 
-  Future<bool> updateCreatorCategory({required String category}) async {
+  Future<Result<void>> updateCreatorCategory({required String category}) async {
     try {
       final token = await SharedPrefManager().getString(SharedPreferenceConstants.authToken);
-      final updatedUser = await _userRepository.updateCreatorCategory(
+      final result = await _userRepository.updateCreatorCategory(
         token: token,
         category: category,
       );
 
-      if (updatedUser != null) {
-        _authenticationProvider.userModel.set(value: updatedUser, isNotify: true);
-        return true;
+      if (result.isSuccess && result.data != null) {
+        _authenticationProvider.userModel.set(value: result.data!, isNotify: true);
+        return Result.ok(null);
       }
+      return Result.fail(result.errorMessage ?? 'Failed to update creator category');
     } catch (e) {
       MyPrint.printOnConsole("Exception in updateCreatorCategory: $e");
+      return Result.fail(e.toString());
     }
-    return false;
   }
 
-  Future<bool> updateNotificationSettings({
+  Future<Result<void>> updateNotificationSettings({
     required bool notifyOnNewPost,
     required bool notifyOnDirectMessages,
   }) async {
@@ -150,23 +151,25 @@ class MyUserController {
         notifyOnDirectMessages: notifyOnDirectMessages,
       );
 
-      if (result != null) {
+      if (result.isSuccess && result.data != null) {
         final userModel = _authenticationProvider.userModel.get();
         if (userModel != null) {
-          userModel.memberNotifyOnNewPost = result['memberNotifyOnNewPost'] ?? userModel.memberNotifyOnNewPost;
+          final data = result.data!;
+          userModel.memberNotifyOnNewPost = data['memberNotifyOnNewPost'] ?? userModel.memberNotifyOnNewPost;
           userModel.memberNotifyOnDirectMessages =
-              result['memberNotifyOnDirectMessages'] ?? userModel.memberNotifyOnDirectMessages;
+              data['memberNotifyOnDirectMessages'] ?? userModel.memberNotifyOnDirectMessages;
           _authenticationProvider.userModel.set(value: userModel, isNotify: true);
         }
-        return true;
+        return Result.ok(null);
       }
+      return Result.fail(result.errorMessage ?? 'Failed to update notification settings');
     } catch (e) {
       MyPrint.printOnConsole("Exception in updateNotificationSettings: $e");
+      return Result.fail(e.toString());
     }
-    return false;
   }
 
-  Future<bool> updateCreatorNotificationSettings({
+  Future<Result<void>> updateCreatorNotificationSettings({
     required bool creatorNotifyOnNewUserJoined,
     required bool creatorNotifyOnCommentsAndRepliesOnPosts,
     required bool creatorNotifyOnDirectMessages,
@@ -180,22 +183,24 @@ class MyUserController {
         creatorNotifyOnDirectMessages: creatorNotifyOnDirectMessages,
       );
 
-      if (result != null) {
+      if (result.isSuccess && result.data != null) {
         final userModel = _authenticationProvider.userModel.get();
         if (userModel != null) {
+          final data = result.data!;
           userModel.creatorNotifyOnNewUserJoined =
-              result['creatorNotifyOnNewUserJoined'] ?? userModel.creatorNotifyOnNewUserJoined;
+              data['creatorNotifyOnNewUserJoined'] ?? userModel.creatorNotifyOnNewUserJoined;
           userModel.creatorNotifyOnCommentsAndRepliesOnPosts =
-              result['creatorNotifyOnCommentsAndRepliesOnPosts'] ?? userModel.creatorNotifyOnCommentsAndRepliesOnPosts;
+              data['creatorNotifyOnCommentsAndRepliesOnPosts'] ?? userModel.creatorNotifyOnCommentsAndRepliesOnPosts;
           userModel.creatorNotifyOnDirectMessages =
-              result['creatorNotifyOnDirectMessages'] ?? userModel.creatorNotifyOnDirectMessages;
+              data['creatorNotifyOnDirectMessages'] ?? userModel.creatorNotifyOnDirectMessages;
           _authenticationProvider.userModel.set(value: userModel, isNotify: true);
         }
-        return true;
+        return Result.ok(null);
       }
+      return Result.fail(result.errorMessage ?? 'Failed to update notification settings');
     } catch (e) {
       MyPrint.printOnConsole("Exception in updateCreatorNotificationSettings: $e");
+      return Result.fail(e.toString());
     }
-    return false;
   }
 }

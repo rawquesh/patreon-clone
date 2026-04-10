@@ -176,15 +176,52 @@ export const toastHandlers = {
 
 /**
  * Extract error message from an axios error.
+ * Handles: string messages, array messages (from validation), nested objects.
  */
 export function getErrorMessage(error: unknown, fallback: string): string {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "response" in error
-  ) {
-    const err = error as { response?: { data?: { message?: string } } };
-    return err.response?.data?.message || fallback;
+  if (typeof error === "object" && error !== null && "response" in error) {
+    const err = error as { response?: { data?: unknown } };
+    const data = err.response?.data;
+
+    if (typeof data === "string" && data.trim()) {
+      return data.trim();
+    }
+
+    if (typeof data === "object" && data !== null) {
+      const obj = data as Record<string, unknown>;
+
+      // Try message field (string or array)
+      if (obj.message !== undefined) {
+        if (typeof obj.message === "string" && obj.message.trim()) {
+          return obj.message.trim();
+        }
+        if (Array.isArray(obj.message) && obj.message.length > 0) {
+          // Flatten array messages (e.g., validation errors) into one readable string
+          return obj.message
+            .map((m) => (typeof m === "string" ? m : JSON.stringify(m)))
+            .filter(Boolean)
+            .join("; ");
+        }
+      }
+
+      // Fall back to error field (status name from NestJS default filter)
+      if (typeof obj.error === "string" && obj.error.trim()) {
+        return obj.error.trim();
+      }
+    }
   }
+
+  // Handle non-Axios errors (e.g., plain Error objects)
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const msg = (error as { message?: unknown }).message;
+    if (typeof msg === "string" && msg.trim()) {
+      return msg.trim();
+    }
+  }
+
+  if (typeof error === "string" && error.trim()) {
+    return error.trim();
+  }
+
   return fallback;
 }

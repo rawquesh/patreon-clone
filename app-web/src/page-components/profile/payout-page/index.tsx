@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import DetailsModal from "./details-modal";
-import { toast } from "sonner";
 import api from "@/lib/api";
 import { toaster } from "@/components/ui/toaster";
+import { getErrorMessage } from "@/lib/toasts";
 import { useAuth } from "@/context/auth.provider";
 
 const PayoutPage: React.FC = () => {
@@ -36,9 +36,12 @@ const PayoutPage: React.FC = () => {
         );
       } catch (error: any) {
         console.error("Error fetching payout info:", error);
-        const message =
-          error.response?.data?.message || error.message || "Unknown error";
-        toast.error(`Failed to load payout information: ${message}`);
+        toaster.create({
+          title: "Failed to load payout information",
+          description: getErrorMessage(error, "Please try again later"),
+          type: "error",
+          duration: 4000,
+        });
         setIsOnboarded(false);
         setAvailableBalance(0);
       } finally {
@@ -71,9 +74,12 @@ const PayoutPage: React.FC = () => {
       window.location.href = data.stripeOnboardingUrl;
     } catch (error: any) {
       console.error("Error initiating Stripe onboarding:", error);
-      const message =
-        error.response?.data?.message || error.message || "Please try again.";
-      toast.error(`Failed to connect with Stripe: ${message}`);
+      toaster.create({
+        title: "Failed to connect with Stripe",
+        description: getErrorMessage(error, "Please try again later"),
+        type: "error",
+        duration: 4000,
+      });
       setIsProcessing(false);
     }
   };
@@ -102,9 +108,12 @@ const PayoutPage: React.FC = () => {
       setAvailableBalance(0);
     } catch (error: any) {
       console.error("Error initiating disbursement:", error);
-      const message =
-        error.response?.data?.message || error.message || "Please try again.";
-      toast.error(`Payout failed: ${message}`);
+      toaster.create({
+        title: "Payout failed",
+        description: getErrorMessage(error, "Please try again later"),
+        type: "error",
+        duration: 4000,
+      });
     } finally {
       setIsProcessing(false);
     }

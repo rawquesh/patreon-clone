@@ -7,11 +7,12 @@ import 'package:patreon-clone/models/user/request_model/profile_update_request_m
 import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/backend/common/api_endpoints.dart';
 import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 
 class UserRepository {
   final ApiService _apiService = ApiService();
 
-  Future<UserModel?> updateUserProfileFromModel({
+  Future<Result<UserModel>> updateUserProfileFromModel({
     required String? token,
     required ProfileUpdateRequestModel data,
   }) async {
@@ -22,23 +23,23 @@ class UserRepository {
 
     if (response.success && response.data != null) {
       final userData = response.data!;
-      return UserModel(
+      return Result.ok(UserModel(
         userId: userData["_id"] ?? "",
         firstName: userData["firstName"] ?? "",
         lastName: userData["lastName"] ?? "",
         displayName: userData['displayName'],
         email: userData["email"] ?? "",
         authenticationMode: "email",
-      );
+      ));
     } else {
       MyPrint.printOnConsole(
         "Failed to update profile: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<String?> uploadProfilePhoto({
+  Future<Result<String>> uploadProfilePhoto({
     required String? token,
     required File imageFile,
   }) async {
@@ -60,16 +61,16 @@ class UserRepository {
     if (response.success && response.data != null) {
       final photoUrl = response.data!['profilePicture'] ?? '';
       MyPrint.printOnConsole('Uploaded photo URL: $photoUrl');
-      return photoUrl;
+      return Result.ok(photoUrl as String);
     } else {
       MyPrint.printOnConsole(
         "Failed to upload profile photo: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<String?> uploadProfileCover({
+  Future<Result<String>> uploadProfileCover({
     required String? token,
     required File imageFile,
   }) async {
@@ -90,16 +91,16 @@ class UserRepository {
 
     if (response.success && response.data != null) {
       final coverUrl = response.data!['profileCover'] ?? '';
-      return coverUrl;
+      return Result.ok(coverUrl as String);
     } else {
       MyPrint.printOnConsole(
         "Failed to upload profile cover: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<UserModel?> updateCreatorHeadline({
+  Future<Result<UserModel>> updateCreatorHeadline({
     required String? token,
     required String headline,
   }) async {
@@ -109,16 +110,16 @@ class UserRepository {
     );
 
     if (response.success && response.data != null) {
-      return UserModel.fromMap(response.data!);
+      return Result.ok(UserModel.fromMap(response.data!));
     } else {
       MyPrint.printOnConsole(
         "Failed to update headline: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<UserModel?> onboardCreator({
+  Future<Result<UserModel>> onboardCreator({
     required String token,
     required String username,
     required String contentVisibleTo,
@@ -135,16 +136,16 @@ class UserRepository {
 
     if (response.success && response.data != null) {
       MyPrint.printOnConsole("Creator onboarded successfully: ${response.data!['username']}");
-      return UserModel.fromMap(response.data!);
+      return Result.ok(UserModel.fromMap(response.data!));
     } else {
       MyPrint.printOnConsole(
         'Failed to onboard creator: ${response.statusCode} - ${response.errorMessage}',
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<Map<String, dynamic>> resetPassword({
+  Future<Result<Map<String, dynamic>>> resetPassword({
     required String? token,
     required String currentPassword,
     required String newPassword,
@@ -160,21 +161,17 @@ class UserRepository {
     );
 
     if (response.success) {
-      return {
+      return Result.ok({
         'success': true,
         'message': response.data?['message'] ?? 'Password changed successfully',
-      };
+      });
     } else {
       MyPrint.printOnConsole('Failed to reset password: ${response.statusCode} - ${response.errorMessage}');
-      return {
-        'success': false,
-        'message': response.errorMessage ?? 'Failed to reset password',
-        'statusCode': response.statusCode,
-      };
+      return Result.fromFailure(response);
     }
   }
 
-  Future<UserModel?> updateContentVisibility({
+  Future<Result<UserModel>> updateContentVisibility({
     required String? token,
     required String contentVisibleTo,
   }) async {
@@ -184,16 +181,16 @@ class UserRepository {
     );
 
     if (response.success && response.data != null) {
-      return UserModel.fromMap(response.data!);
+      return Result.ok(UserModel.fromMap(response.data!));
     } else {
       MyPrint.printOnConsole(
         "Failed to update content visibility: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<UserModel?> updateCreatorCategory({
+  Future<Result<UserModel>> updateCreatorCategory({
     required String? token,
     required String category,
   }) async {
@@ -204,16 +201,16 @@ class UserRepository {
 
     if (response.success && response.data != null) {
       MyPrint.printOnConsole("Category updated successfully: $category");
-      return UserModel.fromMap(response.data!);
+      return Result.ok(UserModel.fromMap(response.data!));
     } else {
       MyPrint.printOnConsole(
         "Failed to update creator category: ${response.statusCode} - ${response.errorMessage}",
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<Map<String, dynamic>?> updateNotificationSettings({
+  Future<Result<Map<String, dynamic>>> updateNotificationSettings({
     required String? token,
     required bool notifyOnNewPost,
     required bool notifyOnDirectMessages,
@@ -229,16 +226,16 @@ class UserRepository {
     MyPrint.printOnConsole('Update Notification Settings Response: ${response.statusCode}');
 
     if (response.success) {
-      return response.data;
+      return Result.ok(response.data ?? {});
     } else {
       MyPrint.printOnConsole(
         'Failed to update notification settings: ${response.statusCode} - ${response.errorMessage}',
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
-  Future<Map<String, dynamic>?> updateCreatorNotificationSettings({
+  Future<Result<Map<String, dynamic>>> updateCreatorNotificationSettings({
     required String? token,
     required bool creatorNotifyOnNewUserJoined,
     required bool creatorNotifyOnCommentsAndRepliesOnPosts,
@@ -256,12 +253,12 @@ class UserRepository {
     MyPrint.printOnConsole('Update Notification Settings Response: ${response.statusCode}');
 
     if (response.success) {
-      return response.data;
+      return Result.ok(response.data ?? {});
     } else {
       MyPrint.printOnConsole(
         'Failed to update creator notification settings: ${response.statusCode} - ${response.errorMessage}',
       );
-      return null;
+      return Result.fromFailure(response);
     }
   }
 }

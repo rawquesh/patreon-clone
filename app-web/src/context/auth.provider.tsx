@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
+import { toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { setCookie, deleteCookie } from "cookies-next";
@@ -15,6 +16,7 @@ import { CreatorCategory, User } from "@/typings/IUser";
 import { getUserMode } from "@/components/SideNav/user-avatar";
 import { Gender } from "@/types/auth";
 import { branding } from "@/config/branding";
+import { getErrorMessage } from "@/lib/toasts";
 
 enum GenderPreference {
   MALE = "male",
@@ -226,7 +228,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     },
     onError: (error) => {
-      console.error("Registration error:", error);
+      const message = getErrorMessage(error, "Registration failed");
+      toaster.create({
+        title: "Registration failed",
+        description: message,
+        type: "destructive",
+        duration: 4000,
+      });
     },
   });
 

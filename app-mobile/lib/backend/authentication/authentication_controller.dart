@@ -4,7 +4,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:patreon-clone/navigation/navigation_type.dart';
 import 'package:patreon-clone/constants/shared_preference_constants.dart';
 import 'package:patreon-clone/constants/auth_constants.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
 import 'package:patreon-clone/utils/extensions.dart';
 import 'package:patreon-clone/managers/hive_manager.dart';
 import 'package:patreon-clone/utils/my_print.dart';
@@ -16,6 +15,7 @@ import 'package:patreon-clone/managers/fcm_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:patreon-clone/navigation/app_router.dart';
 import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 import 'authentication_provider.dart';
 import 'authentication_repository.dart';
 
@@ -23,6 +23,7 @@ class AuthenticationController {
   late AuthenticationProvider _authenticationProvider;
   late AuthenticationRepository _authenticationRepository;
   String? _authToken;
+  String? lastAuthError;
 
   AuthenticationController({
     AuthenticationProvider? authenticationProvider,
@@ -36,7 +37,7 @@ class AuthenticationController {
 
   AuthenticationRepository get authenticationRepository => _authenticationRepository;
 
-  Future<bool> signInWithGoogle({
+  Future<Result<void>> signInWithGoogle({
     required BuildContext context,
     required GoogleSignInAccount googleUser,
   }) async {
@@ -45,32 +46,41 @@ class AuthenticationController {
       final accessToken = googleAuth.idToken;
 
       if (accessToken == null) {
-        MyPrint.printOnConsole('Sign in failed: Could not get access token');
-        return false;
+        lastAuthError = 'Could not get access token from Google';
+        return Result.fail(lastAuthError!);
       }
 
       final result = await _authenticationRepository.loginWithGoogleBackend(accessToken);
 
-      if (result == null || result['token'] == null || result['user'] == null) {
-        MyPrint.printOnConsole('Sign in failed: Invalid response from backend');
-        return false;
+      if (!result.isSuccess) {
+        lastAuthError = result.errorMessage ?? 'Sign in failed';
+        return Result.fail(lastAuthError!);
       }
 
-      _authToken = result['token'];
+      final token = result.data?['token'] as String?;
+      final userData = result.data?['user'] as Map<String, dynamic>?;
+
+      if (token == null || userData == null) {
+        lastAuthError = 'Invalid response from server';
+        return Result.fail(lastAuthError!);
+      }
+
+      _authToken = token;
 
       await onLoginSuccess(
         context: context,
         authenticationMode: AuthenticationModes.google,
       );
 
-      return true;
+      return Result.ok(null);
     } catch (e) {
+      lastAuthError = e.toString();
       MyPrint.printOnConsole('Sign in error: $e');
-      return false;
+      return Result.fail(lastAuthError!);
     }
   }
 
-  Future<String?> signInWithEmail({
+  Future<Result<void>> signInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -80,16 +90,24 @@ class AuthenticationController {
         password: password,
       );
 
-      if (result == null) return null;
+      if (!result.isSuccess) {
+        lastAuthError = result.errorMessage ?? 'Login failed. Please try again.';
+        return Result.fail(lastAuthError!);
+      }
 
-      _authToken = result['token'];
-      final userData = result['userData'];
-      if (userData == null) return null;
+      final token = result.data?['token'] as String?;
 
-      return _authToken;
+      if (token == null) {
+        lastAuthError = 'Invalid response from server';
+        return Result.fail(lastAuthError!);
+      }
+
+      _authToken = token;
+      return Result.ok(null);
     } catch (e) {
+      lastAuthError = e.toString();
       MyPrint.printOnConsole('Email sign in error: $e');
-      return null;
+      return Result.fail(lastAuthError!);
     }
   }
 
@@ -102,9 +120,10 @@ class AuthenticationController {
     }
 
     try {
-      UserModel? userModel = await _authenticationRepository.getUserFromToken(token);
+      final result = await _authenticationRepository.getUserFromToken(token);
 
-      if (userModel != null) {
+      if (result.isSuccess && result.data != null) {
+        final userModel = result.data!;
         _authenticationProvider.userId.set(value: userModel.userId, isNotify: false);
         _authenticationProvider.email.set(value: userModel.email, isNotify: false);
         _authenticationProvider.userModel.set(value: userModel, isNotify: true);
@@ -132,12 +151,14 @@ class AuthenticationController {
   }) async {
     MyPrint.printOnConsole("called onLoginSuccess");
 
-    UserModel? userModel = await authenticationRepository.getUserFromToken(_authToken ?? "");
+    final userResult = await authenticationRepository.getUserFromToken(_authToken ?? "");
 
-    if (userModel == null) {
+    if (!userResult.isSuccess || userResult.data == null) {
       await logout(isNavigateToLogin: true);
       return;
     }
+
+    final userModel = userResult.data!;
 
     if (userModel.email.isEmpty) {
       await logout(isNavigateToLogin: true);

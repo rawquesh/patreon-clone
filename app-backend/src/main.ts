@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { branding, business } from './config';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import * as express from 'express';
 
 async function bootstrap() {
@@ -32,6 +33,8 @@ async function bootstrap() {
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   });
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(business.server.port);
 }

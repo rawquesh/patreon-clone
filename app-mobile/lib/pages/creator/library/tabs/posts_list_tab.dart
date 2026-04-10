@@ -249,14 +249,14 @@ class _PostsListTabState extends State<PostsListTab> with MySafeState {
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
-              final success = await _myPostController.deletePostPermanently(postId: post.id);
-              if (success) {
+              final result = await _myPostController.deletePostPermanently(postId: post.id);
+              if (result.isSuccess) {
                 // Remove from the local list and refresh state
                 _allPosts.removeWhere((p) => p.id == post.id);
                 MyToast.showSuccess(context: context, msg: 'Post permanently deleted');
                 mySetState();
               } else {
-                MyToast.showError(context: context, msg: 'Failed to permanently delete post');
+                MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to permanently delete post');
               }
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
@@ -305,36 +305,36 @@ class _PostsListTabState extends State<PostsListTab> with MySafeState {
   Future<void> _addPostToCollection(PostModel post) async {
     final collectionId = await _selectCollection();
     if (collectionId != null) {
-      final success = await _myPostController.addPostToCollection(postId: post.id, collectionId: collectionId);
-      if (success) {
+      final result = await _myPostController.addPostToCollection(postId: post.id, collectionId: collectionId);
+      if (result.isSuccess) {
         MyToast.showSuccess(context: context, msg: "Post added to collection");
         post.collections.add(collectionId);
         mySetState();
       } else {
-        MyToast.showSuccess(context: context, msg: "Failed to add post to collection");
+        MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to add post to collection");
       }
     }
   }
 
   Future<void> _publishPost(PostModel post) async {
-    final success = await _myPostController.publishPost(postId: post.id);
-    if (success) {
+    final result = await _myPostController.publishPost(postId: post.id);
+    if (result.isSuccess) {
       MyToast.showSuccess(context: context, msg: "Post Published Successfully");
       post.status = PostStatus.published;
       mySetState();
     } else {
-      MyToast.showError(context: context, msg: "Failed to publish post");
+      MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to publish post");
     }
   }
 
   Future<void> _unpublishPost(PostModel post) async {
-    final success = await _myPostController.unpublishPost(postId: post.id);
-    if (success) {
+    final result = await _myPostController.unpublishPost(postId: post.id);
+    if (result.isSuccess) {
       MyToast.showSuccess(context: context, msg: "Post Unpublished Successfully");
       post.status = PostStatus.draft;
       mySetState();
     } else {
-      MyToast.showError(context: context, msg: "Failed to unpublish post");
+      MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to unpublish post");
     }
   }
 

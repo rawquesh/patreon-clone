@@ -8,8 +8,8 @@ import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
-import { IconButton, Input, Stack, Text, Box, Flex, VStack } from "@chakra-ui/react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { getErrorMessage } from "@/lib/toasts";
+import { Input, Text, Box, Flex, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -62,12 +62,12 @@ const LoginPages: React.FC = () => {
       try {
         await loginWithEmail.mutateAsync({ email, password });
       } catch (error) {
-        console.log(error);
+        const message = getErrorMessage(error, "Invalid email or password");
         toaster.create({
-          title: "Error",
-          description: "Invalid email or password",
+          title: "Login failed",
+          description: message,
           type: "error",
-          duration: 3000,
+          duration: 4000,
         });
       }
     } else {

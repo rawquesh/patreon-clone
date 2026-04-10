@@ -225,18 +225,18 @@ class _SettingsScreenState extends State<SettingsScreen> with MySafeState {
 
                   Navigator.of(context).pop();
 
-                  if (result['success'] == true) {
-                    MyToast.showSuccess(context: context, msg: result['message'] ?? 'Password changed successfully');
+                  if (result.isSuccess) {
+                    MyToast.showSuccess(context: context, msg: result.data?['message'] ?? 'Password changed successfully');
                   } else {
-                    final status = result['statusCode'];
-                    final msg = result['message']?.toString().toLowerCase() ?? '';
+                    final status = result.statusCode;
+                    final msg = result.errorMessage?.toLowerCase() ?? '';
 
                     if (status == 401 && msg.contains("incorrect")) {
                       MyToast.showError(context: context, msg: "Current password is incorrect");
                     } else if (status == 400 && msg.contains("confirmation")) {
                       MyToast.showError(context: context, msg: "New password and confirmation do not match");
                     } else {
-                      MyToast.showError(context: context, msg: result['message'] ?? "Failed to change password");
+                      MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to change password");
                     }
                   }
                 },
@@ -256,17 +256,17 @@ class _SettingsScreenState extends State<SettingsScreen> with MySafeState {
   }
 
   Future<void> _updateCreatorNotificationSettings() async {
-    final success = await _userController.updateCreatorNotificationSettings(
+    final result = await _userController.updateCreatorNotificationSettings(
       creatorNotifyOnNewUserJoined: everyTimeUserJoined,
       creatorNotifyOnCommentsAndRepliesOnPosts: commentsAndReplies,
       creatorNotifyOnDirectMessages: directMessages,
     );
 
     if (mounted) {
-      if (success) {
+      if (result.isSuccess) {
         MyToast.showSuccess(context: context, msg: 'Notification settings updated');
       } else {
-        MyToast.showError(context: context, msg: 'Failed to update notification settings');
+        MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to update notification settings');
         final user = _authProvider.userModel.get();
         if (user != null) {
           everyTimeUserJoined = user.creatorNotifyOnNewUserJoined;
@@ -293,17 +293,17 @@ class _SettingsScreenState extends State<SettingsScreen> with MySafeState {
       ),
     );
 
-    final success = await _userController.updateContentVisibility(
+    final result = await _userController.updateContentVisibility(
       visibility: _visibilityMap[displayValue] ?? 'both',
     );
 
     Navigator.of(context).pop();
 
-    if (success) {
+    if (result.isSuccess) {
       MyToast.showSuccess(context: context, msg: 'Content visibility updated');
     } else {
       setState(() => selectedContentVisibility = previous);
-      MyToast.showError(context: context, msg: 'Failed to update content visibility');
+      MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to update content visibility');
     }
   }
 
@@ -322,15 +322,15 @@ class _SettingsScreenState extends State<SettingsScreen> with MySafeState {
       ),
     );
 
-    final success = await _userController.updateCreatorCategory(category: category);
+    final result = await _userController.updateCreatorCategory(category: category);
 
     Navigator.of(context).pop();
 
-    if (success) {
+    if (result.isSuccess) {
       MyToast.showSuccess(context: context, msg: 'Creator category updated');
     } else {
       setState(() => selectedCreatorCategory = previous);
-      MyToast.showError(context: context, msg: 'Failed to update creator category');
+      MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to update creator category');
     }
   }
 

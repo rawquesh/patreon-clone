@@ -6,6 +6,7 @@ import {
   Request,
   BadRequestException,
   ValidationPipe,
+  HttpException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AnalyticsService } from './analytics.service';
@@ -42,8 +43,9 @@ export class AnalyticsController {
         queryParams.timeRange,
       );
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch membership insights: ${error.message}`,
+        'Failed to fetch membership insights. Please try again later.',
       );
     }
   }
@@ -65,8 +67,9 @@ export class AnalyticsController {
         queryParams.timeRange,
       );
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch earnings insights: ${error.message}`,
+        'Failed to fetch earnings insights. Please try again later.',
       );
     }
   }
@@ -88,8 +91,9 @@ export class AnalyticsController {
         queryParams.timeRange,
       );
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch transaction details: ${error.message}`,
+        'Failed to fetch transaction details. Please try again later.',
       );
     }
   }
@@ -111,8 +115,9 @@ export class AnalyticsController {
         queryParams.timeRange,
       );
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch posts insights: ${error.message}`,
+        'Failed to fetch posts insights. Please try again later.',
       );
     }
   }

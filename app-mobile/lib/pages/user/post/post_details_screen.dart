@@ -264,7 +264,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     try {
       final result = await likedPostsController.toggleLike(postModel.id);
       if (!result['success']) {
-        throw Exception(result['error'] ?? 'Failed to toggle like');
+        MyToast.showError(context: context, msg: result['error'] ?? 'Failed to toggle like');
+        // Revert on failure
+        setState(() {
+          postModel.hasLiked = originalLikedStatus;
+          postModel.likeCount = originalLikeCount;
+        });
+        context.read<LikedPostsProvider>().likedPosts.setMap(map: {postModel.id: originalLikedStatus}, isClear: false);
+        context.read<LikedPostsProvider>().likeCounts.setMap(map: {postModel.id: originalLikeCount}, isClear: false);
       }
     } catch (e) {
       // Revert on failure
@@ -292,11 +299,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     setState(() => isPostingComment = true);
 
     try {
-      final newCommentData =
+      final result =
           await PostRepository().createCommentOnPost(postId: postModel.id, text: text, parentId: _replyingToCommentId);
 
-      if (newCommentData != null) {
-        final newComment = CommentModel.fromMap(newCommentData);
+      if (result.isSuccess) {
+        final newComment = CommentModel.fromMap(result.data!);
 
         // 2. **FIX**: Add the user's info to the new comment object
         newComment.displayName = currentUser.displayName;
@@ -313,7 +320,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         _cancelReply();
         MyToast.showSuccess(context: context, msg: "Comment posted");
       } else {
-        MyToast.showError(context: context, msg: "Failed to post comment");
+        MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to post comment");
       }
     } catch (e) {
       MyPrint.printOnConsole("Error submitting comment: $e");
@@ -356,9 +363,12 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
       if (server != desiredFinal) {
         final result = await likedPostsController.toggleCommentLike(postModel.id, id);
-        if (result['success'] != true) throw Exception('API call failed');
-        server = !server;
-        _serverLiked[id] = server;
+        if (result['success'] != true) {
+          MyToast.showError(context: context, msg: result['error'] ?? 'Failed to update like status.');
+        } else {
+          server = !server;
+          _serverLiked[id] = server;
+        }
       }
 
       if (comment.isLiked != _serverLiked[id]) {

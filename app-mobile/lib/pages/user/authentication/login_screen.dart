@@ -66,27 +66,27 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
 
       if (Navigator.canPop(context)) Navigator.of(context, rootNavigator: true).pop();
 
-      if (result == null) {
-        MyToast.showError(context: context, msg: 'Failed to connect to server. Please try again.');
+      if (!result.isSuccess) {
+        MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to connect to server. Please try again.');
         isLoading = false;
         mySetState();
         return;
       }
 
-      final bool userExists = result['isInUse'] ?? false;
+      final bool userExists = result.data?['isInUse'] ?? false;
 
       if (userExists) {
         _showLoadingDialog();
-        bool success = await authenticationController.signInWithGoogle(
+        final result = await authenticationController.signInWithGoogle(
           context: context,
           googleUser: googleUser,
         );
         if (Navigator.canPop(context)) Navigator.of(context, rootNavigator: true).pop();
 
-        if (success) {
+        if (result.isSuccess) {
           MyToast.showSuccess(context: context, msg: "Google Sign In successful");
         } else {
-          MyToast.showError(context: context, msg: 'Google Sign In failed');
+          MyToast.showError(context: context, msg: result.errorMessage ?? 'Google Sign In failed');
         }
       } else {
         final displayName = googleUser.displayName ?? '';
@@ -168,18 +168,18 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
 
         final result = await authenticationController.authenticationRepository.checkEmailExists(email);
 
-        if (result == null) {
-          MyToast.showError(context: context, msg: 'Failed to check email. Please try again.');
+        if (!result.isSuccess) {
+          MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to check email. Please try again.');
           isLoading = false;
           mySetState();
           return;
         }
 
-        if (result['isInUse'] == true && result['passwordSet'] == true) {
+        if (result.data?['isInUse'] == true && result.data?['passwordSet'] == true) {
           isPasswordStep = true;
           mySetState();
           FocusScope.of(context).requestFocus(passwordFocusNode);
-        } else if (result['isInUse'] == false) {
+        } else if (result.data?['isInUse'] == false) {
           MyPrint.printOnConsole("called LoginScreen for SignUpScreenNavigation");
           MyToast.showCustomToast(
               context: context,
@@ -228,14 +228,14 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
           Navigator.of(context, rootNavigator: true).pop();
         }
 
-        if (result != null) {
+        if (result.isSuccess) {
           await authenticationController.onLoginSuccess(
             context: context,
             authenticationMode: AuthenticationModes.email,
           );
           MyToast.showSuccess(context: context, msg: "Logged in successfully");
         } else {
-          MyToast.showError(context: context, msg: 'Invalid email or password');
+          MyToast.showError(context: context, msg: result.errorMessage ?? 'Login failed. Please try again.');
         }
       } catch (e) {
         if (Navigator.canPop(context)) {

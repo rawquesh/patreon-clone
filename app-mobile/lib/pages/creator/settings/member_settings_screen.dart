@@ -141,18 +141,18 @@ class _MemberSettingsScreenState extends State<MemberSettingsScreen> with MySafe
 
                   Navigator.of(context).pop();
 
-                  if (result['success'] == true) {
-                    MyToast.showSuccess(context: context, msg: result['message'] ?? 'Password changed successfully');
+                  if (result.isSuccess) {
+                    MyToast.showSuccess(context: context, msg: result.data?['message'] ?? 'Password changed successfully');
                   } else {
-                    final status = result['statusCode'];
-                    final msg = result['message']?.toString().toLowerCase() ?? '';
+                    final status = result.statusCode;
+                    final msg = result.errorMessage?.toLowerCase() ?? '';
 
                     if (status == 401 && msg.contains("incorrect")) {
                       MyToast.showError(context: context, msg: "Current password is incorrect");
                     } else if (status == 400 && msg.contains("confirmation")) {
                       MyToast.showError(context: context, msg: "New password and confirmation do not match");
                     } else {
-                      MyToast.showError(context: context, msg: result['message'] ?? "Failed to change password");
+                      MyToast.showError(context: context, msg: result.errorMessage ?? "Failed to change password");
                     }
                   }
                 },
@@ -172,16 +172,16 @@ class _MemberSettingsScreenState extends State<MemberSettingsScreen> with MySafe
   }
 
   Future<void> _updateNotificationSettings() async {
-    final success = await _userController.updateNotificationSettings(
+    final result = await _userController.updateNotificationSettings(
       notifyOnNewPost: _notifyOnNewPosts,
       notifyOnDirectMessages: _notifyOnDMs,
     );
 
     if (mounted) {
-      if (success) {
+      if (result.isSuccess) {
         MyToast.showSuccess(context: context, msg: 'Notification settings updated');
       } else {
-        MyToast.showError(context: context, msg: 'Failed to update notification settings');
+        MyToast.showError(context: context, msg: result.errorMessage ?? 'Failed to update notification settings');
         final user = _authProvider.userModel.get();
         if (user != null) {
           _notifyOnNewPosts = user.memberNotifyOnNewPost;

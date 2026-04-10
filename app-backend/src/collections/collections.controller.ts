@@ -14,6 +14,7 @@ import {
   ForbiddenException,
   Delete,
   Query,
+  HttpException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -49,8 +50,9 @@ export class CollectionsController {
         total: collections.length,
       };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch collections: ${error.message}`,
+        'Failed to fetch collections. Please try again later.',
       );
     }
   }
@@ -117,8 +119,9 @@ export class CollectionsController {
             }
           }
         } catch (error) {
+          if (error instanceof HttpException) throw error;
           throw new BadRequestException(
-            `Failed to upload cover image: ${error.message}`,
+            'Failed to upload cover image. Please try again later.',
           );
         }
       }
@@ -128,6 +131,7 @@ export class CollectionsController {
         coverImage: coverImageUrl,
       });
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       if (
         error instanceof NotFoundException ||
         error instanceof ForbiddenException
@@ -135,7 +139,7 @@ export class CollectionsController {
         throw error;
       }
       throw new BadRequestException(
-        `Failed to update collection: ${error.message}`,
+        'Failed to update collection. Please try again later.',
       );
     }
   }
@@ -173,6 +177,7 @@ export class CollectionsController {
 
       return { success: true, message: 'Collection deleted successfully' };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       if (
         error instanceof NotFoundException ||
         error instanceof ForbiddenException
@@ -180,7 +185,7 @@ export class CollectionsController {
         throw error;
       }
       throw new BadRequestException(
-        `Failed to delete collection: ${error.message}`,
+        'Failed to delete collection. Please try again later.',
       );
     }
   }
@@ -196,8 +201,9 @@ export class CollectionsController {
         total: collections.length,
       };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch collections: ${error.message}`,
+        'Failed to fetch collections. Please try again later.',
       );
     }
   }
@@ -222,8 +228,9 @@ export class CollectionsController {
         total: collections.length,
       };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch creator collections: ${error.message}`,
+        'Failed to fetch creator collections. Please try again later.',
       );
     }
   }
@@ -261,8 +268,9 @@ export class CollectionsController {
           business.s3.defaultBucket,
         );
       } catch (error) {
+        if (error instanceof HttpException) throw error;
         throw new BadRequestException(
-          `Failed to upload cover image: ${error.message}`,
+          'Failed to upload cover image. Please try again later.',
         );
       }
     }
@@ -289,11 +297,9 @@ export class CollectionsController {
 
       return collection;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch collection: ${error.message}`,
+        'Failed to fetch collection. Please try again later.',
       );
     }
   }
@@ -318,6 +324,7 @@ export class CollectionsController {
         collection: result,
       };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       if (
         error instanceof NotFoundException ||
         error instanceof ForbiddenException
@@ -325,7 +332,7 @@ export class CollectionsController {
         throw error;
       }
       throw new BadRequestException(
-        `Failed to add post to collection: ${error.message}`,
+        'Failed to add post to collection. Please try again later.',
       );
     }
   }
@@ -350,6 +357,7 @@ export class CollectionsController {
         collection: result,
       };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       if (
         error instanceof NotFoundException ||
         error instanceof ForbiddenException
@@ -357,7 +365,7 @@ export class CollectionsController {
         throw error;
       }
       throw new BadRequestException(
-        `Failed to remove post from collection: ${error.message}`,
+        'Failed to remove post from collection. Please try again later.',
       );
     }
   }
@@ -380,11 +388,9 @@ export class CollectionsController {
 
       return result;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
+      if (error instanceof HttpException) throw error;
       throw new BadRequestException(
-        `Failed to fetch collection posts: ${error.message}`,
+        'Failed to fetch collection posts. Please try again later.',
       );
     }
   }

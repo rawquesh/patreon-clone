@@ -100,17 +100,18 @@ class _SignUpScreenState extends State<SignUpScreen> with MySafeState {
       authenticationMode: widget.userModel?.authenticationMode ?? '',
       password: passwordController.text,
     );
-    Map<String, dynamic>? registrationResponse = await authenticationRepository.registerNewUser(newUserModel);
+    final result = await authenticationRepository.registerNewUser(newUserModel);
 
-    if (registrationResponse == null || !registrationResponse.containsKey('token') || !registrationResponse.containsKey('user')) {
-      MyToast.showError(context: context, msg: 'Registration failed. Please try again.');
+    if (!result.isSuccess || result.data == null) {
+      MyToast.showError(context: context, msg: result.errorMessage ?? 'Registration failed. Please try again.');
       isLoading = false;
       mySetState();
       return;
     }
 
-    final String token = registrationResponse['token'];
-    UserModel registeredUser = UserModel.fromMap(registrationResponse['user']);
+    final String token = result.data!['token'] as String? ?? '';
+    final userData = result.data!['user'] ?? result.data!;
+    UserModel registeredUser = UserModel.fromMap(userData as Map<String, dynamic>);
     await SharedPrefManager().setString(SharedPreferenceConstants.authToken, token);
 
     // STEP 2: Handle Profile Photo
@@ -122,12 +123,12 @@ class _SignUpScreenState extends State<SignUpScreen> with MySafeState {
     }
 
     if (photoToUpload != null) {
-      final photoUrl = await userRepository.uploadProfilePhoto(token: token, imageFile: photoToUpload);
-      if (photoUrl != null) {
-        registeredUser.profilePicture = photoUrl;
+      final photoResult = await userRepository.uploadProfilePhoto(token: token, imageFile: photoToUpload);
+      if (photoResult.isSuccess && photoResult.data != null) {
+        registeredUser.profilePicture = photoResult.data!;
       } else {
         profileUpdateSuccess = false;
-        MyToast.showError(context: context, msg: 'Account created, but failed to upload photo.');
+        MyToast.showError(context: context, msg: photoResult.errorMessage ?? 'Account created, but failed to upload photo.');
       }
     }
 
@@ -141,13 +142,13 @@ class _SignUpScreenState extends State<SignUpScreen> with MySafeState {
         genderPreference: GenderPreferenceTypes.uiToApi(selectedContentGenderPreference),
       );
 
-      final updatedUser = await userRepository.updateUserProfileFromModel(token: token, data: updateModel);
-      if (updatedUser != null) {
+      final updateResult = await userRepository.updateUserProfileFromModel(token: token, data: updateModel);
+      if (updateResult.isSuccess && updateResult.data != null) {
         registeredUser.country = selectedCountry ?? '';
         registeredUser.preferredContentGender = GenderPreferenceTypes.uiToApi(selectedContentGenderPreference) ?? '';
       } else {
         profileUpdateSuccess = false;
-        MyToast.showError(context: context, msg: 'Account created, but failed to save profile details.');
+        MyToast.showError(context: context, msg: updateResult.errorMessage ?? 'Account created, but failed to save profile details.');
       }
     }
 

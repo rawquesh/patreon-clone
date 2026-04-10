@@ -23,20 +23,39 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
-      message =
+
+      // Extract the message field, handling both string and object responses
+      const rawMessage =
         typeof exceptionResponse === 'string'
           ? exceptionResponse
           : (exceptionResponse as any).message || exceptionResponse;
+
+      // Flatten array messages (from class-validator) into a single readable string
+      if (Array.isArray(rawMessage)) {
+        message = rawMessage
+          .map((m) => String(m))
+          .filter(Boolean)
+          .join('; ');
+      } else if (typeof rawMessage === 'object' && rawMessage !== null) {
+        // If message is an object (not a string or array), stringify the most useful field
+        const obj = rawMessage as Record<string, unknown>;
+        message =
+          (typeof obj.message === 'string' && obj.message) ||
+          (typeof obj.error === 'string' && obj.error) ||
+          JSON.stringify(rawMessage);
+      } else {
+        message = String(rawMessage || 'An error occurred');
+      }
     } else if (exception instanceof Error) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = 'Internal server error';
+      message = 'Something went wrong. Please try again later.';
       this.logger.error(
         `Unhandled exception on ${request.method} ${request.url}: ${exception.message}`,
         exception.stack,
       );
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = 'Internal server error';
+      message = 'Something went wrong. Please try again later.';
       this.logger.error(`Unknown exception: ${JSON.stringify(exception)}`);
     }
 

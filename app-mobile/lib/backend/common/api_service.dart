@@ -402,12 +402,37 @@ class ApiService {
       try {
         final errorData = response.body.isNotEmpty ? jsonDecode(response.body) : null;
         if (errorData is Map<String, dynamic>) {
-          errorMessage = errorData['message'] ?? errorData['error'] ?? 'Request failed';
+          final msg = errorData['message'];
+          if (msg != null) {
+            if (msg is String) {
+              errorMessage = msg;
+            } else if (msg is List) {
+              // Flatten array messages (validation errors) into one readable string
+              final parts = <String>[];
+              for (final item in msg) {
+                if (item is String && item.isNotEmpty) {
+                  parts.add(item);
+                } else if (item is Map) {
+                  parts.add(item.toString());
+                }
+              }
+              errorMessage = parts.isNotEmpty ? parts.join('; ') : _statusMessage(response.statusCode);
+            } else {
+              errorMessage = msg.toString();
+            }
+          } else if (errorData['error'] is String) {
+            // Fall back to error field (status name from NestJS default filter)
+            errorMessage = errorData['error'] ?? _statusMessage(response.statusCode);
+          } else {
+            errorMessage = _statusMessage(response.statusCode);
+          }
+        } else if (response.body.isNotEmpty) {
+          errorMessage = response.body;
         } else {
-          errorMessage = response.body.isNotEmpty ? response.body : 'Request failed';
+          errorMessage = _statusMessage(response.statusCode);
         }
       } catch (_) {
-        errorMessage = response.body.isNotEmpty ? response.body : 'Request failed';
+        errorMessage = response.body.isNotEmpty ? response.body : _statusMessage(response.statusCode);
       }
 
       MyPrint.printOnConsole(
@@ -458,6 +483,34 @@ class ApiService {
   /// Checks if status code indicates success
   bool _isSuccessStatusCode(int statusCode) {
     return statusCode >= 200 && statusCode < 300;
+  }
+
+  /// Returns a human-readable message for a given HTTP status code.
+  String _statusMessage(int statusCode) {
+    switch (statusCode) {
+      case 400:
+        return 'Bad request. Please check your input.';
+      case 401:
+        return 'Session expired. Please log in again.';
+      case 403:
+        return 'Access denied.';
+      case 404:
+        return 'Resource not found.';
+      case 409:
+        return 'Conflict. Please try again.';
+      case 422:
+        return 'Validation failed. Please check your input.';
+      case 429:
+        return 'Too many requests. Please wait a moment.';
+      case 500:
+        return 'Server error. Please try again later.';
+      case 502:
+      case 503:
+      case 504:
+        return 'Service temporarily unavailable. Please try again later.';
+      default:
+        return 'Request failed. Please try again.';
+    }
   }
 
   // ==========================================================================

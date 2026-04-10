@@ -6,6 +6,7 @@ import 'package:patreon-clone/models/user/data_model/user_model.dart';
 import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/backend/common/api_endpoints.dart';
 import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 
 class AuthenticationRepository {
   final ApiService _apiService = ApiService();
@@ -31,7 +32,7 @@ class AuthenticationRepository {
   }
 
   /// Sends the access token to backend for verification and login.
-  Future<Map<String, dynamic>?> loginWithGoogleBackend(String accessToken) async {
+  Future<Result<Map<String, dynamic>>> loginWithGoogleBackend(String accessToken) async {
     MyPrint.printOnConsole("AuthenticationRepository().loginWithGoogleBackend() called");
 
     final response = await _apiService.post(
@@ -41,16 +42,14 @@ class AuthenticationRepository {
     );
 
     if (response.success) {
-      MyPrint.printOnConsole("Decoded backend response: ${response.data}");
-      return response.data;
+      return Result.fromSuccess(response);
     } else {
-      MyPrint.printOnConsole("Failed to authenticate with backend: ${response.errorMessage}");
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
   /// Checks if email already exists in the system.
-  Future<Map<String, dynamic>?> checkEmailExists(String email) async {
+  Future<Result<Map<String, dynamic>>> checkEmailExists(String email) async {
     MyPrint.printOnConsole("AuthenticationRepository().checkEmailExists() called for $email");
 
     final encodedEmail = Uri.encodeComponent(email.toLowerCase());
@@ -60,18 +59,16 @@ class AuthenticationRepository {
     );
 
     if (response.success && response.data != null) {
-      return {
+      return Result.ok({
         'isInUse': response.data!['isInUse'] ?? false,
         'passwordSet': response.data!['passwordSet'] ?? false,
-      };
-    } else {
-      MyPrint.printOnConsole("Failed to check email: ${response.errorMessage}");
-      return null;
+      });
     }
+    return Result.fromFailure(response);
   }
 
   /// Signs in with email and password.
-  Future<Map<String, dynamic>?> signInWithEmail({
+  Future<Result<Map<String, dynamic>>> signInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -87,16 +84,16 @@ class AuthenticationRepository {
     );
 
     if (response.success && response.data != null) {
-      return {
+      return Result.ok({
         'token': response.data!['token'],
         'userData': response.data!['user'],
-      };
+      });
     }
-    return null;
+    return Result.fromFailure(response);
   }
 
   /// Registers a new user.
-  Future<Map<String, dynamic>?> registerNewUser(UserModel userModel) async {
+  Future<Result<Map<String, dynamic>>> registerNewUser(UserModel userModel) async {
     MyPrint.printOnConsole("Register Request Payload: ${userModel.toMap()}");
 
     final response = await _apiService.post(
@@ -106,15 +103,14 @@ class AuthenticationRepository {
     );
 
     if (response.success) {
-      return response.data;
+      return Result.fromSuccess(response);
     } else {
-      MyPrint.printOnConsole("Registration failed: ${response.errorMessage}");
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
   /// Gets user data from a valid token.
-  Future<UserModel?> getUserFromToken(String token) async {
+  Future<Result<UserModel>> getUserFromToken(String token) async {
     final response = await _apiService.get(
       ApiEndpoints.authUser,
       customHeaders: {'Authorization': 'Bearer $token'},
@@ -122,10 +118,9 @@ class AuthenticationRepository {
     );
 
     if (response.success && response.data != null) {
-      return UserModel.fromMap(response.data!);
+      return Result.ok(UserModel.fromMap(response.data!));
     }
-    MyPrint.printOnConsole("Error fetching user data: ${response.errorMessage}");
-    return null;
+    return Result.fromFailure(response);
   }
 
   /// Signs out from Google.

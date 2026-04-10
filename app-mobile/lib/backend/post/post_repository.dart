@@ -4,11 +4,12 @@ import 'package:patreon-clone/models/post/data_model/post_model.dart';
 import 'package:patreon-clone/utils/my_print.dart';
 import 'package:patreon-clone/backend/common/api_endpoints.dart';
 import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon-clone/backend/common/api_response.dart';
 
 class PostRepository {
   final ApiService _apiService = ApiService();
 
-  Future<Map<String, dynamic>?> createCommentOnPost({
+  Future<Result<Map<String, dynamic>>> createCommentOnPost({
     required String postId,
     required String text,
     String? parentId,
@@ -25,10 +26,10 @@ class PostRepository {
 
     if (response.success) {
       MyPrint.printOnConsole("✅ Comment Created: ${response.data}");
-      return response.data;
+      return Result.ok(response.data ?? {});
     } else {
       MyPrint.printOnConsole("❌ Failed to create comment: ${response.statusCode} - ${response.errorMessage}");
-      return null;
+      return Result.fromFailure(response);
     }
   }
 
