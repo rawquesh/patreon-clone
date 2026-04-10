@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -16,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { getSettings, updateSetting } from '@/lib/services';
 import type { PlatformSetting } from '@/types/settings';
@@ -34,17 +36,21 @@ const CATEGORY_ICONS: Record<SettingCategory, string> = {
   content: 'Content restrictions and upload limits',
 };
 
+// Categories that use pending changes + Save button
+const BATCH_CATEGORIES: SettingCategory[] = ['financial', 'content'];
+
 interface SettingFieldProps {
   setting: PlatformSetting;
-  onUpdate: (key: string, value: any) => void;
+  value: any;
+  onChange: (key: string, value: any) => void;
   isUpdating: boolean;
 }
 
-function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
+function SettingField({ setting, value, onChange, isUpdating }: SettingFieldProps) {
   const key = setting.key as string;
 
   // Boolean toggle
-  if (typeof setting.value === 'boolean') {
+  if (typeof value === 'boolean') {
     return (
       <div className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
         <div className="flex-1 pr-4">
@@ -57,8 +63,8 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
         </div>
         <Switch
           id={`setting-${key}`}
-          checked={setting.value}
-          onCheckedChange={(v) => onUpdate(key, v)}
+          checked={value}
+          onCheckedChange={(v) => onChange(key, v)}
           disabled={isUpdating}
         />
       </div>
@@ -66,7 +72,7 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
   }
 
   // Numeric input (for rates, amounts, sizes)
-  if (typeof setting.value === 'number') {
+  if (typeof value === 'number') {
     const isPercentage = key.includes('rate') || key.includes('percent') || key.includes('fee');
     const isByteSize = key.includes('size') && !key.includes('text_content') && !key.includes('textLength') && !key.includes('TextLength');
     const isTextLength = key.includes('text_content') || key.includes('textLength') || key.includes('TextLength');
@@ -78,12 +84,12 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
           </Label>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isPercentage
-              ? `${(setting.value * 100).toFixed(1)}%`
+              ? `${(value * 100).toFixed(1)}%`
               : isByteSize
-                ? `${(setting.value / 1024 / 1024).toFixed(1)} MB`
+                ? `${(value / 1024 / 1024).toFixed(1)} MB`
                 : isTextLength
-                  ? `${setting.value.toLocaleString()} characters`
-                  : setting.value.toLocaleString()}
+                  ? `${value.toLocaleString()} characters`
+                  : value.toLocaleString()}
           </p>
         </div>
         <div className="flex items-center gap-1.5">
@@ -97,16 +103,16 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
             min={0}
             value={
               isPercentage
-                ? setting.value * 100
+                ? value * 100
                 : isByteSize
-                  ? Math.round(setting.value / 1024 / 1024)
+                  ? Math.round(value / 1024 / 1024)
                   : isTextLength
-                    ? setting.value
-                    : setting.value
+                    ? value
+                    : value
             }
             onChange={(e) => {
               const val = parseFloat(e.target.value);
-              onUpdate(
+              onChange(
                 key,
                 isPercentage
                   ? val / 100
@@ -124,7 +130,7 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
   }
 
   // String input
-  if (typeof setting.value === 'string') {
+  if (typeof value === 'string') {
     // Payout schedule select (handles both snake_case and camelCase)
     if (key === 'payout_schedule' || key === 'payoutSchedule') {
       return (
@@ -134,9 +140,9 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
               {setting.description || key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
             </Label>
           </div>
-          <Select value={setting.value} onValueChange={(v) => onUpdate(key, v)} disabled={isUpdating}>
+          <Select value={value || 'monthly'} onValueChange={(v) => onChange(key, v)} disabled={isUpdating}>
             <SelectTrigger className="w-36 h-8 text-xs rounded-lg">
-              <SelectValue />
+              <SelectValue placeholder="Select schedule" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="weekly">Weekly</SelectItem>
@@ -158,9 +164,9 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
               {setting.description || key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
             </Label>
           </div>
-          <Select value={setting.value} onValueChange={(v) => onUpdate(key, v)} disabled={isUpdating}>
+          <Select value={value || 'public'} onValueChange={(v) => onChange(key, v)} disabled={isUpdating}>
             <SelectTrigger className="w-36 h-8 text-xs rounded-lg">
-              <SelectValue />
+              <SelectValue placeholder="Select visibility" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="public">Public</SelectItem>
@@ -182,10 +188,11 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
         </div>
         <Input
           id={`setting-${key}`}
-          value={setting.value}
-          onChange={(e) => onUpdate(key, e.target.value)}
+          value={value}
+          onChange={(e) => onChange(key, e.target.value)}
           disabled={isUpdating}
           className="w-40 h-8 text-xs rounded-lg"
+          placeholder="Enter value"
         />
       </div>
     );
@@ -199,13 +206,15 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<PlatformSetting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<SettingCategory>('financial');
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState<Record<string, any>>({});
 
   const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const data = await getSettings();
       setSettings(data);
+      setPendingChanges({});
     } catch (e: any) {
       toast({ title: `Failed to load settings: ${e?.message}`, variant: 'destructive' });
     } finally {
@@ -215,8 +224,12 @@ export default function SettingsPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  const handleUpdate = async (key: string, value: any) => {
-    setIsUpdating(true);
+  const handleChange = (key: string, value: any) => {
+    setPendingChanges((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleInstantUpdate = async (key: string, value: any) => {
+    setIsSaving(true);
     try {
       const updated = await updateSetting(key, { value });
       setSettings((prev) => prev.map((s) => (s.key === key ? updated : s)));
@@ -224,7 +237,37 @@ export default function SettingsPage() {
     } catch (e: any) {
       toast({ title: `Failed to update setting: ${e?.message}`, variant: 'destructive' });
     } finally {
-      setIsUpdating(false);
+      setIsSaving(false);
+    }
+  };
+
+  const handleSave = async () => {
+    const entries = Object.entries(pendingChanges);
+    if (entries.length === 0) return;
+
+    // Validate: check for empty values
+    for (const [key, value] of entries) {
+      const setting = settings.find((s) => s.key === key);
+      const label = setting?.description || key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+      if (value === '' || value === null || value === undefined) {
+        toast({ title: `Cannot save empty value for "${label}"`, variant: 'destructive' });
+        return;
+      }
+    }
+
+    setIsSaving(true);
+    try {
+      for (const [key, value] of entries) {
+        const updated = await updateSetting(key, { value });
+        setSettings((prev) => prev.map((s) => (s.key === key ? updated : s)));
+      }
+      setPendingChanges({});
+      toast({ title: 'Settings saved successfully' });
+    } catch (e: any) {
+      toast({ title: `Failed to save settings: ${e?.message}`, variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -238,6 +281,13 @@ export default function SettingsPage() {
         s.key !== 'minimumPayoutAmount' &&
         s.key !== 'defaultContentVisibility',
     );
+
+  const getFieldValue = (setting: PlatformSetting) => {
+    if (setting.key in pendingChanges) return pendingChanges[setting.key];
+    return setting.value;
+  };
+
+  const pendingCount = Object.keys(pendingChanges).length;
 
   if (isLoading) {
     return (
@@ -263,19 +313,32 @@ export default function SettingsPage() {
       />
 
       <Tabs value={activeCategory} onValueChange={(v) => setActiveCategory(v as SettingCategory)} className="space-y-6">
-        <TabsList className="rounded-xl">
-          {categories.map((cat) => {
-            const count = getCategorySettings(cat).length;
-            return (
-              <TabsTrigger key={cat} value={cat} className="rounded-lg text-xs font-medium capitalize gap-1.5">
-                {cat}
-                {count > 0 && (
-                  <span className="ml-1 text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">{count}</span>
-                )}
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
+        <div className="flex items-center gap-4">
+          <TabsList className="rounded-xl">
+            {categories.map((cat) => {
+              const count = getCategorySettings(cat).length;
+              return (
+                <TabsTrigger key={cat} value={cat} className="rounded-lg text-xs font-medium capitalize gap-1.5">
+                  {cat}
+                  {count > 0 && (
+                    <span className="ml-1 text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">{count}</span>
+                  )}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+          {BATCH_CATEGORIES.includes(activeCategory) && pendingCount > 0 && (
+            <Button
+              size="sm"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="btn-gradient h-8 text-xs gap-1.5"
+            >
+              {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
+              Save Changes {pendingCount > 1 ? `(${pendingCount})` : ''}
+            </Button>
+          )}
+        </div>
 
         {categories.map((cat) => (
           <TabsContent key={cat} value={cat} className="space-y-4">
@@ -289,8 +352,9 @@ export default function SettingsPage() {
                   <SettingField
                     key={setting.key}
                     setting={setting}
-                    onUpdate={handleUpdate}
-                    isUpdating={isUpdating}
+                    value={getFieldValue(setting)}
+                    onChange={BATCH_CATEGORIES.includes(cat) ? handleChange : handleInstantUpdate}
+                    isUpdating={isSaving}
                   />
                 ))}
                 {getCategorySettings(cat).length === 0 && (

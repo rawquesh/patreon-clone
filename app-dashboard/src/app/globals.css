@@ -209,6 +209,8 @@ body {
     background: var(--gradient-primary-hover);
     opacity: 0;
     transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .btn-gradient:hover::before {
@@ -218,6 +220,7 @@ body {
   .btn-gradient:hover {
     box-shadow: var(--glow-primary);
     transform: translateY(-1px);
+    color: white;
   }
 
   .btn-gradient:active {
