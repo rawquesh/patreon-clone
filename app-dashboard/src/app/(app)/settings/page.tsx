@@ -7,7 +7,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -18,25 +17,21 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { getSettings, updateSetting, bulkUpdateSettings } from '@/lib/services';
+import { getSettings, updateSetting } from '@/lib/services';
 import type { PlatformSetting } from '@/types/settings';
 
-type SettingCategory = 'financial' | 'features' | 'content' | 'payouts' | 'security';
+type SettingCategory = 'financial' | 'features' | 'content';
 
 const CATEGORY_LABELS: Record<SettingCategory, string> = {
   financial: 'Financial',
   features: 'Features',
   content: 'Content',
-  payouts: 'Payouts',
-  security: 'Security',
 };
 
 const CATEGORY_ICONS: Record<SettingCategory, string> = {
   financial: 'Platform commission, fees, and revenue settings',
   features: 'Feature toggles and platform capabilities',
   content: 'Content restrictions and upload limits',
-  payouts: 'Payout schedule and minimum amounts',
-  security: 'Security, registrations, and access controls',
 };
 
 interface SettingFieldProps {
@@ -75,8 +70,6 @@ function SettingField({ setting, onUpdate, isUpdating }: SettingFieldProps) {
     const isPercentage = key.includes('rate') || key.includes('percent') || key.includes('fee');
     const isByteSize = key.includes('size') && !key.includes('text_content') && !key.includes('textLength') && !key.includes('TextLength');
     const isTextLength = key.includes('text_content') || key.includes('textLength') || key.includes('TextLength');
-
-    const isSize = isByteSize || isTextLength;
     return (
       <div className="flex items-center justify-between py-3 border-b border-border/30 last:border-0">
         <div className="flex-1 pr-4">
@@ -235,10 +228,16 @@ export default function SettingsPage() {
     }
   };
 
-  const categories: SettingCategory[] = ['financial', 'features', 'content', 'payouts', 'security'];
+  const categories: SettingCategory[] = ['financial', 'features', 'content'];
 
   const getCategorySettings = (cat: SettingCategory) =>
-    settings.filter((s) => s.category === cat);
+    settings.filter(
+      (s) =>
+        s.category === cat &&
+        s.key !== 'payoutSchedule' &&
+        s.key !== 'minimumPayoutAmount' &&
+        s.key !== 'defaultContentVisibility',
+    );
 
   if (isLoading) {
     return (
