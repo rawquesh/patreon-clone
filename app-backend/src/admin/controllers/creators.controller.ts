@@ -9,6 +9,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AdminGuard } from '../admin.guard';
 import { CreatorsService } from '../services/creators.service';
 import {
@@ -16,6 +17,7 @@ import {
   CreatorActionDto,
 } from '../dto/creators.dto';
 
+@SkipMaintenance()
 @Controller('admin/creators')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class CreatorsController {

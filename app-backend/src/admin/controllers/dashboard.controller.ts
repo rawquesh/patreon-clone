@@ -1,9 +1,11 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { DashboardService } from '../services/dashboard.service';
 import { GetDashboardStatsQueryDto } from '../dto/dashboard.dto';
 
+@SkipMaintenance()
 @Controller('admin/dashboard')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class DashboardController {

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AdminUsersService } from '../services/admin-users.service';
 import {
   CreateAdminUserDto,
@@ -20,6 +21,7 @@ import {
   GetAdminsQueryDto,
 } from '../dto/admin-user.dto';
 
+@SkipMaintenance()
 @Controller('admin/admins')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class AdminUsersController {

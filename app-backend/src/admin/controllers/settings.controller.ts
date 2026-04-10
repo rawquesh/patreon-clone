@@ -1,6 +1,7 @@
 import { Controller, Get, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { SettingsService } from '../services/settings.service';
 import { AuditLogService } from '../services/audit-log.service';
 import {
@@ -9,6 +10,7 @@ import {
 } from '../schemas/audit-log.schema';
 import { UpdateSettingDto, BulkUpdateSettingsDto, GetSettingsQueryDto } from '../dto/settings.dto';
 
+@SkipMaintenance()
 @Controller('admin/settings')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class SettingsController {

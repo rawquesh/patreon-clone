@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { SettingsService } from '@/admin/services/settings.service';
 import { IS_PUBLIC_KEY } from '@/common/decorators/public.decorator';
+import { SKIP_MAINTENANCE_KEY } from '@/common/decorators/skip-maintenance.decorator';
 
 @Injectable()
 export class MaintenanceModeGuard implements CanActivate {
@@ -33,6 +34,16 @@ export class MaintenanceModeGuard implements CanActivate {
       ]);
 
       if (isPublic) {
+        return true;
+      }
+
+      // Allow endpoints marked @SkipMaintenance() (e.g. admin routes)
+      const skipMaintenance = this.reflector.getAllAndOverride<boolean>(SKIP_MAINTENANCE_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ]);
+
+      if (skipMaintenance) {
         return true;
       }
 

@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { SubscriptionsService } from '../services/subscriptions.service';
 import { GetSubscriptionsQueryDto } from '../dto/subscriptions.dto';
 
+@SkipMaintenance()
 @Controller('admin/subscriptions')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class SubscriptionsController {

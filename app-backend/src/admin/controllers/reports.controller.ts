@@ -13,6 +13,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AdminGuard } from '../admin.guard';
 import { ReportsService } from '../services/reports.service';
 import {
@@ -24,6 +25,7 @@ import {
   GetUserReportsQueryDto,
 } from '../dto/reports.dto';
 
+@SkipMaintenance()
 @Controller('admin/reports')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class ReportsController {

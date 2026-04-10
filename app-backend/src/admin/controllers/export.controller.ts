@@ -1,9 +1,11 @@
 import { Controller, Get, Query, UseGuards, Res, Header } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { ExportService } from '../services/export.service';
 import { Response } from 'express';
 
+@SkipMaintenance()
 @Controller('admin/export')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class ExportController {

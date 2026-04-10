@@ -1,6 +1,7 @@
 import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { BulkOperationsService } from '../services/bulk-operations.service';
 import {
   BulkCreatorsDto,
@@ -10,6 +11,7 @@ import {
   BulkReportsDto,
 } from '../dto/bulk-operations.dto';
 
+@SkipMaintenance()
 @Controller('admin/bulk')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class BulkOperationsController {

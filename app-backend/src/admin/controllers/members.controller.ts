@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Param, Query, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { MembersService } from '../services/members.service';
 import { GetMembersQueryDto } from '../dto/members.dto';
 
+@SkipMaintenance()
 @Controller('admin/members')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class MembersController {

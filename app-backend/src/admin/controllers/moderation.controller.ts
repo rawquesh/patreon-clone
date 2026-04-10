@@ -11,10 +11,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AdminGuard } from '../admin.guard';
 import { ModerationService } from '../services/moderation.service';
 import { WithholdPostDto, WithholdUserDto } from '../dto/moderation.dto';
 
+@SkipMaintenance()
 @Controller('admin/moderation')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class ModerationController {

@@ -1,9 +1,11 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '../admin.guard';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AuditLogService } from '../services/audit-log.service';
 import { GetAuditLogsQueryDto } from '../dto/audit-log.dto';
 
+@SkipMaintenance()
 @Controller('admin/audit-logs')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class AuditLogController {

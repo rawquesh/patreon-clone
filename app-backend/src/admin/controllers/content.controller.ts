@@ -12,10 +12,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { SkipMaintenance } from '@/common/decorators/skip-maintenance.decorator';
 import { AdminGuard } from '../admin.guard';
 import { ContentService } from '../services/content.service';
 import { GetContentQueryDto, WithholdContentDto, NotifyCreatorDto } from '../dto/content.dto';
 
+@SkipMaintenance()
 @Controller('admin/content')
 @UseGuards(AuthGuard('jwt'), AdminGuard)
 export class ContentController {
