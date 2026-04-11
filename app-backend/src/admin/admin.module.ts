@@ -85,6 +85,7 @@ import { ExportService } from './services/export.service';
       // NEW schemas
       { name: AuditLog.name, schema: AuditLogSchema },
       { name: Notification.name, schema: NotificationSchema },
+      { name: PlatformSetting.name, schema: PlatformSettingSchema },
     ]),
     forwardRef(() => PaymentsModule),
   ],
