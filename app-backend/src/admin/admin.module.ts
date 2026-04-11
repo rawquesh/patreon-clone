@@ -47,6 +47,7 @@ import { PaymentsModule } from '@/payments/payments.module';
 // Platform Settings (SettingsService is now global via PlatformSettingsModule)
 import { SettingsController } from './controllers/settings.controller';
 import { PlatformSetting, PlatformSettingSchema } from './schemas/platform-setting.schema';
+import { PlatformSettingsSeeder } from './schemas/platform-settings.seeder';
 
 // NEW: Audit Log
 import { AuditLogController } from './controllers/audit-log.controller';
@@ -113,6 +114,7 @@ import { ExportService } from './services/export.service';
     ContentService,
     SubscriptionsService,
     PayoutsService,
+    PlatformSettingsSeeder,
     // NEW providers
     AuditLogService,
     AdminUsersService,

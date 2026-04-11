@@ -63,6 +63,34 @@ const PublishPageBanner: React.FC = () => {
     }
   };
 
+  if (user?.hasCompletedStripeOnboarding) {
+    return (
+      <Box
+        position="fixed"
+        top={{ base: "48px", md: 0 }}
+        left={{ base: 0, lg: "300px" }}
+        right={0}
+        zIndex={100}
+        css={{ background: "linear-gradient(135deg, hsl(32.1, 94.6%, 43.7%), hsl(22.7, 92%, 45.9%))" }}
+        color="white"
+        px={4}
+        py={3}
+      >
+        <Flex
+          maxW="1024px"
+          mx="auto"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Text fontWeight={500}>
+            Your creator page is currently pending admin approval. You will be
+            notified once it is approved!
+          </Text>
+        </Flex>
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box
@@ -82,15 +110,14 @@ const PublishPageBanner: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text>
+          <Text fontWeight={500}>
             Your page is currently in draft mode. Publish it to make it visible
             to everyone.
           </Text>
           <Button
             colorScheme="white"
-            // variant="outline"
             onClick={() => setIsDialogOpen(true)}
-            // _hover={{ bg: "blue.600" }}
+            css={{ backgroundColor: "white", color: "hsl(211, 71%, 43%)", fontWeight: 600, "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }}
           >
             Publish Page
           </Button>

@@ -146,6 +146,10 @@ export class CreatorsService {
     if (!creator) throw new NotFoundException('Creator not found');
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
 
+    if (!creator.hasCompletedStripeOnboarding) {
+      throw new BadRequestException('Cannot approve a creator who has not completed Stripe onboarding. They must connect their Stripe account first.');
+    }
+
     creator.creatorStatus = CreatorStatus.PUBLISHED;
     await creator.save();
 

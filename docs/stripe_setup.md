@@ -8,7 +8,10 @@ I have found the usages of `STRIPE_WEBHOOK_SECRET` and `STRIPE_WEBHOOK_CONNECT_S
 
 To make webhooks work on your server, you need to configure these secrets from your Stripe Dashboard and update your `.env` file. 
 
-Here is a step-by-step guide to generating them using the Stripe Dashboard.
+Here is a step-by-step guide to generating them using the Stripe Dashboard for production, and how to test them locally using the Stripe CLI.
+
+> [!WARNING]
+> **Testing Locally:** Stripe servers **cannot** send webhooks to `http://localhost` because localhost is not a public internet address. If you are developing locally, configuring localhost in the Stripe Dashboard will silently fail. You MUST use the Stripe CLI to forward events to your local machine. See the "Local Development setup" section below.
 
 ## 1. Retrieve `STRIPE_WEBHOOK_SECRET` (Standard Webhooks)
 
@@ -56,3 +59,32 @@ STRIPE_WEBHOOK_CONNECT_SECRET="whsec_your_connect_secret_here"
 ```
 
 After updating these values, restart your backend server to load the new environment variables. Your application will then successfully verify and process all incoming webhook events from Stripe.
+
+---
+
+## 3. Local Development Setup (IMPORTANT)
+
+If you are running the backend on your computer (`http://localhost:8080`), webhooks from the Stripe Dashboard will **never** reach your app because Stripe cannot access your local network.
+
+To fix this, you must use the Stripe CLI to forward events from Stripe directly to your local server.
+
+1. **Install Stripe CLI**
+   See the official guide here: https://docs.stripe.com/stripe-cli
+
+2. **Login to Stripe CLI**
+   ```bash
+   stripe login
+   ```
+
+3. **Start forwarding Webhooks**
+   Run the following command to forward all events and Connect events:
+   ```bash
+   stripe listen --forward-to localhost:8080/webhooks/stripe --forward-connect-to localhost:8080/webhooks/stripe
+   ```
+4. **Update your Local `.env`**
+   When you run the `stripe listen` command, the terminal will output a webhook secret that looks like this:
+   `Ready! Your webhook signing secret is whsec_... (^C to quit)`
+
+   Copy that `whsec_` key and use it for **BOTH** `STRIPE_WEBHOOK_SECRET` and `STRIPE_WEBHOOK_CONNECT_SECRET` in your local `app-backend/.env` file. Do not use the secrets from the Stripe Dashboard when testing locally!
+
+5. Restart your backend server and the `account.updated` webhook will successfully hit your localhost!

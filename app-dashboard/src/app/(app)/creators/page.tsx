@@ -52,10 +52,11 @@ function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
   const config = {
     PUBLISHED: { label: 'Active', class: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
     ONBOARDING: { label: 'Onboarding', class: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800' },
-    DRAFT: { label: 'Draft', class: 'bg-muted text-muted-foreground border-border' },
+    DRAFT: { label: 'Pending', class: 'bg-muted text-muted-foreground border-border' },
     ARCHIVED: { label: 'Archived', class: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800' },
   };
-  const c = config[status] || config.DRAFT;
+  const normalizedStatus = typeof status === 'string' ? status : 'DRAFT';
+  const c = config[normalizedStatus as keyof typeof config] || config.DRAFT;
   return (
     <Badge className={cn('text-xs font-medium border', c.class)}>
       {c.label}
@@ -66,9 +67,10 @@ function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
 
 const STATUS_TABS = [
   { value: 'all', label: 'All' },
-  { value: 'DRAFT', label: 'Pending' },
-  { value: 'PUBLISHED', label: 'Active' },
-  { value: 'ARCHIVED', label: 'Archived' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'onboarding', label: 'Pending Approval' },
+  { value: 'published', label: 'Active' },
+  { value: 'archived', label: 'Archived' },
 ];
 
 function CreatorsPageSkeleton() {
@@ -332,7 +334,7 @@ function CreatorsPageInner() {
                             <Eye className="mr-2 h-4 w-4 text-muted-foreground" /> View Details
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          {creator.creatorStatus !== 'PUBLISHED' && (
+                          {creator.creatorStatus?.toUpperCase() === 'ONBOARDING' && (
                             <DropdownMenuItem
                               onClick={() => handleAction(creator.id || (creator as any)._id, 'approve')}
                               className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/5"
@@ -340,7 +342,7 @@ function CreatorsPageInner() {
                               <CheckCircle className="mr-2 h-4 w-4" /> Approve
                             </DropdownMenuItem>
                           )}
-                          {(creator.creatorStatus === 'DRAFT' || creator.creatorStatus === 'ONBOARDING') && (
+                          {(creator.creatorStatus?.toUpperCase() === 'DRAFT' || creator.creatorStatus?.toUpperCase() === 'ONBOARDING') && (
                             <DropdownMenuItem
                               className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
                               onClick={() => handleAction(creator.id || (creator as any)._id, 'reject')}
@@ -348,7 +350,7 @@ function CreatorsPageInner() {
                               <XCircle className="mr-2 h-4 w-4" /> Reject
                             </DropdownMenuItem>
                           )}
-                          {creator.creatorStatus === 'PUBLISHED' && (
+                          {creator.creatorStatus?.toUpperCase() === 'PUBLISHED' && (
                             <DropdownMenuItem
                               className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
                               onClick={() => handleAction(creator.id || (creator as any)._id, 'suspend')}
@@ -356,7 +358,7 @@ function CreatorsPageInner() {
                               <Ban className="mr-2 h-4 w-4" /> Suspend
                             </DropdownMenuItem>
                           )}
-                          {creator.creatorStatus === 'ARCHIVED' && (
+                          {creator.creatorStatus?.toUpperCase() === 'ARCHIVED' && (
                             <DropdownMenuItem
                               onClick={() => handleAction(creator.id || (creator as any)._id, 'activate')}
                               className="rounded-lg cursor-pointer text-primary hover:bg-primary/5"
