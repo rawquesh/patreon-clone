@@ -27,6 +27,8 @@ class MyCreatorPage extends StatefulWidget {
 class _MyCreatorPageState extends State<MyCreatorPage> with SingleTickerProviderStateMixin, MySafeState {
   late AuthenticationProvider authenticationProvider;
   bool isCreatorPublished = true;
+  bool isPendingApproval = false;
+  bool isSuspended = false;
 
   @override
   void initState() {
@@ -47,6 +49,8 @@ class _MyCreatorPageState extends State<MyCreatorPage> with SingleTickerProvider
       authenticationProvider.userModel.set(value: user, isNotify: true);
       MyPrint.printOnConsole("user creatorStatus: ${user.creatorStatus}");
       isCreatorPublished = user.creatorStatus.toLowerCase() == 'published';
+      isPendingApproval = user.creatorStatus.toLowerCase() == 'require_approval';
+      isSuspended = user.creatorStatus.toLowerCase() == 'suspended';
       mySetState();
     }
     MyPrint.printOnConsole("isCreatorPublished: $isCreatorPublished");
@@ -134,6 +138,102 @@ class _MyCreatorPageState extends State<MyCreatorPage> with SingleTickerProvider
 
   Widget _buildPublishWarning() {
     if (isCreatorPublished) return const SizedBox.shrink();
+
+    if (isSuspended) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.red.shade600,
+          border: Border.all(
+            color: Colors.red.shade800.withValues(alpha: 0.5),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              CupertinoIcons.xmark_octagon_fill,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Creator Account Suspended',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ).withEpilogue,
+                  ),
+                  Text(
+                    'Your creator privileges have been revoked by administrators.',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.white,
+                    ).withEpilogue,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (isPendingApproval) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.amber.shade600,
+          border: Border.all(
+            color: Colors.amber.shade800.withValues(alpha: 0.5),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              CupertinoIcons.hourglass,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Pending Admin Approval',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ).withEpilogue,
+                  ),
+                  Text(
+                    'You will be notified once it is approved!',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.white,
+                    ).withEpilogue,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

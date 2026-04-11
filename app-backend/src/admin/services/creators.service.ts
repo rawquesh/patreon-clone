@@ -172,7 +172,7 @@ export class CreatorsService {
     if (!creator) throw new NotFoundException('Creator not found');
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
 
-    creator.creatorStatus = CreatorStatus.ARCHIVED;
+    creator.creatorStatus = CreatorStatus.SUSPENDED;
     creator.isCreator = false;
     await creator.save();
 
@@ -196,7 +196,7 @@ export class CreatorsService {
     if (!creator.isCreator) throw new BadRequestException('User is not a creator');
     if (creator.isAdmin) throw new BadRequestException('Cannot suspend admin users');
 
-    creator.creatorStatus = CreatorStatus.ARCHIVED;
+    creator.creatorStatus = CreatorStatus.SUSPENDED;
     await creator.save();
 
     await this.auditLogService.log({

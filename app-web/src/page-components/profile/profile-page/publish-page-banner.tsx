@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth.provider";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   DialogBody,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toaster } from "@/components/ui/toaster";
+import { AlertTriangle } from "lucide-react";
 import api from "@/lib/api";
 
 const PublishPageBanner: React.FC = () => {
@@ -20,7 +21,9 @@ const PublishPageBanner: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  if (!user?.isCreator || user?.creatorStatus?.toLowerCase() === "published") {
+  const currentStatus = user?.creatorStatus?.toUpperCase() || "PENDING";
+
+  if (!user?.isCreator || currentStatus === "PUBLISHED") {
     return null;
   }
 
@@ -63,7 +66,42 @@ const PublishPageBanner: React.FC = () => {
     }
   };
 
-  if (user?.hasCompletedStripeOnboarding) {
+  if (currentStatus === "SUSPENDED") {
+    return (
+      <Box
+        position="fixed"
+        bottom={0}
+        left={{ base: 0, lg: "280px" }}
+        right={0}
+        bg="red.600"
+        color="white"
+        p={4}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        zIndex={100}
+        borderTop="1px solid"
+        borderColor="red.700"
+        boxShadow="0 -4px 6px -1px rgba(0, 0, 0, 0.1)"
+      >
+        <HStack gap={4}>
+          <Box p={2} bg="whiteAlpha.200" borderRadius="md">
+            <AlertTriangle size={24} color="white" />
+          </Box>
+          <VStack align="start" gap={0}>
+            <Text fontWeight="bold" fontSize="md">
+              Creator Account Suspended
+            </Text>
+            <Text fontSize="sm" color="whiteAlpha.900">
+              Your creator privileges have been revoked by administrators.
+            </Text>
+          </VStack>
+        </HStack>
+      </Box>
+    );
+  }
+
+  if (currentStatus === "REQUIRE_APPROVAL") {
     return (
       <Box
         position="fixed"

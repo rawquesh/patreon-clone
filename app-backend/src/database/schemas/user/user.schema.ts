@@ -108,7 +108,7 @@ export class User extends Document {
   @Prop({ default: true })
   memberNotifyOnDirectMessages: boolean;
 
-  @Prop({ type: String, enum: CreatorStatus, default: CreatorStatus.DRAFT })
+  @Prop({ type: String, enum: CreatorStatus, default: CreatorStatus.PENDING })
   creatorStatus: CreatorStatus;
 
   @Prop({

@@ -167,7 +167,7 @@ export class UsersService {
           creatorUsername: creatorData.username.toLowerCase(),
           contentVisibleTo: creatorData.contentVisibleTo,
           isCreator: true,
-          creatorStatus: CreatorStatus.DRAFT,
+          creatorStatus: CreatorStatus.PENDING,
           updatedAt: new Date().toISOString(),
           creatorCategory: creatorData.category,
         },
@@ -244,7 +244,7 @@ export class UsersService {
         $set: {
           stripeConnectAccountId: accountId,
           hasCompletedStripeOnboarding: false,
-          creatorStatus: CreatorStatus.ONBOARDING,
+          creatorStatus: CreatorStatus.PENDING,
           updatedAt: new Date().toISOString(),
         },
       },
@@ -333,7 +333,7 @@ export class UsersService {
 
     if (isEnabled && !user.hasCompletedStripeOnboarding) {
       const requireApproval = await this.settingsService.get<boolean>('requireCreatorApproval', true);
-      const newStatus = requireApproval ? CreatorStatus.ONBOARDING : CreatorStatus.PUBLISHED;
+      const newStatus = requireApproval ? CreatorStatus.REQUIRE_APPROVAL : CreatorStatus.PUBLISHED;
       if (requireApproval) {
         this.logger.log(`Creator ${user._id} completed Stripe onboarding but requires admin approval (requireCreatorApproval=true)`);
       }

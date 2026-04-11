@@ -6,3 +6,4 @@ export { PayoutDetailDialog } from './PayoutDetailDialog';
 export { CreatorDetailDialog } from './CreatorDetailDialog';
 export { PostDetailDialog } from './PostDetailDialog';
 export { ReportDetailDialog } from './ReportDetailDialog';
+export { RejectCreatorDialog } from './RejectCreatorDialog';

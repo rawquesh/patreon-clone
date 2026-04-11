@@ -1,6 +1,6 @@
 // GenderPreference is defined in auth.provider.tsx and app/settings/page.tsx
 
-export type CreatorStatus = "DRAFT" | "ONBOARDING" | "PUBLISHED";
+export type CreatorStatus = "PENDING" | "REQUIRE_APPROVAL" | "PUBLISHED" | "SUSPENDED";
 
 export enum GenderPreference {
   BOTH = "both",

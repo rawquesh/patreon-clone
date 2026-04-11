@@ -1,6 +1,6 @@
 export enum CreatorStatus {
-  DRAFT = 'draft',
-  ONBOARDING = 'onboarding',
+  PENDING = 'pending',
+  REQUIRE_APPROVAL = 'require_approval',
   PUBLISHED = 'published',
-  ARCHIVED = 'archived',
+  SUSPENDED = 'suspended',
 }

@@ -1,27 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { useEffect, useState, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { PageHeader } from "@/components/page-header";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   MoreHorizontal,
   Search,
@@ -33,44 +26,42 @@ import {
   ChevronLeft,
   ChevronRight,
   Users,
-} from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
-import {
-  getCreators,
-  approveCreator,
-  rejectCreator,
-  suspendCreator,
-  activateCreator,
-} from '@/lib/services';
-import { CreatorDetailDialog } from '@/components/dialogs';
-import type { Creator, CreatorStatus } from '@/types';
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { getCreators, approveCreator, rejectCreator, suspendCreator, activateCreator } from "@/lib/services";
+import { CreatorDetailDialog, RejectCreatorDialog } from "@/components/dialogs";
+import type { Creator, CreatorStatus } from "@/types";
 
 function CreatorStatusBadge({ status }: { status: CreatorStatus }) {
   const config = {
-    PUBLISHED: { label: 'Active', class: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
-    ONBOARDING: { label: 'Onboarding', class: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800' },
-    DRAFT: { label: 'Pending', class: 'bg-muted text-muted-foreground border-border' },
-    ARCHIVED: { label: 'Archived', class: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800' },
+    PUBLISHED: {
+      label: "Active",
+      class: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800",
+    },
+    REQUIRE_APPROVAL: {
+      label: "Pending Approval",
+      class: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800",
+    },
+    PENDING: { label: "Pending", class: "bg-muted text-muted-foreground border-border" },
+    SUSPENDED: {
+      label: "Suspended",
+      class: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800",
+    },
   };
-  const normalizedStatus = typeof status === 'string' ? status : 'DRAFT';
-  const c = config[normalizedStatus as keyof typeof config] || config.DRAFT;
-  return (
-    <Badge className={cn('text-xs font-medium border', c.class)}>
-      {c.label}
-    </Badge>
-  );
+  const normalizedStatus = typeof status === "string" ? status.toUpperCase() : "PENDING";
+  const c = config[normalizedStatus as keyof typeof config] || config.PENDING;
+  return <Badge className={cn("text-xs font-medium border", c.class)}>{c.label}</Badge>;
 }
 
-
 const STATUS_TABS = [
-  { value: 'all', label: 'All' },
-  { value: 'draft', label: 'Draft' },
-  { value: 'onboarding', label: 'Pending Approval' },
-  { value: 'published', label: 'Active' },
-  { value: 'archived', label: 'Archived' },
+  { value: "all", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "require_approval", label: "Require Approval" },
+  { value: "published", label: "Active" },
+  { value: "suspended", label: "Suspended" },
 ];
 
 function CreatorsPageSkeleton() {
@@ -120,10 +111,11 @@ function CreatorsPageInner() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
-  const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
+  const [rejectingCreatorId, setRejectingCreatorId] = useState<string | null>(null);
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
 
-  const page = Number(searchParams.get('page') || '1');
-  const statusFilter = searchParams.get('status') || 'all';
+  const page = Number(searchParams.get("page") || "1");
+  const statusFilter = searchParams.get("status") || "all";
 
   const load = useCallback(async () => {
     setIsLoading(true);
@@ -132,24 +124,26 @@ function CreatorsPageInner() {
       const result = await getCreators({
         page,
         limit: 20,
-        search: searchParams.get('search') || undefined,
-        status: statusFilter === 'all' ? undefined : statusFilter,
+        search: searchParams.get("search") || undefined,
+        status: statusFilter === "all" ? undefined : statusFilter,
       });
       setCreators(result.creators);
       setPagination(result.pagination);
     } catch (e: any) {
-      setError(e?.message || 'Failed to load creators');
+      setError(e?.message || "Failed to load creators");
     } finally {
       setIsLoading(false);
     }
   }, [page, searchParams]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const updateParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
     for (const [key, value] of Object.entries(updates)) {
-      if (value === null || value === '' || value === 'all') {
+      if (value === null || value === "" || value === "all") {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -160,27 +154,27 @@ function CreatorsPageInner() {
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
-    updateParams({ search: value, page: '1' });
+    updateParams({ search: value, page: "1" });
   };
 
-  const handleAction = async (id: string, action: string) => {
+  const handleAction = async (id: string, action: string, payload?: any) => {
     try {
-      if (action === 'approve') {
+      if (action === "approve") {
         await approveCreator(id);
-        toast({ title: 'Creator approved successfully' });
-      } else if (action === 'reject') {
-        await rejectCreator(id);
-        toast({ title: 'Creator rejected' });
-      } else if (action === 'suspend') {
+        toast({ title: "Creator approved successfully" });
+      } else if (action === "reject") {
+        await rejectCreator(id, payload?.reason);
+        toast({ title: "Creator rejected" });
+      } else if (action === "suspend") {
         await suspendCreator(id);
-        toast({ title: 'Creator suspended' });
-      } else if (action === 'activate') {
+        toast({ title: "Creator suspended" });
+      } else if (action === "activate") {
         await activateCreator(id);
-        toast({ title: 'Creator activated' });
+        toast({ title: "Creator activated" });
       }
       load();
     } catch (e: any) {
-      toast({ title: `Action failed: ${e?.message}`, variant: 'destructive' });
+      toast({ title: `Action failed: ${e?.message}`, variant: "destructive" });
       throw e;
     }
   };
@@ -191,11 +185,7 @@ function CreatorsPageInner() {
 
   return (
     <>
-      <PageHeader
-        title="Creators"
-        description="Manage all creators on the platform."
-        gradientTitle
-      />
+      <PageHeader title="Creators" description="Manage all creators on the platform." gradientTitle />
 
       {/* Controls */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -215,14 +205,12 @@ function CreatorsPageInner() {
         {STATUS_TABS.map((tab) => (
           <Button
             key={tab.value}
-            variant={statusFilter === tab.value ? 'default' : 'outline'}
+            variant={statusFilter === tab.value ? "default" : "outline"}
             size="sm"
-            onClick={() => updateParams({ status: tab.value, page: '1' })}
+            onClick={() => updateParams({ status: tab.value, page: "1" })}
             className={cn(
-              'rounded-full text-xs font-medium h-8 transition-all duration-200',
-              statusFilter === tab.value
-                ? 'btn-gradient shadow-md'
-                : 'btn-gradient-ghost rounded-full'
+              "rounded-full text-xs font-medium h-8 transition-all duration-200",
+              statusFilter === tab.value ? "btn-gradient shadow-md" : "btn-gradient-ghost rounded-full",
             )}
           >
             {tab.label}
@@ -236,31 +224,57 @@ function CreatorsPageInner() {
           <Table>
             <TableHeader>
               <TableRow className="border-b border-border/50 hover:bg-transparent">
-                <TableHead className="pl-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Creator</TableHead>
-                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
-                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Stripe</TableHead>
-                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subscribers</TableHead>
-                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Joined</TableHead>
-                <TableHead className="pr-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider"><span className="sr-only">Actions</span></TableHead>
+                <TableHead className="pl-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Creator
+                </TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Status
+                </TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Stripe
+                </TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Subscribers
+                </TableHead>
+                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Joined
+                </TableHead>
+                <TableHead className="pr-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 Array.from({ length: 8 }).map((_, i) => (
                   <TableRow key={i} className="border-b border-border/30 last:border-0">
-                    <TableCell className="pl-6"><Skeleton className="h-10 w-10 rounded-full" /></TableCell>
-                    <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
-                    <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-12" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                    <TableCell className="pr-6"><Skeleton className="h-8 w-8 rounded-lg" /></TableCell>
+                    <TableCell className="pl-6">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-16 rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-20 rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-12" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-24" />
+                    </TableCell>
+                    <TableCell className="pr-6">
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                    </TableCell>
                   </TableRow>
                 ))
               ) : error ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-12 text-destructive">
                     <p className="font-medium mb-3">{error}</p>
-                    <Button variant="outline" onClick={load} size="sm" className="btn-gradient-ghost">Retry</Button>
+                    <Button variant="outline" onClick={load} size="sm" className="btn-gradient-ghost">
+                      Retry
+                    </Button>
                   </TableCell>
                 </TableRow>
               ) : creators.length === 0 ? (
@@ -283,13 +297,15 @@ function CreatorsPageInner() {
                     <TableCell className="pl-6">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
-                          <AvatarImage src={creator.profilePicture || ''} />
+                          <AvatarImage src={creator.profilePicture || ""} />
                           <AvatarFallback className="bg-gradient-primary text-slate-900 dark:text-white text-sm font-bold">
-                            {(creator.displayName || creator.creatorUsername || 'C').charAt(0)}
+                            {(creator.displayName || creator.creatorUsername || "C").charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="font-medium text-sm">{creator.displayName || creator.creatorUsername || 'Unknown'}</div>
+                          <div className="font-medium text-sm">
+                            {creator.displayName || creator.creatorUsername || "Unknown"}
+                          </div>
                           <div className="text-xs text-muted-foreground">{creator.email}</div>
                         </div>
                       </div>
@@ -298,31 +314,39 @@ function CreatorsPageInner() {
                       <CreatorStatusBadge status={creator.creatorStatus} />
                     </TableCell>
                     <TableCell>
-                      <Badge className={cn(
-                        'text-xs font-medium',
-                        creator.hasCompletedStripeOnboarding
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
-                          : 'bg-muted text-muted-foreground border border-border'
-                      )}>
-                        {creator.hasCompletedStripeOnboarding ? 'Onboarded' : 'Not Onboarded'}
+                      <Badge
+                        className={cn(
+                          "text-xs font-medium",
+                          creator.hasCompletedStripeOnboarding
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800"
+                            : "bg-muted text-muted-foreground border border-border",
+                        )}
+                      >
+                        {creator.hasCompletedStripeOnboarding ? "Onboarded" : "Not Onboarded"}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm font-semibold tabular-nums">
-                        {creator.subscriberCount ?? '-'}
-                      </span>
+                      <span className="text-sm font-semibold tabular-nums">{creator.subscriberCount ?? "-"}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm text-muted-foreground">
                         {creator.createdAt
-                          ? new Date(creator.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                          : '-'}
+                          ? new Date(creator.createdAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })
+                          : "-"}
                       </span>
                     </TableCell>
                     <TableCell className="pr-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors duration-200"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -334,33 +358,34 @@ function CreatorsPageInner() {
                             <Eye className="mr-2 h-4 w-4 text-muted-foreground" /> View Details
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          {creator.creatorStatus?.toUpperCase() === 'ONBOARDING' && (
+                          {creator.creatorStatus?.toUpperCase() === "REQUIRE_APPROVAL" && (
                             <DropdownMenuItem
-                              onClick={() => handleAction(creator.id || (creator as any)._id, 'approve')}
+                              onClick={() => handleAction(creator.id || (creator as any)._id, "approve")}
                               className="rounded-lg cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/5"
                             >
                               <CheckCircle className="mr-2 h-4 w-4" /> Approve
                             </DropdownMenuItem>
                           )}
-                          {(creator.creatorStatus?.toUpperCase() === 'DRAFT' || creator.creatorStatus?.toUpperCase() === 'ONBOARDING') && (
+                          {(creator.creatorStatus?.toUpperCase() === "PENDING" ||
+                            creator.creatorStatus?.toUpperCase() === "REQUIRE_APPROVAL") && (
                             <DropdownMenuItem
                               className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
-                              onClick={() => handleAction(creator.id || (creator as any)._id, 'reject')}
+                              onClick={() => setRejectingCreatorId(creator.id || (creator as any)._id)}
                             >
                               <XCircle className="mr-2 h-4 w-4" /> Reject
                             </DropdownMenuItem>
                           )}
-                          {creator.creatorStatus?.toUpperCase() === 'PUBLISHED' && (
+                          {creator.creatorStatus?.toUpperCase() === "PUBLISHED" && (
                             <DropdownMenuItem
                               className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5"
-                              onClick={() => handleAction(creator.id || (creator as any)._id, 'suspend')}
+                              onClick={() => handleAction(creator.id || (creator as any)._id, "suspend")}
                             >
                               <Ban className="mr-2 h-4 w-4" /> Suspend
                             </DropdownMenuItem>
                           )}
-                          {creator.creatorStatus?.toUpperCase() === 'ARCHIVED' && (
+                          {creator.creatorStatus?.toUpperCase() === "SUSPENDED" && (
                             <DropdownMenuItem
-                              onClick={() => handleAction(creator.id || (creator as any)._id, 'activate')}
+                              onClick={() => handleAction(creator.id || (creator as any)._id, "activate")}
                               className="rounded-lg cursor-pointer text-primary hover:bg-primary/5"
                             >
                               <RotateCcw className="mr-2 h-4 w-4" /> Reactivate
@@ -380,7 +405,7 @@ function CreatorsPageInner() {
         {pagination.totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-border/50 bg-muted/20">
             <p className="text-xs text-muted-foreground">
-              Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} creators
             </p>
             <div className="flex items-center gap-2">
@@ -405,10 +430,10 @@ function CreatorsPageInner() {
                       key={p}
                       onClick={() => updateParams({ page: String(p) })}
                       className={cn(
-                        'h-8 min-w-[32px] rounded-lg text-xs font-medium transition-all duration-200',
+                        "h-8 min-w-[32px] rounded-lg text-xs font-medium transition-all duration-200",
                         page === p
-                          ? 'bg-gradient-primary text-slate-900 dark:text-white shadow-md'
-                          : 'text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                          ? "bg-gradient-primary text-slate-900 dark:text-white shadow-md"
+                          : "text-muted-foreground hover:bg-primary/10 hover:text-primary",
                       )}
                     >
                       {p}
@@ -430,10 +455,18 @@ function CreatorsPageInner() {
         )}
       </div>
 
-      <CreatorDetailDialog
-        creator={selectedCreator}
-        onClose={() => setSelectedCreator(null)}
-        onRefresh={load}
+      <CreatorDetailDialog creator={selectedCreator} onClose={() => setSelectedCreator(null)} onRefresh={load} />
+      <RejectCreatorDialog
+        open={!!rejectingCreatorId}
+        onOpenChange={(o) => {
+          if (!o) setRejectingCreatorId(null);
+        }}
+        onConfirm={async (reason) => {
+          if (rejectingCreatorId) {
+            await handleAction(rejectingCreatorId, "reject", { reason });
+            setRejectingCreatorId(null);
+          }
+        }}
       />
     </>
   );

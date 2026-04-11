@@ -1,4 +1,4 @@
-export type CreatorStatus = 'DRAFT' | 'ONBOARDING' | 'PUBLISHED' | 'ARCHIVED';
+export type CreatorStatus = 'PENDING' | 'REQUIRE_APPROVAL' | 'PUBLISHED' | 'SUSPENDED';
 
 export type Creator = {
   _id: string;
