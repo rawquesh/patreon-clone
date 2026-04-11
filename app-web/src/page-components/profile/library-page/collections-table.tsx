@@ -34,21 +34,21 @@ const CollectionsTable: React.FC = () => {
 
 	if (isLoading) {
 		return (
-			<Text textAlign="center" py={8}>
+			<Box textAlign="center" py={8}>
 				<Box className="glass-card" p={6} borderRadius="12px">
 					<Text css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>Loading collections...</Text>
 				</Box>
-			</Text>
+			</Box>
 		);
 	}
 
 	if (error) {
 		return (
-			<Text textAlign="center" py={8}>
+			<Box textAlign="center" py={8}>
 				<Box className="glass-card" p={6} borderRadius="12px">
 					<Text css={{ color: "hsl(0, 84.2%, 60.2%)" }}>Error loading collections</Text>
 				</Box>
-			</Text>
+			</Box>
 		);
 	}
 

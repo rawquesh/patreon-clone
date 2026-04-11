@@ -1,8 +1,22 @@
+"use client";
+
 import { Box, Button, Flex, Grid, Input, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { RoundedButton } from "@/components/ui/rounded-button";
+import { useRouter } from "next/navigation";
 
 const Create: React.FC = () => {
+	const router = useRouter();
+	const [name, setName] = useState("");
+
+	const handleContinue = () => {
+		if (name.trim().length > 0) {
+			router.push(`/onboarding/choose-url?name=${encodeURIComponent(name)}`);
+		} else {
+			router.push("/onboarding/choose-url");
+		}
+	};
+
 	return (
 		<Box>
 			<Grid gridTemplateRows={"1fr 120px"} w={"full"} h={"100%"}>
@@ -22,6 +36,11 @@ const Create: React.FC = () => {
 						outlineColor={"hsl(211, 71%, 43%)"}
 						variant={"outline"}
 						placeholder={"Your creator name"}
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") handleContinue();
+						}}
 						css={{
 							borderColor: "var(--glass-border)",
 							color: "hsl(222.2, 47.4%, 11.2%)",
@@ -33,6 +52,7 @@ const Create: React.FC = () => {
 						className="btn-gradient"
 						w={"100%"}
 						css={{ fontWeight: 600 }}
+						onClick={handleContinue}
 					>
 						Continue
 					</Button>
@@ -42,6 +62,7 @@ const Create: React.FC = () => {
 						className="glass-card"
 						variant={"outline"}
 						fontWeight={600}
+						onClick={() => router.push("/explore")}
 						css={{
 							borderColor: "var(--glass-border)",
 							color: "hsl(215.4, 16.3%, 46.9%)",

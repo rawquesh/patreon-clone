@@ -240,7 +240,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleGoogleLogin = () => {
     window.localStorage.removeItem("userMode");
-    window.location.href = `https://${branding.urls.apiServer}${ApiEndpoints.authGoogle}`;
+    window.location.href = `${branding.urls.apiServer}${ApiEndpoints.authGoogle}`;
   };
 
   const logout = () => {

@@ -6,10 +6,7 @@ import {
   // PostItem, // Removed as it's implicitly imported via CollectionWithPostsResponse
 } from "@/typings/IPost";
 import { CreatorPostsResponse } from "./creator-posts-response";
-import {
-  CollectionWithPostsResponse,
-  CollectionDetails,
-} from "@/typings/ICollection";
+import { CollectionWithPostsResponse, CollectionDetails } from "@/typings/ICollection";
 
 // Interface for the response of fetchMyCollections
 interface MyCollectionsResponse {
@@ -17,9 +14,7 @@ interface MyCollectionsResponse {
   total: number;
 }
 
-export const buildPostQueryParams = (
-  params: PostFilterParams
-): URLSearchParams => {
+export const buildPostQueryParams = (params: PostFilterParams): URLSearchParams => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append("page", params.page.toString());
   if (params.limit) queryParams.append("limit", params.limit.toString());
@@ -47,9 +42,7 @@ export const buildPostQueryParams = (
   return queryParams;
 };
 
-export const fetchPosts = async (
-  params: PostFilterParams = {}
-): Promise<PostsResponse> => {
+export const fetchPosts = async (params: PostFilterParams = {}): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
   const { data } = await api.get(`${ApiEndpoints.postsMyPosts}?${queryParams}`);
   return data;
@@ -57,27 +50,21 @@ export const fetchPosts = async (
 
 export const fetchCreatorPosts = async (
   creatorId: string,
-  params: PostFilterParams = {}
+  params: PostFilterParams = {},
 ): Promise<CreatorPostsResponse> => {
   const queryParams = buildPostQueryParams(params);
   console.log(`${ApiEndpoints.postsByCreator(creatorId)}?${queryParams}`);
-  const { data } = await api.get<CreatorPostsResponse>(
-    `${ApiEndpoints.postsByCreator(creatorId)}?${queryParams}`
-  );
+  const { data } = await api.get<CreatorPostsResponse>(`${ApiEndpoints.postsByCreator(creatorId)}?${queryParams}`);
   return data;
 };
 
-export const fetchMyPosts = async (
-  params: PostFilterParams = {}
-): Promise<PostsResponse> => {
+export const fetchMyPosts = async (params: PostFilterParams = {}): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
   const { data } = await api.get(`${ApiEndpoints.postsMyPosts}?${queryParams}`);
   return data;
 };
 
-export const fetchMyDrafts = async (
-  params: PostFilterParams = {}
-): Promise<PostsResponse> => {
+export const fetchMyDrafts = async (params: PostFilterParams = {}): Promise<PostsResponse> => {
   const queryParams = buildPostQueryParams(params);
   const response = await api.get(`${ApiEndpoints.postsDrafts}?${queryParams}`);
 
@@ -89,7 +76,7 @@ export const fetchMyDrafts = async (
       publishDate: new Date(draft.createdAt).toLocaleDateString(),
       tierAccess: draft.tierAccess || [],
       postType: draft.postType,
-      thumbnail: draft.thumbnailUrl || "/images/placeholder.jpg",
+      thumbnail: draft.thumbnailUrl || "/images/placeholder.png",
     })),
     pagination: {
       total: draftsData.length,
@@ -102,7 +89,7 @@ export const fetchMyDrafts = async (
 
 export const fetchCollectionWithPosts = async (
   collectionId: string,
-  params: PostFilterParams = {}
+  params: PostFilterParams = {},
 ): Promise<CollectionWithPostsResponse> => {
   const queryParams = buildPostQueryParams(params);
   const endpoint = `${ApiEndpoints.collectionById(collectionId)}?${queryParams}`;
@@ -117,18 +104,12 @@ export const fetchMyCollections = async (): Promise<MyCollectionsResponse> => {
 };
 
 // Add a post to a specific collection
-export const addPostToCollection = async (
-  collectionId: string,
-  postId: string
-): Promise<void> => {
+export const addPostToCollection = async (collectionId: string, postId: string): Promise<void> => {
   await api.post(ApiEndpoints.collectionPosts(collectionId), { postId });
 };
 
 // Remove a post from a specific collection
-export const removePostFromCollection = async (
-  collectionId: string,
-  postId: string
-): Promise<void> => {
+export const removePostFromCollection = async (collectionId: string, postId: string): Promise<void> => {
   // The DTO only contains postId, which is sent in the request body for DELETE
   await api.delete(ApiEndpoints.collectionPosts(collectionId), { data: { postId } });
 };

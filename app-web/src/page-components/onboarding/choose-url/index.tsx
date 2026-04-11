@@ -18,7 +18,7 @@ import { useAuth } from "@/context/auth.provider";
 import api from "@/lib/api";
 import { ApiEndpoints } from "@/lib/backend-services/api_endpoints";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { branding } from "@/config/branding";
 import {
   ContentVisibility,
@@ -45,7 +45,8 @@ const useDebounce = <T,>(value: T, delay: number): T => {
 
 const OnboardingForm: React.FC = () => {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const searchParams = useSearchParams();
+  const [username, setUsername] = useState(searchParams.get("name") || "");
   const [contentVisibleTo, setContentVisibleTo] = useState<ContentVisibility>(
     ContentVisibility.BOTH
   );
@@ -196,44 +197,65 @@ const OnboardingForm: React.FC = () => {
         >
           Choose your URL
         </Text>
-        <Group w={"100%"}>
-          <InputElement>
-            <Text fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+        <Flex
+          w="100%"
+          h="44px"
+          rounded="8px"
+          className="glass-input"
+          alignItems="center"
+          position="relative"
+          border="1px solid var(--glass-border)"
+          overflow="hidden"
+          css={{
+            "&:focus-within": {
+              outline: "2px solid hsl(211, 71%, 43%)",
+              outlineOffset: "-1px"
+            }
+          }}
+        >
+          <Flex alignItems="center" h="100%" px={3} bg="rgba(0,0,0,0.03)" borderRight="1px solid var(--glass-border)">
+            <Text fontWeight={500} css={{ color: "hsl(215.4, 16.3%, 46.9%)", whiteSpace: "nowrap" }}>
               {branding.urls.frontend}/
             </Text>
-          </InputElement>
+          </Flex>
           <Input
-            w={"100%"}
-            rounded={"8px"}
-            className="glass-input"
-            outlineColor={"hsl(211, 71%, 43%)"}
-            variant={"outline"}
-            placeholder={"Your creator name"}
-            pl={"105px"}
+            flex={1}
+            h="100%"
+            border="none"
+            placeholder="Your creator name"
+            px={3}
             fontWeight={500}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}
+            css={{
+              color: "hsl(222.2, 47.4%, 11.2%)",
+              "&:focus": { outline: "none", boxShadow: "none" }
+            }}
           />
-          <InputElement
-            css={{ color: isUsernameAvailable ? "hsl(160, 60%, 45%)" : "hsl(0, 78%, 52%)" }}
-            placement={"end"}
-          >
+          <Flex alignItems="center" px={3} css={{ color: isUsernameAvailable ? "hsl(160, 60%, 45%)" : "hsl(0, 78%, 52%)" }}>
             {getUsernameIcon()}
-          </InputElement>
-        </Group>
+          </Flex>
+        </Flex>
       </Stack>
 
       <Stack gap={4}>
         <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Gender
         </Text>
-        <NativeSelect.Root>
+        <NativeSelect.Root
+          w="100%"
+          h="44px"
+          className="glass-input"
+          rounded="8px"
+        >
           <NativeSelect.Field
             value={gender}
             onChange={(e) => setGender(e.target.value as Gender)}
             placeholder="Select your gender"
-            className="glass-input"
+            h="100%"
+            w="100%"
+            px={4}
+            border="none"
             css={{
               color: "hsl(222.2, 47.4%, 11.2%)",
               fontWeight: 500,
@@ -251,14 +273,22 @@ const OnboardingForm: React.FC = () => {
         <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Content Visibility
         </Text>
-        <NativeSelect.Root>
+        <NativeSelect.Root
+          w="100%"
+          h="44px"
+          className="glass-input"
+          rounded="8px"
+        >
           <NativeSelect.Field
             value={contentVisibleTo}
             onChange={(e) =>
               setContentVisibleTo(e.target.value as ContentVisibility)
             }
             placeholder="Select content visibility"
-            className="glass-input"
+            h="100%"
+            w="100%"
+            px={4}
+            border="none"
             css={{
               color: "hsl(222.2, 47.4%, 11.2%)",
               fontWeight: 500,
@@ -282,12 +312,20 @@ const OnboardingForm: React.FC = () => {
         <Text fontSize={"xl"} fontWeight={"bold"} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           Creator Category
         </Text>
-        <NativeSelect.Root>
+        <NativeSelect.Root
+          w="100%"
+          h="44px"
+          className="glass-input"
+          rounded="8px"
+        >
           <NativeSelect.Field
             value={category}
             onChange={(e) => setCategory(e.target.value as CreatorCategory)}
             placeholder="Select creator category"
-            className="glass-input"
+            h="100%"
+            w="100%"
+            px={4}
+            border="none"
             css={{
               color: "hsl(222.2, 47.4%, 11.2%)",
               fontWeight: 500,
