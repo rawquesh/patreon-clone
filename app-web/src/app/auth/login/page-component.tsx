@@ -235,9 +235,10 @@ const LoginPages: React.FC = () => {
               border: "1px solid hsl(210, 30%, 88%)",
               fontWeight: 600,
             }}
+            textProps={{ fontWeight: 500 }}
             onClick={() => handleGoogleLogin()}
           >
-            <Text fontWeight={500}>Continue with Google</Text>
+            Continue with Google
           </ButtonWithIcon>
 
           {/* Divider */}

@@ -163,7 +163,7 @@ export default function DashboardPage() {
         <div className="mb-8">
           <Skeleton className="h-32 w-full rounded-2xl" />
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 stagger-children">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
           {Array.from({ length: 8 }).map((_, i) => (
             <Card key={i} className="glass-card-static">
               <CardHeader className="pb-2">
@@ -263,7 +263,7 @@ export default function DashboardPage() {
       <WelcomeBanner stats={stats} />
 
       {/* Stat Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 stagger-children">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 stagger-children">
         <StatCard
           title="Lifetime Revenue"
           value={formatCurrency(stats.totalRevenue)}

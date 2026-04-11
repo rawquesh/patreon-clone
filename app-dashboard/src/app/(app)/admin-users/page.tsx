@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   UserCog,
-  Shield,
+  // Shield,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -74,19 +74,19 @@ export default function AdminUsersPage() {
     }
   };
 
-  const handleDelete = async (admin: AdminUser) => {
-    if (!confirm(`Remove ${admin.email || admin.user?.email || 'this admin'}? This cannot be undone.`)) return;
-    setDeletingId(admin.id);
-    try {
-      await deleteAdmin(admin.id);
-      toast({ title: 'Admin removed successfully' });
-      load();
-    } catch (e: any) {
-      toast({ title: `Failed to delete admin: ${e?.message}`, variant: 'destructive' });
-    } finally {
-      setDeletingId(null);
-    }
-  };
+  // const handleDelete = async (admin: AdminUser) => {
+  //   if (!confirm(`Remove ${admin.email || admin.user?.email || 'this admin'}? This cannot be undone.`)) return;
+  //   setDeletingId(admin.id);
+  //   try {
+  //     await deleteAdmin(admin.id);
+  //     toast({ title: 'Admin removed successfully' });
+  //     load();
+  //   } catch (e: any) {
+  //     toast({ title: `Failed to delete admin: ${e?.message}`, variant: 'destructive' });
+  //   } finally {
+  //     setDeletingId(null);
+  //   }
+  // };
 
   return (
     <>
@@ -105,7 +105,7 @@ export default function AdminUsersPage() {
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Admin Access</TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Last Login</TableHead>
-                <TableHead className="pr-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">Actions</TableHead>
+                {/* <TableHead className="pr-6 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">Actions</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -172,7 +172,7 @@ export default function AdminUsersPage() {
                           : 'Never'}
                       </span>
                     </TableCell>
-                    <TableCell className="pr-6">
+                    {/* <TableCell className="pr-6">
                       {admin.id !== currentAdminId && (
                         <Button
                           variant="ghost"
@@ -184,7 +184,7 @@ export default function AdminUsersPage() {
                           <Shield className="h-4 w-4" />
                         </Button>
                       )}
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))
               )}

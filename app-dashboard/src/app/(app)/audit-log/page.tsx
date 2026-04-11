@@ -278,7 +278,7 @@ function AuditLogPageInner() {
                 </TableRow>
               ) : (
                 logs.map((log, i) => (
-                  <TableRow key={log.id} className="border-b border-border/30 last:border-0 group">
+                  <TableRow key={log.id || (log as any)._id || `log-${i}`} className="border-b border-border/30 last:border-0 group">
                     <TableCell className="pl-6">
                       <span className="text-xs text-muted-foreground">{(page - 1) * 20 + i + 1}</span>
                     </TableCell>

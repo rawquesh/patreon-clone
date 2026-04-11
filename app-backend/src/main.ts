@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config(); // Load .env BEFORE any config modules read process.env at import time
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { branding, business } from './config';

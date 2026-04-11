@@ -22,7 +22,7 @@ const ButtonWithIcon: React.FC<Props> = ({
   return (
     <Button {...buttonProps}>
       {iconStart && <Icon {...iconProps} icon={icon} />}
-      <Text {...textProps} transform={"translateY(1px)"}>
+      <Text as="span" {...textProps} transform={"translateY(1px)"}>
         {children}
       </Text>
       {!iconStart && <Icon {...iconProps} icon={icon} />}
