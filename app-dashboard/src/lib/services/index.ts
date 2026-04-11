@@ -51,11 +51,8 @@ export {
 } from './settings.service';
 export {
   getAdmins,
-  getAdminById,
-  createAdmin,
   updateAdmin,
   deleteAdmin,
-  updateAdminRole,
 } from './admin-users.service';
 export {
   getAuditLogs,

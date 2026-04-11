@@ -31,7 +31,7 @@ export type AuditTargetType =
   | 'Payout'
   | 'Report'
   | 'Setting'
-  | 'AdminUser';
+  | 'User';
 
 export type AuditLog = {
   id: string;

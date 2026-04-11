@@ -7,7 +7,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@/database/schemas/user';
 import { Subscription } from '@/database/schemas/subscription/subscription.schema';
-import { AdminUser, AdminRole, AdminPermission, ROLE_DEFAULT_PERMISSIONS } from '../schemas/admin-user.schema';
 import { AuditLogService } from './audit-log.service';
 import {
   AuditAction,
@@ -21,8 +20,6 @@ export class MembersService {
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Subscription.name)
     private subscriptionModel: Model<Subscription>,
-    @InjectModel(AdminUser.name)
-    private adminUserModel: Model<AdminUser>,
     private readonly auditLogService: AuditLogService,
   ) {}
 
@@ -204,25 +201,12 @@ export class MembersService {
     if (member.isAdmin) throw new BadRequestException('User is already an admin');
     if (member.isCreator) throw new BadRequestException('Cannot promote a creator to admin');
 
-    // Set isAdmin=true on the User document
     member.isAdmin = true;
     await member.save();
 
-    // Also create an AdminUser record if one doesn't already exist
-    const existingAdminUser = await this.adminUserModel.findOne({ userId: id }).exec();
-    if (!existingAdminUser) {
-      const adminUser = new this.adminUserModel({
-        email: member.email,
-        userId: id,
-        role: AdminRole.MODERATOR,
-        permissions: ROLE_DEFAULT_PERMISSIONS[AdminRole.MODERATOR] ?? [],
-      });
-      await adminUser.save();
-    }
-
     await this.auditLogService.log({
       action: AuditAction.ADMIN_CREATED,
-      targetType: AuditTargetType.ADMIN_USER,
+      targetType: AuditTargetType.USER,
       targetId: id,
       performedBy: adminId,
       details: { displayName: member.displayName, email: member.email },

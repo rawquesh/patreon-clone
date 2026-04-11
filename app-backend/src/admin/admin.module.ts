@@ -43,7 +43,6 @@ import {
 import { Membership, MembershipSchema } from '@/database/schemas/membership/membership.schema';
 import { Notification, NotificationSchema } from '@/database/schemas/notification';
 import { PaymentsModule } from '@/payments/payments.module';
-import { AdminGuardModule } from './schemas/admin-guard.module';
 
 // Platform Settings (SettingsService is now global via PlatformSettingsModule)
 import { SettingsController } from './controllers/settings.controller';
@@ -54,10 +53,9 @@ import { AuditLogController } from './controllers/audit-log.controller';
 import { AuditLogService } from './services/audit-log.service';
 import { AuditLog, AuditLogSchema } from './schemas/audit-log.schema';
 
-// NEW: Admin Users
+// Admin Users
 import { AdminUsersController } from './controllers/admin-users.controller';
 import { AdminUsersService } from './services/admin-users.service';
-import { AdminUser, AdminUserSchema } from './schemas/admin-user.schema';
 
 // NEW: Bulk Operations
 import { BulkOperationsController } from './controllers/bulk-operations.controller';
@@ -85,10 +83,8 @@ import { ExportService } from './services/export.service';
       { name: Membership.name, schema: MembershipSchema },
       // NEW schemas
       { name: AuditLog.name, schema: AuditLogSchema },
-      { name: AdminUser.name, schema: AdminUserSchema },
       { name: Notification.name, schema: NotificationSchema },
     ]),
-    AdminGuardModule,
     forwardRef(() => PaymentsModule),
   ],
   controllers: [
@@ -128,7 +124,6 @@ import { ExportService } from './services/export.service';
     ReportsService,
     ModerationService,
     AuditLogService,
-    AdminGuardModule,
   ],
 })
 export class AdminModule {}

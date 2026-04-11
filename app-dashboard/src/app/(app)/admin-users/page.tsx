@@ -21,21 +21,7 @@ import {
   updateAdmin,
   deleteAdmin,
 } from '@/lib/services';
-import type { AdminUser, AdminRole } from '@/types/admin-user';
-
-const ROLE_COLORS: Record<AdminRole, string> = {
-  superadmin: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
-  moderator: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
-  analyst: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-  viewer: 'bg-muted text-muted-foreground border-border',
-};
-
-const ROLE_LABELS: Record<AdminRole, string> = {
-  superadmin: 'Super Admin',
-  moderator: 'Moderator',
-  analyst: 'Analyst',
-  viewer: 'Viewer',
-};
+import type { AdminUser } from '@/types/admin-user';
 
 export default function AdminUsersPage() {
   const { toast } = useToast();
@@ -47,7 +33,6 @@ export default function AdminUsersPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [currentAdminId, setCurrentAdminId] = useState<string | null>(null);
 
-  // Get current admin user ID from sessionStorage
   useEffect(() => {
     try {
       const stored = sessionStorage.getItem('admin_user');
@@ -117,7 +102,6 @@ export default function AdminUsersPage() {
             <TableHeader>
               <TableRow className="border-b border-border/50 hover:bg-transparent">
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pl-6">Admin</TableHead>
-                <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Role</TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Admin Access</TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</TableHead>
                 <TableHead className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Last Login</TableHead>
@@ -129,7 +113,6 @@ export default function AdminUsersPage() {
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i} className="border-b border-border/30">
                     <TableCell className="pl-6"><Skeleton className="h-8 w-40" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-24 rounded-full" /></TableCell>
                     <TableCell><Skeleton className="h-5 w-20" /></TableCell>
                     <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-24" /></TableCell>
@@ -138,7 +121,7 @@ export default function AdminUsersPage() {
                 ))
               ) : admins.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-16">
+                  <TableCell colSpan={5} className="text-center py-16">
                     <UserCog className="h-10 w-10 mx-auto text-muted-foreground/30 mb-2" />
                     <p className="text-sm text-muted-foreground">No admin users yet</p>
                   </TableCell>
@@ -158,11 +141,6 @@ export default function AdminUsersPage() {
                           <p className="text-xs text-muted-foreground">{admin.email || admin.user?.email}</p>
                         </div>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={`text-xs font-medium border ${ROLE_COLORS[admin.role]}`}>
-                        {ROLE_LABELS[admin.role]}
-                      </Badge>
                     </TableCell>
                     <TableCell>
                       {admin.id === currentAdminId ? (
@@ -214,7 +192,6 @@ export default function AdminUsersPage() {
           </Table>
         </div>
 
-        {/* Pagination */}
         {pagination.totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-border/50 bg-muted/20">
             <p className="text-xs text-muted-foreground">

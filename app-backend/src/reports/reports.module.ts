@@ -20,8 +20,7 @@ import {
   WithheldUser,
   WithheldUserSchema,
 } from '@/database/schemas/report/withheld.schema';
-import { AdminGuardModule } from '@/admin/schemas/admin-guard.module';
-import { AdminUser, AdminUserSchema } from '@/admin/schemas/admin-user.schema';
+import { AdminGuard } from '@/admin/admin.guard';
 
 @Module({
   imports: [
@@ -32,12 +31,10 @@ import { AdminUser, AdminUserSchema } from '@/admin/schemas/admin-user.schema';
       { name: User.name, schema: UserSchema },
       { name: WithheldPost.name, schema: WithheldPostSchema },
       { name: WithheldUser.name, schema: WithheldUserSchema },
-      { name: AdminUser.name, schema: AdminUserSchema },
     ]),
-    AdminGuardModule,
   ],
   controllers: [ReportsController],
-  providers: [ReportsService],
+  providers: [ReportsService, AdminGuard],
   exports: [ReportsService],
 })
 export class ReportsModule {}
