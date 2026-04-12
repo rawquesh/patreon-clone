@@ -34,6 +34,7 @@ const notificationTypeLabels: Record<NotificationType, string> = {
   [NotificationType.DIRECT_MESSAGE]: "Direct message",
   [NotificationType.COMMENT_REPLY]: "Comment reply",
   [NotificationType.NEW_POST]: "New post",
+  [NotificationType.ADMIN_CONTENT_NOTICE]: "Admin notice",
 };
 
 const FilterPopover: React.FC = () => {
