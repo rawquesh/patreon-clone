@@ -60,7 +60,7 @@ export async function generateMetadata(
 
 async function getPost(postId: string): Promise<PostData> {
   try {
-    const baseUrl = `https://${branding.urls.apiServer}`;
+    const baseUrl = branding.urls.apiServer;
 
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;

@@ -243,53 +243,97 @@ const TextPostPageComponent: React.FC<{
       <Box flexGrow={1} w={{ base: "100%", lg: "calc(100% - 320px - 32px)" }}>
         {" "}
         <Stack gap={0}>
-          <Box className="post-content">
-            {parse(textContent || postData.previewText || "", parserOptions)}
+          <Box className="post-content" position="relative">
+            {parse(hasAccess ? (textContent || postData.previewText || "") : (postData.previewText || ""), parserOptions)}
+            
+            {!hasAccess && (
+              <Box
+                position="absolute"
+                bottom={0}
+                left={0}
+                w="100%"
+                h="100px"
+                bg="linear-gradient(to bottom, transparent, white)"
+                pointerEvents="none"
+              />
+            )}
           </Box>
-          {isSubscribed && !hasAccess && (
-            <UpgradeModal tierAccess={postData.tierAccess} />
+          
+          {!hasAccess && (
+            <Flex
+              direction="column"
+              align="center"
+              justify="center"
+              bg="white"
+              p={8}
+              rounded="xl"
+              mt={6}
+              border="1px solid"
+              css={{ borderColor: "hsl(210, 30%, 88%)", boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}
+              gap={4}
+            >
+              <Box
+                bg="hsl(210, 30%, 96%)"
+                p={4}
+                rounded="full"
+                color="hsl(211, 71%, 43%)"
+              >
+                <IconText icon="tabler:lock-filled" text="" containerProps={{ mb: 0 }} />
+              </Box>
+              <Text fontWeight={600} fontSize="lg" color="hsl(222.2, 47.4%, 11.2%)">
+                Unlock this post
+              </Text>
+              <Text color="hsl(215.4, 16.3%, 46.9%)" textAlign="center" mb={2}>
+                Join a membership tier to unlock full access to this post and support the creator.
+              </Text>
+              <UpgradeModal tierAccess={postData.tierAccess} />
+            </Flex>
           )}
 
-          <Attachments attachments={postData.attachments || []} />
+          {hasAccess && (
+            <>
+              <Attachments attachments={postData.attachments || []} />
 
-          {/* Likes and Comments Count */}
-          <Flex my={6} gap={4} borderTop="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }} pt={4}>
-            {" "}
-            {/* Add separator */}
-            <Suspense>
-              {/* Ensure PostLike fetches its own data or receives correct initial props */}
-              <PostLike postId={postId} likes={postData.likesCount} />
-            </Suspense>
-            <Box
-              onClick={() => {
-                if (!user) {
-                  router.push(`/auth/login`);
-                }
-              }}
-            >
-              <IconText
-                containerProps={{
-                  cursor: "pointer",
-                  onClick: () =>
-                    document
-                      .getElementById("comments-section")
-                      ?.scrollIntoView({ behavior: "smooth" }),
-                }} // Scroll to comments
-                icon="iconamoon:comment-fill"
-                text={String(postData.commentsCount)}
-              />
-            </Box>
-            {/* Add Share Button Here */}
-          </Flex>
+              {/* Likes and Comments Count */}
+              <Flex my={6} gap={4} borderTop="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }} pt={4}>
+                {" "}
+                {/* Add separator */}
+                <Suspense>
+                  {/* Ensure PostLike fetches its own data or receives correct initial props */}
+                  <PostLike postId={postId} likes={postData.likesCount} />
+                </Suspense>
+                <Box
+                  onClick={() => {
+                    if (!user) {
+                      router.push(`/auth/login`);
+                    }
+                  }}
+                >
+                  <IconText
+                    containerProps={{
+                      cursor: "pointer",
+                      onClick: () =>
+                        document
+                          .getElementById("comments-section")
+                          ?.scrollIntoView({ behavior: "smooth" }),
+                    }} // Scroll to comments
+                    icon="iconamoon:comment-fill"
+                    text={String(postData.commentsCount)}
+                  />
+                </Box>
+                {/* Add Share Button Here */}
+              </Flex>
 
-          {/* Comments Section */}
-          <Box id="comments-section" pt={4}>
-            {" "}
-            {/* Add ID for scrolling */}
-            <Suspense>
-              <PostCommentsSection className="glass-card" postId={postId} />
-            </Suspense>
-          </Box>
+              {/* Comments Section */}
+              <Box id="comments-section" pt={4}>
+                {" "}
+                {/* Add ID for scrolling */}
+                <Suspense>
+                  <PostCommentsSection className="glass-card" postId={postId} />
+                </Suspense>
+              </Box>
+            </>
+          )}
         </Stack>
       </Box>
 
