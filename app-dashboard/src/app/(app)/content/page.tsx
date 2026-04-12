@@ -50,17 +50,7 @@ import {
   deletePost,
   notifyCreator,
 } from '@/lib/services';
-import { PostDetailDialog, CreatorDetailDialog } from '@/components/dialogs';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { PostDetailDialog, CreatorDetailDialog, DetailDialog } from '@/components/dialogs';
 import type { Post, PostStatus } from '@/types';
 
 function PostTypeIcon({ type }: { type: string }) {
@@ -427,45 +417,43 @@ function ContentFeedPageInner() {
         onRefresh={load}
       />
 
-      <Dialog open={!!deletePostObj} onOpenChange={(o) => { if (!o) setDeletePostObj(null); }}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete Post</DialogTitle>
-            <DialogDescription>
-              Provide a reason for deleting this post. This reason will be sent to the creator.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3">
-            <div>
-              <Label htmlFor="delete-msg" className="text-xs text-muted-foreground">
-                Reason for deletion (min. 10 characters)
-              </Label>
-              <Textarea
-                id="delete-msg"
-                value={deleteMessage}
-                onChange={(e) => setDeleteMessage(e.target.value)}
-                placeholder="Enter deletion reason..."
-                className="mt-1.5"
-                rows={4}
-              />
-            </div>
+      <DetailDialog
+        open={!!deletePostObj}
+        onOpenChange={(o) => { if (!o) setDeletePostObj(null); }}
+        title="Delete Post"
+        description="Provide a reason for deleting this post. This reason will be sent to the creator."
+        maxWidth="sm:max-w-md"
+      >
+        <div className="space-y-3">
+          <div>
+            <label htmlFor="delete-msg" className="text-xs text-muted-foreground">
+              Reason for deletion (min. 10 characters)
+            </label>
+            <textarea
+              id="delete-msg"
+              value={deleteMessage}
+              onChange={(e) => setDeleteMessage(e.target.value)}
+              placeholder="Enter deletion reason..."
+              className="mt-1.5 flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              rows={4}
+            />
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeletePostObj(null)} className="rounded-xl">
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteWithReason}
-              disabled={deleteLoading || deleteMessage.trim().length < 10}
-              className="rounded-xl"
-            >
-              {deleteLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Confirm Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </div>
+        <div className="pt-4 flex gap-2">
+          <Button variant="outline" onClick={() => setDeletePostObj(null)} className="rounded-xl">
+            Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDeleteWithReason}
+            disabled={deleteLoading || deleteMessage.trim().length < 10}
+            className="rounded-xl"
+          >
+            {deleteLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Confirm Delete
+          </Button>
+        </div>
+      </DetailDialog>
     </>
   );
 }

@@ -92,12 +92,12 @@ export function SubscriptionDetailDialog({ subscription, onClose, onRefresh }: S
               <p className="text-xs text-muted-foreground mb-1">Member</p>
               <div className="flex items-center gap-2 mt-1">
                 <Avatar className="h-7 w-7">
-                  <AvatarImage src={s.member.avatar || ''} />
-                  <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">{s.member.name.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={s.member?.avatar || ''} />
+                  <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white">{s.member?.name?.charAt(0) || '?'}</AvatarFallback>
                 </Avatar>
                 <div className="min-w-0">
-                  <p className="font-medium text-sm truncate">{s.member.name}</p>
-                  <p className="text-xs text-muted-foreground truncate">{s.member.email}</p>
+                  <p className="font-medium text-sm truncate">{s.member?.name || '-'}</p>
+                  <p className="text-xs text-muted-foreground truncate">{s.member?.email || '-'}</p>
                 </div>
               </div>
             </div>
@@ -105,9 +105,9 @@ export function SubscriptionDetailDialog({ subscription, onClose, onRefresh }: S
               <p className="text-xs text-muted-foreground mb-1">Creator</p>
               <div className="flex items-center gap-2 mt-1">
                 <Avatar className="h-7 w-7">
-                  <AvatarFallback className="text-xs bg-gradient-accent text-slate-900 dark:text-white">{s.creator.name.charAt(0)}</AvatarFallback>
+                  <AvatarFallback className="text-xs bg-gradient-accent text-slate-900 dark:text-white">{s.creator?.name?.charAt(0) || '?'}</AvatarFallback>
                 </Avatar>
-                <p className="font-medium text-sm truncate">{s.creator.name}</p>
+                <p className="font-medium text-sm truncate">{s.creator?.name || '-'}</p>
               </div>
             </div>
             <div className="rounded-xl border p-3.5">

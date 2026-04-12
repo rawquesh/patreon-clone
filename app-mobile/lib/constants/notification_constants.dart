@@ -18,6 +18,9 @@ class NotificationTypes {
   static const String directChatCreated = "direct_chat_created"; // DM created
   static const String groupChatCreated = "group_chat_created";
 
+  // Admin
+  static const String adminContentNotice = "admin_content_notice";
+
   static List<String> get values => [
         liked,
         commented,
@@ -30,5 +33,6 @@ class NotificationTypes {
         directMessage,
         directChatCreated,
         groupChatCreated,
+        adminContentNotice,
       ];
 }

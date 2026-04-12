@@ -11,6 +11,7 @@ export enum NotificationType {
   GROUP_CHAT_CREATED = "group_chat_created",
   DIRECT_MESSAGE = "direct_message",
   DIRECT_CHAT_CREATED = "direct_chat_created",
+  ADMIN_CONTENT_NOTICE = "admin_content_notice",
 }
 
 export interface INotification {
@@ -56,6 +57,7 @@ export interface NotificationResponseDto {
     id: string;
     content: string;
   };
+  metadata?: Record<string, any>;
   userMode: string;
   link?: string;
 }

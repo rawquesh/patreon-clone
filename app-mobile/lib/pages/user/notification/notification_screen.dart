@@ -447,6 +447,90 @@ class _NotificationCardState extends State<NotificationCard> with MySafeState {
   }
 
   Widget _buildMessageText() {
+    // Admin content notice gets special rendering with a reason box below
+    if (widget.model.type == NotificationTypes.adminContentNotice) {
+      final adminName = widget.model.metadata['adminName']?.toString() ??
+          (widget.model.actor.name.isNotEmpty ? widget.model.actor.name : 'Admin');
+      final adminMessage = widget.model.metadata['message']?.toString() ?? '';
+      final postTitle = widget.model.post?.title ?? '';
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: adminName,
+                  style: themeData.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: themeData.colorScheme.onSurface,
+                        height: 1.3,
+                      )
+                      .withEpilogue,
+                ),
+                TextSpan(
+                  text: ' sent you an administrative notice',
+                  style: themeData.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: themeData.colorScheme.onSurface.withValues(alpha: 0.8),
+                        height: 1.3,
+                      )
+                      .withEpilogue,
+                ),
+                if (postTitle.isNotEmpty)
+                  TextSpan(
+                    text: ' regarding "$postTitle"',
+                    style: themeData.textTheme.bodyMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: themeData.primaryColor,
+                          height: 1.3,
+                        )
+                        .withEpilogue,
+                  ),
+              ],
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (adminMessage.isNotEmpty) ...
+            [
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: themeData.primaryColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border(
+                    left: BorderSide(
+                      color: themeData.primaryColor,
+                      width: 3,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  adminMessage,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: themeData.textTheme.bodySmall?.copyWith(
+                    fontSize: 12,
+                    color: themeData.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+        ],
+      );
+    }
+
     final parts = _getMessageParts();
 
     return RichText(
@@ -623,6 +707,14 @@ class _NotificationCardState extends State<NotificationCard> with MySafeState {
           'postTitle': postTitle.isNotEmpty ? '"$postTitle"' : null,
         };
 
+      case NotificationTypes.adminContentNotice:
+        final adminName = widget.model.metadata['adminName']?.toString() ?? actorName;
+        return {
+          'actorName': adminName,
+          'action': ' sent you an administrative notice',
+          'postTitle': postTitle.isNotEmpty ? ' regarding "$postTitle"' : null,
+        };
+
       default:
         return {
           'actorName': actorName,
@@ -655,6 +747,8 @@ class _NotificationCardState extends State<NotificationCard> with MySafeState {
         return Icons.cancel_rounded;
       case NotificationTypes.newPost:
         return Icons.article_rounded;
+      case NotificationTypes.adminContentNotice:
+        return Icons.admin_panel_settings_rounded;
       default:
         return Icons.notifications_rounded;
     }
@@ -683,6 +777,8 @@ class _NotificationCardState extends State<NotificationCard> with MySafeState {
         return Colors.red.shade700;
       case NotificationTypes.newPost:
         return Colors.indigo;
+      case NotificationTypes.adminContentNotice:
+        return themeData.primaryColor;
       default:
         return Colors.grey;
     }
@@ -729,6 +825,10 @@ class _NotificationCardState extends State<NotificationCard> with MySafeState {
       case NotificationTypes.downgrade:
       case NotificationTypes.cancellation:
         _handleMembershipNotification();
+        break;
+
+      case NotificationTypes.adminContentNotice:
+        // Informational only — no navigation needed
         break;
 
       default:

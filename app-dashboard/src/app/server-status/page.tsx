@@ -34,13 +34,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { DetailDialog } from '@/components/dialogs';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -487,60 +481,49 @@ export default function ServerStatusPage() {
       </div>
 
       {/* Create Admin Dialog */}
-      <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
-        <DialogContent className="glass-dialog-content animate-fade-in-scale sm:max-w-md">
-          <DialogHeader>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-20 blur-md" />
-                <div className="relative bg-gradient-primary p-2 rounded-xl">
-                  <Shield className="h-5 w-5 text-white" />
-                </div>
-              </div>
-              <DialogTitle>Create Admin Account</DialogTitle>
-            </div>
-            <DialogDescription>
-              This will be the primary admin account for your platform. Choose credentials carefully.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit(onCreateAdmin)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
-                <Input id="firstName" placeholder="John" {...register('firstName')} className={errors.firstName ? 'border-destructive/50' : ''} />
-                {errors.firstName && <p className="text-xs text-destructive font-medium">{errors.firstName.message}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
-                <Input id="lastName" placeholder="Doe" {...register('lastName')} className={errors.lastName ? 'border-destructive/50' : ''} />
-                {errors.lastName && <p className="text-xs text-destructive font-medium">{errors.lastName.message}</p>}
-              </div>
+      <DetailDialog
+        open={showAdminDialog}
+        onOpenChange={setShowAdminDialog}
+        title="Create Admin Account"
+        description="This will be the primary admin account for your platform. Choose credentials carefully."
+        maxWidth="sm:max-w-md"
+      >
+        <form onSubmit={handleSubmit(onCreateAdmin)} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
+              <Input id="firstName" placeholder="John" {...register('firstName')} className={errors.firstName ? 'border-destructive/50' : ''} />
+              {errors.firstName && <p className="text-xs text-destructive font-medium">{errors.firstName.message}</p>}
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
-              <Input id="email" type="email" placeholder="admin@example.com" {...register('email')} className={errors.email ? 'border-destructive/50' : ''} />
-              {errors.email && <p className="text-xs text-destructive font-medium">{errors.email.message}</p>}
+              <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
+              <Input id="lastName" placeholder="Doe" {...register('lastName')} className={errors.lastName ? 'border-destructive/50' : ''} />
+              {errors.lastName && <p className="text-xs text-destructive font-medium">{errors.lastName.message}</p>}
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-              <div className="relative">
-                <Input id="password" type={showPassword ? 'text' : 'password'} placeholder="Minimum 8 characters" {...register('password')} className={errors.password ? 'border-destructive/50 pr-10' : 'pr-10'} />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-xs text-destructive font-medium">{errors.password.message}</p>}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+            <Input id="email" type="email" placeholder="admin@example.com" {...register('email')} className={errors.email ? 'border-destructive/50' : ''} />
+            {errors.email && <p className="text-xs text-destructive font-medium">{errors.email.message}</p>}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+            <div className="relative">
+              <Input id="password" type={showPassword ? 'text' : 'password'} placeholder="Minimum 8 characters" {...register('password')} className={errors.password ? 'border-destructive/50 pr-10' : 'pr-10'} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
-            <div className="flex gap-3 pt-2">
-              <Button type="button" variant="outline" className="flex-1 btn-gradient-ghost rounded-xl" onClick={() => setShowAdminDialog(false)} disabled={isCreating}>Cancel</Button>
-              <Button type="submit" className="flex-1 gap-2 btn-gradient rounded-xl font-semibold" disabled={isCreating}>
-                {isCreating ? <><Loader2 className="h-4 w-4 animate-spin" /> Creating...</> : <><Sparkles className="h-4 w-4" /> Create Admin</>}
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+            {errors.password && <p className="text-xs text-destructive font-medium">{errors.password.message}</p>}
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Button type="button" variant="outline" className="flex-1 btn-gradient-ghost rounded-xl" onClick={() => setShowAdminDialog(false)} disabled={isCreating}>Cancel</Button>
+            <Button type="submit" className="flex-1 gap-2 btn-gradient rounded-xl font-semibold" disabled={isCreating}>
+              {isCreating ? <><Loader2 className="h-4 w-4 animate-spin" /> Creating...</> : <><Sparkles className="h-4 w-4" /> Create Admin</>}
+            </Button>
+          </div>
+        </form>
+      </DetailDialog>
     </div>
   );
 }

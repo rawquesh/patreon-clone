@@ -258,19 +258,19 @@ function SubscriptionsPageInner() {
                     <TableCell className="pl-6">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9 ring-2 ring-transparent group-hover:ring-primary/20 transition-all">
-                          <AvatarImage src={sub.member.avatar || ''} />
+                          <AvatarImage src={sub.member?.avatar || ''} />
                           <AvatarFallback className="text-xs bg-gradient-primary text-slate-900 dark:text-white font-bold">
-                            {sub.member.name.charAt(0)}
+                            {sub.member?.name?.charAt(0) || '?'}
                           </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0">
-                          <div className="text-sm font-medium truncate">{sub.member.name}</div>
-                          <div className="text-xs text-muted-foreground truncate">{sub.member.email}</div>
+                          <div className="text-sm font-medium truncate">{sub.member?.name || '-'}</div>
+                          <div className="text-xs text-muted-foreground truncate">{sub.member?.email || '-'}</div>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm text-muted-foreground truncate block max-w-[120px]">{sub.creator.name}</span>
+                      <span className="text-sm text-muted-foreground truncate block max-w-[120px]">{sub.creator?.name || '-'}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm font-medium">{sub.plan || sub.membership?.name || '-'}</span>

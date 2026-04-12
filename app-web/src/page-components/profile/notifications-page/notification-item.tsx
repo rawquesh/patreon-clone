@@ -107,6 +107,32 @@ const NotificationItem: React.FC<Props> = ({ notification }) => {
             <strong>{actor}</strong> sent you a new message.
           </Text>
         );
+      case NotificationType.ADMIN_CONTENT_NOTICE: {
+        const adminName = notification.metadata?.adminName || actor;
+        const adminMessage = notification.metadata?.message;
+        return (
+          <>
+            <Text fontSize={"sm"}>
+              <strong>{adminName}</strong> sent you an administrative notice
+              {notification.post?.title && (
+                <> regarding your post: <strong>{notification.post.title}</strong></>
+              )}.
+            </Text>
+            {adminMessage && (
+              <Box
+                mt={2}
+                p={3}
+                borderRadius="8px"
+                css={{ background: "hsl(211, 71%, 43% / 0.08)", borderLeft: "3px solid hsl(211, 71%, 43%)" }}
+              >
+                <Text fontSize="xs" css={{ color: "hsl(211, 71%, 43%)" }}>
+                  {adminMessage}
+                </Text>
+              </Box>
+            )}
+          </>
+        );
+      }
       default:
         return (
           <Text fontSize={"sm"}>
