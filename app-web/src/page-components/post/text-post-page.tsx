@@ -3,7 +3,6 @@
 import {
   Box,
   Flex,
-  Stack,
   Text,
   Link,
   Heading,
@@ -17,10 +16,6 @@ import PostLike from "./post-like";
 import IconText from "@/components/ui/icon-text";
 import PostCommentsSection from "./post-comments-section";
 import { PostData } from "@/typings/IPost";
-// import {
-//   usePostLikes,
-//   usePostComments,
-// } from "@/lib/backend-services/post-service";
 
 import parse, {
   DOMNode,
@@ -31,9 +26,9 @@ import parse, {
 import { useAuth } from "@/context/auth.provider";
 import { useRouter } from "next/navigation";
 import Attachments from "../creator/attchments";
-// import { Button } from "@/components/ui/button";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { useSubscription } from "@/context/subscription.provider";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const TextPostPageComponent: React.FC<{
   postData: PostData;
@@ -47,12 +42,8 @@ const TextPostPageComponent: React.FC<{
       subscription.status === "active"
   );
 
-  // const { data: likesData } = usePostLikes(postId);
-  // const { data: commentsData } = usePostComments(postId);
   const { user } = useAuth();
   const router = useRouter();
-  // const likesCount = likesData?.pagination?.total || 0;
-  // const commentsCount = commentsData?.pagination?.total || 0;
 
   const parserOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -222,10 +213,7 @@ const TextPostPageComponent: React.FC<{
               </Box>
             );
           case "br":
-            // Usually handled within parent elements, but can add explicit break if needed
             return <br />;
-
-          // Add more tag replacements as needed (e.g., tables, blockquotes)
         }
       }
     },
@@ -233,19 +221,27 @@ const TextPostPageComponent: React.FC<{
 
   return (
     <Flex
-      p={{ base: "16px", md: "24px" }} // Responsive padding
-      w="100%" // Use 100% width for better control within parent
+      p={{ base: "16px", md: "24px" }}
+      w="100%"
       direction={{ base: "column-reverse", lg: "row" }}
       maxW="1150px"
       mx="auto"
       gap={8}
     >
-      <Box flexGrow={1} w={{ base: "100%", lg: "calc(100% - 320px - 32px)" }}>
-        {" "}
-        <Stack gap={0}>
+      {/* Main content */}
+      <Box flex="1" minW={0}>
+        {/* White card container */}
+        <Box
+          bg="white"
+          borderRadius="xl"
+          p={{ base: 5, md: 8 }}
+          border="1px solid"
+          css={{ borderColor: "hsl(210, 30%, 92%)" }}
+          boxShadow="0 2px 8px rgba(0,0,0,0.04)"
+        >
           <Box className="post-content" position="relative">
             {parse(hasAccess ? (textContent || postData.previewText || "") : (postData.previewText || ""), parserOptions)}
-            
+
             {!hasAccess && (
               <Box
                 position="absolute"
@@ -258,18 +254,23 @@ const TextPostPageComponent: React.FC<{
               />
             )}
           </Box>
-          
+
+          {/* Lock UI */}
           {!hasAccess && (
             <Flex
               direction="column"
               align="center"
               justify="center"
-              bg="white"
+              className="glass-card"
               p={8}
               rounded="xl"
               mt={6}
               border="1px solid"
-              css={{ borderColor: "hsl(210, 30%, 88%)", boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}
+              css={{
+                borderColor: "rgba(255,255,255,0.8)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                backgroundImage: "var(--gradient-sidebar)",
+              }}
               gap={4}
             >
               <Box
@@ -278,85 +279,74 @@ const TextPostPageComponent: React.FC<{
                 rounded="full"
                 color="hsl(211, 71%, 43%)"
               >
-                <IconText icon="tabler:lock-filled" text="" containerProps={{ mb: 0 }} />
+                <Icon icon="tabler:lock-filled" width={24} height={24} />
               </Box>
-              <Text fontWeight={600} fontSize="lg" color="hsl(222.2, 47.4%, 11.2%)">
+              <Text fontWeight={700} fontSize="lg" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
                 Unlock this post
               </Text>
-              <Text color="hsl(215.4, 16.3%, 46.9%)" textAlign="center" mb={2}>
+              <Text color="hsl(215.4, 16.3%, 46.9%)" textAlign="center" mb={2} maxW="400px">
                 Join a membership tier to unlock full access to this post and support the creator.
               </Text>
               <UpgradeModal tierAccess={postData.tierAccess} />
             </Flex>
           )}
 
+          {/* Full access content */}
           {hasAccess && (
             <>
               <Attachments attachments={postData.attachments || []} />
 
-              {/* Likes and Comments Count */}
-              <Flex my={6} gap={4} borderTop="1px" css={{ borderColor: "hsl(210, 30%, 88%)" }} pt={4}>
-                {" "}
-                {/* Add separator */}
+              <Flex my={6} gap={4} borderTop="1px solid" css={{ borderColor: "hsl(210, 30%, 92%)" }} pt={5}>
                 <Suspense>
-                  {/* Ensure PostLike fetches its own data or receives correct initial props */}
                   <PostLike postId={postId} likes={postData.likesCount} />
                 </Suspense>
-                <Box
-                  onClick={() => {
-                    if (!user) {
-                      router.push(`/auth/login`);
-                    }
-                  }}
-                >
+                <Box>
                   <IconText
                     containerProps={{
                       cursor: "pointer",
-                      onClick: () =>
+                      onClick: () => {
+                        if (!user) {
+                          router.push(`/auth/login`);
+                          return;
+                        }
                         document
                           .getElementById("comments-section")
-                          ?.scrollIntoView({ behavior: "smooth" }),
-                    }} // Scroll to comments
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      },
+                    }}
                     icon="iconamoon:comment-fill"
                     text={String(postData.commentsCount)}
                   />
                 </Box>
-                {/* Add Share Button Here */}
               </Flex>
 
-              {/* Comments Section */}
-              <Box id="comments-section" pt={4}>
-                {" "}
-                {/* Add ID for scrolling */}
+              <Box id="comments-section" pt={5}>
                 <Suspense>
                   <PostCommentsSection className="glass-card" postId={postId} />
                 </Suspense>
               </Box>
             </>
           )}
-        </Stack>
+        </Box>
       </Box>
 
-      {!hasAccess && (
-        <Box
-          w={{ base: "100%", lg: "320px" }} // Fixed width on large screens
-          flexShrink={0}
-          position={{ lg: "sticky" }} // Make sidebar sticky on large screens
-          top={{ lg: "80px" }} // Adjust top offset as needed (e.g., height of your header)
-          alignSelf={{ lg: "flex-start" }} // Align to top
-          height={{ lg: "calc(100vh - 100px)" }} // Prevent excessive height
-          // overflowY="auto" // Allow scrolling within sidebar if content exceeds height
-        >
-          <PostPageCreatorInfo
-            avatarUrl={creator.profilePicture || ""}
-            description={creator.description || "Content creator"}
-            // membership="$5 per month"
-            username={creator.username}
-            tierAccess={postData.tierAccess}
-            id={postData.creator.id}
-          />
-        </Box>
-      )}
+      {/* Creator Info Sidebar */}
+      <Box
+        w={{ base: "100%", lg: "320px" }}
+        flexShrink={0}
+        position={{ lg: "sticky" }}
+        top={{ lg: "80px" }}
+        alignSelf={{ lg: "flex-start" }}
+        height={{ lg: "calc(100vh - 100px)" }}
+      >
+        <PostPageCreatorInfo
+          avatarUrl={creator.profilePicture || ""}
+          description={creator.description || "Content creator"}
+          username={creator.username}
+          tierAccess={postData.tierAccess}
+          id={postData.creator.id}
+        />
+      </Box>
     </Flex>
   );
 };

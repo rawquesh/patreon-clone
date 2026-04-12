@@ -129,7 +129,14 @@ export default async function PostPage(props: { params: tParams }) {
     };
 
     return (
-      <Box py={12} className="animate-fade-in-up">
+      <Box
+        py={12}
+        className="animate-fade-in-up"
+        css={{
+          background: "hsl(210, 20%, 98%)",
+          minHeight: "100vh",
+        }}
+      >
         <PostPageHeader
           createdAt={post.createdAt}
           postId={post._id}

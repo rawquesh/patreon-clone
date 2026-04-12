@@ -15,15 +15,14 @@ import Attachments from "../creator/attchments";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import SimpleVideoPlayer from "@/components/simple-video-player";
+import { UpgradeModal } from "@/components/upgrade-modal";
 
-// Function to check if a URL is a YouTube link
 const isYoutubeUrl = (url: string): boolean => {
   if (!url) return false;
   const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
   return youtubeRegex.test(url);
 };
 
-// Function to extract YouTube video ID from URL
 const getYoutubeVideoId = (url: string): string | null => {
   let videoId = null;
   const youtubeShortRegex = /youtu\.be\/([^\/\?&]+)/;
@@ -45,97 +44,82 @@ const VideoPostPageComponent: React.FC<{
   postData: PostData;
   postId: string;
 }> = ({ postData, postId }) => {
-  const { description, videoUrl, mediaUrls, creator, thumbnailUrl } = postData;
+  const { description, videoUrl, mediaUrls, creator, hasAccess, thumbnailUrl, previewText } =
+    postData;
   const { data: likesData } = usePostLikes(postId);
   const { data: commentsData } = usePostComments(postId);
-  // Use pagination.total for likes count instead of likesCount
   const likesCount = likesData?.pagination?.total || 0;
   const commentsCount = commentsData?.pagination?.total || 0;
 
-  // Format date to ISO string for getTimeAgo
-
-  // Use videoUrl if available, otherwise fallback to mediaUrls
   const videoSrc =
     videoUrl || (mediaUrls && mediaUrls.length > 0 ? mediaUrls[0] : "");
-
-  // Check if the video source is a YouTube URL
   const isYoutube = isYoutubeUrl(videoSrc);
   const youtubeVideoId = isYoutube ? getYoutubeVideoId(videoSrc) : null;
+
   return (
     <Flex
-      p={"16px"}
-      w={"100vw"}
+      p={{ base: "16px", md: "24px" }}
+      w="100%"
       direction={{ base: "column-reverse", lg: "row" }}
-      maxW={"1150px"}
-      mx={"auto"}
+      maxW="1150px"
+      mx="auto"
       gap={8}
     >
-      <Stack gap={0} flexGrow={1}>
-        {postData.hasAccess ? (
-          <Box mb={6}>
-            <AspectRatio pos={"relative"} ratio={16 / 9} width="100%">
-              {isYoutube && youtubeVideoId ? (
-                <Box
-                  as="iframe"
-                  // @ts-ignore
-                  src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-                  width="100%"
-                  height="100%"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  border="0"
-                  borderRadius="8px"
-                />
-              ) : (
-                <SimpleVideoPlayer src={videoSrc} width="100%" height="100%" />
-              )}
-            </AspectRatio>
-          </Box>
-        ) : (
-          <AspectRatio
-            rounded={"lg"}
-            pos={"relative"}
-            ratio={16 / 9}
-            width="100%"
-            overflow={"hidden"}
-            mb={6}
-          >
-            {isYoutube ? (
-              <Box pos={"relative"} width="100%" height="100%">
-                <Box
-                  pos={"absolute"}
-                  w={"100%"}
-                  h={"100%"}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  gap={3}
-                  zIndex={1000}
-                  bg={"rgba(0, 0, 0, 0.1)"}
-                >
-                  <Icon width={60} icon={"logos:youtube-icon"} />
-                  <Text color="white" fontSize="md" fontWeight={500}>
-                    Subscribe to watch this video
-                  </Text>
-                </Box>
-                <Image src={thumbnailUrl} alt="title" layout="fill" />
-              </Box>
-            ) : (
+      {/* Main content */}
+      <Box flex="1" minW={0}>
+        {/* White card container */}
+        <Box
+          bg="white"
+          borderRadius="xl"
+          p={{ base: 5, md: 8 }}
+          border="1px solid"
+          css={{ borderColor: "hsl(210, 30%, 92%)" }}
+          boxShadow="0 2px 8px rgba(0,0,0,0.04)"
+        >
+          {/* Video Player */}
+          {hasAccess ? (
+            <Box mb={6}>
+              <AspectRatio pos={"relative"} ratio={16 / 9} width="100%">
+                {isYoutube && youtubeVideoId ? (
+                  <Box
+                    as="iframe"
+                    // @ts-ignore
+                    src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+                    width="100%"
+                    height="100%"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    border="0"
+                    borderRadius="lg"
+                  />
+                ) : (
+                  <SimpleVideoPlayer src={videoSrc} width="100%" height="100%" />
+                )}
+              </AspectRatio>
+            </Box>
+          ) : (
+            <AspectRatio
+              rounded="xl"
+              pos={"relative"}
+              ratio={16 / 9}
+              width="100%"
+              overflow="hidden"
+              mb={6}
+            >
               <Box
                 width="100%"
                 height="100%"
                 position="relative"
                 bg="black"
-                borderRadius="md"
+                borderRadius="xl"
                 overflow="hidden"
               >
                 {thumbnailUrl && (
                   <Image
                     src={thumbnailUrl}
-                    alt="title"
+                    alt="video thumbnail"
                     layout="fill"
-                    style={{ objectFit: "cover", opacity: 0.3 }}
+                    style={{ objectFit: "cover", opacity: 0.4 }}
                   />
                 )}
                 <Box
@@ -150,8 +134,8 @@ const VideoPostPageComponent: React.FC<{
                   zIndex={1000}
                 >
                   <Icon
-                    width={60}
-                    height={60}
+                    width={48}
+                    height={48}
                     icon={"tabler:lock-filled"}
                     style={{ color: "white" }}
                   />
@@ -160,29 +144,90 @@ const VideoPostPageComponent: React.FC<{
                   </Text>
                 </Box>
               </Box>
-            )}
-          </AspectRatio>
-        )}
+            </AspectRatio>
+          )}
 
-        {description && <Text mb={6}>{description}</Text>}
-        <Attachments attachments={postData.attachments || []} />
+          {/* Description / Preview */}
+          {hasAccess ? (
+            description && <Text mb={6}>{description}</Text>
+          ) : (
+            previewText && (
+              <Text mb={6} color="hsl(215.4, 16.3%, 46.9%)">
+                {previewText}
+              </Text>
+            )
+          )}
 
-        <Flex my={4} gap={4}>
-          <Suspense>
-            <PostLike key={likesCount} likes={likesCount} postId={postId} />
-          </Suspense>
-          <IconText
-            containerProps={{ cursor: "pointer" }}
-            icon="iconamoon:comment-fill"
-            text={String(commentsCount)}
-          />
-        </Flex>
-        <Suspense>
-          <PostCommentsSection className="glass-card" postId={postId} />
-        </Suspense>
-      </Stack>
-      {/* Conditionally render Creator Info based on postData.hasAccess */}
-      {!postData?.hasAccess && (
+          {/* Lock UI */}
+          {!hasAccess && (
+            <Flex
+              direction="column"
+              align="center"
+              justify="center"
+              className="glass-card"
+              p={8}
+              rounded="xl"
+              mt={6}
+              border="1px solid"
+              css={{
+                borderColor: "rgba(255,255,255,0.8)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                backgroundImage: "var(--gradient-sidebar)",
+              }}
+              gap={4}
+            >
+              <Box
+                bg="hsl(210, 30%, 96%)"
+                p={4}
+                rounded="full"
+                color="hsl(211, 71%, 43%)"
+              >
+                <Icon icon="tabler:lock-filled" width={24} height={24} />
+              </Box>
+              <Text fontWeight={700} fontSize="lg" css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
+                Unlock this post
+              </Text>
+              <Text color="hsl(215.4, 16.3%, 46.9%)" textAlign="center" mb={2} maxW="400px">
+                Join a membership tier to unlock full access to this post and support the creator.
+              </Text>
+              <UpgradeModal tierAccess={postData.tierAccess} />
+            </Flex>
+          )}
+
+          {/* Full access content */}
+          {hasAccess && (
+            <>
+              <Attachments attachments={postData.attachments || []} />
+
+              <Flex my={6} gap={4} borderTop="1px solid" css={{ borderColor: "hsl(210, 30%, 92%)" }} pt={5}>
+                <Suspense>
+                  <PostLike key={likesCount} likes={likesCount} postId={postId} />
+                </Suspense>
+                <IconText
+                  containerProps={{ cursor: "pointer" }}
+                  icon="iconamoon:comment-fill"
+                  text={String(commentsCount)}
+                />
+              </Flex>
+              <Box id="comments-section" pt={5}>
+                <Suspense>
+                  <PostCommentsSection className="glass-card" postId={postId} />
+                </Suspense>
+              </Box>
+            </>
+          )}
+        </Box>
+      </Box>
+
+      {/* Creator Info Sidebar */}
+      <Box
+        w={{ base: "100%", lg: "320px" }}
+        flexShrink={0}
+        position={{ lg: "sticky" }}
+        top={{ lg: "80px" }}
+        alignSelf={{ lg: "flex-start" }}
+        height={{ lg: "calc(100vh - 100px)" }}
+      >
         <PostPageCreatorInfo
           avatarUrl={creator.profilePicture || ""}
           description={creator.description || "Content creator"}
@@ -190,7 +235,7 @@ const VideoPostPageComponent: React.FC<{
           id={creator.id}
           tierAccess={postData.tierAccess}
         />
-      )}
+      </Box>
     </Flex>
   );
 };
