@@ -200,7 +200,23 @@ class _CreatorTabbedSectionState extends State<CreatorTabbedSection> with Single
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                if (index >= posts.length) {
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                    child: Text(
+                      "Published posts only",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  );
+                }
+
+                final postIndex = index - 1;
+
+                if (postIndex >= posts.length) {
                   if (paginatedListModel.hasMoreContents.get() && paginatedListModel.isContentsLoading.get()) {
                     return const Padding(
                       padding: EdgeInsets.all(16.0),
@@ -210,7 +226,7 @@ class _CreatorTabbedSectionState extends State<CreatorTabbedSection> with Single
                   return const SizedBox.shrink();
                 }
 
-                var post = posts[index];
+                var post = posts[postIndex];
 
                 var model = DependencyInjection.authenticationProvider.userModel.get();
                 if (model != null) {
@@ -268,7 +284,7 @@ class _CreatorTabbedSectionState extends State<CreatorTabbedSection> with Single
                   ),
                 );
               },
-              childCount: posts.length + (paginatedListModel.hasMoreContents.get() ? 1 : 0),
+              childCount: posts.length + 1 + (paginatedListModel.hasMoreContents.get() ? 1 : 0),
             ),
           );
         },

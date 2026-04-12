@@ -29,7 +29,7 @@ import { S3Service } from '@/s3/s3.service';
 import * as cheerio from 'cheerio'; // Import cheerio
 import { PostInsight } from '@/database/schemas/analytics';
 import { MembershipsService } from '@/memberships/memberships.service';
-import { User } from '@/database/schemas/user';
+import { User, CreatorStatus } from '@/database/schemas/user';
 import { branding, business } from '@/config';
 import { SettingsService } from '@/admin/services/settings.service';
 
@@ -51,6 +51,17 @@ export class PostsService {
     private readonly membershipsService: MembershipsService,
     private readonly settingsService: SettingsService,
   ) {}
+
+  private async validateCreatorPostAction(creatorId: string, requestedStatus?: string): Promise<void> {
+    const creator = await this.userModel.findById(creatorId);
+    if (!creator) throw new UnauthorizedException('Creator not found');
+    if (creator.creatorStatus === CreatorStatus.SUSPENDED) {
+       throw new UnauthorizedException('Your creator account is suspended. You cannot create or modify posts.');
+    }
+    if (requestedStatus === PostStatus.PUBLISHED && creator.creatorStatus !== CreatorStatus.PUBLISHED) {
+       throw new BadRequestException('Your creator profile must be fully approved and published to post publicly. Drafts are allowed.');
+    }
+  }
 
   private async validatePostContent(textContent?: string): Promise<void> {
     if (!textContent) return;
@@ -182,6 +193,11 @@ export class PostsService {
   }
 
   async updatePost(id: string, updateData: Partial<Post>): Promise<Post> {
+    const existingPost = await this.findById(id);
+    if (!existingPost) throw new NotFoundException('Post not found for update');
+    const existingCreatorId = (existingPost.creator as any)._id?.toString() || existingPost.creator.toString();
+    await this.validateCreatorPostAction(existingCreatorId, updateData.status);
+
     if (updateData.tags) {
       updateData.tags = this.processTags(updateData.tags);
     }
@@ -259,6 +275,7 @@ export class PostsService {
       throw new BadRequestException('Text content is required for text posts');
     }
 
+    await this.validateCreatorPostAction(createPostData.creator, createPostData.status || PostStatus.PUBLISHED);
     await this.validatePostContent(createPostData.textContent);
 
     // Process rich text images before saving
@@ -349,6 +366,7 @@ export class PostsService {
       throw new BadRequestException('Video URL is required');
     }
 
+    await this.validateCreatorPostAction(userId, status || PostStatus.PUBLISHED);
     await this.validateAttachments(attachments);
 
     let videoInfo = this.extractVideoInfo(videoUrl);
@@ -449,6 +467,7 @@ export class PostsService {
     const { title, description, collections, tags, tierAccess, status } =
       createAudioPostDto;
 
+    await this.validateCreatorPostAction(userId, status || PostStatus.PUBLISHED);
     await this.validateAttachments(attachments);
 
     const processedTags = this.processTags(tags);
@@ -493,6 +512,7 @@ export class PostsService {
       thumbnailUrl,
     } = createImagePostDto;
 
+    await this.validateCreatorPostAction(userId, status || PostStatus.PUBLISHED);
     await this.validateAttachments(attachments);
 
     const processedTags = this.processTags(tags);
@@ -533,6 +553,8 @@ export class PostsService {
       tierAccess,
       status,
     } = createLinkPostDto;
+
+    await this.validateCreatorPostAction(userId, status || PostStatus.PUBLISHED);
 
     const processedTags = this.processTags(tags);
     const processedCollections = this.processTags(collections);

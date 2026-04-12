@@ -173,7 +173,7 @@ const HomePage: React.FC<{
               likes: post.likes,
               comments: post.comments,
               locked: post.hasAccess && !isSubscribed,
-              postId: post._id,
+              postId: post._id || (post as any).id,
               previewText: post.previewText,
               description: post.description,
               hasAccess: post.hasAccess,

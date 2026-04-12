@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Flex, Spinner, Text, Stack, Heading } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text, Stack, Heading, Link } from "@chakra-ui/react";
 import TextPost from "@/page-components/creator/text-post";
 import ImagePost from "@/page-components/creator/image-post";
 import VideoPost from "@/page-components/creator/video-post";
@@ -19,7 +19,7 @@ const ProfilePostItem = React.memo(({ post }: { post: CreatorPost }) => {
     body: "",
     timeStamp: new Date(post.createdAt).toISOString(),
     locked: false,
-    postId: post._id,
+    postId: post._id || (post as any).id,
     videoId: post.videoId,
     videoUrl: post.videoUrl,
     likes: post.likes,
@@ -139,6 +139,9 @@ const HomePage: React.FC = () => {
         />
         <Heading fontSize="xl" fontWeight={700} mb={1} css={{ color: "hsl(222.2, 47.4%, 11.2%)" }}>
           My Posts
+          <Text as="span" fontSize="sm" fontWeight="normal" ml={3} css={{ color: "hsl(215.4, 16.3%, 46.9%)" }}>
+            (Published posts only. To view all and modify, go to <Link href="/profile/library/posts" display="inline" css={{ color: "hsl(211, 71%, 43%)", cursor: "pointer", "&:hover": { textDecoration: "underline" } }}>Library Page</Link>)
+          </Text>
         </Heading>
         <Box
           h="1px"

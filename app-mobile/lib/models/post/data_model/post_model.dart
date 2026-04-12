@@ -93,7 +93,7 @@ class PostModel {
   }
 
   PostModel updateFromMap(Map<String, dynamic> map) {
-    id = map["_id"] != null ? ParsingHelper.parseStringMethod(map["_id"]) : id;
+    id = map["_id"] != null ? ParsingHelper.parseStringMethod(map["_id"]) : (map["id"] != null ? ParsingHelper.parseStringMethod(map["id"]) : id);
     type = map["type"] != null ? ParsingHelper.parseStringMethod(map["type"]) : type;
     creatorId = map["creator"] != null ? ParsingHelper.parseStringMethod(map["creator"]) : creatorId;
     if (map["creator"] != null && map["creator"] is Map<String, dynamic>) {

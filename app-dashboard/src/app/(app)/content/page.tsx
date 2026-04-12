@@ -37,6 +37,7 @@ import {
   Link,
   Eye as EyeIcon,
   Bell,
+  User,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -49,7 +50,7 @@ import {
   deletePost,
   notifyCreator,
 } from '@/lib/services';
-import { PostDetailDialog } from '@/components/dialogs';
+import { PostDetailDialog, CreatorDetailDialog } from '@/components/dialogs';
 import {
   Dialog,
   DialogContent,
@@ -139,7 +140,11 @@ function ContentFeedPageInner() {
   const [notifyLoading, setNotifyLoading] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
   const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all');
-  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'published');
+  const [selectedCreator, setSelectedCreator] = useState<any>(null);
+  const [deletePostObj, setDeletePostObj] = useState<Post | null>(null);
+  const [deleteMessage, setDeleteMessage] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const page = Number(searchParams.get('page') || '1');
 
@@ -207,6 +212,24 @@ function ContentFeedPageInner() {
       toast({ title: `Failed to notify: ${e?.message}`, variant: 'destructive' });
     } finally {
       setNotifyLoading(false);
+    }
+  };
+
+  const handleDeleteWithReason = async () => {
+    if (!deletePostObj || deleteMessage.trim().length < 10) return;
+    const id = deletePostObj.id || (deletePostObj as any)._id;
+    setDeleteLoading(true);
+    try {
+      await deletePost(id);
+      await notifyCreator(id, `Your post was deleted. Reason: ${deleteMessage.trim()}`);
+      toast({ title: 'Post deleted and creator notified' });
+      setDeletePostObj(null);
+      setDeleteMessage('');
+      load();
+    } catch (e: any) {
+      toast({ title: `Failed to delete/notify: ${e?.message}`, variant: 'destructive' });
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -321,17 +344,11 @@ function ContentFeedPageInner() {
                         <DropdownMenuItem onClick={() => setSelectedPost(post)} className="rounded-lg cursor-pointer hover:bg-primary/5">
                           <EyeIcon className="mr-2 h-4 w-4 text-muted-foreground" /> View Post
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'withhold')} className="rounded-lg cursor-pointer hover:bg-amber-500/5">
-                          <Ban className="mr-2 h-4 w-4 text-amber-600" /> Withhold
+                        <DropdownMenuItem onClick={() => setSelectedCreator((post as any).creator)} className="rounded-lg cursor-pointer hover:bg-primary/5">
+                          <User className="mr-2 h-4 w-4 text-muted-foreground" /> View Creator
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleAction(post.id || (post as any)._id, 'restore')} className="rounded-lg cursor-pointer hover:bg-emerald-500/5">
-                          <RotateCcw className="mr-2 h-4 w-4 text-emerald-600" /> Restore
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5" onClick={() => handleAction(post.id || (post as any)._id, 'delete')}>
+                        <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive hover:bg-destructive/5" onClick={() => { setDeletePostObj(post); setDeleteMessage(''); }}>
                           <Trash2 className="mr-2 h-4 w-4" /> Delete
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => { setNotifyPost(post); setNotifyMessage(''); }} className="rounded-lg cursor-pointer hover:bg-blue-500/5 text-blue-600 dark:text-blue-400">
-                          <Bell className="mr-2 h-4 w-4" /> Notify Creator
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -350,13 +367,17 @@ function ContentFeedPageInner() {
                   )}
 
                   {/* Content */}
-                  <p className="text-sm text-muted-foreground flex-1 line-clamp-3 leading-relaxed">
-                    {post.content || (post as any).textContent || post.description || post.title || 'No content'}
-                  </p>
+                  <div 
+                    className="text-sm text-muted-foreground flex-1 line-clamp-3 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: post.content || (post as any).textContent || post.description || post.title || 'No content' }}
+                  />
 
                   {/* Footer */}
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
-                    <PostTypeIcon type={post.type} />
+                    <div className="flex items-center gap-2">
+                       <PostTypeIcon type={post.type} />
+                       <StatusBadge status={post.status || (post as any).postStatus} />
+                    </div>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <EyeIcon className="h-3.5 w-3.5" />
@@ -396,43 +417,51 @@ function ContentFeedPageInner() {
         post={selectedPost}
         onClose={() => setSelectedPost(null)}
         onRefresh={load}
+        onViewCreator={(c) => setSelectedCreator(c)}
+        onDeleteRequest={(p) => { setDeletePostObj(p); setDeleteMessage(''); }}
       />
 
-      <Dialog open={!!notifyPost} onOpenChange={(o) => { if (!o) setNotifyPost(null); }}>
+      <CreatorDetailDialog
+        creator={selectedCreator}
+        onClose={() => setSelectedCreator(null)}
+        onRefresh={load}
+      />
+
+      <Dialog open={!!deletePostObj} onOpenChange={(o) => { if (!o) setDeletePostObj(null); }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Notify Creator</DialogTitle>
+            <DialogTitle>Delete Post</DialogTitle>
             <DialogDescription>
-              Send a notice to {(notifyPost as any)?.creator?.displayName || 'the creator'} about this post.
-              The message will be delivered as an in-app notification.
+              Provide a reason for deleting this post. This reason will be sent to the creator.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <div>
-              <Label htmlFor="notify-msg" className="text-xs text-muted-foreground">
-                Message (min. 10 characters)
+              <Label htmlFor="delete-msg" className="text-xs text-muted-foreground">
+                Reason for deletion (min. 10 characters)
               </Label>
               <Textarea
-                id="notify-msg"
-                value={notifyMessage}
-                onChange={(e) => setNotifyMessage(e.target.value)}
-                placeholder="Enter your message to the creator..."
+                id="delete-msg"
+                value={deleteMessage}
+                onChange={(e) => setDeleteMessage(e.target.value)}
+                placeholder="Enter deletion reason..."
                 className="mt-1.5"
                 rows={4}
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setNotifyPost(null)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setDeletePostObj(null)} className="rounded-xl">
               Cancel
             </Button>
             <Button
-              onClick={handleNotify}
-              disabled={notifyLoading || notifyMessage.trim().length < 10}
-              className="rounded-xl btn-gradient"
+              variant="destructive"
+              onClick={handleDeleteWithReason}
+              disabled={deleteLoading || deleteMessage.trim().length < 10}
+              className="rounded-xl"
             >
-              {notifyLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bell className="h-4 w-4" />}
-              Send Notice
+              {deleteLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Confirm Delete
             </Button>
           </DialogFooter>
         </DialogContent>

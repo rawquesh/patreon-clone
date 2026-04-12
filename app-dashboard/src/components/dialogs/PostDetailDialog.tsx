@@ -7,10 +7,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Ban, RotateCcw, Trash2 } from 'lucide-react';
+import { User, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { getPostById, withholdPost, restorePost, deletePost } from '@/lib/services';
+import { getPostById } from '@/lib/services';
 import type { Post, PostDetail, PostStatus } from '@/types';
 
 function StatusBadge({ status }: { status: PostStatus }) {
@@ -27,13 +27,14 @@ interface PostDetailDialogProps {
   post: Post | null;
   onClose: () => void;
   onRefresh: () => void;
+  onViewCreator?: (creator: any) => void;
+  onDeleteRequest?: (post: Post) => void;
 }
 
-export function PostDetailDialog({ post, onClose, onRefresh }: PostDetailDialogProps) {
+export function PostDetailDialog({ post, onClose, onRefresh, onViewCreator, onDeleteRequest }: PostDetailDialogProps) {
   const { toast } = useToast();
   const [detail, setDetail] = useState<PostDetail | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
-  const [loading, setLoading] = useState(false);
   const open = !!post;
 
   useEffect(() => {
@@ -46,31 +47,7 @@ export function PostDetailDialog({ post, onClose, onRefresh }: PostDetailDialogP
     } else if (!open) {
       setDetail(null);
     }
-  }, [open, post]);
-
-  const handleAction = async (action: string) => {
-    if (!detail) return;
-    const id = detail.id || (detail as any)._id;
-    setLoading(true);
-    try {
-      if (action === 'withhold') {
-        await withholdPost(id);
-        toast({ title: 'Post withheld' });
-      } else if (action === 'restore') {
-        await restorePost(id);
-        toast({ title: 'Post restored' });
-      } else if (action === 'delete') {
-        await deletePost(id);
-        toast({ title: 'Post deleted' });
-      }
-      onRefresh();
-      onClose();
-    } catch {
-      toast({ title: `${action} failed`, variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [open, post, toast]);
 
   const p = detail || post;
 
@@ -113,7 +90,7 @@ export function PostDetailDialog({ post, onClose, onRefresh }: PostDetailDialogP
           {/* Media */}
           {p.mediaUrls && p.mediaUrls.length > 0 && (
             <div className="grid grid-cols-2 gap-2 rounded-xl overflow-hidden">
-              {p.mediaUrls.slice(0, 4).map((url, i) => (
+              {p.mediaUrls.slice(0, 4).map((url: string, i: number) => (
                 <div key={i} className="relative aspect-video rounded-lg overflow-hidden">
                   <Image src={url} alt={`Media ${i + 1}`} fill className="object-cover" />
                 </div>
@@ -121,12 +98,10 @@ export function PostDetailDialog({ post, onClose, onRefresh }: PostDetailDialogP
             </div>
           )}
 
-          {(p as any).textContent && (
-            <p className="text-sm whitespace-pre-wrap leading-relaxed">{(p as any).textContent}</p>
-          )}
-          {p.description && (
-            <p className="text-sm whitespace-pre-wrap leading-relaxed">{p.description}</p>
-          )}
+          <div 
+            className="text-sm whitespace-pre-wrap leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: (p as any).textContent || p.description || p.title || 'No content' }}
+          />
 
           {/* Engagement stats */}
           <div className="grid grid-cols-4 gap-3">
@@ -155,21 +130,12 @@ export function PostDetailDialog({ post, onClose, onRefresh }: PostDetailDialogP
           )}
 
           {/* Actions */}
-          <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
-            {p.status === 'published' ? (
-              <Button size="sm" variant="destructive" onClick={() => handleAction('withhold')} disabled={loading} className="rounded-lg">
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
-                Withhold
-              </Button>
-            ) : (
-              <Button size="sm" onClick={() => handleAction('restore')} disabled={loading} className="btn-gradient rounded-lg">
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-                Restore
-              </Button>
-            )}
-            <Button size="sm" variant="destructive" onClick={() => handleAction('delete')} disabled={loading} className="rounded-lg">
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Delete
+          <div className="pt-2 border-t border-border/50 flex flex-wrap gap-2">
+            <Button size="sm" variant="outline" onClick={() => { onClose(); if (onViewCreator) onViewCreator((p as any).creator); }} className="rounded-lg">
+              <User className="mr-2 h-4 w-4" /> View Creator
+            </Button>
+            <Button size="sm" variant="destructive" onClick={() => { onClose(); if (onDeleteRequest) onDeleteRequest(p as Post); }} className="rounded-lg">
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
             </Button>
           </div>
         </div>
