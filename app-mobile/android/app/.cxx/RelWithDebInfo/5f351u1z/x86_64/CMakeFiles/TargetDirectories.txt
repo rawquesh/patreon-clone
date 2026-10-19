@@ -1,2 +1,0 @@
-D:/Patreon Clone - Flutter App/patreon-clone_user/android/app/.cxx/RelWithDebInfo/5f351u1z/x86_64/CMakeFiles/edit_cache.dir
-D:/Patreon Clone - Flutter App/patreon-clone_user/android/app/.cxx/RelWithDebInfo/5f351u1z/x86_64/CMakeFiles/rebuild_cache.dir
