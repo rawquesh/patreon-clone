@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 // End of changes
 
 android {
-    namespace = "com.patreon-clone.app"
+    namespace = "com.example.patreonclone"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -42,7 +42,7 @@ android {
     // End of changes
 
     defaultConfig {
-        applicationId = "com.patreon-clone.app"
+        applicationId = "com.example.patreonclone"
         minSdkVersion flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

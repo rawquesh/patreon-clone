@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:00000000000:android:xxxxxxxxxxxxxxxxxxxxxxxx",
         "android_client_info": {
-          "package_name": "com.patreon-clone.app"
+          "package_name": "com.example.patreonclone"
         }
       },
       "oauth_client": [],
@@ -25,8 +25,8 @@
               "client_id": "00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.patreon-clone.app",
-                "app_store_id": "6749748946"
+                "bundle_id": "com.example.patreonclone",
+                "app_store_id": "0000000000"
               }
             }
           ]

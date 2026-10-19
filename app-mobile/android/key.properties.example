@@ -1,0 +1,11 @@
+# Copy this file to `key.properties` and fill in your own Android signing
+# keystore details, then create the `.jks` file in `android/app/`:
+#
+#   keytool -genkeypair -alias your-alias -keyalg RSA -validity 10000 \
+#           -keystore android/app/your-keystore.jks
+#
+# `storeFile` is relative to the `android/` directory.
+storePassword=your-keystore-password
+keyPassword=your-keystore-password
+keyAlias=your-key-alias
+storeFile=your-keystore.jks

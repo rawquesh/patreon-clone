@@ -1,4 +1,4 @@
-package com.patreon-clone.app
+package com.example.patreonclone
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

@@ -40,7 +40,7 @@ class AppConfig {
   // ─────────────────────────────────────────────────────────────
 
   /// Backend API server base URL.
-  static const String apiServerUrl = "https://your-backend-server.example.com.com";
+  static const String apiServerUrl = "https://your-backend-server.example.com";
 
   /// Primary frontend domain (no trailing slash).
   /// Used for: share links, ToS/Privacy page URLs, Stripe redirect domains.
@@ -274,7 +274,7 @@ class FirebaseConfig {
   static const String iosProjectId = 'your-firebase-project-id';
   static const String iosStorageBucket = 'your-firebase-project.firebasestorage.app';
   static const String iosClientId = '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com';
-  static const String iosBundleId = 'com.patreon-clone.app';
+  static const String iosBundleId = 'com.example.patreonclone';
 
   // Shared
   static const String messagingSenderId = '00000000000';

@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# Flutter / Android / iOS build artifacts
+.dart_tool/
+.flutter-plugins*
+build/
+android/app/.cxx/
+android/app/debug/
+android/app/profile/
+android/app/release/
+*.iml
+.idea/
+
+# Environment & secrets
+.env
+.env.local
+*.jks
+key.properties
+google-services.json
+GoogleService-Info.plist
+
+# Tool / scratch dumps (never commit)
+repomix-output.*
+repomix.config.json
+chakra.txt
+editor-code.md
+analysis_errors.txt
+analysis_output.txt

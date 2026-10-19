@@ -1,9 +1,0 @@
-Analyzing patreon-clone-mobile...                                     
-
-  error - Target of URI doesn't exist: '../../../../components/user_deletion/delete_account_dialog.dart' - lib\pages\creator\dashboard\settings\settings_screen.dart:12:8 - uri_does_not_exist
-  error - The name 'DeleteAccountDialog' isn't a class - lib\pages\creator\dashboard\settings\settings_screen.dart:892:41 - creation_with_non_type
-  error - Target of URI doesn't exist: '../../../../components/post/report_post_dialog.dart' - lib\pages\user\home\screens\post_details_screen.dart:54:8 - uri_does_not_exist
-  error - The method 'ReportPostDialog' isn't defined for the type '_PostDetailsScreenState' - lib\pages\user\home\screens\post_details_screen.dart:679:39 - undefined_method
-  error - Target of URI doesn't exist: 'package:patreon-clone/pages/components/user_deletion/delete_account_dialog.dart' - lib\pages\user\profile\profile_screen.dart:24:8 - uri_does_not_exist
-  error - The name 'DeleteAccountDialog' isn't a class - lib\pages\user\profile\profile_screen.dart:512:41 - creation_with_non_type
-

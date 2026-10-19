@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" package="com.patreon-clone.app">
+    xmlns:tools="http://schemas.android.com/tools" package="com.example.patreonclone">
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -43,7 +43,7 @@
 
     <application android:label="Patreon Clone" android:name="${applicationName}" android:icon="@mipmap/launcher_icon" android:usesCleartextTraffic="true" android:enableOnBackInvokedCallback="true">
 
-        <provider android:name="androidx.core.content.FileProvider" android:authorities="com.patreon-clone.app.provider" android:exported="false" android:grantUriPermissions="true">
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="com.example.patreonclone.provider" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" />
         </provider>
 
