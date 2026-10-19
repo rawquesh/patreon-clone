@@ -10,10 +10,10 @@ build/
 .dart_tool/
 .flutter-plugins*
 build/
-android/app/.cxx/
-android/app/debug/
-android/app/profile/
-android/app/release/
+app-mobile/android/app/.cxx/
+app-mobile/android/app/debug/
+app-mobile/android/app/profile/
+app-mobile/android/app/release/
 *.iml
 .idea/
 
