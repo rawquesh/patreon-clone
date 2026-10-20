@@ -46,7 +46,7 @@ import { MembershipsService } from '@/memberships/memberships.service';
 import { NotificationGeneratorService } from '../notifications/notification-generator.service';
 import * as cheerio from 'cheerio';
 import { OptionalJwtAuthGuard } from '@/auth/optional-auth-guard';
-import * as sharp from 'sharp';
+import sharp, { Sharp } from 'sharp';
 
 @Controller('posts')
 export class PostsController {
