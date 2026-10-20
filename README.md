@@ -16,6 +16,16 @@ It ships as **four apps** that work together:
 | [`app-dashboard`](app-dashboard/) | Next.js 16, shadcn/ui, TanStack Query | Platform operations: moderation, payouts, analytics, reporting |
 | [`app-mobile`](app-mobile/) | Flutter (GetX), Firebase | Native mobile client for creators and members |
 
+## 🌍 Live demo
+
+Try the deployed demo instances (backed by a shared demo database — don't create real
+subscriptions or payouts against it; use the credentials below to log in):
+
+| App | URL | Login |
+|---|---|---|
+| Web app | <https://patreon-clone-web.up.railway.app/> | `test@bluetouch.dev` / `12345678` at [`/auth/login`](https://patreon-clone-web.up.railway.app/auth/login) |
+| Admin dashboard | <https://patreon-clone-dashboard.up.railway.app/> | `info@bluetouch.dev` / `12345678` at [`/login`](https://patreon-clone-dashboard.up.railway.app/login) |
+
 This repo is fully self-contained — no SaaS lock-in. Every external service (Stripe,
 Firebase, S3, OAuth) is configured through environment variables, and the entire product
 can be rebranded by editing a handful of config files (see [Rebranding](#rebranding)).
