@@ -2,24 +2,24 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_audio_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_audio_post_request_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_audio_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_audio_post_request_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/backend/post_creation/post_creation_contoller.dart';
-import 'package:patreon-clone/backend/post_creation/post_creation_provider.dart';
-import 'package:patreon-clone/pages/creator/main/dialogs/create_collection_dialog.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/backend/post_creation/post_creation_contoller.dart';
+import 'package:patreon_clone/backend/post_creation/post_creation_provider.dart';
+import 'package:patreon_clone/pages/creator/main/dialogs/create_collection_dialog.dart';
 
 class CreateAudioPostScreen extends StatefulWidget {
   static const String routeName = '/CreateAudioPostScreen';

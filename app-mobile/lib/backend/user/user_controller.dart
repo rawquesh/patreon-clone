@@ -1,5 +1,5 @@
-import 'package:patreon-clone/backend/user/user_provider.dart';
-import 'package:patreon-clone/backend/user/user_repository.dart';
+import 'package:patreon_clone/backend/user/user_provider.dart';
+import 'package:patreon_clone/backend/user/user_repository.dart';
 
 class UserController {
   late UserRepository _userRepository;

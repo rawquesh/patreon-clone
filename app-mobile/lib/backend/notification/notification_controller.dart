@@ -1,8 +1,8 @@
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/notification/notification_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/notification/notification_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
 
 import 'notification_provider.dart';
 import 'notification_repository.dart';

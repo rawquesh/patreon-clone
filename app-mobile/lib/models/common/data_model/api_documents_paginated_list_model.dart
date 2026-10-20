@@ -1,4 +1,4 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
 import 'data_paginated_list_model.dart';
 
 class APIDocumentsPaginatedListModel<T> extends DataDocumentsPaginatedListModel<T> {

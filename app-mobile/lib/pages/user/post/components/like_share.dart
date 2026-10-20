@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:patreon-clone/backend/post/liked_posts_controller.dart';
-import 'package:patreon-clone/backend/post/liked_posts_provider.dart';
-import 'package:patreon-clone/backend/post/my_post_controller.dart';
-import 'package:patreon-clone/backend/post/post_provider.dart';
-import 'package:patreon-clone/pages/user/home/components/animated_heart_button.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/backend/post/liked_posts_controller.dart';
+import 'package:patreon_clone/backend/post/liked_posts_provider.dart';
+import 'package:patreon_clone/backend/post/my_post_controller.dart';
+import 'package:patreon_clone/backend/post/post_provider.dart';
+import 'package:patreon_clone/pages/user/home/components/animated_heart_button.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'report_post_dialog.dart';
 
 class MyLikeCommentShareWidget extends StatefulWidget {

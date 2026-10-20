@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/pages/components/common/common_text.dart';
+import 'package:patreon_clone/pages/components/common/common_text.dart';
 
 class CommonSubmitButton extends StatelessWidget {
   final Function onTap;

@@ -1,25 +1,25 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/backend/user/user_repository.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/constants/user_constants.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/models/user/request_model/profile_update_request_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/backend/authentication/authentication_controller.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/backend/user/user_repository.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/user_constants.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/models/user/request_model/profile_update_request_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/backend/authentication/authentication_controller.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'package:country_picker/country_picker.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const String routeName = "/EditProfileScreen";

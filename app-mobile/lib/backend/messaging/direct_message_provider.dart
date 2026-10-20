@@ -1,8 +1,8 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/models/chat/chat_model.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/message/message_data_model.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/models/chat/chat_model.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/message/message_data_model.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
 
 class ChatItem {
   final ChatModel chat;

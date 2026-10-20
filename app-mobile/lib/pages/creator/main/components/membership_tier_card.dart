@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 import '../dialogs/add_membership_dialog.dart';
 

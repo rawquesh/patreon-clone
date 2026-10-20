@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyHTMLViewer extends StatefulWidget {

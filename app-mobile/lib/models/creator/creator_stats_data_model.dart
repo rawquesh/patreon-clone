@@ -1,7 +1,7 @@
-import 'package:patreon-clone/models/creator/tier_breakdown_data_model.dart';
+import 'package:patreon_clone/models/creator/tier_breakdown_data_model.dart';
 
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
 
 class CreatorStatsModel {
   int totalPosts;

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:hive/hive.dart';
-import 'package:patreon-clone/managers/hive_manager.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/managers/hive_manager.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 import 'my_post_controller.dart';
 import 'liked_posts_provider.dart';

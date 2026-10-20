@@ -1,6 +1,6 @@
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
 
 import 'theme_provider.dart';
 

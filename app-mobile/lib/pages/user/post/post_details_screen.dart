@@ -6,33 +6,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
-import 'package:patreon-clone/backend/post/post_repository.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
+import 'package:patreon_clone/backend/post/post_repository.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
 
-import 'package:patreon-clone/models/common/data_model/paginated_request_model.dart';
-import 'package:patreon-clone/models/message/attachment_data_model.dart';
-import 'package:patreon-clone/models/post/data_model/comment_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/models/common/data_model/paginated_request_model.dart';
+import 'package:patreon_clone/models/message/attachment_data_model.dart';
+import 'package:patreon_clone/models/post/data_model/comment_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 
-import 'package:patreon-clone/backend/post/liked_posts_controller.dart';
-import 'package:patreon-clone/backend/post/liked_posts_provider.dart';
-import 'package:patreon-clone/backend/post/my_post_controller.dart';
-import 'package:patreon-clone/backend/post/post_provider.dart';
-import 'package:patreon-clone/pages/user/post/components/link_preview_display.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/user/post/components/html_viewer.dart';
-import 'package:patreon-clone/pages/user/post/components/post_tags.dart';
-import 'package:patreon-clone/utils/datetime.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/backend/post/liked_posts_controller.dart';
+import 'package:patreon_clone/backend/post/liked_posts_provider.dart';
+import 'package:patreon_clone/backend/post/my_post_controller.dart';
+import 'package:patreon_clone/backend/post/post_provider.dart';
+import 'package:patreon_clone/pages/user/post/components/link_preview_display.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/user/post/components/html_viewer.dart';
+import 'package:patreon_clone/pages/user/post/components/post_tags.dart';
+import 'package:patreon_clone/utils/datetime.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,11 +49,11 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert'; // For utf8
 // +++ END NEW IMPORTS +++
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/pages/user/home/components/animated_heart_button.dart';
-import 'package:patreon-clone/pages/user/post/components/report_post_dialog.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/pages/user/home/components/animated_heart_button.dart';
+import 'package:patreon_clone/pages/user/post/components/report_post_dialog.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   static const String routeName = "/PostDetailsScreen";

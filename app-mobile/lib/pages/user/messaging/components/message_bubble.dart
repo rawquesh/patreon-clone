@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/message/attachment_data_model.dart';
-import 'package:patreon-clone/models/message/message_data_model.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/message/attachment_data_model.dart';
+import 'package:patreon_clone/models/message/message_data_model.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 
 // A reusable widget that displays text and makes URLs clickable.
 class LinkText extends StatelessWidget {

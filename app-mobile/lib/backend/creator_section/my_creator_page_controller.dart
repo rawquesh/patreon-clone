@@ -1,13 +1,13 @@
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
 
-import 'package:patreon-clone/models/creator/about_data/about_model.dart' show AboutModel;
-// import 'package:patreon-clone/models/creator/about_data/about_model.dart';
-import 'package:patreon-clone/models/social_link/social_links.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart' show UserModel;
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/creator_section/my_creator_page_repository.dart';
+import 'package:patreon_clone/models/creator/about_data/about_model.dart' show AboutModel;
+// import 'package:patreon_clone/models/creator/about_data/about_model.dart';
+import 'package:patreon_clone/models/social_link/social_links.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart' show UserModel;
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/creator_section/my_creator_page_repository.dart';
 
 class MyCreatorPageController {
   Future<String?> publishCreator({required bool acceptTerms}) async {

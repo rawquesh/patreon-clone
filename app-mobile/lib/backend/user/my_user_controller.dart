@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:patreon-clone/backend/user/user_repository.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/backend/user/user_repository.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
 
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/common/api_response.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/common/api_response.dart';
 
 class MyUserController {
   late UserRepository _userRepository;

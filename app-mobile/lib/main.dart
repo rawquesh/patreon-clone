@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/extensions.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/firebase_options.dart';
-import 'package:patreon-clone/pages/my_app.dart';
+import 'package:patreon_clone/utils/extensions.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/firebase_options.dart';
+import 'package:patreon_clone/pages/my_app.dart';
 
 import 'backend/app_init_controller.dart';
 import 'navigation/app_router.dart';

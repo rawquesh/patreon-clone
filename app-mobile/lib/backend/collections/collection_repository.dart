@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:http_parser/http_parser.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
 
 class CollectionRepository {
   final ApiService _apiService = ApiService();

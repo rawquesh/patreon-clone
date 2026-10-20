@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/constants/constants.dart';
-import 'package:patreon-clone/pages/user/creator/component/creator_section.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/constants/constants.dart';
+import 'package:patreon_clone/pages/user/creator/component/creator_section.dart';
 
 class ExploreScreen extends StatefulWidget {
   static const String routeName = '/ExploreScreen';

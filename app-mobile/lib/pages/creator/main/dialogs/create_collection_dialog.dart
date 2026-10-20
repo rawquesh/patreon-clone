@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/collections/collection_controller.dart';
-import 'package:patreon-clone/backend/collections/collection_provider.dart';
+import 'package:patreon_clone/backend/collections/collection_controller.dart';
+import 'package:patreon_clone/backend/collections/collection_provider.dart';
 
 class CreateCollectionDialog extends StatefulWidget {
   final CollectionModel? collection;

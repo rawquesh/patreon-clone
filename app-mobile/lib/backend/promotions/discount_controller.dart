@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:patreon-clone/models/promotions/discount/discount_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/models/promotions/discount/discount_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 import 'discount_provider.dart';
 import 'discount_repository.dart';

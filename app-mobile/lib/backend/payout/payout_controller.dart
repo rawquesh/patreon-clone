@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
-import 'package:patreon-clone/models/common/data_model/paginated_request_model.dart';
-import 'package:patreon-clone/models/payout/payout_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/backend/payout/payout_provider.dart';
-import 'package:patreon-clone/backend/payout/payout_repository.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
+import 'package:patreon_clone/models/common/data_model/paginated_request_model.dart';
+import 'package:patreon_clone/models/payout/payout_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/backend/payout/payout_provider.dart';
+import 'package:patreon_clone/backend/payout/payout_repository.dart';
 
 class PayoutController {
   final PayoutProvider provider;

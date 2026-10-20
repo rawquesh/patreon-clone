@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/creator/audience/audience_page.dart';
-import 'package:patreon-clone/pages/creator/insights/insights_screen.dart';
-import 'package:patreon-clone/pages/creator/library/library_screen.dart';
-import 'package:patreon-clone/pages/creator/notification/notification_listing_screen.dart';
-import 'package:patreon-clone/pages/creator/payout/payout_screen.dart';
-import 'package:patreon-clone/pages/creator/promotions/promotions_screen.dart';
-import 'package:patreon-clone/pages/creator/settings/settings_screen.dart';
-import 'package:patreon-clone/pages/user/messaging/message_screen.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/creator/audience/audience_page.dart';
+import 'package:patreon_clone/pages/creator/insights/insights_screen.dart';
+import 'package:patreon_clone/pages/creator/library/library_screen.dart';
+import 'package:patreon_clone/pages/creator/notification/notification_listing_screen.dart';
+import 'package:patreon_clone/pages/creator/payout/payout_screen.dart';
+import 'package:patreon_clone/pages/creator/promotions/promotions_screen.dart';
+import 'package:patreon_clone/pages/creator/settings/settings_screen.dart';
+import 'package:patreon_clone/pages/user/messaging/message_screen.dart';
 
-import 'package:patreon-clone/pages/creator/main/my_creator_page.dart';
-import 'package:patreon-clone/pages/user/home/components/account_switcher_sheet.dart';
+import 'package:patreon_clone/pages/creator/main/my_creator_page.dart';
+import 'package:patreon_clone/pages/user/home/components/account_switcher_sheet.dart';
 
 class CreatorMainScreen extends StatefulWidget {
   static const String routeName = "/CreatorMainScreen";

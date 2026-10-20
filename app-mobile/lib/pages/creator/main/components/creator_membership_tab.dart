@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/backend/memberships/membership_controller.dart';
-import 'package:patreon-clone/backend/memberships/membership_provider.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/creator/main/dialogs/add_membership_dialog.dart';
-import 'package:patreon-clone/pages/creator/main/components/membership_tier_card.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/backend/memberships/membership_controller.dart';
+import 'package:patreon_clone/backend/memberships/membership_provider.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/creator/main/dialogs/add_membership_dialog.dart';
+import 'package:patreon_clone/pages/creator/main/components/membership_tier_card.dart';
 import 'package:provider/provider.dart';
 
 class CreatorMembershipTab extends StatefulWidget {

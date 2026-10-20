@@ -1,17 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/memberships/membership_controller.dart';
-import 'package:patreon-clone/backend/memberships/membership_provider.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/memberships/membership_controller.dart';
+import 'package:patreon_clone/backend/memberships/membership_provider.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
 
 class AddMembershipDialog extends StatefulWidget {
   final MembershipModel? membership;

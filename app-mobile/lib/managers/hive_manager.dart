@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 class HiveManager {
   static final HiveManager _instance = HiveManager._();

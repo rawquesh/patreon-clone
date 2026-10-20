@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 import 'theme_data.dart';
 

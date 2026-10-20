@@ -1,6 +1,6 @@
-import 'package:patreon-clone/models/social_link/social_links.dart';
+import 'package:patreon_clone/models/social_link/social_links.dart';
 
-import 'package:patreon-clone/utils/my_utils.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
 
 class UpdateSocialLinksRequestModel {
   List<SocialLinkModel> socialLinks;

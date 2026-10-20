@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:patreon-clone/models/subscription/subscription_model.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/subscription/subscription_model.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 // import 'package:provider/provider.dart';
 
 // import '../../../backend/memberships/membership_controller.dart';

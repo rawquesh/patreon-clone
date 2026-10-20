@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 class PostTagsWidget extends StatelessWidget {
   final PostModel post;

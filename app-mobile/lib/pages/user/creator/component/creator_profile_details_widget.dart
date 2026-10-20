@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/models/subscription/subscription_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/models/subscription/subscription_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:patreon-clone/pages/user/creator/component/report_user_dialog.dart';
+import 'package:patreon_clone/pages/user/creator/component/report_user_dialog.dart';
 
 class CreatorProfileDetailsWidget extends StatefulWidget {
   final CreatorModel creatorModel;

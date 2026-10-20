@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class CollectionCard extends StatelessWidget {
   final CollectionModel collection;

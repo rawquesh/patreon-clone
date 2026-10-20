@@ -1,5 +1,5 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/models/promotions/discount/discount_model.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/models/promotions/discount/discount_model.dart';
 
 class DiscountProvider extends CommonProvider {
   DiscountProvider() {

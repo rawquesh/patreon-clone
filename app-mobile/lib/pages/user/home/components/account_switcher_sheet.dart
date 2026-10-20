@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/navigation/direct_navigator.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/navigation/direct_navigator.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 class AccountSwitcherSheet extends StatefulWidget {
   const AccountSwitcherSheet({super.key});

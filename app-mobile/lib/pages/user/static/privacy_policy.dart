@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/styles/styles.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/styles/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class _AppStyles {

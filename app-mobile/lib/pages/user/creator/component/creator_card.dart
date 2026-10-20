@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-// import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+// import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class CreatorCard extends StatefulWidget {
   final CreatorModel creator;

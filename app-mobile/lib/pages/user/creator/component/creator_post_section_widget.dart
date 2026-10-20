@@ -1,30 +1,30 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/user/home/components/username_widget.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/user/home/components/username_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
 // import '../../../navigation/navigation_arguments.dart';
 // import '../../../navigation/navigation_controller.dart';
-import 'package:patreon-clone/pages/user/post/cards/audio_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/image_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/link_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/text_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/video_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/audio_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/image_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/link_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/text_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/video_post_card.dart';
 
 class CreatorPostsSectionWidget extends StatefulWidget {
   final CreatorModel creatorModel;

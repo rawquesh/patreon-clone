@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/backend/post_report/post_report_repository.dart';
-import 'package:patreon-clone/backend/post_report/report_reason.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/backend/post_report/post_report_repository.dart';
+import 'package:patreon_clone/backend/post_report/report_reason.dart';
 
 class ReportPostDialog extends StatefulWidget {
   final String postId;

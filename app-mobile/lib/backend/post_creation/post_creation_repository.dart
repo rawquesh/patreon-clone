@@ -3,23 +3,23 @@ import 'dart:io';
 import 'dart:developer';
 
 import 'package:http_parser/http_parser.dart';
-// import 'package:patreon-clone/configs/constants.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_audio_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_audio_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_images_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_link_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_text_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_draft_video_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_images_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_link_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_text_post_request_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_video_post_request_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+// import 'package:patreon_clone/configs/constants.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_audio_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_audio_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_images_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_link_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_text_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_draft_video_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_images_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_link_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_text_post_request_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_video_post_request_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
-import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
 
 class PostCreationRepository {
   final ApiService _apiService = ApiService();

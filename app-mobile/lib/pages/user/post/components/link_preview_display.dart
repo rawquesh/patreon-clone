@@ -1,6 +1,6 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 class LinkPreviewDisplay extends StatelessWidget {
   const LinkPreviewDisplay({

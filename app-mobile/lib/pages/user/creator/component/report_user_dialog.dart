@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/backend/user_report/user_report_repository.dart';
-import 'package:patreon-clone/backend/user_report/report_user_reason.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/backend/user_report/user_report_repository.dart';
+import 'package:patreon_clone/backend/user_report/report_user_reason.dart';
 
 class ReportUserDialog extends StatefulWidget {
   final String userId;

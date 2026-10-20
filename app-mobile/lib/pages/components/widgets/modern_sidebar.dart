@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
+import 'package:patreon_clone/config/index.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class ModernSidebar extends StatelessWidget {

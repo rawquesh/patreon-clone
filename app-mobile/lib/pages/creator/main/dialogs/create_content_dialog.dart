@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 class CreateContentDialog extends StatelessWidget {
   const CreateContentDialog({super.key});

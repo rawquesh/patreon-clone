@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/user/my_user_controller.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/user/my_user_controller.dart';
 
 class MemberSettingsScreen extends StatefulWidget {
   static const String routeName = '/MemberSettingsScreen';

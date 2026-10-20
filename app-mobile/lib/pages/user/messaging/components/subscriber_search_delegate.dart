@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/audience/subscriber.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/models/audience/subscriber.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
 
-import 'package:patreon-clone/backend/messaging/direct_message_controller.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_controller.dart';
 
 class SubscriberSearchDelegate extends SearchDelegate<Subscriber?> {
   final DirectMessageController controller;

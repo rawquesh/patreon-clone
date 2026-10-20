@@ -1,30 +1,30 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/backend/post/post_repository.dart';
-import 'package:patreon-clone/constants/constants.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/utils/datetime.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/backend/post/post_repository.dart';
+import 'package:patreon_clone/constants/constants.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/utils/datetime.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart'; // Added for go_router
-import 'package:patreon-clone/navigation/app_router.dart'; // Added for Routes
+import 'package:patreon_clone/navigation/app_router.dart'; // Added for Routes
 
-import 'package:patreon-clone/backend/collections/collection_controller.dart';
-import 'package:patreon-clone/backend/collections/collection_provider.dart';
-import 'package:patreon-clone/backend/library/library_controller.dart';
+import 'package:patreon_clone/backend/collections/collection_controller.dart';
+import 'package:patreon_clone/backend/collections/collection_provider.dart';
+import 'package:patreon_clone/backend/library/library_controller.dart';
 // import '../../../../navigation/navigation_arguments.dart'; // This was not explicitly removed but is likely unused now
 // import '../../../../navigation/navigation_controller.dart';
-import 'package:patreon-clone/backend/post/my_post_controller.dart';
-import 'package:patreon-clone/backend/post/post_provider.dart';
+import 'package:patreon_clone/backend/post/my_post_controller.dart';
+import 'package:patreon_clone/backend/post/post_provider.dart';
 
 // Enum to define the type of posts to display
 enum PostListType { published, drafts }

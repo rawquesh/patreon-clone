@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/extensions.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/spacer.dart';
+import 'package:patreon_clone/utils/extensions.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/spacer.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:patreon-clone/constants/constants.dart';
+import 'package:patreon_clone/constants/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = "/SplashScreen";
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> with MySafeState {
                       dimension: context.sizeData.width * 0.7,
                       child: Image(
                         // image: AssetImage(AppAssets.splashLogo3),
-                        image: const AssetImage(AppAssets.patreon-cloneLogo),
+                        image: const AssetImage(AppAssets.patreon_cloneLogo),
                         width: 120,
                         height: 120,
                         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {

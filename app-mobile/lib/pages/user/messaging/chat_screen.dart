@@ -1,27 +1,27 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/message/message_data_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/message/message_data_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/backend/messaging/direct_message_controller.dart';
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_controller.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 import 'components/message_bubble.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatItem chat;

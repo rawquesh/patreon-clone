@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:patreon-clone/config/index.dart';
+import 'package:patreon_clone/config/index.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///

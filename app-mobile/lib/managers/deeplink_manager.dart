@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/navigation/direct_navigator.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/navigation/direct_navigator.dart';
 
 /// A singleton class to handle deep linking logic.
 class DeepLinkManager {

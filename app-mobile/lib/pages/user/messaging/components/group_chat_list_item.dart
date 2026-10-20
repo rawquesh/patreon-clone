@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 
 class GroupChatListItem extends StatelessWidget {
   final ChatItem chat;

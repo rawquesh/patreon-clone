@@ -1,6 +1,6 @@
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/posts_analytics_repository.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/posts_analytics_repository.dart';
 
 class PostsAnalyticsController {
   final PostsAnalyticsProvider provider;

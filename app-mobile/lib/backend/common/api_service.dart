@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/constants/api_constants.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/common/data_model/paginated_request_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/helpers/parsing_helper.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/api_constants.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/common/data_model/paginated_request_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
 import 'api_exception.dart';
 import 'api_response.dart';
 

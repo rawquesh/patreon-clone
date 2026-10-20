@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/backend/creator_section/my_creator_page_controller.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/backend/creator_section/my_creator_page_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
 // Make sure to import your LoadingWidget
 
 class PublishCreatorScreen extends StatefulWidget {

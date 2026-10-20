@@ -2,21 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/user/explore/explore_screen.dart';
-import 'package:patreon-clone/pages/user/messaging/message_screen.dart';
-import 'package:patreon-clone/pages/user/notification/notification_screen.dart';
-import 'package:patreon-clone/pages/user/profile/profile_screen.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/user/explore/explore_screen.dart';
+import 'package:patreon_clone/pages/user/messaging/message_screen.dart';
+import 'package:patreon_clone/pages/user/notification/notification_screen.dart';
+import 'package:patreon_clone/pages/user/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/pages/components/widgets/flashy_tab_bar.dart';
-import 'package:patreon-clone/pages/tab_state.dart';
-import 'package:patreon-clone/pages/user/home/components/account_switcher_sheet.dart';
-import 'package:patreon-clone/pages/user/home/components/custom_bottom_bar.dart';
+import 'package:patreon_clone/pages/components/widgets/flashy_tab_bar.dart';
+import 'package:patreon_clone/pages/tab_state.dart';
+import 'package:patreon_clone/pages/user/home/components/account_switcher_sheet.dart';
+import 'package:patreon_clone/pages/user/home/components/custom_bottom_bar.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {

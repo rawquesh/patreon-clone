@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html_unescape/html_unescape.dart';
-import 'package:patreon-clone/models/social_link/social_links.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/social_link/social_links.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/creator_section/my_creator_page_controller.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/creator_section/my_creator_page_controller.dart';
 
 class CreatorAboutTab extends StatefulWidget {
   static const String routeName = "/CreatorAboutTab";

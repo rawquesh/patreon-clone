@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/backend/memberships/membership_provider.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/backend/memberships/membership_provider.dart';
 
 import 'membership_repository.dart';
 

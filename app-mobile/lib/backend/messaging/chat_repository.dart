@@ -1,10 +1,10 @@
-import 'package:patreon-clone/constants/constants.dart';
-import 'package:patreon-clone/models/chat/chat_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/models/audience/subscriber.dart';
+import 'package:patreon_clone/constants/constants.dart';
+import 'package:patreon_clone/models/chat/chat_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/models/audience/subscriber.dart';
 
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
 
 class ChatRepository {
   final ApiService _apiService = ApiService();

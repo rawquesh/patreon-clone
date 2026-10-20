@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:patreon-clone/utils/my_utils.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
 
 class CreateAudioPostRequestModel {
   String title;

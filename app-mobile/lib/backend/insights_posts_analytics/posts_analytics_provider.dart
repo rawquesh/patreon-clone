@@ -1,5 +1,5 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/post_analytics_post_model.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/post_analytics_post_model.dart';
 
 class PostsAnalyticsProvider extends CommonProvider {
   PostsAnalyticsProvider() {

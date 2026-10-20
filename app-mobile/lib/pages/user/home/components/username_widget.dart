@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/utils/datetime.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/utils/datetime.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class UsernameWidget extends StatelessWidget {
   final PostModel post;

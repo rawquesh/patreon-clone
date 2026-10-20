@@ -1,6 +1,6 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 import 'parsing_helper.dart';
 
 class EncryptionHelper {

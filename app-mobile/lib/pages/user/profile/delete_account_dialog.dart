@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/backend/user_deletion/user_deletion_repository.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/backend/user_deletion/user_deletion_repository.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:provider/provider.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
   const DeleteAccountDialog({super.key});

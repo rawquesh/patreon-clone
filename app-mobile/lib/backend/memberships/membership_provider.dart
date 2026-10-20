@@ -1,5 +1,5 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
 
 class MembershipProvider extends CommonProvider {
   MembershipProvider() {

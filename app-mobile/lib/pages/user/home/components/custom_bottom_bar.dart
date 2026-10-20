@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
-import 'package:patreon-clone/config/index.dart';
+import 'package:patreon_clone/config/index.dart';
 
 class HomePageTabs {
   static const int home = 0;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {

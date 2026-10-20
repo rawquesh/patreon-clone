@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:patreon-clone/models/promotions/gift/gift_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
+import 'package:patreon_clone/models/promotions/gift/gift_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
 
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
 
 class GiftRepository {
   final ApiService _apiService = ApiService();

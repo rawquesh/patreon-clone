@@ -1,4 +1,4 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
 
 class UserProvider extends CommonProvider {
   UserProvider();

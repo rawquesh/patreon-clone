@@ -1,27 +1,27 @@
 import 'dart:async';
 // import 'dart:convert';  // No longer needed - ApiService handles JSON
 import 'dart:io';
-import 'package:patreon-clone/models/message/attachment_data_model.dart';
+import 'package:patreon_clone/models/message/attachment_data_model.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_response.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_response.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
 
-import 'package:patreon-clone/models/audience/subscriber.dart';
-import 'package:patreon-clone/models/chat/chat_model.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/message/message_data_model.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/helpers/parsing_helper.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/models/audience/subscriber.dart';
+import 'package:patreon_clone/models/chat/chat_model.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/message/message_data_model.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
 
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 import 'chat_repository.dart';
 import 'chat_socket_service.dart';
 import 'direct_message_provider.dart';

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/constants/auth_constants.dart';
-import 'package:patreon-clone/utils/extensions.dart';
-import 'package:patreon-clone/managers/hive_manager.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/managers/deeplink_manager.dart';
-import 'package:patreon-clone/managers/fcm_manager.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/auth_constants.dart';
+import 'package:patreon_clone/utils/extensions.dart';
+import 'package:patreon_clone/managers/hive_manager.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/managers/deeplink_manager.dart';
+import 'package:patreon_clone/managers/fcm_manager.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/backend/common/api_response.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/common/api_response.dart';
 import 'authentication_provider.dart';
 import 'authentication_repository.dart';
 

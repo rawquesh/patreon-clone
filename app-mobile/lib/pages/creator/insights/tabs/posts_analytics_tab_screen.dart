@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/insights_posts_analytics/post_analytics_post_model.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/posts_analytics_controller.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/post_analytics_post_model.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/posts_analytics_controller.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
 
 class Post {
   final String id;

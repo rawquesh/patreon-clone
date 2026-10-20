@@ -1,5 +1,5 @@
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
 
 class UpdateUserRequestModel {
   String userId;

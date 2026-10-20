@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:patreon-clone/models/promotions/discount/discount_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/promotions/discount/discount_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/promotions/discount_controller.dart';
-import 'package:patreon-clone/backend/promotions/discount_provider.dart';
+import 'package:patreon_clone/backend/promotions/discount_controller.dart';
+import 'package:patreon_clone/backend/promotions/discount_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class DiscountTabScreen extends StatefulWidget {
   const DiscountTabScreen({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/utils/extensions.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/pages/tab_state.dart';
+import 'package:patreon_clone/pages/tab_state.dart';
 
 class StockStriveAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController tabController;

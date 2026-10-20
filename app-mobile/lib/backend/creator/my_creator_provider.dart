@@ -1,11 +1,11 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/creator/creator_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/models/creator/creator_stats_data_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/subscription/subscription_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/creator/creator_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/models/creator/creator_stats_data_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/subscription/subscription_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 class MyCreatorProvider extends CommonProvider {
   MyCreatorProvider() {

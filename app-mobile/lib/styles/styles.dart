@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
+import 'package:patreon_clone/config/index.dart';
 
 class Styles {
   static final Styles _instance = Styles._();

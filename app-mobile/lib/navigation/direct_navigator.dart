@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/backend/post/post_repository.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/backend/post/post_repository.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
 
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
-import 'package:patreon-clone/pages/user/home/components/custom_bottom_bar.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/pages/user/home/components/custom_bottom_bar.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
 
-import 'package:patreon-clone/pages/tab_state.dart';
-import 'package:patreon-clone/backend/messaging/direct_message_controller.dart';
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/pages/tab_state.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_controller.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 
 class DirectNavigator {
   static void navigateToTab(int tabIndex, {int messagingTabIndex = 0}) {

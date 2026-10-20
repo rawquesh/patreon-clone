@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/styles.dart';
+import 'package:patreon_clone/styles/styles.dart';
 
 import 'font_manager.dart';
 

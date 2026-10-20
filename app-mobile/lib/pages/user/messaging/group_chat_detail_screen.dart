@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 
 class GroupChatDetailsScreen extends StatefulWidget {
   final ChatItem chat;

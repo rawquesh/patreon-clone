@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/models/social_link/social_links.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/models/social_link/social_links.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
-import 'package:patreon-clone/backend/creator_section/my_creator_page_controller.dart';
+import 'package:patreon_clone/backend/creator_section/my_creator_page_controller.dart';
 
 class EditSocialLinksDialog extends StatefulWidget {
   final List<SocialLinkModel> initialSocialLinks;

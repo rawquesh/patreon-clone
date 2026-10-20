@@ -1,24 +1,24 @@
-import 'package:patreon-clone/backend/audience/audience_provider.dart';
-import 'package:patreon-clone/backend/collections/collection_provider.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/backend/insights_earnings_analytics/earnings_analytics_provider.dart';
-import 'package:patreon-clone/backend/insights_memberships_analytics/membership_analytics_provider.dart';
-import 'package:patreon-clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
-import 'package:patreon-clone/backend/memberships/membership_provider.dart';
-import 'package:patreon-clone/backend/notification/notification_provider.dart';
-import 'package:patreon-clone/backend/payout/payout_provider.dart';
-import 'package:patreon-clone/backend/promotions/gifts/gifts_provider.dart';
-import 'package:patreon-clone/styles/theme_provider.dart';
+import 'package:patreon_clone/backend/audience/audience_provider.dart';
+import 'package:patreon_clone/backend/collections/collection_provider.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/backend/insights_earnings_analytics/earnings_analytics_provider.dart';
+import 'package:patreon_clone/backend/insights_memberships_analytics/membership_analytics_provider.dart';
+import 'package:patreon_clone/backend/insights_posts_analytics/posts_analytics_provider.dart';
+import 'package:patreon_clone/backend/memberships/membership_provider.dart';
+import 'package:patreon_clone/backend/notification/notification_provider.dart';
+import 'package:patreon_clone/backend/payout/payout_provider.dart';
+import 'package:patreon_clone/backend/promotions/gifts/gifts_provider.dart';
+import 'package:patreon_clone/styles/theme_provider.dart';
 
-import 'package:patreon-clone/pages/tab_state.dart';
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/authentication/authentication_controller.dart';
-import 'package:patreon-clone/backend/messaging/chat_socket_service.dart';
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
-import 'package:patreon-clone/backend/post/liked_posts_provider.dart';
-import 'package:patreon-clone/backend/post/post_provider.dart';
-import 'package:patreon-clone/backend/post_creation/post_creation_provider.dart';
-import 'package:patreon-clone/backend/promotions/discount_provider.dart';
+import 'package:patreon_clone/pages/tab_state.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/authentication/authentication_controller.dart';
+import 'package:patreon_clone/backend/messaging/chat_socket_service.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/post/liked_posts_provider.dart';
+import 'package:patreon_clone/backend/post/post_provider.dart';
+import 'package:patreon_clone/backend/post_creation/post_creation_provider.dart';
+import 'package:patreon_clone/backend/promotions/discount_provider.dart';
 
 class DependencyInjection {
   static final AuthenticationProvider authenticationProvider = AuthenticationProvider();

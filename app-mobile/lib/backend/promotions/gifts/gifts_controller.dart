@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/promotions/gift/gift_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/models/promotions/gift/gift_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 import 'gifts_provider.dart';
 import 'gifts_repository.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
 
-import 'package:patreon-clone/pages/components/widgets/messaging_app_bar.dart';
+import 'package:patreon_clone/pages/components/widgets/messaging_app_bar.dart';
 import 'components/community_chats_tab.dart';
 import 'components/direct_message_tab.dart';
 

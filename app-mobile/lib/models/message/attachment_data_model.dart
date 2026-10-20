@@ -1,4 +1,4 @@
-import 'package:patreon-clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
 
 class AttachmentModel {
   final String id;

@@ -1,4 +1,4 @@
-name: patreon-clone
+name: patreon_clone
 description: "Patreon Clone Mobile App"
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev

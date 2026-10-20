@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
 import 'create_audio_post_screen.dart';
 import 'create_image_post_screen.dart';

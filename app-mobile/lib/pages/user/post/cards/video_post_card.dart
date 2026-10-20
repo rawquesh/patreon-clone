@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/user/post/components/html_viewer.dart';
-import 'package:patreon-clone/pages/user/post/components/like_share.dart';
-import 'package:patreon-clone/pages/user/post/components/post_tags.dart';
-import 'package:patreon-clone/pages/user/home/components/username_widget.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/user/post/components/html_viewer.dart';
+import 'package:patreon_clone/pages/user/post/components/like_share.dart';
+import 'package:patreon_clone/pages/user/post/components/post_tags.dart';
+import 'package:patreon_clone/pages/user/home/components/username_widget.dart';
 // For clamping
 
 // Import the new packages

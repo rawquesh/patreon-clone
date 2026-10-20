@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/audience/member_model.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/audience/member_model.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:patreon-clone/backend/audience/audience_controller.dart';
-import 'package:patreon-clone/backend/audience/audience_provider.dart';
+import 'package:patreon_clone/backend/audience/audience_controller.dart';
+import 'package:patreon_clone/backend/audience/audience_provider.dart';
 
 class AudiencePage extends StatefulWidget {
   static const String routeName = '/AudiencePage';

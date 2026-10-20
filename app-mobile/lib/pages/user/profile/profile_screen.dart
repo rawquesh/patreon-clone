@@ -3,29 +3,29 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/backend/authentication/authentication_controller.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/user/home/components/account_switcher_sheet.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/backend/authentication/authentication_controller.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/user/home/components/account_switcher_sheet.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/pages/user/profile/delete_account_dialog.dart';
-import 'package:patreon-clone/styles/theme_controller.dart';
-import 'package:patreon-clone/styles/theme_provider.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/pages/user/profile/delete_account_dialog.dart';
+import 'package:patreon_clone/styles/theme_controller.dart';
+import 'package:patreon_clone/styles/theme_provider.dart';
 // import '../../navigation/navigation_controller.dart';
-import 'package:patreon-clone/constants/constants.dart';
+import 'package:patreon_clone/constants/constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

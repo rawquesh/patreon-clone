@@ -1,8 +1,8 @@
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
-import 'package:patreon-clone/pages/creator/insights/membership_analytics_model.dart';
-import 'package:patreon-clone/backend/common/api_endpoints.dart';
-import 'package:patreon-clone/backend/common/api_service.dart';
+import 'package:patreon_clone/pages/creator/insights/membership_analytics_model.dart';
+import 'package:patreon_clone/backend/common/api_endpoints.dart';
+import 'package:patreon_clone/backend/common/api_service.dart';
 
 class MembershipAnalyticsRepository {
   final ApiService _apiService = ApiService();

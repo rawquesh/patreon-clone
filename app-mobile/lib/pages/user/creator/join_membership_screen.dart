@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/backend/memberships/membership_provider.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/backend/memberships/membership_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:patreon-clone/backend/memberships/membership_controller.dart';
+import 'package:patreon_clone/backend/memberships/membership_controller.dart';
 
 class JoinMembershipScreen extends StatefulWidget {
   final String membershipId;

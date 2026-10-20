@@ -1,7 +1,7 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
 
 class CollectionProvider extends CommonProvider {
   CollectionProvider() {

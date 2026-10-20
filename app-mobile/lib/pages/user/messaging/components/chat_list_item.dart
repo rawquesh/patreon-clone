@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/pages/components/common/common_cachednetwork_image.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/components/common/common_cachednetwork_image.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 
-import 'package:patreon-clone/backend/messaging/direct_message_provider.dart';
+import 'package:patreon_clone/backend/messaging/direct_message_provider.dart';
 
 class ChatListItem extends StatelessWidget {
   final ChatItem chat;

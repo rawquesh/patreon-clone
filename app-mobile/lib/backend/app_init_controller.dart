@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
-import 'package:patreon-clone/constants/app_constants.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/styles/theme_provider.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_utils.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/backend/post/my_post_controller.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/app_constants.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/styles/theme_provider.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_utils.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/backend/post/my_post_controller.dart';
 
 import 'authentication/authentication_controller.dart';
 import 'authentication/authentication_provider.dart';
 import 'common/app_controller.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-import 'package:patreon-clone/styles/theme_controller.dart';
-import 'package:patreon-clone/backend/post/liked_posts_controller.dart';
-import 'package:patreon-clone/backend/post/liked_posts_provider.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+import 'package:patreon_clone/styles/theme_controller.dart';
+import 'package:patreon_clone/backend/post/liked_posts_controller.dart';
+import 'package:patreon_clone/backend/post/liked_posts_provider.dart';
 import 'common/dependency_injection.dart';
 
 class AppInitController {
@@ -160,7 +160,7 @@ class AppInitController {
       AppAssets.onBoardingSubImage2,
       AppAssets.onBoardingSubImage3,
       AppAssets.onBoardingNextButton,
-      AppAssets.patreon-cloneLogo,
+      AppAssets.patreon_cloneLogo,
     ];
     MyPrint.printOnConsole("assetImagesToPreCache:$assetImagesToPreCache", tag: tag);
 

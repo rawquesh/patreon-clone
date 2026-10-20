@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
 
 class MyPrint {
   static String _logData = "";

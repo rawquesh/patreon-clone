@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/config/index.dart';
-import 'package:patreon-clone/constants/constants.dart';
-import 'package:patreon-clone/styles/styles.dart';
-import 'package:patreon-clone/models/user/data_model/user_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/utils/my_toast.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/config/index.dart';
+import 'package:patreon_clone/constants/constants.dart';
+import 'package:patreon_clone/styles/styles.dart';
+import 'package:patreon_clone/models/user/data_model/user_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/utils/my_toast.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
-import 'package:patreon-clone/backend/authentication/authentication_controller.dart';
-import 'package:patreon-clone/backend/authentication/authentication_provider.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
+import 'package:patreon_clone/backend/authentication/authentication_controller.dart';
+import 'package:patreon_clone/backend/authentication/authentication_provider.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
 
 import 'package:flutter/gestures.dart';
 
@@ -390,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> with MySafeState {
 
   Widget _buildHeaderLogoSection(BuildContext context) => ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Image.asset(AppAssets.patreon-cloneLogo, height: 150, width: 150, fit: BoxFit.cover));
+      child: Image.asset(AppAssets.patreon_cloneLogo, height: 150, width: 150, fit: BoxFit.cover));
   Widget _buildHeaderSection(BuildContext context) => Text("Log in or sign up",
       style: themeData.textTheme.headlineMedium
           ?.copyWith(color: themeData.colorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 24)

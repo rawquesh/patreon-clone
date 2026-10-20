@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/pages/creator/promotions/tabs/discount_tab_screen.dart';
-import 'package:patreon-clone/pages/creator/promotions/tabs/gifts_tab_screen.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/pages/creator/promotions/tabs/discount_tab_screen.dart';
+import 'package:patreon_clone/pages/creator/promotions/tabs/gifts_tab_screen.dart';
 
 class PromotionsScreen extends StatefulWidget {
   const PromotionsScreen({super.key});

@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/models/common/data_model/api_documents_paginated_list_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/managers/deeplink_manager.dart';
-import 'package:patreon-clone/managers/fcm_manager.dart';
-import 'package:patreon-clone/pages/user/post/components/decoration.dart';
-import 'package:patreon-clone/pages/creator/main/components/creator_about_tab.dart';
-import 'package:patreon-clone/pages/creator/main/components/creator_collections_tab.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/models/common/data_model/api_documents_paginated_list_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/managers/deeplink_manager.dart';
+import 'package:patreon_clone/managers/fcm_manager.dart';
+import 'package:patreon_clone/pages/user/post/components/decoration.dart';
+import 'package:patreon_clone/pages/creator/main/components/creator_about_tab.dart';
+import 'package:patreon_clone/pages/creator/main/components/creator_collections_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:go_router/go_router.dart'; // Added for go_router
-import 'package:patreon-clone/navigation/app_router.dart'; // Added for Routes
+import 'package:patreon_clone/navigation/app_router.dart'; // Added for Routes
 
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/pages/user/post/cards/audio_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/image_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/link_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/text_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/video_post_card.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/pages/user/post/cards/audio_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/image_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/link_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/text_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/video_post_card.dart';
 import 'creator_header_section.dart';
 import 'creator_membership_tab.dart';
 

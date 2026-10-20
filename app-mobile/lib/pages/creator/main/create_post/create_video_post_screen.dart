@@ -1,28 +1,28 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/post/request_model/create_video_post_request_model.dart';
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/modal_progress_hud.dart';
-import 'package:patreon-clone/styles/font_manager.dart';
-import 'package:patreon-clone/helpers/image_helper.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/post/request_model/create_video_post_request_model.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/modal_progress_hud.dart';
+import 'package:patreon_clone/styles/font_manager.dart';
+import 'package:patreon_clone/helpers/image_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_compress/video_compress.dart';
 
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:patreon-clone/backend/common/dependency_injection.dart';
-import 'package:patreon-clone/backend/creator/my_creator_controller.dart';
-import 'package:patreon-clone/backend/creator/my_creator_provider.dart';
-import 'package:patreon-clone/backend/post_creation/post_creation_contoller.dart';
-import 'package:patreon-clone/backend/post_creation/post_creation_provider.dart';
-import 'package:patreon-clone/pages/creator/main/dialogs/create_collection_dialog.dart';
+import 'package:patreon_clone/backend/common/dependency_injection.dart';
+import 'package:patreon_clone/backend/creator/my_creator_controller.dart';
+import 'package:patreon_clone/backend/creator/my_creator_provider.dart';
+import 'package:patreon_clone/backend/post_creation/post_creation_contoller.dart';
+import 'package:patreon_clone/backend/post_creation/post_creation_provider.dart';
+import 'package:patreon_clone/pages/creator/main/dialogs/create_collection_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
 class CreateVideoPostScreen extends StatefulWidget {
   static const String routeName = '/CreateVideoPostScreen';

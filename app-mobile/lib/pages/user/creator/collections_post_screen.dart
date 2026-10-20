@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-// import 'package:patreon-clone/navigation/navigation_operation_perameters.dart';
-// import 'package:patreon-clone/navigation/navigation_type.dart';
-import 'package:patreon-clone/models/post/data_model/post_model.dart';
-import 'package:patreon-clone/models/collection/collection_data_model.dart';
-import 'package:patreon-clone/utils/my_safe_state.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
-import 'package:patreon-clone/pages/user/post/components/decoration.dart';
+// import 'package:patreon_clone/navigation/navigation_operation_perameters.dart';
+// import 'package:patreon_clone/navigation/navigation_type.dart';
+import 'package:patreon_clone/models/post/data_model/post_model.dart';
+import 'package:patreon_clone/models/collection/collection_data_model.dart';
+import 'package:patreon_clone/utils/my_safe_state.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/pages/user/post/components/decoration.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:patreon-clone/backend/collections/collection_controller.dart';
-import 'package:patreon-clone/backend/collections/collection_provider.dart';
-import 'package:patreon-clone/navigation/app_router.dart';
+import 'package:patreon_clone/backend/collections/collection_controller.dart';
+import 'package:patreon_clone/backend/collections/collection_provider.dart';
+import 'package:patreon_clone/navigation/app_router.dart';
 
-import 'package:patreon-clone/pages/user/post/cards/audio_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/image_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/link_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/text_post_card.dart';
-import 'package:patreon-clone/pages/user/post/cards/video_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/audio_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/image_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/link_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/text_post_card.dart';
+import 'package:patreon_clone/pages/user/post/cards/video_post_card.dart';
 
 class CollectionPostsScreen extends StatefulWidget {
   static const String routeName = "/CollectionPostsScreen";

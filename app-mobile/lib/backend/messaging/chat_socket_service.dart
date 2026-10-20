@@ -1,6 +1,6 @@
 import 'package:socket_io_client/socket_io_client.dart' as io;
-import 'package:patreon-clone/constants/constants.dart';
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/constants/constants.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 class ChatSocketService {
   static final ChatSocketService _instance = ChatSocketService._internal();

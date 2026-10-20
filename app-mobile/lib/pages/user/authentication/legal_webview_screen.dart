@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:patreon-clone/pages/components/widgets/loading_widget.dart';
+import 'package:patreon_clone/pages/components/widgets/loading_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LegalWebViewScreen extends StatefulWidget {

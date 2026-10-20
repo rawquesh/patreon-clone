@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:patreon-clone/constants/shared_preference_constants.dart';
+import 'package:patreon_clone/constants/shared_preference_constants.dart';
 
-import 'package:patreon-clone/utils/my_print.dart';
-import 'package:patreon-clone/managers/shared_pref_manager.dart';
-import 'package:patreon-clone/navigation/direct_navigator.dart';
-import 'package:patreon-clone/backend/notification/notification_repository.dart';
+import 'package:patreon_clone/utils/my_print.dart';
+import 'package:patreon_clone/managers/shared_pref_manager.dart';
+import 'package:patreon_clone/navigation/direct_navigator.dart';
+import 'package:patreon_clone/backend/notification/notification_repository.dart';
 
-import 'package:patreon-clone/pages/user/home/components/custom_bottom_bar.dart';
+import 'package:patreon_clone/pages/user/home/components/custom_bottom_bar.dart';
 
 class NotificationManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;

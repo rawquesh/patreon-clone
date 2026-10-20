@@ -1,4 +1,4 @@
-import 'package:patreon-clone/utils/my_print.dart';
+import 'package:patreon_clone/utils/my_print.dart';
 
 import 'membership_analytics_provider.dart';
 import 'membership_analytics_repository.dart';

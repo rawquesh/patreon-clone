@@ -1,4 +1,4 @@
-import 'package:patreon-clone/backend/common/common_provider.dart';
+import 'package:patreon_clone/backend/common/common_provider.dart';
 
 import 'earning_tier_model.dart';
 

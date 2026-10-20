@@ -1,5 +1,5 @@
-import 'package:patreon-clone/models/membership/membership_model.dart';
-import 'package:patreon-clone/helpers/parsing_helper.dart';
+import 'package:patreon_clone/models/membership/membership_model.dart';
+import 'package:patreon_clone/helpers/parsing_helper.dart';
 
 import 'membership_chart_point_model.dart';
 
