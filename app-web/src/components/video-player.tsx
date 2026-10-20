@@ -3,15 +3,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "plyr/dist/plyr.css";
 import { Box } from "@chakra-ui/react";
+
 // import dynamic from "next/dynamic";
 
 // We'll initialize Plyr only after dynamic import in the useEffect
+
+// Plyr's own bundled types don't surface a standalone `Options` type export,
+// so the `options` prop is kept structurally open (object-valued keys only).
+type PlyrOptions = Record<string, unknown>;
 
 interface VideoPlayerProps {
 	src: string;
 	width?: string;
 	height?: string;
-	options?: Plyr.Options;
+	options?: PlyrOptions;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -21,7 +26,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 	options = {},
 }) => {
 	const videoRef = useRef<HTMLVideoElement>(null);
-	const playerRef = useRef<Plyr | null>(null);
+	const playerRef = useRef<{ destroy: () => void } | null>(null);
 	const [isReady, setIsReady] = useState(false);
 
 	const initializePlyr = useCallback(async () => {
@@ -31,7 +36,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 			playerRef.current.destroy();
 		}
 
-		const defaultOptions: Plyr.Options = {
+		const defaultOptions: PlyrOptions = {
 			controls: [
 				"play-large",
 				"play",
@@ -50,8 +55,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 			seekTime: 10,
 		};
 		try {
-			const PlyrModule = await import("plyr");
-			const player = new PlyrModule.default(videoRef.current, {
+			const PlyrImport = await import("plyr");
+			const player = new PlyrImport.default(videoRef.current, {
 				...defaultOptions,
 				...options,
 			});
